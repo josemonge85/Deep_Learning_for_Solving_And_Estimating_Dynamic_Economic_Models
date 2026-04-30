@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: "Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance"
+message: "If you use this course, please cite it as below."
+type: software
+authors:
+  - family-names: Scheidegger
+    given-names: Simon
+    affiliation: University of Lausanne
+repository-code: "https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models"
+url: "https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models"
+abstract: >-
+  An open-source 30-lecture self-study course for PhD students in
+  computational and quantitative economics and finance. Covers deep
+  equilibrium nets, physics-informed neural networks, Gaussian processes,
+  deep surrogate models, structural estimation via SMM, and deep
+  uncertainty quantification for integrated assessment models, with a
+  cross-cutting toolkit on agentic research-coding workflows.
+keywords:
+  - deep learning
+  - dynamic stochastic general equilibrium
+  - heterogeneous agents
+  - physics-informed neural networks
+  - Gaussian processes
+  - structural estimation
+  - integrated assessment models
+  - climate economics
+license: MIT

@@ -1,0 +1,491 @@
+% ============================================================================
+% Toolkit T2: Project Memory, Agents, and Hooks
+% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
+% Course author: Simon Scheidegger
+% ============================================================================
+
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% ---------- Theme and colors ----------
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \hfill\usebeamerfont{page number in head/foot}%
+  \usebeamercolor[fg]{normal text}%
+  \insertframenumber\,/\,\inserttotalframenumber\kern1em\vskip4pt}
+\setbeamerfont{frametitle}{size=\huge}
+
+% ---------- Packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{pifont}
+
+% ---------- Listings ----------
+\lstset{language=Python,basicstyle=\small\ttfamily,
+    keywordstyle=\color{uzhblue}\bfseries,commentstyle=\color{uzhgreydark}\itshape,
+    stringstyle=\color{darkgreen},showstringspaces=false,breaklines=true,frame=none,
+    xleftmargin=0pt,aboveskip=4pt,belowskip=4pt,}
+\lstdefinestyle{bash}{language=bash,basicstyle=\small\ttfamily,
+    keywordstyle=\color{uzhblue}\bfseries,commentstyle=\color{uzhgreydark}\itshape,
+    showstringspaces=false,breaklines=true,frame=none,
+    morekeywords={claude,git,uv,npm},}
+\lstdefinestyle{prompt}{basicstyle=\small\ttfamily,breaklines=true,frame=none,
+    xleftmargin=6pt,literate={>}{{\textcolor{harvardcrimson}{>}}}1,}
+
+% ---------- Colors ----------
+\definecolor{uzhblue}{rgb}{0,0,0.5}
+\definecolor{uzhgreylight}{RGB}{236,238,241}
+\definecolor{uzhgreydark}{RGB}{81,86,94}
+\definecolor{harvardcrimson}{RGB}{153,0,0}
+\definecolor{unil@blue}{RGB}{0,140,204}
+\definecolor{unil@black}{RGB}{35,31,32}
+\definecolor{darkgreen}{RGB}{0,100,0}
+\definecolor{darkred}{RGB}{139,0,0}
+\definecolor{softblue}{RGB}{70,130,180}
+\definecolor{softorange}{RGB}{230,159,0}
+\definecolor{softgreen}{RGB}{0,158,115}
+
+\setbeamercolor{frametitle}{bg=uzhgreylight, fg=uzhblue}
+\setbeamercolor{title}{fg=uzhblue}
+\setbeamercolor{structure}{fg=uzhblue}
+\setbeamercolor{block title}{bg=unil@blue, fg=white}
+\setbeamercolor{block body}{bg=uzhgreylight}
+\setbeamercolor{block title alerted}{bg=darkred,fg=white}
+\setbeamercolor{block body alerted}{bg=red!5}
+\setbeamercolor{block title example}{bg=darkgreen,fg=white}
+\setbeamercolor{block body example}{bg=green!5}
+\setbeamercolor{item}{fg=unil@black}
+\setbeamercolor{normal text}{fg=unil@black}
+\newcommand{\emphc}[1]{\textcolor{harvardcrimson}{#1}}
+\hypersetup{colorlinks,linkcolor=harvardcrimson,urlcolor=harvardcrimson}
+
+% ---------- Title ----------
+\title[Toolkit T2]{Toolkit T2: Project Memory, Agents, and Hooks}
+\subtitle{Agentic Programming: Exercises \& Solution Sketches}
+\author{Simon Scheidegger}
+\institute{HEC, University of Lausanne}
+\date{}
+
+\begin{document}
+
+{\setbeamercolor{background canvas}{bg=uzhgreylight}
+\begin{frame}
+\titlepage
+\begin{center}
+{\footnotesize Prompts: \texttt{day5/code/exercise\_prompts.md}\\
+Solution notes: \texttt{day5/code/exercise\_solutions.md}\\[2pt]
+Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
+\end{center}
+\end{frame}}
+
+% === OVERVIEW ===
+\begin{frame}{Exercise Overview}
+\scriptsize
+\textbf{Classroom track (Ex.\,0--7, 110 min total incl.\ pre-flight):}
+\renewcommand{\arraystretch}{1.05}
+\begin{center}
+\begin{tabular}{c l c l}
+\toprule
+\textbf{\#} & \textbf{Exercise} & \textbf{Time} & \textbf{Focus} \\
+\midrule
+0 & Hello Claude (\emphc{pre-flight}) & 10 min & First contact, zero setup \\
+1 & Environment Bootstrap & 15 min & Setup \& first Claude session \\
+2 & First Real Task & 15 min & Level 3 prompts + Plan Mode \\
+3 & Prompt Refactor & 15 min & 6-component prompt framework \\
+4 & Write Your Own CLAUDE.md & 10 min & Persistent project memory \\
+5 & Skills \& Subagents & 10 min & \texttt{/agents} UI; verifier subagent \\
+6 & Data $\to$ Figures $\to$ LaTeX & 25 min & Mini research pipeline \\
+7 & Replicate a Method & 10 min & Autonomous paper replication \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.4em}
+\textbf{Self-study extensions (Ex.\,8--12):}
+\begin{center}
+\begin{tabular}{c l c l}
+\toprule
+\textbf{\#} & \textbf{Exercise} & \textbf{Time} & \textbf{Focus} \\
+\midrule
+8  & Mincer Warm-Up Demo & 15--30 min & End-to-end OLS pipeline \\
+9  & Specialist Subagent & 20--45 min & Econ / MC / backtest reviewer \\
+10 & Hook \& Real Skill & 20--60 min & Hooks + \texttt{/strategic-revision} \\
+11 & Monte Carlo Study & 30--45 min & Subagent-driven MC \\
+\textbf{12} & \textbf{Ralph Autonomous Loop} & \textbf{30--45 min} & \textbf{Closed-loop autonomy} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.2em}
+{\tiny Solutions in \texttt{day5/code/exercise\_solutions.md}; consult only \emph{after} attempting.}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 1}}}\\[12pt]
+{\LARGE Environment Bootstrap}\\[6pt]{\small 15 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 1: Environment Bootstrap}
+\begin{exampleblock}{Goal}
+Get a working Claude Code session in a version-controlled project.
+\end{exampleblock}
+\small
+\begin{enumerate}\itemsep1pt
+    \item Create \texttt{\~{}/research/lecture-demo}
+    \item Copy in \texttt{generate\_synthetic\_data.py} and run it once
+    \item Initialize git and make an initial commit
+    \item Launch Claude Code and run \texttt{/init}
+    \item Ask Claude to create \texttt{explore\_data.py} with \texttt{pathlib}
+    \item Run it on \texttt{data/synthetic\_panel.csv}
+\end{enumerate}
+
+\textbf{Success:} local data + working script + \texttt{CLAUDE.md} + git commit
+\end{frame}
+
+\begin{frame}{Exercise 1: Solution Sketch}
+\small
+\begin{exampleblock}{Reference answer}
+\begin{itemize}\itemsep2pt
+    \item Expected artifacts: \texttt{CLAUDE.md}, \texttt{data/synthetic\_panel.csv}, \texttt{explore\_data.py}
+    \item \texttt{explore\_data.py} should accept a CSV path and report shape, columns, dtypes, head, summary stats, and missingness
+    \item The file should use \texttt{pathlib.Path}, not \texttt{os.path}
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Common failure}
+Students create the script before the data exists locally. Fix that by copying
+and running \texttt{generate\_synthetic\_data.py} first.
+\end{alertblock}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 2}}}\\[12pt]
+{\LARGE First Real Task}\\[6pt]{\small 15 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 2: First Real Task}
+\begin{exampleblock}{Goal}
+Use the Level 3 prompt pattern on the shared synthetic panel.
+\end{exampleblock}
+\small
+\begin{lstlisting}[style=prompt, basicstyle=\scriptsize\ttfamily]
+> I have a dataset at data/synthetic_panel.csv.
+  Without loading it yet, first tell me how to inspect it.
+  Then:
+  1. Load it and print diagnostics
+  2. Compute annual average revenue by treatment group
+  3. Generate a 2x2 panel of plots
+  4. Save the figure to figures/panel_overview.pdf
+  5. Write a 3-sentence description to notes/data_description.md
+\end{lstlisting}
+
+\textbf{Reflect:} Where did Claude excel? Where did it need correction?
+\end{frame}
+
+\begin{frame}{Exercise 2: Solution Sketch}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{exampleblock}{Expected artifacts}
+\begin{itemize}\itemsep1pt
+    \item \texttt{figures/panel\_overview.pdf}
+    \item \texttt{notes/data\_description.md}
+    \item A short diagnostic printout in the terminal
+\end{itemize}
+\end{exampleblock}
+
+\column{0.48\textwidth}
+\begin{alertblock}{Typical interpretation}
+\begin{itemize}\itemsep1pt
+    \item Revenue trends are similar pre-2015
+    \item Post-2015 treated firms drift modestly upward
+    \item Log revenue and log employees are positively related
+\end{itemize}
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 3}}}\\[12pt]
+{\LARGE Prompt Refactor}\\[6pt]{\small 15 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 3: Prompt Refactor}
+\begin{exampleblock}{Goal}
+Transform a bad prompt using the 6-component framework.
+\end{exampleblock}
+\small
+\textbf{Bad prompt:} \texttt{> Analyze the data and run the regression and make a table.}
+
+\vspace{0.3em}
+\textbf{Task:}
+\begin{enumerate}\itemsep1pt
+    \item Diagnose the missing components
+    \item Rewrite as Level 3
+    \item Compare the vague and rewritten versions in Claude Code
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 3: Solution Sketch}
+\scriptsize
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> [ROLE] You are a computational economist working on panel data analysis.
+  [CONTEXT] I have a firm-level panel dataset at data/synthetic_panel.csv.
+  Variables: revenue, employees, treated, firm_id, year. Treatment starts in 2015.
+  [TASK] Estimate log(revenue) ~ treated * post + firm_FE + year_FE
+  with standard errors clustered at the firm level.
+  [CONSTRAINTS] Use pyfixest. Do not modify the data file.
+  [OUTPUT] Save regression results to results/did_estimates.json
+  and a LaTeX table to paper/tables/tab_did.tex.
+  [VERIFY] Also test on synthetic data where true effect = 0.05.
+\end{lstlisting}
+
+\begin{block}{Key}
+Every component is explicit. Two different students should be able to read this
+prompt and ask Claude for essentially the same deliverable.
+\end{block}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 4}}}\\[12pt]
+{\LARGE Write Your Own CLAUDE.md}\\[6pt]{\small 10 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 4: Write Your Own CLAUDE.md}
+\begin{exampleblock}{Goal}
+Create a project memory file and test both normal behavior and guardrails.
+\end{exampleblock}
+\small
+\begin{enumerate}\itemsep2pt
+    \item Copy \texttt{day5/code/CLAUDE\_md\_template.md}
+    \item Fill in Repository Structure, Coding Standards, and Current Status
+    \item Start a fresh Claude session and ask for a project summary
+    \item Test one normal coding request
+    \item Test one forbidden request touching a read-only path
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise 4: Solution Sketch}
+\small
+\begin{exampleblock}{What success looks like}
+\begin{itemize}\itemsep2pt
+    \item Claude uses your notation, folder structure, and coding rules immediately
+    \item Claude respects \texttt{pathlib}, type hints, and naming conventions
+    \item Claude refuses or pushes back on edits to \texttt{data/raw/}
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{High-value sections}
+\texttt{Repository Structure}, \texttt{Coding Standards}, and
+\texttt{Current Status} have the highest immediate payoff.
+\end{alertblock}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 5}}}\\[12pt]
+{\LARGE Skills \& Subagents}\\[6pt]{\small 10 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 5: Create a Skill \& Use Subagents}
+\begin{exampleblock}{Goal}
+Create one reusable skill and one verifier-style subagent.
+\end{exampleblock}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Part A: Skill}
+\begin{enumerate}\itemsep1pt
+    \item Copy \texttt{day5/code/example\_skill/SKILL.md}
+    \item Save it to \texttt{.claude/skills/data-diagnostics/}\\
+    \texttt{SKILL.md}
+    \item Run \texttt{/data-diagnostics data/synthetic\_panel.csv}
+\end{enumerate}
+
+\column{0.48\textwidth}
+\textbf{Part B: Subagent}
+\begin{enumerate}\itemsep1pt
+    \item Copy \texttt{day5/code/example\_subagent/}\\
+    \texttt{verifier.md}
+    \item Save it to \texttt{.claude/agents/verifier.md}
+    \item Ask Claude to use the verifier subagent on the diagnostics report
+\end{enumerate}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Exercise 5: Solution Sketch}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{exampleblock}{Expected artifacts}
+\begin{itemize}\itemsep1pt
+    \item \texttt{.claude/skills/data-diagnostics/}\\
+    \texttt{SKILL.md}
+    \item \texttt{.claude/agents/verifier.md}
+    \item Diagnostics note in \texttt{notes/}
+\end{itemize}
+\end{exampleblock}
+
+\column{0.48\textwidth}
+\begin{alertblock}{Conceptual distinction}
+\begin{itemize}\itemsep1pt
+    \item \textbf{Skill:} repeatable multi-step workflow
+    \item \textbf{Subagent:} isolated verifier or researcher
+    \item Use subagents when you want context separation
+\end{itemize}
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 6}}}\\[12pt]
+{\LARGE Data $\to$ Figures $\to$ LaTeX}\\[6pt]{\small 25 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 6: Build a Mini Pipeline}
+\begin{exampleblock}{Goal}
+Build a pipeline from shared synthetic data to a publication-ready figure and
+LaTeX table.
+\end{exampleblock}
+\scriptsize
+\begin{enumerate}\itemsep2pt
+    \item Run \texttt{/data-diagnostics data/synthetic\_panel.csv}
+    \item Write \texttt{code/estimate\_did.py}
+    \item Write \texttt{code/plot\_did.py}
+    \item Write \texttt{code/make\_table.py}
+    \item Verify the estimated effect against the true value 0.05
+\end{enumerate}
+
+\textbf{Stretch:} add \texttt{run\_all.py} with a \texttt{--dry-run} flag.
+\end{frame}
+
+\begin{frame}{Exercise 6: Solution Sketch}
+\small
+\begin{exampleblock}{Expected artifacts}
+\begin{itemize}\itemsep1pt
+    \item \texttt{results/did\_results.json}
+    \item \texttt{figures/event\_study.pdf} and \texttt{.png}
+    \item \texttt{paper/tables/tab\_did.tex}
+    \item Optional \texttt{run\_all.py}
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Minimum verification}
+\begin{itemize}\itemsep1pt
+    \item Two-way FE coefficient near 0.05
+    \item Statistically significant at the 5\% level
+    \item Pre-trend coefficients near zero
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Exercise 7}}}\\[12pt]
+{\LARGE Replicate a Method}\\[6pt]{\small 10 minutes}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Exercise 7: Paper Replication}
+\begin{exampleblock}{Goal}
+Use an AI agent to replicate a published result.
+\end{exampleblock}
+\small
+\textbf{Choose:} \textcolor{darkgreen}{\textbf{Beginner}} (Lasso, Stock\&Watson 2012) $|$
+\textcolor{softorange}{\textbf{Intermediate}} (SINDy, Brunton 2016) $|$
+\textcolor{harvardcrimson}{\textbf{Advanced}} (DEQN from Days 1--4)
+
+\vspace{0.3em}
+\begin{lstlisting}[style=prompt, basicstyle=\scriptsize\ttfamily]
+> Role: Replication engineer.
+  Paper: [title]. Mission: Replicate [figure/table].
+  Rules: no author code; track notes/todo.md; commit after each step.
+  Before implementing: extract figure axes, ranges, and CIs.
+  Write plan to notes/plan.md. Ask me to confirm.
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Exercise 7: Solution Sketch}
+\small
+\begin{exampleblock}{Success criteria}
+\begin{itemize}\itemsep2pt
+    \item A bounded target figure or table
+    \item Progress tracked in \texttt{notes/plan.md} and \texttt{notes/todo.md}
+    \item Final comparison written to \texttt{notes/replication\_assessment.md}
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Stop rule}
+If the agent is stuck after three serious attempts, write
+\texttt{notes/blocked.md} and stop. ``The code runs'' is not the same as
+``the result matches.''
+\end{alertblock}
+\end{frame}
+
+% ============================================================================
+\begin{frame}{}
+\vfill\begin{center}{\Huge \textcolor{uzhblue}{\textbf{Appendix}}}\\[12pt]
+{\LARGE Essential Prompt Library}\end{center}\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Prompt Library}
+\scriptsize
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Session:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Write notes/session_YYYY-MM-DD.md:
+  what we did, worked, failed, next.
+\end{lstlisting}
+\textbf{Code Review:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Review .py files. Refactor >50-line
+  functions. Add missing docstrings.
+\end{lstlisting}
+\textbf{Tests:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Write pytest tests with known-answer
+  synthetic data.
+\end{lstlisting}
+\textbf{Debug:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Error: [paste]. Don't fix yet.
+  Explain cause. Propose 2 fixes.
+\end{lstlisting}
+
+\column{0.48\textwidth}
+\textbf{Data:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Load [file]. Do NOT modify.
+  Print shape, dtypes, missing%,
+  summary stats. Flag outliers.
+\end{lstlisting}
+\textbf{Merge:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Left join [A] with [B] on [key].
+  Assert no rows dropped.
+\end{lstlisting}
+\textbf{Writing:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Improve clarity. Don't change
+  meaning or citations.
+\end{lstlisting}
+\textbf{Citations:}
+\begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
+> Do NOT invent citations.
+  Only cite papers in references.bib.
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\end{document}

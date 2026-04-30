@@ -1,0 +1,68 @@
+# Lecture 12 (B11): Architecture search and loss balancing
+
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
+> **Course author:** Simon Scheidegger
+> **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
+
+## Learning goal
+
+> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+
+## Prerequisites
+
+- [Lecture 11 (B10)](../lecture_11_B10_irbc_with_deqns/README.md) — IRBC with DEQNs
+
+## External prerequisites
+
+- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
+- Familiarity with the math listed under **Script reference** below.
+
+## Script reference
+
+- §Chapter 4 (Neural architecture search and loss normalization)
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — companion script
+
+## Slides
+
+- [`04_Neural_Architecture_Search.pdf`](slides/04_Neural_Architecture_Search.pdf)
+- [`05_Loss_Normalization.pdf`](slides/05_Loss_Normalization.pdf)
+
+## Notebooks
+
+### Core
+
+- [`lecture_12_B11_02_NAS_Random_Search_10D.ipynb`](notebooks/core/lecture_12_B11_02_NAS_Random_Search_10D.ipynb)
+- [`lecture_12_B11_03_NAS_RandomSearch_Hyperband.ipynb`](notebooks/core/lecture_12_B11_03_NAS_RandomSearch_Hyperband.ipynb)
+- [`lecture_12_B11_04_Loss_Normalization.ipynb`](notebooks/core/lecture_12_B11_04_Loss_Normalization.ipynb)
+
+### Exercises
+
+- [`lecture_12_B11_05_IRBC_Exercise.ipynb`](notebooks/exercises/lecture_12_B11_05_IRBC_Exercise.ipynb)
+
+### Solutions
+
+_(none in this PR)_
+
+### Extensions
+
+_(none in this PR)_
+
+## Checkpoint
+
+> Run random search on a 10-D NAS problem and compare ReLoBRaLo / SoftAdapt / GradNorm.
+
+## Readings
+
+- [`readings/links_by_lecture/lecture_12_B11.md`](../../readings/links_by_lecture/lecture_12_B11.md)
+- [`readings/bibliography.bib`](../../readings/bibliography.bib)
+
+## Navigation
+
+- [`COURSE_MAP.md`](../../COURSE_MAP.md)
+- [`README.md`](../../README.md)
+
+## Copyright and attribution
+
+- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written / graphical content is CC0 1.0 Universal.
+- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).

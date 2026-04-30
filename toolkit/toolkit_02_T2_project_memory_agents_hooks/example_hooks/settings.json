@@ -1,0 +1,60 @@
+{
+  "_comment": "Example Claude Code hooks for an economics research project. Place at .claude/settings.json (project) or ~/.claude/settings.json (global). Hooks are shell commands that run automatically around tool calls; see https://docs.claude.com/en/docs/claude-code/hooks.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "_comment": "Recompile LaTeX whenever Claude edits a .tex file in paper/.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '^paper/.*\\.tex$' | xargs -r -I{} sh -c 'cd paper && latexmk -pdf -interaction=nonstopmode main.tex > .latexmk.log 2>&1 || echo \"latexmk failed, see paper/.latexmk.log\"'"
+          }
+        ]
+      },
+      {
+        "_comment": "Run ruff on every Python file Claude writes or edits.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.py$' | xargs -r ruff check --fix"
+          }
+        ]
+      },
+      {
+        "_comment": "Append every file Claude touched to an audit log. Note: only logs file paths; full Bash commands are deliberately NOT captured to avoid leaking secrets (API keys in env vars, tokens in URLs, etc.) into .claude/audit.log.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"[\" + (now | todate) + \"] \" + .tool_name + \" \" + (.tool_input.file_path // \"<no-path>\")' >> .claude/audit.log"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "_comment": "Block edits to data/raw/ at the system level. Uses the current PreToolUse schema (hookSpecificOutput / permissionDecision); the older 'decision: block' form was deprecated in 2025.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -e '.tool_input.file_path | test(\"^data/raw/\")' > /dev/null && { echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"data/raw/ is read-only per CLAUDE.md\"}}'; exit 0; } || exit 0"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "_comment": "Auto-commit any staged work when the session ends.",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git diff --cached --quiet || git commit -m 'claude: session auto-commit'"
+          }
+        ]
+      }
+    ]
+  }
+}

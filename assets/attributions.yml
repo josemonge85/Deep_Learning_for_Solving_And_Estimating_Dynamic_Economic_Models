@@ -1,0 +1,13 @@
+# Third-party figures, screenshots, and other external assets used in
+# slides or the lecture script.
+#
+# Schema:
+#   - path: <repo-relative path>
+#     source: <URL, DOI, or citation>
+#     authors: <comma-separated>
+#     year: <yyyy>
+#     license: <SPDX or human-readable>
+#     redistribution_allowed: <true | false | review_required>
+#     notes: <free text>
+
+attributions: []

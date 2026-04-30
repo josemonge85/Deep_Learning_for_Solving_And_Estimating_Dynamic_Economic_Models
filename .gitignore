@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# LaTeX build artefacts
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+texput.log
+tracecheck.*
+!tracecheck.tex
+
+# TensorFlow / training artefacts
+runs/
+logs/
+tb_logs/
+checkpoints/
+*.ckpt
+*.h5
+wandb/
+
+# Course-specific
+readings/private_DO_NOT_COMMIT/
+lectures/**/readings/*.pdf
+!readings/allowed_pdfs/*.pdf
+codex_results/
+.codex/
+.claude/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Compiled docs
+_build/
+site/
+_dev/

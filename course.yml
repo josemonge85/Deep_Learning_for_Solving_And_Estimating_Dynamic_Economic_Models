@@ -1,0 +1,541 @@
+# Canonical machine-readable course manifest.
+# COURSE_MAP.md and the public README are derived from this file.
+# Schema:
+#   lecture: int
+#   block:   str (B00..B29 or T1/T2)
+#   title:   str
+#   folder:  str (path relative to repo root)
+#   script:  list[{section, title}]   chapters and sections of lecture_script.tex
+#   slides:  list[str]                 slide deck paths relative to folder
+#   notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+#   prereqs: list[str]                 block IDs (e.g. B05) that must come first
+#   compute: enum {cpu-light, cpu-standard, gpu-recommended, gpu-required}
+#   time:    enum {short, standard, long}
+#   checkpoint: str                    one-line concrete task
+#   smoke_disabled: bool (default false)
+
+course:
+  title: "Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance"
+  author: "Simon Scheidegger"
+  audience: "PhD students in computational/quantitative economics and finance"
+  repository: "https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models"
+
+lectures:
+  - lecture: 1
+    block: B00
+    title: "Orientation, setup, and reproducibility"
+    folder: lectures/lecture_01_B00_orientation_setup_reproducibility
+    script:
+      - {section: "Preface", title: "Preface"}
+      - {section: "How to Read", title: "How to Read This Script"}
+      - {section: "Notation", title: "Notation and Symbols"}
+      - {section: "Execution Map", title: "Execution Map"}
+      - {section: "Appendix E", title: "Reproducibility Information"}
+    slides: []
+    notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+    prereqs: []
+    compute: cpu-light
+    time: short
+    checkpoint: "Set up the local environment, run the smoke test, and locate the script, COURSE_MAP, and per-lecture READMEs."
+
+  - lecture: 2
+    block: B01
+    title: "Why deep learning for economics and finance?"
+    folder: lectures/lecture_02_B01_why_deep_learning
+    script: [{section: "1.1-1.4", title: "Foundations"}]
+    slides: ["slides/01_Intro_to_DeepLearning.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_02_B01_01_BasicML_intro.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B00]
+    compute: cpu-light
+    time: standard
+    checkpoint: "Train a small classifier on a tabular economic dataset and explain bias-variance trade-offs."
+
+  - lecture: 3
+    block: B02
+    title: "Training neural networks"
+    folder: lectures/lecture_03_B02_training_neural_networks
+    script: [{section: "1.5-1.9", title: "Optimization, depth, regularization"}]
+    slides: []
+    notebooks:
+      core:
+        - "notebooks/core/lecture_03_B02_02_GradientDescent_and_StochasticGradientDescent.ipynb"
+        - "notebooks/core/lecture_03_B02_04_Gentle_DNN.ipynb"
+        - "notebooks/core/lecture_03_B02_06_PyTorch_intro.ipynb"
+      exercises: []
+      solutions: []
+      extensions:
+        - "notebooks/extensions/lecture_03_B02_05_Tensorboard.ipynb"
+    prereqs: [B01]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Implement SGD by hand and reproduce the loss-curve behavior of an MLP on a simple regression task."
+
+  - lecture: 4
+    block: B03
+    title: "Generalization and sequence models"
+    folder: lectures/lecture_04_B03_generalization_sequence_models
+    script: [{section: "1.10-1.11", title: "Generalization, sequence models"}]
+    slides: []
+    notebooks:
+      core:
+        - "notebooks/core/lecture_04_B03_03_Double_Descent.ipynb"
+        - "notebooks/core/lecture_04_B03_08_MLP_LSTM_Transformer_Edgeworth_Cycles.ipynb"
+      exercises: []
+      solutions: []
+      extensions:
+        - "notebooks/extensions/lecture_04_B03_09_Transformer_InContext_AR1.ipynb"
+    prereqs: [B02]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Reproduce double descent on a small synthetic dataset and compare MLP/LSTM/Transformer on Edgeworth cycles."
+
+  - lecture: 5
+    block: B04
+    title: "Function approximation and loss design"
+    folder: lectures/lecture_05_B04_function_approximation_loss_design
+    script: [{section: "1.4.1", title: "Function approximation"}, {section: "1.10", title: "Loss design"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_05_B04_07_Genz_Approximation_and_Loss_Functions.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B02]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Approximate a multidimensional Genz function with three loss choices and compare error maps."
+
+  - lecture: 6
+    block: B05
+    title: "Deep Equilibrium Nets - the central idea"
+    folder: lectures/lecture_06_B05_deqn_central_idea
+    script: [{section: "2.1-2.4", title: "DEQN: theory and motivation"}]
+    slides: ["slides/02_DeepEquilibriumNets.pdf"]
+    notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+    prereqs: [B04]
+    compute: cpu-light
+    time: standard
+    checkpoint: "State the DEQN residual training principle and identify the residual operator for a given recursive equilibrium."
+
+  - lecture: 7
+    block: B06
+    title: "Brock-Mirman I - deterministic DEQN"
+    folder: lectures/lecture_07_B06_brock_mirman_deterministic_deqn
+    script: [{section: "2.5", title: "Deterministic Brock-Mirman"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_07_B06_01_Brock_Mirman_1972_DEQN.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B05]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Train a deterministic Brock-Mirman DEQN and verify against the closed-form policy."
+
+  - lecture: 8
+    block: B07
+    title: "Brock-Mirman II - uncertainty and integration"
+    folder: lectures/lecture_08_B07_brock_mirman_uncertainty_integration
+    script: [{section: "2.6", title: "Quadrature for conditional expectations"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_08_B07_02_Brock_Mirman_Uncertainty_DEQN.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B06]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Train stochastic Brock-Mirman with two quadrature rules and compare accuracy and per-step cost."
+
+  - lecture: 9
+    block: B08
+    title: "Constraints, residual kernels, and loss design"
+    folder: lectures/lecture_09_B08_constraints_residual_kernels_loss_design
+    script: [{section: "2.4", title: "Constraints"}, {section: "2.9", title: "Residual kernels"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_09_B08_05_StochasticBM_LossComparison.ipynb"]
+      exercises: ["notebooks/exercises/lecture_09_B08_03_DEQN_Exercises_Blanks.ipynb"]
+      solutions: ["notebooks/solutions/lecture_09_B08_04_DEQN_Exercises_Solutions.ipynb"]
+      extensions: []
+    prereqs: [B07]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Implement Fischer-Burmeister complementarity in a DEQN loss and compare against penalty methods."
+
+  - lecture: 10
+    block: B09
+    title: "Automatic differentiation for DEQNs"
+    folder: lectures/lecture_10_B09_autodiff_for_deqns
+    script: [{section: "2.7", title: "Autodiff"}, {section: "Appendix B", title: "Matrix calculus"}]
+    slides: ["slides/05b_AutoDiff_for_DEQN.pdf"]
+    notebooks:
+      core:
+        - "notebooks/core/lecture_10_B09_01_AutoDiff_Analytical_Examples.ipynb"
+        - "notebooks/core/lecture_10_B09_02_Brock_Mirman_AutoDiff_DEQN.ipynb"
+        - "notebooks/core/lecture_10_B09_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb"
+      exercises: []
+      solutions: []
+      extensions:
+        - "notebooks/extensions/lecture_10_B09_04_IRBC_AutoDiff_DEQN.ipynb"
+    prereqs: [B08]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Derive a Lagrangian primitive analytically and recover its gradient via two-tape autodiff."
+
+  - lecture: 11
+    block: B10
+    title: "IRBC with DEQNs"
+    folder: lectures/lecture_11_B10_irbc_with_deqns
+    script: [{section: "Chapter 3", title: "International real business cycle"}]
+    slides: ["slides/03_IRBC.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_11_B10_01_IRBC_DEQN.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B09]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Train an N-country IRBC DEQN and reproduce the symmetric steady state."
+    smoke_disabled: false
+
+  - lecture: 12
+    block: B11
+    title: "Architecture search and loss balancing"
+    folder: lectures/lecture_12_B11_architecture_search_loss_balancing
+    script: [{section: "Chapter 4", title: "Neural architecture search and loss normalization"}]
+    slides:
+      - "slides/04_Neural_Architecture_Search.pdf"
+      - "slides/05_Loss_Normalization.pdf"
+    notebooks:
+      core:
+        - "notebooks/core/lecture_12_B11_02_NAS_Random_Search_10D.ipynb"
+        - "notebooks/core/lecture_12_B11_03_NAS_RandomSearch_Hyperband.ipynb"
+        - "notebooks/core/lecture_12_B11_04_Loss_Normalization.ipynb"
+      exercises: ["notebooks/exercises/lecture_12_B11_05_IRBC_Exercise.ipynb"]
+      solutions: []
+      extensions: []
+    prereqs: [B10]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Run random search on a 10-D NAS problem and compare ReLoBRaLo / SoftAdapt / GradNorm."
+
+  - lecture: 13
+    block: B12
+    title: "OLG models with DEQNs"
+    folder: lectures/lecture_13_B12_olg_models_deqns
+    script: [{section: "5.1-5.5", title: "OLG with DEQNs"}]
+    slides: ["slides/07_OLG_Models_DEQNs.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_13_B12_07_OLG_Analytic_DEQN.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B10]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Train an analytic OLG DEQN and verify lifecycle savings against the closed form."
+
+  - lecture: 14
+    block: B13
+    title: "Large OLG benchmark"
+    folder: lectures/lecture_14_B13_large_olg_benchmark
+    script: [{section: "5.6", title: "Large OLG benchmark"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_14_B13_08_OLG_Benchmark_DEQN.ipynb"]
+      exercises: ["notebooks/exercises/lecture_14_B13_09_OLG_Exercise.ipynb"]
+      solutions: []
+      extensions: []
+    prereqs: [B12]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Reproduce the 56-period OLG benchmark with borrowing constraints via Fischer-Burmeister."
+
+  - lecture: 15
+    block: B14
+    title: "Krusell-Smith and Young's method"
+    folder: lectures/lecture_15_B14_krusell_smith_young_method
+    script: [{section: "6.1-6.3", title: "Heterogeneous agents I"}]
+    slides: ["slides/08_Heterogeneous_Agents_Youngs_Method.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_15_B14_10_Youngs_Method_Examples.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B13]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Iterate Young's histogram method on Aiyagari and reach the stationary distribution."
+
+  - lecture: 16
+    block: B15
+    title: "Continuum-of-agents DEQN and method comparison"
+    folder: lectures/lecture_16_B15_continuum_agents_deqn_method_comparison
+    script: [{section: "6.4-6.6", title: "Heterogeneous agents II"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_16_B15_11_Continuum_of_Agents_DEQN.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: ["notebooks/extensions/lecture_16_B15_12_KrusellSmith_DeepLearning.ipynb"]
+    prereqs: [B14]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Compare a continuum-of-agents DEQN against the Young-method solution on Aiyagari."
+
+  - lecture: 17
+    block: B16
+    title: "Sequence-space DEQNs"
+    folder: lectures/lecture_17_B16_sequence_space_deqns
+    script: [{section: "6.7", title: "Sequence-space DEQNs"}]
+    slides: ["slides/06_SequenceSpace_DEQNs.pdf"]
+    notebooks:
+      core:
+        - "notebooks/core/lecture_17_B16_05_SequenceSpace_BrockMirman.ipynb"
+        - "notebooks/core/lecture_17_B16_06_SequenceSpace_KrusellSmith.ipynb"
+      exercises: []
+      solutions: []
+      extensions:
+        - "notebooks/extensions/lecture_17_B16_05b_SequenceSpace_IRBC.ipynb"
+        - "notebooks/extensions/lecture_17_B16_KrusellSmith_Tutorial_CPU.ipynb"
+    prereqs: [B15]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Train a sequence-space DEQN on Brock-Mirman with an 80-step shock history."
+
+  - lecture: 18
+    block: B17
+    title: "PINNs I - residual learning for ODEs and PDEs"
+    folder: lectures/lecture_18_B17_pinn_foundations
+    script: [{section: "7.1-7.4", title: "PINN foundations"}]
+    slides: ["slides/06_PINNs.pdf"]
+    notebooks:
+      core:
+        - "notebooks/core/lecture_18_B17_01_ODE_PINN_ZeroBCs.ipynb"
+        - "notebooks/core/lecture_18_B17_02_ODE_PINN_SoftVsHardBCs.ipynb"
+        - "notebooks/core/lecture_18_B17_03_PDE_PINN_Poisson2D.ipynb"
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B09]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Solve a 2-D Poisson PDE with a PINN under both soft and hard boundary-condition parametrizations."
+
+  - lecture: 19
+    block: B18
+    title: "PINNs II - economic PDEs"
+    folder: lectures/lecture_19_B18_pinn_economic_pdes
+    script: [{section: "7.5-7.9", title: "Economic PDEs (HJB, Black-Scholes)"}]
+    slides: []
+    notebooks:
+      core:
+        - "notebooks/core/lecture_19_B18_04_Cake_Eating_HJB_PINN.ipynb"
+        - "notebooks/core/lecture_19_B18_05_Black_Scholes_PINN.ipynb"
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B17]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Solve the cake-eating HJB with a hard-BC trial solution; price a European call via Black-Scholes PINN."
+
+  - lecture: 20
+    block: B19
+    title: "Continuous-time HA theory"
+    folder: lectures/lecture_20_B19_continuous_time_ha_theory
+    script: [{section: "8.1-8.6", title: "HJB + KFE + master equation"}, {section: "Appendix C", title: "Ito calculus"}]
+    slides: ["slides/07_CT_Heterogeneous_Agents_Theory.pdf"]
+    notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+    prereqs: [B18]
+    compute: cpu-light
+    time: standard
+    checkpoint: "Write the HJB-KFE system for the Aiyagari model and identify each operator's role."
+
+  - lecture: 21
+    block: B20
+    title: "Continuous-time HA numerics"
+    folder: lectures/lecture_21_B20_continuous_time_ha_numerics
+    script: [{section: "8.7", title: "Numerical methods for CT-HA"}]
+    slides: ["slides/08_CT_Heterogeneous_Agents_Numerical.pdf"]
+    notebooks:
+      core:
+        - "notebooks/core/lecture_21_B20_06_PE_Discrete_HJB_PINN.ipynb"
+        - "notebooks/core/lecture_21_B20_07_PE_Diffusion_HJB_PINN.ipynb"
+        - "notebooks/core/lecture_21_B20_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb"
+      exercises: ["notebooks/exercises/lecture_21_B20_09_PINN_Exercise.ipynb"]
+      solutions: []
+      extensions: []
+    prereqs: [B19]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Solve continuous-time Aiyagari via finite differences and PINN; compare distributions."
+
+  - lecture: 22
+    block: B21
+    title: "Deep surrogate models"
+    folder: lectures/lecture_22_B21_deep_surrogate_models
+    script: [{section: "9.1-9.2", title: "Surrogates"}]
+    slides: ["slides/07_Surrogates_and_GPs.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_22_B21_01_Surrogate_Primer.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B04]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Build a deep surrogate for an expensive simulator and validate out-of-sample."
+
+  - lecture: 23
+    block: B22
+    title: "Gaussian processes and Bayesian active learning"
+    folder: lectures/lecture_23_B22_gp_bayesian_active_learning
+    script: [{section: "9.3-9.6", title: "GPs and BAL"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_23_B22_02_GP_and_BAL.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B21]
+    compute: cpu-standard
+    time: standard
+    checkpoint: "Run a Bayesian active-learning loop on a 2-D test function and quantify uncertainty reduction."
+
+  - lecture: 24
+    block: B23
+    title: "Scaling GPs - active subspaces and deep kernels"
+    folder: lectures/lecture_24_B23_scaling_gps_active_subspaces_deep_kernels
+    script: [{section: "9.7", title: "Active subspaces"}, {section: "9.9", title: "Deep kernels"}]
+    slides: []
+    notebooks:
+      core:
+        - "notebooks/core/lecture_24_B23_05_Active_Subspace_2D.ipynb"
+        - "notebooks/core/lecture_24_B23_06_Active_Subspace_10D.ipynb"
+        - "notebooks/core/lecture_24_B23_08_Deep_Kernel_Learning.ipynb"
+      exercises: []
+      solutions: []
+      extensions:
+        - "notebooks/extensions/lecture_24_B23_07_Active_Subspace_Nonlinear.ipynb"
+        - "notebooks/extensions/lecture_24_B23_09_Deep_Active_Subspace_Ridge.ipynb"
+        - "notebooks/extensions/lecture_24_B23_10_Deep_AS_vs_Linear_AS_Borehole.ipynb"
+    prereqs: [B22]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Apply linear and deep active subspaces to a 10-D test function; compare reconstruction error."
+
+  - lecture: 25
+    block: B24
+    title: "GPs for dynamic programming"
+    folder: lectures/lecture_25_B24_gps_for_dynamic_programming
+    script: [{section: "9.8", title: "GP-VFI"}, {section: "9.10", title: "GPs among Bayesian cousins"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_25_B24_04_GP_Value_Function_Iteration.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: []
+    prereqs: [B23]
+    compute: cpu-standard
+    time: long
+    checkpoint: "Run GP-VFI on a 2-D test economy and reach a stable value function."
+
+  - lecture: 26
+    block: B25
+    title: "Structural estimation via SMM"
+    folder: lectures/lecture_26_B25_structural_estimation_smm
+    script: [{section: "Chapter 10", title: "Structural estimation via SMM"}]
+    slides: ["slides/08_Exercise_Structural_Estimation.pdf"]
+    notebooks:
+      core: ["notebooks/core/lecture_26_B25_03_Structural_Estimation_BM.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: ["notebooks/extensions/lecture_26_B25_03b_Structural_Estimation_BM_Joint.ipynb"]
+    prereqs: [B22]
+    compute: cpu-standard
+    time: long
+    checkpoint: "Estimate (rho) and joint (beta, rho) in Brock-Mirman via SMM with a deep surrogate."
+
+  - lecture: 27
+    block: B26
+    title: "Climate economics and IAMs"
+    folder: lectures/lecture_27_B26_climate_economics_iams
+    script: [{section: "11.1-11.2", title: "IAMs and DICE"}]
+    slides: ["slides/08_Climate_Economics_IAMs.pdf"]
+    notebooks:
+      core: []
+      exercises: ["notebooks/exercises/lecture_27_B26_01_Climate_Exercise.ipynb"]
+      solutions: []
+      extensions: []
+    prereqs: [B10]
+    compute: cpu-light
+    time: standard
+    checkpoint: "Simulate the DICE carbon cycle and temperature dynamics under BAU and a mitigation scenario."
+
+  - lecture: 28
+    block: B27
+    title: "Solving DICE with DEQNs"
+    folder: lectures/lecture_28_B27_solving_dice_with_deqns
+    script: [{section: "11.3", title: "DICE with DEQNs"}]
+    slides: []
+    notebooks:
+      core: ["notebooks/core/lecture_28_B27_02_DICE_DEQN_Library_Port.ipynb"]
+      exercises: []
+      solutions: []
+      extensions: ["notebooks/extensions/lecture_28_B27_03_Stochastic_DICE_DEQN.ipynb"]
+    prereqs: [B26]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Solve deterministic CDICE with a DEQN and verify against the reference."
+
+  - lecture: 29
+    block: B28
+    title: "Deep uncertainty quantification and policy"
+    folder: lectures/lecture_29_B28_deep_uq_policy
+    script: [{section: "11.4-11.6", title: "Deep UQ for IAMs"}]
+    slides: ["slides/09_Deep_UQ_and_Optimal_Policies.pdf"]
+    notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+    prereqs: [B27]
+    compute: gpu-recommended
+    time: long
+    checkpoint: "Run a deep-UQ analysis on a stochastic IAM; identify constrained Pareto-improving policies."
+
+  - lecture: 30
+    block: B29
+    title: "Synthesis and method choice"
+    folder: lectures/lecture_30_B29_synthesis_method_choice
+    script: [{section: "Chapter 12", title: "Synthesis"}, {section: "Appendix A", title: "Glossary"}, {section: "Appendix D", title: "Fixed points and Bellman"}]
+    slides: ["slides/10_Wrap_Up.pdf"]
+    notebooks: {core: [], exercises: [], solutions: [], extensions: []}
+    prereqs: [B28]
+    compute: cpu-light
+    time: short
+    checkpoint: "Articulate when to choose DEQN vs PINN vs GP/surrogate for a new problem and justify trade-offs."
+
+toolkits:
+  - block: T1
+    title: "Agentic research-coding loop"
+    folder: toolkit/toolkit_01_T1_agentic_research_coding_loop
+    insert_after: B04
+    standalone: true
+    compute: cpu-light
+    time: standard
+    checkpoint: "Set up a working agentic research-coding environment and complete exercises 1-3 of the prompt pack."
+
+  - block: T2
+    title: "Project memory, agents, and hooks"
+    folder: toolkit/toolkit_02_T2_project_memory_agents_hooks
+    insert_after: B11
+    standalone: true
+    compute: cpu-light
+    time: standard
+    checkpoint: "Author a CLAUDE.md, a custom skill, and a subagent for a research task you care about."
