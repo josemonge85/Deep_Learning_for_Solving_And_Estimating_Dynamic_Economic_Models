@@ -149,7 +149,7 @@ A little calculus, a little Python. \emph{No prior exposure to autodiff assumed.
 \begin{block}{Where they show up}
 \small
 \begin{itemize}\itemsep3pt
-  \item \emphc{First-order conditions} of optimisation problems (consumer, firm, planner).
+  \item \emphc{First-order conditions} of optimization problems (consumer, firm, planner).
   \item The \emphc{envelope theorem} relating $V'(\cdot)$ to $\partial \mathcal{L}/\partial (\text{state})$.
   \item \emphc{Gradient descent} to train neural networks.
   \item \emphc{Sensitivity analysis / Greeks / UQ}: how does output $y$ move with input $x$?
@@ -1116,7 +1116,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \begin{itemize}\itemsep2pt
 \item \emphc{Cancellations}: $u'(C_t) - \beta u'(C_{t+1})\,r$ has the same sign structure as the gross growth rate -- obvious from the formula, invisible in a number.
 \item \emphc{Monotonicity}: $V'(K) > 0$ is an inequality you can often read off $\partial \mathcal{L}/\partial K$.
-\item \emphc{Scaling laws}: $\partial V/\partial A$ for TFP $A$ is linear in $A$ -- useful for normalisation.
+\item \emphc{Scaling laws}: $\partial V/\partial A$ for TFP $A$ is linear in $A$ -- useful for normalization.
 \item \emphc{Sufficient statistics}: derivative is only a function of certain summaries.
 \end{itemize}
 \column{0.5\textwidth}
@@ -1140,7 +1140,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \vspace{4pt}
 \textbf{At the optimum both coincide.} During training they differ; the second one is the one the hand derivation gives.
 \begin{exampleblock}{What the notebooks do}
-\small In notebooks~03 and~04 we \emph{compute gradients of $\Pi$ at values $K_{t+1}, K_{t+2}$ that are produced by the policy}. We do \emph{not} then additionally differentiate with respect to how the policy depends on $K_t$. Check: open the notebook and notice there is only one \texttt{GradientTape} per term, watching the \emph{variable} we differentiate with respect to. That is the \texttt{stop\_gradient} behaviour, built in.
+\small In notebooks~03 and~04 we \emph{compute gradients of $\Pi$ at values $K_{t+1}, K_{t+2}$ that are produced by the policy}. We do \emph{not} then additionally differentiate with respect to how the policy depends on $K_t$. Check: open the notebook and notice there is only one \texttt{GradientTape} per term, watching the \emph{variable} we differentiate with respect to. That is the \texttt{stop\_gradient} behavior, built in.
 \end{exampleblock}
 \end{frame}
 

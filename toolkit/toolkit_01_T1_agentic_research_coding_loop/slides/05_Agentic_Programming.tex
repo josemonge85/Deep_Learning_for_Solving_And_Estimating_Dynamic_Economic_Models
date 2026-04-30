@@ -182,13 +182,13 @@ Cherny (2025), ``10 Claude Code Tips''; Anthropic Docs (2026).}\\[4pt]
 \begin{itemize}\itemsep0pt
     \item Lectures 02--05: deep-learning fundamentals
     \item Lectures 06--10: Deep Equilibrium Nets (DEQNs)
-    \item Lectures 11--12: IRBC, NAS, loss normalisation
+    \item Lectures 11--12: IRBC, NAS, loss normalization
     \item Lectures 10, 13--17: autodiff, sequence space, OLG
 \end{itemize}
 
 \vspace{0.3em}
 {\scriptsize Each notebook ran for hours. Most of that time was \emph{not}
-modelling: it was wiring data, debugging shapes, refactoring loss terms,
+modeling: it was wiring data, debugging shapes, refactoring loss terms,
 testing on toy problems, and rebuilding figures.}
 
 \column{0.48\textwidth}
@@ -383,7 +383,7 @@ One supervised workflow can produce code, tables, figures, LaTeX, and notes in t
     {\scriptsize Persistent context; self-improving memory; three-layer architecture.}
     \vspace{0.1em}
     \item[\textbf{6.}] \textbf{Skills, Subagents \& Hooks}\\
-    {\scriptsize Custom commands; specialised agents; plan mode; hooks.}
+    {\scriptsize Custom commands; specialized agents; plan mode; hooks.}
     \vspace{0.1em}
     \item[\textbf{7.}] \textbf{Autonomous Loops with Ralph}\\
     {\scriptsize Wake-sleep pattern; \texttt{/ralph-loop} plugin; PRD-driven \texttt{ralph.sh}.}
@@ -947,7 +947,7 @@ desktop app. You will use all three during a typical research day.
 \begin{itemize}\itemsep1pt
   \item ``Claude Code for non-developers''
   \item Agentic: \emph{executes} tasks, not just discusses them
-  \item Organises files, analyses spreadsheets, generates reports
+  \item Organises files, analyzes spreadsheets, generates reports
   \item Can operate desktop apps on your behalf
 \end{itemize}
 \vspace{0.2em}
@@ -1216,7 +1216,7 @@ What a healthy first run looks like, end to end. Blue = you; green = Claude.
 \begin{exampleblock}{\color{level4}\bfseries Turn 1 -- you}
 \begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
 > What files are in this directory?
-  Summarise the structure.
+  Summarize the structure.
 \end{lstlisting}
 \end{exampleblock}
 
@@ -2049,7 +2049,7 @@ Four extension mechanisms; each does one thing the others can't.
   \texttt{.claude/skills/<name>/SKILL.md} &
   Same prompt sequence $\geq$~daily. \\
 \emphc{Subagent} &
-  Specialised assistant (own model, tools, prompt); spawned via \texttt{Task}. &
+  Specialized assistant (own model, tools, prompt); spawned via \texttt{Task}. &
   \texttt{.claude/agents/<name>.md} &
   Fresh context or different model for one sub-task. \\
 \emphc{Hook} &
@@ -3092,7 +3092,7 @@ matters when you point Claude at thesis/RA datasets.
     \item[\textcolor{darkred}{\ding{55}}] Raw IRB / PII / Article-9 data: never to the API
     \item[\textcolor{darkred}{\ding{55}}] API keys, tokens, credentials: never
     \item[\textcolor{softorange}{\textbf{?}}] DUA-protected data: re-read the agreement before using a Claude session
-    \item[\textcolor{darkgreen}{\checkmark}] Hash / synthesise / aggregate first; send the derivative
+    \item[\textcolor{darkgreen}{\checkmark}] Hash / synthesize / aggregate first; send the derivative
     \item[\textcolor{darkgreen}{\checkmark}] Use the \texttt{PreToolUse} hook + \texttt{CLAUDE.md} read-only paths
     \item[\textcolor{darkgreen}{\checkmark}] Document the data class (public, internal, restricted) in \texttt{CLAUDE.md}
 \end{itemize}
@@ -3264,7 +3264,7 @@ Ctrl+C, ESC, Shift+Tab (plan)}
     \item \textbf{Never skip verification.} Synthetic data with known answers; check SE clustering; verify every citation.
     \item \textbf{Cost is a research input.} Track \texttt{/cost}; pick the cheapest model that keeps quality; cap every loop.
     \item \textbf{Reproducibility under AI is non-trivial.} LLM calls are non-deterministic: freeze artifacts as code, pin model+version+date.
-    \item \textbf{AI is a fast second-year PhD student.} Excellent at known methods; mediocre at novel ones. Your judgement on identification, specification, and interpretation remains essential.
+    \item \textbf{AI is a fast second-year PhD student.} Excellent at known methods; mediocre at novel ones. Your judgment on identification, specification, and interpretation remains essential.
 \end{enumerate}
 \end{frame}
 

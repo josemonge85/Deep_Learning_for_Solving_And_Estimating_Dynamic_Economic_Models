@@ -18,7 +18,7 @@ Default policy: link only. PDFs are not redistributed unless their license clear
 - **Year:** 2025
 - **Venue:** NBER Working Paper / forthcoming
 - **Link:** <https://www.nber.org/papers/w33117>
-- **Notes:** Survey of deep-learning methods for quantitative economic modelling. Read alongside Lectures 02 and 06.
+- **Notes:** Survey of deep-learning methods for quantitative economic modeling. Read alongside Lectures 02 and 06.
 
 ## Bibliography
 

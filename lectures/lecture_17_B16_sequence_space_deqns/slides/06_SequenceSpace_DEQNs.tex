@@ -385,7 +385,7 @@ Companion deck \texttt{08\_Heterogeneous\_Agents\_Youngs\_Method.pdf}; teaching 
 \begin{block}{Key messages}
 \begin{enumerate}\itemsep4pt
     \item Sequence space changes the \emphc{network input}, not the equilibrium conditions.
-    \item Ergodicity-and-truncation: long histories of exogenous shocks summarise the relevant economic state, with truncation error decaying geometrically.
+    \item Ergodicity-and-truncation: long histories of exogenous shocks summarize the relevant economic state, with truncation error decaying geometrically.
     \item Brock--Mirman is the clean warm-up; HA models are where the method genuinely pays off (smaller, exogenous input + breaks the state-space feedback loop).
     \item Two algorithms: residual minimisation (today) and time iteration with EGM (appendix).
 \end{enumerate}
@@ -399,7 +399,7 @@ Companion deck \texttt{08\_Heterogeneous\_Agents\_Youngs\_Method.pdf}; teaching 
     \item Azinovic-Yang, M., \& \v{Z}emli\v{c}ka, J.\ (2025). \emph{Deep learning in the sequence space.} arXiv:2509.13623.
     \item Auclert, A., Bard\'oczy, B., Rognlie, M., \& Straub, L.\ (2021). Using the sequence-space Jacobian to solve and estimate heterogeneous-agent models. \emph{Econometrica} 89(5), 2375--2408.
     \item Boppart, T., Krusell, P., \& Mitman, K.\ (2018). Exploiting MIT shocks in heterogeneous-agent economies. \emph{Journal of Economic Dynamics \& Control} 89, 68--92.
-    \item Carroll, C.D.\ (2006). The method of endogenous gridpoints for solving dynamic stochastic optimisation problems. \emph{Economics Letters} 91(3), 312--320.
+    \item Carroll, C.D.\ (2006). The method of endogenous gridpoints for solving dynamic stochastic optimization problems. \emph{Economics Letters} 91(3), 312--320.
     \item Companion code repository: \scriptsize\url{https://github.com/azinoma/DeepLearningInTheSequenceSpace}.
 \end{itemize}
 \end{frame}
@@ -430,7 +430,7 @@ Companion deck \texttt{08\_Heterogeneous\_Agents\_Youngs\_Method.pdf}; teaching 
 \column{0.50\textwidth}
 \textbf{Households (continuum)}
 \begin{itemize}\itemsep2pt
-    \item Choose $c_t$ to maximise $\mathbb{E}_0\sum_{t\ge 0}\beta^t \log c_t$.
+    \item Choose $c_t$ to maximize $\mathbb{E}_0\sum_{t\ge 0}\beta^t \log c_t$.
     \item Budget: $c_t + k_{t+1} = w_t\,\varepsilon_t + R_t\,k_t$, $k_{t+1}\ge 0$.
     \item Idiosyncratic efficiency $\varepsilon_t\in\{\varepsilon_L,\varepsilon_H\}$, 2-state Markov.
 \end{itemize}
@@ -637,7 +637,7 @@ Grad clip          & $\|\cdot\|_2 \le 1$\\
 
 \vspace{0.2em}
 \begin{block}{When to switch}
-{\footnotesize Use \emphc{residual minimisation} by default.  Switch to \emphc{time iteration} when convergence stalls, when the Euler equation has multiple roots, or when discrete choices appear in the optimisation.}
+{\footnotesize Use \emphc{residual minimisation} by default.  Switch to \emphc{time iteration} when convergence stalls, when the Euler equation has multiple roots, or when discrete choices appear in the optimization.}
 \end{block}
 \end{frame}
 

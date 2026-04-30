@@ -30,9 +30,9 @@ Invoke this agent on a specific target module after it has stabilised.
 
 ## Constraints
 
-- One test per behaviour. Do not chain unrelated checks with `and`.
+- One test per behavior. Do not chain unrelated checks with `and`.
 - Never test on the real research dataset; always on synthetic data or a
   small fixture committed under `tests/fixtures/`.
-- If a required behaviour is not testable without more context, write a
+- If a required behavior is not testable without more context, write a
   `@pytest.mark.skip` with a reason rather than fabricating coverage.
 - Do not modify the target file; if a test reveals a bug, report it.

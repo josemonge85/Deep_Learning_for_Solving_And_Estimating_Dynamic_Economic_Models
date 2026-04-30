@@ -60,7 +60,7 @@ ls                     # should now include haiku.md
 ### Step 1 -- Create a demo project and local data copy (run in your terminal)
 ```bash
 mkdir ~/research/lecture-demo && cd ~/research/lecture-demo
-cp /path/to/Deep_Learning_Econ_Finance_Geneva_2026/lectures/day5/code/generate_synthetic_data.py .
+cp toolkit/toolkit_01_T1_agentic_research_coding_loop/code/generate_synthetic_data.py .
 python generate_synthetic_data.py
 git init && git branch -M main
 echo "# Lecture Demo - $(date +%Y-%m-%d) - [Your Name]" > NOTES.md
@@ -195,7 +195,7 @@ firm_id (integer), year (2010-2019). Treatment starts in 2015.
 Copy `CLAUDE_md_template.md` to your project root and rename it to
 `CLAUDE.md`:
 ```bash
-cp /path/to/Deep_Learning_Econ_Finance_Geneva_2026/lectures/day5/code/CLAUDE_md_template.md \
+cp toolkit/toolkit_02_T2_project_memory_agents_hooks/templates/CLAUDE_md_template.md \
    ~/research/lecture-demo/CLAUDE.md
 ```
 
@@ -246,7 +246,7 @@ templates).
 ```bash
 cd ~/research/lecture-demo
 mkdir -p .claude/skills/data-diagnostics
-cp /path/to/Deep_Learning_Econ_Finance_Geneva_2026/lectures/day5/code/example_skill/SKILL.md \
+cp toolkit/toolkit_02_T2_project_memory_agents_hooks/example_skill/SKILL.md \
    .claude/skills/data-diagnostics/SKILL.md
 ```
 
@@ -259,7 +259,7 @@ A picker opens. Choose **Create new agent** -> **Project**. Set:
 - **name:** `verifier`
 - **model:** `haiku` (cheap; verifiers don't need Opus)
 - **tools:** `Read, Grep, Glob` (read-only)
-- **system prompt:** "You are a sceptical verifier. Read the artifact
+- **system prompt:** "You are a skeptical verifier. Read the artifact
   the user names, list the two biggest risks, cite the evidence line
   by line. Do not modify any file."
 
@@ -427,7 +427,7 @@ pip install --user statsmodels wooldridge
 
 ### Step 2 -- Run the reference script once so you know the target
 ```bash
-cd /path/to/lectures/day5/code
+cd toolkit/toolkit_01_T1_agentic_research_coding_loop/code
 python3 mincer_demo.py
 ls outputs/                 # should list mincer_table.tex, mincer_figure.pdf
 ```
@@ -441,7 +441,7 @@ claude
 
 ### Step 4 -- Paste this Level 3 prompt
 ```text
-Role: applied labour economist.
+Role: applied labor economist.
 Data: wage1 from the `wooldridge` package.
 Model:  log(wage) = b0 + b1*educ + b2*exper + b3*exper^2 + b4*female + u
 
@@ -458,7 +458,7 @@ Verify: print the regression summary and assert 0.07 < b1 < 0.10.
 
 ### Step 5 -- Diff your output against the reference
 ```bash
-diff outputs/mincer_table.tex /path/to/lectures/day5/code/outputs/mincer_table.tex || true
+diff outputs/mincer_table.tex toolkit/toolkit_01_T1_agentic_research_coding_loop/code/outputs/mincer_table.tex || true
 ```
 The coefficients should match to 4 decimals. The figure need not be byte-identical.
 
@@ -476,8 +476,8 @@ specialist.
 ```bash
 cd ~/research/lecture-demo      # or whichever demo project from Ex 1
 mkdir -p .claude/agents
-cp /path/to/lectures/day5/code/example_subagent/code_reviewer.md          .claude/agents/
-cp /path/to/lectures/day5/code/example_subagent/econometrics_reviewer.md  .claude/agents/
+cp toolkit/toolkit_02_T2_project_memory_agents_hooks/example_subagent/code_reviewer.md          .claude/agents/
+cp toolkit/toolkit_02_T2_project_memory_agents_hooks/example_subagent/econometrics_reviewer.md  .claude/agents/
 ```
 
 ### Step 2 -- Write a deliberately imperfect DiD script
@@ -526,7 +526,7 @@ vs. what the specialist flagged. Which list would a referee care about?
    ```bash
    cd ~/research/lecture-demo
    mkdir -p .claude
-   cp /path/to/lectures/day5/code/example_hooks/settings.json .claude/settings.json
+   cp toolkit/toolkit_02_T2_project_memory_agents_hooks/example_hooks/settings.json .claude/settings.json
    ```
 
 2. Open it and read the three hooks defined (`PostToolUse`, `PreToolUse`, `Stop`).
@@ -544,7 +544,7 @@ vs. what the specialist flagged. Which list would a referee care about?
 
 1. Copy the skill:
    ```bash
-   cp -r /path/to/lectures/day5/code/example_skill_strategic_revision \
+   cp -r toolkit/toolkit_02_T2_project_memory_agents_hooks/example_skill_strategic_revision \
          .claude/skills/strategic-revision
    ```
 
@@ -573,7 +573,7 @@ many times a year do you get a stack of referee reports?
 
 ### Step 1 -- Install the subagent
 ```bash
-cp /path/to/lectures/day5/code/example_subagent/monte_carlo_designer.md \
+cp toolkit/toolkit_02_T2_project_memory_agents_hooks/example_subagent/monte_carlo_designer.md \
    .claude/agents/
 ```
 

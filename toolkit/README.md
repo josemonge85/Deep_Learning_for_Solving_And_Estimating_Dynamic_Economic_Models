@@ -83,7 +83,7 @@ code/
 ## One-time setup
 
 ```bash
-cd lectures/day5/code
+cd toolkit/toolkit_01_T1_agentic_research_coding_loop/code
 
 # 1. Materialise the synthetic panel
 python3 generate_synthetic_data.py
@@ -138,4 +138,4 @@ All three checks pass in this repo as of 2026-04-14.
 
 ## Note
 
-PINNs notebooks previously in this directory moved to `lectures/day6/code/`.
+PINNs notebooks previously in this directory moved to the PINN lectures (`lectures/lecture_18_*` and `lectures/lecture_19_*`).

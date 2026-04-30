@@ -30,6 +30,6 @@ Invoke this agent after a meaningful diff (1-300 lines) and before commit.
 ## Constraints
 
 - Never modify files. This agent is strictly read-only.
-- Never invent library behaviour; check docs or source.
+- Never invent library behavior; check docs or source.
 - Prefer pointing at the paper section or `CLAUDE.md` rule that a change violates.
 - Keep the review under 400 words unless the diff is very large.

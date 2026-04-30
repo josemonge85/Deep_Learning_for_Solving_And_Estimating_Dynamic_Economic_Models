@@ -276,7 +276,7 @@ R$^2$ = 0.3996. The assertion `0.07 < b1 < 0.10` must fire.
 
 ### Part A -- Audit-log and data-guard hooks
 
-**Expected behaviour**
+**Expected behavior**
 
 - After any file edit, `.claude/audit.log` gains one line with a timestamp,
   tool name, and file path.
@@ -346,7 +346,7 @@ R$^2$ = 0.3996. The assertion `0.07 < b1 < 0.10` must fire.
 
 ## Exercise 12: Run an Autonomous Ralph Loop
 
-Expected behaviour: Claude solves the ridge-regression stub in 1--3
+Expected behavior: Claude solves the ridge-regression stub in 1--3
 iterations.
 
 A correct `fit_ridge` is a one-liner:

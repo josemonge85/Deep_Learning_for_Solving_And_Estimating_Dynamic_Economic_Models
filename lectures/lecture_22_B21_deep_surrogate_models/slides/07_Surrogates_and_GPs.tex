@@ -1856,7 +1856,7 @@ Same GP posterior from Part~II, now applied iteratively inside a DP algorithm.
 
 % --- New slide: Cheap BAL inside the VFI loop ---
 \begin{frame}{Cheap BAL Inside the VFI Loop}
-\textbf{Goal of acquisition.} Uniform interpolation accuracy of $V$, not optimisation $\Rightarrow$ pure exploration.
+\textbf{Goal of acquisition.} Uniform interpolation accuracy of $V$, not optimization $\Rightarrow$ pure exploration.
 
 \medskip
 \textbf{Acquisition function.} Posterior standard deviation only:
@@ -2040,7 +2040,7 @@ Self-contained recipe for the Tripathy-Bilionis architecture. All steps rely onl
 \textbf{Algorithm.}
 \begin{enumerate}\itemsep1pt
   \item \textbf{Sample} $(\xi_i, y_i)_{i=1}^N$; $80/20$ train/val split.
-  \item \textbf{Standardize} inputs (unit variance), centre outputs.
+  \item \textbf{Standardize} inputs (unit variance), center outputs.
   \item For $d \in \{1, 2, 3, \ldots\}$:
     encoder $h_\theta\!: \R^D\!\to\!\R^d$ with widths $d_k = \lceil D e^{\eta_{\mathrm{w}} k}\rceil$, link $g_\theta\!: \R^d\!\to\!\R$ ($16$--$32$ units); train on
     $\mathcal L = \text{MSE}(\hat f, y) + \lambda_1\|\theta\|_1 + \lambda_2\|\theta\|_2^2$ with Adam + cosine LR.

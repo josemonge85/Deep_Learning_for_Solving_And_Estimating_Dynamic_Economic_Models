@@ -108,7 +108,7 @@
 \vspace{-2pt}
 \begin{block}{Part III --- The leading example of AGS (2022): the 56-cohort benchmark}
 \vspace{-3pt}\begin{itemize}\itemsep0pt
-    \item Same 9-step recipe at research scale: two assets, two borrowing constraints, capital adjustment costs, persistent shocks, hump-shaped labour.
+    \item Same 9-step recipe at research scale: two assets, two borrowing constraints, capital adjustment costs, persistent shocks, hump-shaped labor.
     \item Notebook: \texttt{08\_OLG\_Benchmark\_DEQN.ipynb}.
 \end{itemize}
 \end{block}
@@ -126,7 +126,7 @@
 \begin{block}{The economic content}
 \vspace{-3pt}\begin{itemize}\itemsep2pt
     \item \emphc{Lifecycle:} agents are born, work, save, retire, die.  A representative infinitely-lived household cannot speak to pensions, retirement, inheritance, or cohort-specific shocks.
-    \item \emphc{Demographics:} at any $t$, many cohorts coexist, each with its own asset holdings and labour income.
+    \item \emphc{Demographics:} at any $t$, many cohorts coexist, each with its own asset holdings and labor income.
     \item \emphc{Finite asset distribution:} with $A$ cohorts, the cross-sectional wealth distribution is an $A$-vector -- not an infinite-dimensional object.  \emphc{Perfect for DEQNs:} state stays finite-dimensional with realistic heterogeneity.
 \end{itemize}
 \end{block}
@@ -197,10 +197,10 @@ At each period $t$ we have $A$ coexisting cohorts.  A newborn enters (age 1); th
 \begin{block}{From model to neural network (to be applied twice in today's lecture)}
 \begin{enumerate}\itemsep2pt
     \item Write down the \emphc{economic model}: preferences, technology, constraints, shocks.
-    \item Define the \emphc{equilibrium}: choices + prices that satisfy optimisation + market clearing.
+    \item Define the \emphc{equilibrium}: choices + prices that satisfy optimization + market clearing.
     \item Write the \emphc{equilibrium conditions} as a system $G(x, f(x)) = 0$.
     \item Replace $f$ by a \emphc{neural network} $\N_\rho$ and form the \emphc{cost function} $\Loss(\rho) = \frac{1}{|D|}\sum_j \|G(x_j, \N_\rho(x_j))\|^2$.
-    \item Sample training states $D$, minimise $\Loss(\rho)$ by SGD.
+    \item Sample training states $D$, minimize $\Loss(\rho)$ by SGD.
 \end{enumerate}
 \end{block}
 
@@ -259,7 +259,7 @@ $z$ & $\eta(z)$ & $\delta(z)$ & $\pi$\\
 % --- II.2 Households I -------------------------------------------------
 \begin{frame}{II.2 Households --- Preferences and the Savings Technology}
 \small
-Agents supply their labour \emphc{inelastically} for a market wage $w_t$.
+Agents supply their labor \emphc{inelastically} for a market wage $w_t$.
 
 \vspace{0.6em}
 An agent \emphc{currently of age $s$} alive at $t$ maximises remaining time-separable discounted expected lifetime utility ($\beta < 1$):
@@ -310,7 +310,7 @@ There is a single representative firm with \emphc{Cobb--Douglas} production.
 TFP $\eta$ and depreciation $\delta$ depend on the exogenous shock $z$ alone (see II.1 table).
 
 \vspace{0.3em}
-Each period, \emphc{after the shock has realised}, the firm buys capital and hires labour to maximise profits, taking prices as given.
+Each period, \emphc{after the shock has realized}, the firm buys capital and hires labor to maximize profits, taking prices as given.
 
 \vspace{0.4em}
 The stochastic production function is
@@ -319,7 +319,7 @@ f(K, L, z) \;=\; \eta(z)\, K^\alpha\, L^{1-\alpha} \;+\; K\bigl(1-\delta(z)\bigr
 \]
 
 \vspace{0.4em}
-There are \emphc{competitive spot markets} for the consumption good, capital, and labour.
+There are \emphc{competitive spot markets} for the consumption good, capital, and labor.
 
 \vspace{0.5em}
 {\footnotesize In the analytic model $L_t = \sum_{s=1}^A \ell^s = 1$ (only age-1 works), so the firm problem reduces to $\max_{K \ge 0} \eta(z) K^\alpha - (r_t - (1-\delta(z))) K$.}
@@ -333,7 +333,7 @@ There are \emphc{competitive spot markets} for the consumption good, capital, an
 \vspace{-2pt}
 Given initial conditions $z_0,\,\{k_0^{\,s}\}_{s=1}^{A-1}$, a competitive equilibrium is a collection of choices for households $\bigl\{(c_t^{\,s},\,a_t^{\,s})_{s=1}^{A}\bigr\}_{t=0}^{\infty}$, for the representative firm $(K_t, L_t)_{t=0}^{\infty}$, and prices $(r_t, w_t)_{t=0}^{\infty}$, such that:
 \begin{enumerate}\itemsep1pt
-    \item Given $(r_t, w_t)_{t\ge 0}$, household choices maximise the lifetime utility (1) subject to the savings-to-capital identity (2), the borrowing limit (3), and the per-period budget (4):\\[1pt]
+    \item Given $(r_t, w_t)_{t\ge 0}$, household choices maximize the lifetime utility (1) subject to the savings-to-capital identity (2), the borrowing limit (3), and the per-period budget (4):\\[1pt]
     \mbox{}\hspace{1em}{\scriptsize $a_t^{\,s} = k_{t+1}^{\,s+1};\;\; a_t^{\,s} \ge \underline{a};\;\; c_t^{\,s} + a_t^{\,s} = r_t k_t^{\,s} + \ell^s w_t.$}
     \item Given $(r_t, w_t)$, the firm maximises profits:\\[1pt]
     \mbox{}\hspace{1em}$(K_t, L_t) \in \arg\max_{K, L \ge 0} f(K, L, z_t) - r_t K - w_t L$.
@@ -719,7 +719,7 @@ Open notebook 07.  Default \texttt{MODE = "classroom"} ($\sim 5$ min, 1\,000 ep)
 \begin{itemize}\itemsep1pt
     \item Agents live for $A = \emphc{56}$ periods (ages 25--80); one period = one year.
     \item CRRA utility $u(c) = c^{1-\gamma}/(1-\gamma)$ with $\gamma = 2$ (\emphc{not} log).
-    \item \emphc{Hump-shaped labour endowment} $\ell^s$ (Kotlikoff-style; right panel).
+    \item \emphc{Hump-shaped labor endowment} $\ell^s$ (Kotlikoff-style; right panel).
     \item \emphc{Persistent} Markov shocks on $(\eta,\delta)$ (not i.i.d.).
     \item \emphc{Two assets}: capital $k^s$ and bonds $b^s$.
     \item \emphc{Two constraints}: borrowing $k'^s \ge 0$ and collateral $k'^s + \kappa b'^s \ge 0$.
@@ -738,7 +738,7 @@ Open notebook 07.  Default \texttt{MODE = "classroom"} ($\sim 5$ min, 1\,000 ep)
     axis line style={uzhblue}, tick style={uzhblue},
     label style={font=\scriptsize}, ticklabel style={font=\tiny},
     title style={font=\scriptsize, uzhblue},
-    title={Stylised lifecycle labour (schematic)}
+    title={Stylised lifecycle labor (schematic)}
 ]
 \addplot[harvardcrimson, very thick, smooth] coordinates {
     (25,0.60) (28,0.75) (32,0.92) (36,1.10) (40,1.22)
@@ -835,9 +835,9 @@ Given initial conditions $z_0,\, \{k_0^{\,s}, b_0^{\,s}\}_{s=1}^{A-1}$, a compet
 a collection of choices $\bigl\{(c_t^s,\,k_t^{\,s+1},\,b_t^{\,s+1})_{s=1}^{A-1}\bigr\}_{t=0}^\infty$,
 firm demands $(K_t, L_t)_{t \ge 0}$, and prices $(r_t, w_t, q_t)_{t\ge 0}$, such that:
 \begin{enumerate}\itemsep1pt
-    \item Households maximise $(1')$ subject to $(2')$--$(4')$.
+    \item Households maximize $(1')$ subject to $(2')$--$(4')$.
     \item Firm maximises profits, same closed-form FOCs as Part II.
-    \item \emphc{All three markets clear} every period: capital, labour, \emphc{bonds}.
+    \item \emphc{All three markets clear} every period: capital, labor, \emphc{bonds}.
 \end{enumerate}
 \end{block}
 
@@ -1140,7 +1140,7 @@ Four distinct profiles, ordered as in the table above.  The exact magnitudes and
 \textbf{The agentic-programming toolkit (no lecture script chapter).}  We turn the workflow on its head and treat the model file, the loss, and the diagnostics as artefacts that an LLM-driven coding agent can author, refactor, and debug in conversation.  Concretely, you will:
 \begin{itemize}\itemsep1pt
     \item Use Claude Code / Cursor / Codex-style agents as pair programmers on a fresh DEQN model derived from the chapters of Days 2--4.
-    \item Practise the loop \emphc{specification $\to$ scaffold $\to$ run $\to$ diagnose $\to$ refactor}, with the agent doing the typing and you driving the economics.
+    \item Practice the loop \emphc{specification $\to$ scaffold $\to$ run $\to$ diagnose $\to$ refactor}, with the agent doing the typing and you driving the economics.
     \item Connect the slide-deck $\to$ notebook $\to$ figure $\to$ commit pipeline that the manuscript itself was built with.
 \end{itemize}
 
