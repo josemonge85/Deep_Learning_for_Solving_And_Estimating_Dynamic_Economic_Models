@@ -183,7 +183,7 @@ def main() -> None:
 
     # At-a-glance table for top-level README
     table_md = render_at_a_glance(course, lectures, toolkits)
-    table_path = REPO / "scripts" / "_at_a_glance.md"
+    table_path = REPO / "_dev" / "_at_a_glance.md"
     table_path.write_text(table_md, encoding="utf-8")
     print(f"\nWrote at-a-glance table fragment to {table_path.relative_to(REPO)}")
     print(f"({len(lectures)} lectures + {len(toolkits)} toolkits)")

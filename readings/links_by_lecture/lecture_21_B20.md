@@ -1,6 +1,22 @@
-# Readings — Lecture 21_B20
+# Readings — Lecture 21 (B20): Continuous-time HA numerics
 
-Links and bibliography entries for this lecture.
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-> *To be filled in by the maintainer. Use `readings/bibliography.bib` as the canonical reference and link to publisher/author/arXiv/DOI pages rather than redistributing PDFs. PDFs land in `readings/allowed_pdfs/` only after license clearance per `READINGS_AUDIT.csv`.*
+## Selected references
 
+### Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach
+
+- **Authors:** Achdou, Y., Han, J., Lasry, J.-M., Lions, P.-L., Moll, B.
+- **Year:** 2022
+- **Venue:** Review of Economic Studies, 89(1)
+- **Link:** <https://doi.org/10.1093/restud/rdab002>
+- **Notes:** Continuous-time heterogeneous agents (HJB + KFE). Reference for Lectures 20-21.
+
+## Bibliography
+
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

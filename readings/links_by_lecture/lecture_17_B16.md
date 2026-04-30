@@ -1,6 +1,30 @@
-# Readings — Lecture 17_B16
+# Readings — Lecture 17 (B16): Sequence-space DEQNs
 
-Links and bibliography entries for this lecture.
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-> *To be filled in by the maintainer. Use `readings/bibliography.bib` as the canonical reference and link to publisher/author/arXiv/DOI pages rather than redistributing PDFs. PDFs land in `readings/allowed_pdfs/` only after license clearance per `READINGS_AUDIT.csv`.*
+## Selected references
 
+### Using the Sequence-Space Jacobian to Solve and Estimate Heterogeneous-Agent Models
+
+- **Authors:** Auclert, A., Bardóczy, B., Rognlie, M., Straub, L.
+- **Year:** 2021
+- **Venue:** Econometrica, 89(5)
+- **Link:** <https://doi.org/10.3982/ECTA17434>
+- **Notes:** Sequence-space methods that motivate sequence-space DEQNs in Lecture 17.
+
+### Deep Learning in the Sequence Space
+
+- **Authors:** Azinovic, M., Yang, Y., Žemlička, J.
+- **Year:** 2025
+- **Venue:** Working paper
+- **Link:** <https://scholar.google.com/scholar?q=Azinovic+Yang+Zemlicka+sequence+space+deep+learning>
+- **Notes:** Sequence-space DEQNs. Working-paper version available on the authors' pages.
+
+## Bibliography
+
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

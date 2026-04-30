@@ -1,6 +1,13 @@
-# Readings — Lecture 25_B24
+# Readings — Lecture 25 (B24): GPs for dynamic programming
 
-Links and bibliography entries for this lecture.
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-> *To be filled in by the maintainer. Use `readings/bibliography.bib` as the canonical reference and link to publisher/author/arXiv/DOI pages rather than redistributing PDFs. PDFs land in `readings/allowed_pdfs/` only after license clearance per `READINGS_AUDIT.csv`.*
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
+## Bibliography
 
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
