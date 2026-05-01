@@ -1,8 +1,0 @@
-day_dir,day_name,chapter_label
-day1,Introduction to Deep Learning,Chapter 1
-day2,Deep Equilibrium Nets,Chapter 2
-day3,"IRBC, NAS, Loss Normalization","Chapters 3–4"
-day4,"Autodiff, Sequence Space, OLG, Young's Method","Chapters 5–6"
-day6,PINNs and Continuous-Time Heterogeneous Agents,"Chapters 7–8"
-day7,"Surrogates, Gaussian Processes, Structural Estimation","Chapters 9–10"
-day8,Climate Economics and Deep Uncertainty Quantification,Chapter 11

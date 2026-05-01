@@ -1,7 +1,6 @@
 # Course map
 
-A walk-through of the 17-lecture sequence and the 3-toolkit track. This
-file is generated from `course.yml`; regenerate after edits there.
+A walk-through of the 17-lecture sequence and the 3-toolkit track.
 
 > For the public README portal, see [`README.md`](README.md). For the
 > chapter-based companion text, see
@@ -10,7 +9,7 @@ file is generated from `course.yml`; regenerate after edits there.
 ## Conventions
 
 - **Lecture label** (`Lecture XX`): student-facing identifier, used everywhere outside the script.
-- **Block ID** (`BYY`): canonical lecture identifier in `course.yml`, the script's lecture index, and the validation scripts. Block IDs are stable across renumbering.
+- **Block ID** (`BYY`): canonical lecture identifier shared with the lecture script's lecture index. Block IDs are stable across renumbering.
 - **Toolkit blocks** (`T1`, `T2`, `T3`): cross-cutting research-workflow modules. Not part of the lecture script. Strongly recommended even for readers on the Core DEQN path.
 - **Compute tier**: `cpu-light` (laptop, minutes), `cpu-standard` (laptop, tens of minutes), `gpu-recommended` (a few minutes on GPU, longer on CPU; smoke mode runs on CPU), `gpu-required` (CPU does not finish in a reasonable time).
 - **Time budget**: `short` (≤ 1 h with hands-on), `standard` (~ 2-3 h), `long` (half-day or more).
@@ -129,10 +128,6 @@ T1 → T2 → T3
 
 ## Compute and reproducibility notes
 
-- Every notebook exposes `RUN_MODE = "smoke" | "teaching" | "production"` and `SEED = 0` at the top. Smoke mode bounds epochs, batch size, and sample size for CI and for low-spec laptops; teaching mode produces classroom-quality figures; production mode reproduces high-quality results and may require GPU.
-- Self-study readers can reproduce the environment via `requirements.txt` or `environment.yml`.
-- Notebooks are *not* re-executed during the public migration; outputs are preserved as-is from the live-course repository. The validation harness (`scripts/run_all_smoke_tests.py`) is the only place where notebooks are re-executed.
-
-## Maintenance
-
-`course.yml` is the canonical source of truth. After editing `course.yml`, regenerate this file. The validation suite checks that `course.yml`, `COURSE_MAP.md`, and `README.md` agree on lecture sequence and prerequisites.
+- Every notebook exposes `RUN_MODE = "smoke" | "teaching" | "production"` and `SEED = 0` at the top. Smoke mode bounds epochs, batch size, and sample size for low-spec laptops; teaching mode produces classroom-quality figures; production mode reproduces high-quality results and may require GPU.
+- Reproduce the environment via `requirements.txt` or `environment.yml`.
+- Notebook outputs are preserved as published; no re-execution is needed to read along.

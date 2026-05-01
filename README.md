@@ -202,7 +202,6 @@ and BoTorch (Lecture 13).
 .
 ├── README.md             ← you are here
 ├── COURSE_MAP.md         ← detailed map, learning paths, prerequisite diagram
-├── course.yml            ← machine-readable course manifest
 ├── lectures/             ← 17 lecture folders (lecture_XX_BYY_*)
 │   └── lecture_*/
 │       ├── README.md         summary, slides, code, prerequisites, readings
@@ -212,11 +211,7 @@ and BoTorch (Lecture 13).
 ├── toolkit/              ← Toolkits T1, T2, T3
 ├── lecture_script/       ← textbook-length companion script
 ├── readings/             ← per-lecture link guides + bibliography.bib
-├── src/dlef/             ← reusable teaching package
-├── assets/               ← hero figure, generated figures, attributions
-├── data/                 ← generated datasets
-├── scripts/              ← validation, build, and smoke-test scripts
-└── legacy/               ← historical (live-course) timetable
+└── assets/               ← hero figure, generated figures, attributions
 ```
 
 ## Glossary

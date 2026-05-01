@@ -1,3 +1,15 @@
+License
+=======
+
+This repository contains both source code and written course material;
+each is released under a different license, and third-party material
+keeps its upstream license. All three are listed below.
+
+----------------------------------------------------------------------
+
+1. Source code (notebooks, Python modules, scripts)
+---------------------------------------------------
+
 MIT License
 
 Copyright (c) 2026 Simon Scheidegger
@@ -20,13 +32,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-----------------------------------------------------------------------------
+----------------------------------------------------------------------
 
-This MIT license applies to the source code in this repository (notebooks,
-Python modules, and scripts).
+2. Course content (lecture script, slides, figures, written notes,
+   COURSE_MAP.md and per-lecture README.md files)
+------------------------------------------------------------------
 
-The lecture script, slide decks, figures, and other written/graphical
-course materials are released under the Creative Commons Zero (CC0 1.0
-Universal) Public Domain Dedication; see LICENSE-content.md.
+Released under the Creative Commons Zero (CC0 1.0 Universal) Public
+Domain Dedication. Full text:
+<https://creativecommons.org/publicdomain/zero/1.0/legalcode>
 
-Third-party materials retain their original licenses; see NOTICE.md.
+You are free to copy, modify, distribute, and build on this material,
+even commercially, without asking permission and without attribution.
+Attribution is welcome but not required. Suggested citation is in
+CITATION.cff.
+
+----------------------------------------------------------------------
+
+3. Third-party material
+-----------------------
+
+Third-party readings linked from readings/ remain under their
+publishers' or authors' licenses; see NOTICE.md for borrowed and
+adapted code.

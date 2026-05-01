@@ -53,9 +53,6 @@ checkpoints/
 wandb/
 
 # Course-specific
-readings/private_DO_NOT_COMMIT/
-lectures/**/readings/*.pdf
-!readings/allowed_pdfs/*.pdf
 codex_results/
 .codex/
 .claude/

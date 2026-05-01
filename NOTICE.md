@@ -1,26 +1,19 @@
 # Third-party notices
 
-This repository contains first-party material (CC0 1.0 / MIT, see `LICENSE`
-and `LICENSE-content.md`) and a small number of borrowed or adapted
-artifacts. This file records the latter so attribution and licensing
-remain auditable.
+This repository contains first-party material (CC0 1.0 / MIT, see `LICENSE`)
+and a small number of borrowed or adapted artifacts. This file records the
+latter so attribution and licensing remain auditable.
 
 ## Borrowed / adapted code
 
 | File | Origin | Notes |
 |---|---|---|
-| `lectures/lecture_17_B16_sequence_space_deqns/notebooks/extensions/lecture_17_B16_KrusellSmith_Tutorial_CPU.ipynb` | Upstream Krusell-Smith JAX tutorial | Adapted with `TUTORIAL_MODE` switch. Upstream header retained verbatim in the notebook. |
-
-Additional cases will be added here if PR 3 (notebook migration) discovers
-further adapted material.
+| `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb` | Upstream Krusell-Smith JAX tutorial | Adapted with a `TUTORIAL_MODE` switch. Upstream header retained verbatim in the notebook. |
 
 ## External readings
 
-Readings under `readings/` are linked or, where redistribution is cleared,
-mirrored under `readings/allowed_pdfs/`. Each reading's license is
-recorded in `READINGS_AUDIT.csv`. Uncleared readings are referenced via
-DOI or publisher link only — they are not redistributed in this
-repository.
+Readings under `readings/` are linked rather than redistributed.
+Uncleared readings are referenced via DOI or publisher link only.
 
 ## Externally-sourced figures
 
