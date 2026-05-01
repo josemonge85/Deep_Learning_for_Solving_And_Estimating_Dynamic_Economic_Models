@@ -1,7 +1,8 @@
 % ============================================================================
-% Lecture 21 (B20): Continuous-Time Heterogeneous Agents --- Numerics
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
+% Solving CT Heterogeneous Agent Models: PINNs and Deep Learning
+% University of Geneva
+% April 20--23 & May 4--7, 2026
+% Duration: 75 minutes
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -92,11 +93,12 @@
 \newcommand{\ubar}[1]{\underline{#1}}
 
 % ---------- Title ----------
-\title[Lecture 12 (B11)]{Lecture 12 (B11): Continuous-time heterogeneous agents, numerics}
+\title[Deep Learning -- Geneva 2026]%
+{Deep Learning for Economics and Finance}
 \subtitle{Finite-difference and PINN solvers for the HJB+KFE system}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 
@@ -1120,7 +1122,7 @@ Integrals are evaluated via Monte Carlo or quadrature.
 \vspace{0.2em}
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.9\columnwidth}{\centering\small
-Same mesh-free philosophy:\\
+Same philosophy as Day~5:\\
 \emphc{economic equations = loss function}\\
 \emphc{auto-diff = all derivatives}}}
 \end{center}
@@ -1280,7 +1282,7 @@ Advantages:
 \begin{itemize}\itemsep0pt
     \item Exact BC satisfaction
     \item No tuning of $\kappa$
-    \item Recall the PINN warm-up notebook
+    \item Recall Day~5, Notebook~02
 \end{itemize}
 \end{block}
 \end{columns}
@@ -1481,7 +1483,7 @@ Replace continuum by $N$ agents with states $\hat{\varphi}_t = \{(a_t^1, l_t^1),
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.7\textwidth}{\centering\small
 This is much smaller than discrete-time simulation methods\\
-(e.g., Young's method (Lecture 15) used $\sim 10{,}000$ agents).\\
+(e.g., Young's method from Day~4 used $\sim 10{,}000$ agents).\\
 Continuous-time formulation helps!}}
 \end{center}
 \end{frame}
@@ -1741,7 +1743,7 @@ Must sample from \emphc{economically relevant} regions.
 
 \vspace{0.05em}
 \footnotesize
-\textbf{Q\&A: Key differences from discrete time?}
+\textbf{Q\&A: Key differences from discrete time (Day 2--4)?}
 \begin{itemize}\itemsep0pt
     \item Derivatives replace expectations, so automatic differentiation is essential.
     \item Collocation and shape constraints replace simulation grids and false-time steps.
@@ -2061,11 +2063,11 @@ Low-dim accuracy & $\sim 10^{-6}$ & problem-dependent & reported $\sim 10^{-5}$ 
     current/.style={box, fill=harvardcrimson!15, draw=harvardcrimson},
     arrow/.style={-Stealth, thick}
 ]
-\node[box] (d2) at (0,3.5) {DEQNs (discrete)};
-\node[box] (d4) at (0,2.6) {Young's method (discrete)};
-\node[box] (d5) at (0,1.7) {PINNs (single PDE)};
-\node[current] (d6a) at (0,0.8) {PINNs (HJB+KFE)};
-\node[current] (d6b) at (0,-0.1) {EMINNs (master eq.)};
+\node[box] (d2) at (0,3.5) {Day 2: DEQNs (discrete)};
+\node[box] (d4) at (0,2.6) {Day 4: Young's (discrete)};
+\node[box] (d5) at (0,1.7) {Day 6 Blk 1: PINNs (single PDE)};
+\node[current] (d6a) at (0,0.8) {Day 6 Blk 2: PINNs (HJB+KFE)};
+\node[current] (d6b) at (0,-0.1) {Day 6 Blk 2: EMINNs (master eq.)};
 
 \draw[arrow] (d2) -- (d4);
 \draw[arrow] (d4) -- (d5);
@@ -2157,7 +2159,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 \begin{block}{PINN (Coupled PDEs)}
 \centering\small
 \vspace{0.1em}
-\emphc{Mesh-free} solution of HJB + KFE via auto-diff. Same mesh-free philosophy.
+\emphc{Mesh-free} solution of HJB + KFE via auto-diff. Same philosophy as Day~5.
 \vspace{0.1em}
 \end{block}
 
@@ -2183,14 +2185,14 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 
 \vspace{0.1em}
 \begin{center}
-\textbf{Next block:} Surrogate models \& Gaussian Processes.
+\textbf{Tomorrow}: Surrogate models \& Gaussian Processes (Day~7).
 \end{center}
 \end{frame}
 
 % --- Slide: Code Companion ---
 \begin{frame}{Code Companion: Run This Live}
 \footnotesize
-\textbf{Companion notebooks (self-contained, PyTorch):}
+\textbf{Day 6 companion notebooks (self-contained, PyTorch):}
 \begin{itemize}\itemsep2pt
     \item \textbf{NB 06} \textit{(self-study)}: \texttt{06\_PE\_Discrete\_HJB\_PINN.ipynb} --- 1D PE with discrete income: upwind FD + PINN
     \item \textbf{NB 07} \textit{(self-study)}: \texttt{07\_PE\_Diffusion\_HJB\_PINN.ipynb} --- 2D PE with OU earnings: 2D FD + PINN
@@ -2279,7 +2281,7 @@ IV & Results \& Outlook \\
 }
 
 \vspace{0.8cm}
-\textbf{Next block:}\\[6pt]
+\textbf{Tomorrow (Day 7):}\\[6pt]
 {\large Surrogate Models}\\
 {\large \& Gaussian Processes}\\[8pt]
 \end{center}

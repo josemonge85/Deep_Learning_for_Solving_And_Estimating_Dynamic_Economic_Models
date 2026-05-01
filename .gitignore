@@ -36,6 +36,9 @@ Thumbs.db
 *.run.xml
 *.synctex.gz
 *.toc
+*.nav
+*.snm
+*.vrb
 texput.log
 tracecheck.*
 !tracecheck.tex

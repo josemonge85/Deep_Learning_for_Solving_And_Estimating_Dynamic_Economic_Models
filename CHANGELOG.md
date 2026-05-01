@@ -39,7 +39,7 @@ self-paced, lecture-numbered, open-source course.
 - **Build helpers** (`scripts/build_script.sh`, `scripts/build_slides.sh`).
 - **Reusable teaching package skeleton** (`src/dlef/`).
 - **Licensing files**: MIT for code (`LICENSE`), CC0 1.0 Universal for
-  written content (`LICENSE-content.md`); `AUTHORS.md`, `CITATION.cff`,
+  written content (`LICENSE-content.md`); `CITATION.cff`,
   `NOTICE.md`.
 - **`CONTRIBUTING.md`**.
 

@@ -1,7 +1,7 @@
 % ============================================================================
-% Lecture 29 (B28): Deep Uncertainty Quantification and Policy
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
+% Constrained Optimal Carbon Tax in a Stochastic OLG-IAM
+% Deep Learning for Solving and Estimating Dynamic Models
+% Duration: ~75 minutes (~35 frames)
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -72,11 +72,12 @@
 \DeclareMathOperator{\Var}{Var}
 
 % ---------- Title ----------
-\title[Lecture 16 (B15)]{Lecture 16 (B15): Deep uncertainty quantification and Pareto-improving climate policy}
+\title[Deep Learning -- Geneva 2026]%
+{Deep Learning for Economics and Finance}
 \subtitle{Stochastic IAMs with DEQNs, GP surrogates, Sobol/Shapley, constrained Pareto-improving carbon-tax design}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -962,7 +963,7 @@ Final wrap-up: course synthesis, decision guide, and research frontier.
 The slides here build on the deterministic CDICE-DEQN solver developed in Lecture 08; the natural notebook to revisit and extend is:
 \vspace{0.2cm}
 \begin{itemize}
-    \item \texttt{lecture\_28\_B27\_03\_Stochastic\_DICE\_DEQN.ipynb} -- adds an AR(1) productivity shock to the Lecture-08 deterministic CDICE-DEQN, evaluates the Euler expectation with Gauss--Hermite quadrature, and produces the SCC fan charts that motivate today's UQ discussion (parameter, stochastic, and epistemic uncertainty).
+    \item \texttt{lectures/day8/code/03\_Stochastic\_DICE\_DEQN.ipynb} -- adds an AR(1) productivity shock to the Lecture-08 deterministic CDICE-DEQN, evaluates the Euler expectation with Gauss--Hermite quadrature, and produces the SCC fan charts that motivate today's UQ discussion (parameter, stochastic, and epistemic uncertainty).
 \end{itemize}
 \vspace{0.2cm}
 The full OLG-IAM with constrained Pareto-improving tax rules (K\"ubler, Scheidegger, Surbek 2025, arXiv:2507.01704) is implemented in production code that is not part of the classroom repository.  The paper is in the readings folder (\texttt{JPE\_Macro.pdf}); the classroom notebook focuses on the upstream stochastic CDICE-DEQN building block.
@@ -983,7 +984,7 @@ The full OLG-IAM with constrained Pareto-improving tax rules (K\"ubler, Scheideg
 \vspace{0.25cm}
 \textbf{File in this repository}
 \begin{itemize}
-    \item \textit{Constrained Optimal Carbon Tax Rules — JPE: Macro (forthcoming)}
+    \item \texttt{lectures/day8/readings/JPE\_Macro.pdf}
 \end{itemize}
 
 \vspace{0.3cm}

@@ -1,7 +1,8 @@
 % ============================================================================
-% Lecture 20 (B19): Continuous-Time Heterogeneous Agents --- Theory
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
+% Continuous-Time Heterogeneous Agent Models: Theory
+% University of Geneva
+% April 20--23 & May 4--7, 2026
+% Duration: 75 minutes
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -92,11 +93,12 @@
 \setlength{\parskip}{0pt}
 
 % ---------- Title ----------
-\title[Lecture 11 (B10)]{Lecture 11 (B10): Continuous-time heterogeneous agents, theory}
+\title[Deep Learning -- Geneva 2026]%
+{Deep Learning for Economics and Finance}
 \subtitle{HJB, Kolmogorov forward, Aiyagari in continuous time}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -135,14 +137,14 @@
     future/.style={daybox, fill=white, draw=uzhgreydark, dashed},
     arrow/.style={-Stealth, thick, uzhgreydark}
 ]
-\node[done] (d1) {DL Basics};
-\node[done, right=of d1] (d2) {DEQNs};
-\node[done, right=of d2] (d3) {IRBC, NAS};
-\node[done, right=of d3] (d4) {OLG, Young's};
-\node[done, right=of d4] (d5) {Agentic toolkit};
-\node[current, right=of d5] (d6) {\textbf{Now}\\PINNs + CT HA};
-\node[future, right=of d6] (d7) {Surrogates};
-\node[future, right=of d7] (d8) {Climate};
+\node[done] (d1) {Day 1\\DL Basics};
+\node[done, right=of d1] (d2) {Day 2\\DEQNs};
+\node[done, right=of d2] (d3) {Day 3\\IRBC, NAS};
+\node[done, right=of d3] (d4) {Day 4\\OLG, Young's};
+\node[done, right=of d4] (d5) {Day 5\\Agents};
+\node[current, right=of d5] (d6) {\textbf{Day 6}\\PINNs + CT HA};
+\node[future, right=of d6] (d7) {Day 7\\Surrogates};
+\node[future, right=of d7] (d8) {Day 8\\Climate};
 
 \draw[arrow] (d1) -- (d2);
 \draw[arrow] (d2) -- (d3);
@@ -231,7 +233,7 @@ The key insight: in continuous-time macro with heterogeneous agents, \emphc{equi
 \vspace{0.3em}
 \begin{alertblock}{\small Discrete $\to$ Continuous}
 \small
-Earlier discrete-time lectures (DEQNs, Young's method) used \emph{discrete time}.\\
+Day 4 (DEQNs, Young's method) used \emph{discrete time}.\\
 Today: \emph{continuous time} $\Rightarrow$ PDEs.
 \end{alertblock}
 \end{columns}
@@ -786,7 +788,7 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \end{itemize}
 
 \vspace{0.2em}
-{\small This is exactly what PINNs solve!}
+{\small This is exactly what PINNs solve (Day~5)!}
 \end{columns}
 \end{frame}
 
@@ -2099,17 +2101,18 @@ Optimal control $\Rightarrow$ HJB. Coupled with KFE via savings policy. Master e
 
 \vspace{0.2em}
 \begin{center}
-\colorbox{uzhgreylight}{\parbox{0.6\textwidth}{\centering\small
-The next lecture (L21) covers the numerical methods for solving these models.}}
+\colorbox{uzhgreylight}{\parbox{0.5\textwidth}{\centering\small
+\textbf{Coffee break!}\\
+Back at 10:45 for numerical methods.}}
 \end{center}
 \end{frame}
 
 % --- Slide: Theory-to-Code Bridge ---
-\begin{frame}{From Theory to Code (numerics notebook)}
+\begin{frame}{From Theory to Code (Day 6 Notebook)}
 \footnotesize
 \textbf{After this theory deck, implement directly in:}
 \begin{itemize}\itemsep2pt
-    \item \texttt{lecture\_21\_B20\_08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb}
+    \item \texttt{lectures/day6/code/08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb}
 \end{itemize}
 
 \vspace{0.2em}

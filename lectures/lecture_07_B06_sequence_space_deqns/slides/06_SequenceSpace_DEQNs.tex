@@ -1,9 +1,3 @@
-% ============================================================================
-% Lecture 17 (B16): Sequence-Space DEQNs
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
-% ============================================================================
-
 \documentclass[aspectratio=169,11pt]{beamer}
 
 % ---------- Theme and colors ----------
@@ -65,11 +59,12 @@
 \newcommand{\E}{\mathcal{E}}
 
 % ---------- Title ----------
-\title[Lecture 07 (B06)]{Lecture 07 (B06): Sequence-space DEQNs}
+\title[Deep Learning -- Geneva 2026]%
+{Deep Learning for Economics and Finance}
 \subtitle{Azinovic--Yang--Zemlicka: shock-history inputs for high-dimensional models}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 
@@ -129,7 +124,7 @@ The simplest setting in which the history-to-policy idea is visible. One represe
 
 \begin{block}{Notebooks for this lecture}
 \texttt{05\_SequenceSpace\_BrockMirman.ipynb} -- the warm-up that isolates the history-to-policy logic.\\
-\texttt{05b\_SequenceSpace\_IRBC.ipynb} -- bridge to the IRBC lecture in sequence space.
+\texttt{05b\_SequenceSpace\_IRBC.ipynb} -- bridge to the IRBC of Day~3 in sequence space.
 \end{block}
 
 \begin{block}{Heterogeneous-agent application -- self-study only}
@@ -302,7 +297,7 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 \small
 \begin{columns}[T]
 \column{0.48\textwidth}
-\begin{block}{State-space warm-up (autodiff DEQN notebooks)}
+\begin{block}{State-space warm-up (Day 4 nb 02--03)}
 \begin{itemize}\itemsep3pt
     \item \textbf{Input:} $(K_t, A_t)$ -- 2 floats.
     \item \textbf{Network output:} $C_t$ (or savings rate).

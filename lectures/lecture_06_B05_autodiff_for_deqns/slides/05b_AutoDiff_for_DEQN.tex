@@ -1,7 +1,8 @@
 % ============================================================================
-% Lecture 10 (B09): Automatic Differentiation for DEQNs
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
+% Automatic Differentiation for Deep Equilibrium Nets
+% University of Geneva -- Day 4 morning primer
+% April 20-23 & May 4-7, 2026
+% Duration: ~50 minutes
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -98,8 +99,8 @@
 \title[Lecture 06 (B05)]{Lecture 06 (B05): Automatic differentiation for DEQNs}
 \subtitle{From the Lagrangian primitive to two-tape Euler residuals}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 
@@ -112,7 +113,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize A primer to be used alongside the autodiff notebooks (\texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}, \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN})\\
+{\footnotesize A Day~4 morning primer, to be used alongside the Day~4 autodiff notebooks (\texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}, \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN})\\
 \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN} and \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN}.}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
@@ -183,7 +184,7 @@ One typo $\Rightarrow$ wrong solver, silently.
 \item \textbf{FOCs of dynamic problems.} Euler equation asks for $\partial u/\partial c_t$, $\partial V/\partial K_{t+1}$. Both are derivatives of things we already coded.
 \item \textbf{Envelope theorem.} $V'(K) = \partial \mathcal{L}/\partial K$ at the optimum, where $\mathcal{L}$ is the Lagrangian. Another derivative of something we already coded.
 \item \textbf{Neural-network training.} $\partial \mathrm{loss}/\partial \theta$ for \emph{millions} of parameters $\theta$. Can't do this by hand.
-\item \textbf{Sensitivities and uncertainty quantification.} $\partial (\text{policy})/\partial (\text{parameter})$ for robustness, comparative statics, and deep UQ (Lectures 27--29).
+\item \textbf{Sensitivities and uncertainty quantification.} $\partial (\text{policy})/\partial (\text{parameter})$ for robustness, comparative statics, and deep UQ (Day~8).
 \end{enumerate}
 \vspace{4pt}
 \begin{exampleblock}{Today's punchline}
@@ -192,7 +193,7 @@ One typo $\Rightarrow$ wrong solver, silently.
 \end{frame}
 
 \begin{frame}{Preview: the pen-and-paper tax, visualised}
-\footnotesize Notebook~01 (Brock--Mirman, the autodiff version is nb~02) needed \emph{two pages} of algebra before we could code the loss:
+\footnotesize Notebook~01 (Brock--Mirman, Day~2; the autodiff version is Day~4 nb~02) needed \emph{two pages} of algebra before we could code the loss:
 \begin{center}
 \begin{tikzpicture}[node distance=4mm]
 \node[draw, fill=red!10, rounded corners, minimum width=3.8cm, minimum height=0.9cm, font=\scriptsize, align=center] (a) {Write the Lagrangian};
@@ -650,7 +651,7 @@ grads = tape.gradient(y, [K, L])  # returns a list with both partials
 \end{frame}
 
 \begin{frame}[fragile]{Warm-up 3: capital adjustment cost (by hand is annoying)}
-\small Convex adjustment cost, from the IRBC model:
+\small Convex adjustment cost, from Day~3's IRBC model:
 \[
 \Gamma(K, K') \;=\; \frac{\kappa}{2}\, K \left(\frac{K'}{K} - 1\right)^2.
 \]
@@ -985,8 +986,8 @@ Trained policy vs $\alpha\beta z K^\alpha$ ($\delta\!=\!1$, $25^2$ grid) & max r
 \item \textbf{Multiple states.} $\Pi(K_t, z_t, K_{t+1})$. Same code: \texttt{tape.gradient(pi, K\_out)}.
 \item \textbf{Multiple controls.} Let $a = (K', L)$. AD returns gradient w.r.t.\ each in one call.
 \item \textbf{Heterogeneous agents.} $\Pi$ becomes a sum over $i$; gradient of a sum is a sum of gradients.
-\item \textbf{OLG} (Lecture 13). A separate $\Pi$ per age cohort; gradients stack.
-\item \textbf{Irreversibility constraints} (IRBC; Lecture 11). Fischer--Burmeister residuals sit alongside; the core Euler part still autodiffs.
+\item \textbf{OLG} (Day~4 main lecture). A separate $\Pi$ per age cohort; gradients stack.
+\item \textbf{Irreversibility constraints} (Day~3 IRBC). Fischer--Burmeister residuals sit alongside; the core Euler part still autodiffs.
 \end{itemize}
 \vspace{6pt}
 \begin{exampleblock}{Think of it this way}
@@ -1000,13 +1001,13 @@ Trained policy vs $\alpha\beta z K^\alpha$ ($\delta\!=\!1$, $25^2$ grid) & max r
 \begin{frame}[fragile]{Further example (self-study): IRBC under autodiff}
 \footnotesize
 \begin{block}{Notebook \texttt{04\_IRBC\_AutoDiff\_DEQN.ipynb}}
-The baseline IRBC model (multi-country, adjustment costs, irreversibility) re-solved using the same $\partial_2\Pi + \beta\,\mathbb{E}[\partial_1\Pi]$ template, scaled from one Brock--Mirman state to a multi-equation planner Lagrangian.
+The Day~3 baseline IRBC model (multi-country, adjustment costs, irreversibility) re-solved using the same $\partial_2\Pi + \beta\,\mathbb{E}[\partial_1\Pi]$ template, scaled from one Brock--Mirman state to a multi-equation planner Lagrangian.
 \end{block}
 \vspace{2pt}
 \begin{itemize}\itemsep2pt
 \item \textbf{One primitive per country.} \(\Pi^j(k_{\text{in}},\,k'_{\text{out}},\,z;\,\lambda,\mu^j)\) -- the planner Lagrangian. Hand-derived helpers \texttt{production\_k}, \texttt{mpk}, \texttt{adj\_cost\_k}, \texttt{adj\_cost\_kp} disappear: gone, replaced by \texttt{tape.gradient}.
 \item \textbf{What stays hand-coded.} The aggregate resource constraint (algebra) and Fischer--Burmeister (KKT complementarity for irreversibility) -- autodiff has nothing to add.
-\item \textbf{Cross-check 1.} Autodiff Euler residual versus the hand-derived residual (Lecture 11) on the same untrained network: \emphc{$\le 1.2\times 10^{-7}$} (float32 epsilon).
+\item \textbf{Cross-check 1.} Autodiff Euler residual versus the Day~3 hand-derived residual on the same untrained network: \emphc{$\le 1.2\times 10^{-7}$} (float32 epsilon).
 \item \textbf{Side-by-side experiment.} Exogenous (Approach A) vs simulation-based (Approach B) sampling under the autodiff loss, identical architecture and budget, no ReLoBRaLo.
 \end{itemize}
 \vspace{2pt}
@@ -1055,7 +1056,7 @@ print(tape.gradient(y, x))   # tf: 0.0  ;  torch: 0.0 as well
 \textbf{Fixes}
 \begin{itemize}\itemsep2pt
 \item \emphc{Smooth the kink:} softplus for ReLU, $\sqrt{x^2 + \epsilon^2}$ for $|x|$, log-sum-exp for $\max$.
-\item \emphc{Fischer--Burmeister} for KKT complementarity (Lecture 11 IRBC).
+\item \emphc{Fischer--Burmeister} for KKT complementarity (Day~3 IRBC).
 \item Add \textbf{slight noise} to inputs during training.
 \end{itemize}
 \end{columns}
@@ -1190,12 +1191,12 @@ Envelope vs total grad & wrong loss off the optimum & differentiate w.r.t.\ the 
 
 \begin{frame}[fragile]{Where to go next}
 \footnotesize
-\begin{block}{Run the notebooks}
+\begin{block}{Run the notebooks (Day 4)}
 \begin{itemize}\itemsep1pt
 \item \texttt{01\_AutoDiff\_Analytical\_Examples}: warm-ups + 2-D gradient fields from \S 4.
 \item \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}: deterministic Brock--Mirman.
 \item \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN}: stochastic Brock--Mirman + Gauss--Hermite.
-\item \texttt{04\_IRBC\_AutoDiff\_DEQN} (\emph{further example, self-study}): IRBC under the autodiff template -- multi-country planner Lagrangian, machine-precision cross-check vs Lecture 11 nb 01.
+\item \texttt{04\_IRBC\_AutoDiff\_DEQN} (\emph{further example, self-study}): IRBC under the autodiff template -- multi-country planner Lagrangian, machine-precision cross-check vs Day~3 nb 01.
 \end{itemize}
 All include cross-checks vs hand-derived loss and vs analytical solutions.
 \end{block}

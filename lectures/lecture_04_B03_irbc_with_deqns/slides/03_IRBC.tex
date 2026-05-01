@@ -1,7 +1,8 @@
 % ============================================================================
-% Lecture 11 (B10): IRBC with DEQNs
-% Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-% Course author: Simon Scheidegger
+% Solving Nonlinear DSGE Models with DEQNs: The IRBC Model
+% University of Geneva
+% April 20--23 & May 4--7, 2026
+% Duration: 60 minutes
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -93,11 +94,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Lecture 04 (B03)]{Lecture 04 (B03): IRBC with DEQNs}
+\title[Deep Learning -- Geneva 2026]%
+{Deep Learning for Economics and Finance}
 \subtitle{Solving nonlinear dynamic stochastic models in 4 to 100+ dimensions}
 \author{Simon Scheidegger}
-\institute{HEC, University of Lausanne}
-\date{}
+\institute[HEC Lausanne]{HEC, University of Lausanne}
+\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -141,7 +143,7 @@ Brumm, Krause, Schaab \& Scheidegger (2022), ``Sparse Grids for Dynamic Economic
 
 % --- Slide 3: Roadmap ---
 \begin{frame}{Roadmap of This Lecture}
-\textbf{Two parts}, with NAS / Loss Normalization (Lecture 12) recommended in between.
+\textbf{Scheduled across two slots} (total $\approx 95$ min, split by NAS / Loss Normalization at 10:30--11:10).
 
 \vspace{0.4em}
 \begin{columns}[T]
@@ -157,7 +159,7 @@ Brumm, Krause, Schaab \& Scheidegger (2022), ``Sparse Grids for Dynamic Economic
 \begin{itemize}
     \item \textbf{Part II.} DEQN formulation: states, architecture, loss, Gauss--Hermite, training algorithm
     \item \textbf{Part III.} Implementation: Keras code, convergence, policy functions, validation
-    \item Bridge to the production-code DEQN library (Lectures 13--17)
+    \item Bridge to the production-code DEQN library (Day 4)
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -1412,13 +1414,14 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \end{columns}
 \end{frame}
 
-\begin{frame}{Bridge to autodiff, sequence-space, and OLG lectures}
+% --- Slide 48: Bridge to Day 4 ---
+\begin{frame}{Bridge to Day 4: AutoDiff, Sequence Space, OLG}
 \textbf{What we leave with today.}  An IRBC DEQN that converges with NAS-tuned width and ReLoBRaLo-balanced loss components: the same recipe scales from $N=2$ to $N=10$ countries with no architectural change.
 
 \vspace{0.4em}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{In the autodiff and OLG lectures.}
+\textbf{Day 4, morning (in class).}
 \begin{itemize}
     \item Reverse-mode automatic differentiation \emph{inside} the equilibrium loss (forward/reverse modes, JVP/VJP, AD pitfalls).
     \item \emph{Sequence-space} DEQNs: collapsing the recursion into a finite-horizon DAG (Brock--Mirman warm-up, then IRBC).
@@ -1426,7 +1429,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Self-study extensions.}
+\textbf{Day 4, self-study.}
 \begin{itemize}
     \item Heterogeneous-agent solvers via Young's method (continuum approximated as a histogram).
     \item Continuum-of-agents DEQN.
@@ -1453,7 +1456,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 \column{0.45\textwidth}
 \begin{center}
-\textbf{Next up:}\\[6pt]
+\textbf{Next up (Day 4):}\\[6pt]
 {\large AutoDiff $\to$ Sequence Space $\to$ OLG\\[2pt]
 (Heterogeneous Agents = self-study)}\\[12pt]
 \end{center}
