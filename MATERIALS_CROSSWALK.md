@@ -233,9 +233,9 @@ Scope notes:
 
 | Source | Destination | Status |
 |---|---|---|
-| `tools/normalize_headers.py` | `scripts/normalize_headers.py` | migrated (seed for `validate_headers.py`) |
-| `tools/notebook_attribution.csv` | `scripts/notebook_attribution.csv` | migrated (reference) |
-| `tools/notebook_chapter_map.csv` | `scripts/notebook_chapter_map.csv` | migrated (reference) |
+| `tools/normalize_headers.py` | `scripts/migration/normalize_headers.py` | migrated (seed for `validate_headers.py`) |
+| `tools/notebook_attribution.csv` | `scripts/migration/notebook_attribution.csv` | migrated (reference) |
+| `tools/notebook_chapter_map.csv` | `scripts/migration/notebook_chapter_map.csv` | migrated (reference) |
 
 ## 6. Readings (link-only by default)
 
