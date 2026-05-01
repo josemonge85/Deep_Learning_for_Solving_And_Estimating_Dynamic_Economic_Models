@@ -1,50 +1,35 @@
 #!/usr/bin/env python3
-"""Regenerate per-lecture README.md and the top-level at-a-glance table
-from course.yml so every entry is a working Markdown hyperlink.
-"""
+"""Regenerate per-lecture README.md from course.yml after the
+30-lecture-to-17-lecture re-coarsening."""
 from __future__ import annotations
 from pathlib import Path
-import re
-import sys
 import yaml
 
-REPO = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[2]
 
 
-# Per-lecture learning-goal paragraphs. Keyed by block ID (B00..B29, T1, T2).
+# Per-lecture learning-goal paragraphs. Keyed by NEW block ID (B00..B16, T1..T3).
 LEARNING_GOALS: dict[str, str] = {
     "B00": "Get the local environment running, locate every part of the course (script, slides, notebooks, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.",
-    "B01": "Articulate why neural networks are useful for solving and estimating dynamic stochastic models — what they buy you over projection, perturbation, value-function iteration, and other classical methods — and connect the bias-variance trade-off to function-approximation choices in economics.",
-    "B02": "Understand how neural networks are trained: SGD and its variants, backpropagation, the role of depth and width, and how to monitor training in practice. By the end you can implement SGD by hand, build a small MLP in both TensorFlow and PyTorch, and instrument a training run with TensorBoard.",
-    "B03": "Reason about generalization and inductive bias in neural networks: the double-descent phenomenon, the role of architecture in handling sequences, and the relative strengths of MLPs, LSTMs, and Transformers on time-series-like economic data (Edgeworth cycles).",
-    "B04": "Choose function-approximation architectures and loss functions appropriate to a given economic problem. Use the Genz family of test integrands to compare loss choices on a controlled benchmark with known optima.",
-    "B05": "State the Deep Equilibrium Net (DEQN) idea precisely: a policy network whose loss is the squared norm of equilibrium residuals, trained on simulated state distributions. Recognize when DEQNs are the right tool relative to projection, value-function iteration, and perturbation.",
-    "B06": "Train a DEQN on the deterministic Brock-Mirman growth model and verify the trained policy against the closed-form solution. Diagnose convergence behavior and tune the basic ingredients (sampling distribution, residual normalization, training schedule).",
-    "B07": "Extend the Brock-Mirman DEQN to stochastic productivity. Master the role of quadrature for conditional expectations: choose between Gauss-Hermite, Monte Carlo, and sparse alternatives, and compare their accuracy and per-step cost.",
-    "B08": "Handle inequality constraints in DEQN training: penalty methods, Fischer-Burmeister complementarity, and residual-kernel weighting. Build intuition for which loss-balancing approach helps when training stalls because of constraint violations.",
-    "B09": "Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian primitive analytically and recover its gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation. Cross-check the autodiff residual against a hand-derived residual to machine precision.",
-    "B10": "Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.",
-    "B11": "Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch in pure Python, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing.",
-    "B12": "Solve an analytic OLG (overlapping-generations) model with DEQNs and verify lifecycle savings against the closed form. Understand how cohort structure changes the residual operator and the training loss.",
-    "B13": "Scale OLG-DEQN to the standard 56-period benchmark with borrowing constraints. Combine Fischer-Burmeister complementarity with cohort-stacked Lagrangians and read off the steady state.",
-    "B14": "Implement Young's (2010) histogram method for stationary distributions in heterogeneous-agent models, iterate it on Aiyagari to convergence, and read the resulting wealth distribution and aggregates.",
-    "B15": "Solve continuum-of-agents models with a DEQN and compare the result, side by side, with the Young-method solution from the previous lecture. Diagnose when each method is preferable.",
-    "B16": "Train sequence-space DEQNs that use a long shock history (~80 steps) instead of the current-state vector as input. Reproduce the Brock-Mirman warm-up and the Krusell-Smith benchmark in sequence space, and understand why the sequence-space template generalizes to multi-equation systems with multiple shock channels.",
-    "B17": "Build PINNs (physics-informed neural networks) that solve ODEs and PDEs by minimizing the PDE residual on collocation points. Distinguish soft and hard boundary-condition parametrizations and choose between them. Solve a 2-D Poisson PDE end-to-end.",
-    "B18": "Apply PINNs to economic PDEs: solve the cake-eating HJB with a hard-BC trial solution, and price a European call option via a Black-Scholes PINN. Read off the value function, optimal consumption, and option delta from the trained network.",
-    "B19": "State the continuous-time heterogeneous-agent system (HJB + Kolmogorov-forward) and connect each operator to its discrete-time analog. Understand the role of Ito calculus, ergodicity, and the master equation in the modern continuous-time HA literature.",
-    "B20": "Solve continuous-time Aiyagari with two methods — a finite-difference scheme on a state grid and a PINN — and compare the resulting consumption policies and stationary distributions. Build a PINN for the coupled HJB + KFE system from scratch in the exercise notebook.",
-    "B21": "Build a deep surrogate for an expensive simulator on a controlled test problem and validate it out-of-sample. Develop intuition for when surrogates pay for themselves over direct simulation.",
-    "B22": "Fit Gaussian-process regressors and use Bayesian active learning (BAL) to choose new query points that reduce predictive uncertainty fastest. Quantify the resulting uncertainty reduction relative to passive sampling.",
-    "B23": "Scale Gaussian processes to higher-dimensional inputs using active subspaces (linear and nonlinear) and deep kernels. Compare reconstruction error on a 10-D test function across linear AS, nonlinear AS, and deep-kernel parametrizations.",
-    "B24": "Run Gaussian-process value-function iteration: combine GP function approximation with active learning inside the VFI loop. Diagnose stability and the trade-off between training-set size and per-iteration cost.",
-    "B25": "Estimate structural parameters by simulated method of moments (SMM) on top of a deep surrogate. Run both single-parameter (rho) and joint (beta, rho) Brock-Mirman estimations and report identification diagnostics.",
-    "B26": "Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario. Read off the social cost of carbon and connect the IAM building blocks to the underlying climate science.",
-    "B27": "Solve deterministic CDICE with a DEQN and verify against the production-code reference solution. Extend to stochastic CDICE with AR(1) productivity shocks using Gauss-Hermite quadrature for conditional expectations.",
-    "B28": "Run a deep-uncertainty-quantification analysis on a stochastic IAM. Use the UQ output to identify constrained Pareto-improving carbon-tax policies and articulate which parameters drive the policy recommendation.",
-    "B29": "Synthesize the course: when is DEQN the right choice, when do you reach for PINNs, when does a surrogate-plus-GP combination win? Map each method to its sweet-spot problem class and articulate the trade-offs.",
+    "B01": "Build the working knowledge of deep learning that the rest of the course assumes: classical ML and the bias-variance trade-off; SGD and its variants; depth, width, and double descent; sequence models from MLPs through LSTMs to small Transformers, applied to economic time-series patterns. By the end you have built and trained models in both TensorFlow and PyTorch, and you can read the rest of the course's notebooks fluently.",
+    "B02": "State the Deep Equilibrium Net (DEQN) idea precisely, train deterministic and stochastic Brock-Mirman DEQNs, and verify them against closed-form solutions. Handle constraints with Fischer-Burmeister complementarity, choose conditional-expectation quadrature deliberately, and compare six loss kernels (MSE, MAE, Huber, quantile, CVaR, log-cosh) on the same problem.",
+    "B03": "Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.",
+    "B04": "Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch in pure Python, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.",
+    "B05": "Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian primitive analytically and recover its gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation. Cross-check the autodiff residual against a hand-derived residual to machine precision.",
+    "B06": "Train sequence-space DEQNs that use a long shock history (~80 steps) instead of the current-state vector as input. Reproduce the Brock-Mirman warm-up and the Krusell-Smith benchmark in sequence space, and understand why the sequence-space template generalizes to multi-equation systems with multiple shock channels.",
+    "B07": "Solve OLG models with DEQNs at two scales: an analytic small OLG with a closed-form check, and the standard 56-period benchmark with borrowing constraints handled via Fischer-Burmeister complementarity. Read off lifecycle savings, aggregate dynamics, and equilibrium residuals across cohorts.",
+    "B08": "Solve heterogeneous-agent models with two complementary methods: Young's (2010) histogram for the stationary distribution on Aiyagari, and a continuum-of-agents DEQN. Run both and diagnose when each is preferable. The Krusell-Smith deep-learning extension is provided as further reading.",
+    "B09": "Build PINNs (physics-informed neural networks) that solve ODEs and economic PDEs by minimizing the PDE residual on collocation points. Distinguish soft and hard boundary-condition parametrizations, solve a 2-D Poisson PDE, then apply the same template to the cake-eating HJB and to Black-Scholes option pricing.",
+    "B10": "State the continuous-time heterogeneous-agent system (HJB + Kolmogorov-forward) and connect each operator to its discrete-time analog. Understand the role of Ito calculus, ergodicity, and the master equation in the modern continuous-time HA literature.",
+    "B11": "Solve continuous-time Aiyagari with two methods, a finite-difference scheme on a state grid and a PINN, then compare the resulting consumption policies and stationary distributions. Build a PINN for the coupled HJB + KFE system from scratch in the exercise notebook.",
+    "B12": "Build deep surrogate models for expensive simulators, fit Gaussian-process regressors with Bayesian active learning, scale GPs to higher dimensions via active subspaces (linear and nonlinear) and deep kernels, and run GP value-function iteration. By the end you can pick a surrogate or a GP confidently for a new estimation, calibration, or policy-evaluation problem.",
+    "B13": "Estimate structural parameters by simulated method of moments (SMM) on top of a deep surrogate. Run both single-parameter (rho) and joint (beta, rho) Brock-Mirman estimations, and report identification diagnostics.",
+    "B14": "Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario, then solve deterministic CDICE with a DEQN and verify against the production-code reference. Extend to stochastic CDICE with AR(1) productivity shocks using Gauss-Hermite quadrature for conditional expectations.",
+    "B15": "Run a deep-uncertainty-quantification analysis on a stochastic IAM and use the UQ output to design constrained Pareto-improving carbon-tax policies, tax paths that, for every realisation of the deep uncertainty, leave no agent worse off than the business-as-usual baseline while strictly improving welfare for at least one. Articulate which parameters drive the policy recommendation.",
+    "B16": "Synthesize the course: when is DEQN the right choice, when do you reach for PINNs, when does a surrogate-plus-GP combination win? Map each method to its sweet-spot problem class and articulate the trade-offs.",
     "T1": "Develop a working agentic research-coding workflow: orient yourself in an unfamiliar codebase with an AI partner, structure prompts that produce useful (not generic) work, and complete the first set of workshop exercises end-to-end.",
     "T2": "Author the operational furniture that makes agentic research-coding sustainable for real projects: a project-memory `CLAUDE.md`, custom skills (e.g. an econometrics or backtest-validation skill), subagents for review and verification, and hooks that automate routine checks.",
+    "T3": "Work through the agentic-programming exercise handout that accompanies T1 and T2, both the workshop set and the self-study extensions, and consolidate the techniques into a personal research-coding playbook.",
 }
 
 
@@ -53,29 +38,16 @@ def script_ref(entries: list[dict]) -> str:
     return ", ".join(parts) if parts else "—"
 
 
-def list_links(prefix: str, items: list[str]) -> str:
+def list_links(items: list[str]) -> str:
     if not items:
-        return "_(none in this PR)_"
-    out = []
-    for rel in items:
-        name = Path(rel).name
-        out.append(f"- [`{name}`]({rel})")
-    return "\n".join(out)
+        return "_(none)_"
+    return "\n".join(f"- [`{Path(rel).name}`]({rel})" for rel in items)
 
 
-def compute_compute(lec: dict) -> str:
-    return lec.get("compute", "cpu-light")
-
-
-def compute_time(lec: dict) -> str:
-    return lec.get("time", "standard")
-
-
-def render_lecture_readme(lec: dict, prereq_titles: dict[str, str]) -> str:
+def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
     num = f"{lec['lecture']:02d}"
     block = lec["block"]
     title = lec["title"]
-    folder = lec["folder"]
 
     slides = lec.get("slides") or []
     nb = lec.get("notebooks") or {}
@@ -86,12 +58,25 @@ def render_lecture_readme(lec: dict, prereq_titles: dict[str, str]) -> str:
 
     if lec["prereqs"]:
         prereq_md = ", ".join(
-            f"[Lecture {prereq_titles[p][0]} ({p})](../{prereq_titles[p][1]}/README.md) — {prereq_titles[p][2]}"
-            for p in lec["prereqs"]
-            if p in prereq_titles
+            f"[Lecture {lec_index[p]['lecture']:02d} ({p})](../{Path(lec_index[p]['folder']).name}/README.md), {lec_index[p]['title']}"
+            for p in lec["prereqs"] if p in lec_index
         )
     else:
-        prereq_md = "_(none — start of course)_"
+        prereq_md = "_(none, start of course)_"
+
+    # Prev / next nav: walk lectures in `lecture` order
+    sorted_lecs = sorted(lec_index.values(), key=lambda x: x["lecture"])
+    prev_md = "_(this is the first lecture)_"
+    next_md = "_(this is the last lecture)_"
+    for i, l in enumerate(sorted_lecs):
+        if l["block"] == block:
+            if i > 0:
+                pl = sorted_lecs[i - 1]
+                prev_md = f"[Lecture {pl['lecture']:02d} ({pl['block']}), {pl['title']}](../{Path(pl['folder']).name}/README.md)"
+            if i < len(sorted_lecs) - 1:
+                nl = sorted_lecs[i + 1]
+                next_md = f"[Lecture {nl['lecture']:02d} ({nl['block']}), {nl['title']}](../{Path(nl['folder']).name}/README.md)"
+            break
 
     script_md = script_ref(lec.get("script") or [])
     learning_goal = LEARNING_GOALS.get(block, "_Learning goal pending._")
@@ -100,7 +85,7 @@ def render_lecture_readme(lec: dict, prereq_titles: dict[str, str]) -> str:
 
 > **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
 > **Course author:** Simon Scheidegger
-> **Compute tier:** `{compute_compute(lec)}` &nbsp;·&nbsp; **Time budget:** `{compute_time(lec)}`
+> **Compute tier:** `{lec.get('compute', 'cpu-light')}` &nbsp;·&nbsp; **Time budget:** `{lec.get('time', 'standard')}`
 
 ## Learning goal
 
@@ -118,30 +103,30 @@ def render_lecture_readme(lec: dict, prereq_titles: dict[str, str]) -> str:
 ## Script reference
 
 - {script_md}
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — companion script
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
 
 ## Slides
 
-{list_links(folder, slides)}
+{list_links(slides)}
 
 ## Notebooks
 
 ### Core
 
-{list_links(folder, core)}
+{list_links(core)}
 
 ### Exercises
 
-{list_links(folder, exercises)}
+{list_links(exercises)}
 
 ### Solutions
 
-{list_links(folder, solutions)}
+{list_links(solutions)}
 
 ### Extensions
 
-{list_links(folder, extensions)}
+{list_links(extensions)}
 
 ## Checkpoint
 
@@ -154,49 +139,16 @@ def render_lecture_readme(lec: dict, prereq_titles: dict[str, str]) -> str:
 
 ## Navigation
 
+- Previous: {prev_md}
+- Next: {next_md}
 - [`COURSE_MAP.md`](../../COURSE_MAP.md)
 - [`README.md`](../../README.md)
 
 ## Copyright and attribution
 
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written / graphical content is CC0 1.0 Universal.
+- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
 - Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
 """
-
-
-def render_at_a_glance(course: dict, lectures: list[dict], toolkits: list[dict]) -> str:
-    """Markdown table fragment with linked lecture rows."""
-    lines = [
-        "| # | Block | Title | Compute | Time |",
-        "|---:|---|---|---|---|",
-    ]
-    insert_after_T1 = "B04"
-    insert_after_T2 = "B11"
-    seen_T1 = False
-    seen_T2 = False
-    for lec in lectures:
-        num = f"{lec['lecture']:02d}"
-        block = lec["block"]
-        title = lec["title"]
-        folder = lec["folder"]
-        compute = lec.get("compute", "")
-        tt = lec.get("time", "")
-        lines.append(
-            f"| [{num}]({folder}/README.md) | {block} | [{title}]({folder}/README.md) | `{compute}` | `{tt}` |"
-        )
-        if block == insert_after_T1 and not seen_T1:
-            tk = next(t for t in toolkits if t["block"] == "T1")
-            lines.append(
-                f"| **T1** | **T1** | **[Toolkit: {tk['title']}]({tk['folder']}/README.md)** | `{tk['compute']}` | `{tk['time']}` |"
-            )
-            seen_T1 = True
-        if block == insert_after_T2 and not seen_T2:
-            tk = next(t for t in toolkits if t["block"] == "T2")
-            lines.append(
-                f"| **T2** | **T2** | **[Toolkit: {tk['title']}]({tk['folder']}/README.md)** | `{tk['compute']}` | `{tk['time']}` |"
-            )
-            seen_T2 = True
-    return "\n".join(lines)
 
 
 def main() -> None:
@@ -204,27 +156,15 @@ def main() -> None:
         course = yaml.safe_load(f)
 
     lectures: list[dict] = course["lectures"]
-    toolkits: list[dict] = course["toolkits"]
+    lec_index = {lec["block"]: lec for lec in lectures}
 
-    # Build prereq_titles lookup: block -> (num_str, folder, title)
-    prereq_titles = {
-        lec["block"]: (f"{lec['lecture']:02d}", Path(lec["folder"]).name, lec["title"])
-        for lec in lectures
-    }
-
-    # Per-lecture READMEs
     for lec in lectures:
-        out = render_lecture_readme(lec, prereq_titles)
+        out = render_lecture_readme(lec, lec_index)
         path = REPO / lec["folder"] / "README.md"
         path.write_text(out, encoding="utf-8")
-        print(f"  wrote {path.relative_to(REPO)}")
+        print(f"wrote {path.relative_to(REPO)}")
 
-    # At-a-glance table for top-level README
-    table_md = render_at_a_glance(course, lectures, toolkits)
-    table_path = REPO / "_dev" / "_at_a_glance.md"
-    table_path.write_text(table_md, encoding="utf-8")
-    print(f"\nWrote at-a-glance table fragment to {table_path.relative_to(REPO)}")
-    print(f"({len(lectures)} lectures + {len(toolkits)} toolkits)")
+    print(f"\n{len(lectures)} lectures regenerated.")
 
 
 if __name__ == "__main__":

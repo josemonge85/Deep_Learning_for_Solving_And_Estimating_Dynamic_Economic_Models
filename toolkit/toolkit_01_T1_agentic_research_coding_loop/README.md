@@ -28,9 +28,9 @@ Develop a working agentic research-coding workflow: orient yourself in an unfami
 
 ## Navigation
 
-- **Suggested predecessor:** [Lecture 05 (B04): Function approximation and loss design](../../lectures/lecture_05_B04_function_approximation_loss_design/README.md)
-- **Suggested successor:** [Lecture 06 (B05): Deep Equilibrium Nets - the central idea](../../lectures/lecture_06_B05_deqn_central_idea/README.md)
-- **Companion module:** [Toolkit 02 (T2): Project memory, agents, and hooks](../toolkit_02_T2_project_memory_agents_hooks/README.md)
+- **Suggested predecessor:** [Lecture 05 (B04): Architecture search and loss balancing](../../lectures/lecture_05_B04_nas_loss_normalization/README.md)
+- **Suggested successor:** [Lecture 06 (B05): Automatic differentiation for DEQNs](../../lectures/lecture_06_B05_autodiff_for_deqns/README.md)
+- **Companion modules:** [Toolkit 02 (T2)](../toolkit_02_T2_project_memory_agents_hooks/README.md), [Toolkit 03 (T3)](../toolkit_03_T3_agentic_programming_exercises/README.md)
 - [Course map](../../COURSE_MAP.md)
 - [Repository home](../../README.md)
 

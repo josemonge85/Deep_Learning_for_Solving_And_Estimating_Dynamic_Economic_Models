@@ -1,17 +1,56 @@
-# Readings — Lecture 13 (B12): OLG models with DEQNs
+# Readings — Lecture 22 (B21): Deep surrogate models
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-## Selected references
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
+## Bibliography
 
-### Deep Learning for Solving Dynamic Economic Models
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
 
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
+## Companion lecture script
 
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
+
+---
+
+# Readings — Lecture 23 (B22): Gaussian processes and Bayesian active learning
+
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
+## Bibliography
+
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
+
+---
+
+# Readings — Lecture 24 (B23): Scaling GPs — active subspaces and deep kernels
+
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
+## Bibliography
+
+All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
+
+---
+
+# Readings — Lecture 25 (B24): GPs for dynamic programming
+
+Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).

@@ -1,16 +1,16 @@
-# Readings — Lecture 12 (B11): Architecture search and loss balancing
+# Readings — Lecture 21 (B20): Continuous-time HA numerics
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
 ## Selected references
 
-### Neural Architecture Search: A Survey
+### Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach
 
-- **Authors:** Elsken, T., Metzen, J. H., Hutter, F.
-- **Year:** 2019
-- **Venue:** Journal of Machine Learning Research, 20(55):1-21
-- **Link:** <https://www.jmlr.org/papers/v20/18-598.html>
-- **Notes:** Open-access survey covering search-space, search-strategy, and performance-estimation choices.
+- **Authors:** Achdou, Y., Han, J., Lasry, J.-M., Lions, P.-L., Moll, B.
+- **Year:** 2022
+- **Venue:** Review of Economic Studies, 89(1)
+- **Link:** <https://doi.org/10.1093/restud/rdab002>
+- **Notes:** Continuous-time heterogeneous agents (HJB + KFE). Reference for Lectures 20-21.
 
 ## Bibliography
 

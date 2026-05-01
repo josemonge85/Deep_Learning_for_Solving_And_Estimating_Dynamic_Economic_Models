@@ -1,16 +1,24 @@
-# Readings — Lecture 07 (B06): Brock-Mirman I — deterministic DEQN
+# Readings — Lecture 17 (B16): Sequence-space DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
 ## Selected references
 
-### Deep Equilibrium Nets
+### Using the Sequence-Space Jacobian to Solve and Estimate Heterogeneous-Agent Models
 
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
-- **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
+- **Authors:** Auclert, A., Bardóczy, B., Rognlie, M., Straub, L.
+- **Year:** 2021
+- **Venue:** Econometrica, 89(5)
+- **Link:** <https://doi.org/10.3982/ECTA17434>
+- **Notes:** Sequence-space methods that motivate sequence-space DEQNs in Lecture 17.
+
+### Deep Learning in the Sequence Space
+
+- **Authors:** Azinovic, M., Yang, Y., Žemlička, J.
+- **Year:** 2025
+- **Venue:** Working paper
+- **Link:** <https://scholar.google.com/scholar?q=Azinovic+Yang+Zemlicka+sequence+space+deep+learning>
+- **Notes:** Sequence-space DEQNs. Working-paper version available on the authors' pages.
 
 ## Bibliography
 

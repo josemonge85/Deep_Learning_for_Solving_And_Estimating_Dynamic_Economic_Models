@@ -1,24 +1,32 @@
-# Readings — Lecture 16 (B15): Continuum-of-agents DEQN and method comparison
+# Readings — Lecture 29 (B28): Deep uncertainty quantification and policy
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
 ## Selected references
 
-### Deep Learning for Solving Dynamic Economic Models
+### Deep Uncertainty Quantification: With an Application to Integrated Assessment Models
 
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
-
-### DeepHAM: A Global Solution Method for Heterogeneous Agent Models with Aggregate Shocks
-
-- **Authors:** Han, J., Yang, Y., E, W.
+- **Authors:** Friedl, A., Kuebler, F., Scheidegger, S., Usui, T.
 - **Year:** 2023
-- **Venue:** arXiv
-- **Link:** <https://arxiv.org/abs/2112.14377>
-- **Notes:** Krusell-Smith with deep learning, including aggregate-shock handling.
+- **Venue:** Working paper
+- **Link:** <https://scholar.google.com/scholar?q=Deep+Uncertainty+Quantification+Integrated+Assessment+Models+Scheidegger>
+- **Notes:** Deep-UQ framework applied to climate-economy models. Working-paper version on author pages.
+
+### Using Machine Learning to Compute Constrained Optimal Carbon Tax Rules
+
+- **Authors:** Kuebler, F., Scheidegger, S., Surbek, O.
+- **Year:** 2026
+- **Venue:** Journal of Political Economy: Macroeconomics (forthcoming)
+- **Link:** <https://scholar.google.com/scholar?q=Kuebler+Scheidegger+Surbek+constrained+optimal+carbon+tax>
+- **Notes:** Constrained optimal carbon-tax design via deep surrogate models.
+
+### The Climate in Climate Economics
+
+- **Authors:** Folini, D., Friedl, A., Kuebler, F., Scheidegger, S.
+- **Year:** 2024
+- **Venue:** Review of Economic Studies, 91(5)
+- **Link:** <https://doi.org/10.1093/restud/rdae011>
+- **Notes:** Calibrated DICE-extended (CDICE) climate-economy model used in Lectures 27-28.
 
 ## Bibliography
 

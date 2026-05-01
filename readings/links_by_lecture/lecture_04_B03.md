@@ -1,16 +1,16 @@
-# Readings — Lecture 04 (B03): Generalization and sequence models
+# Readings — Lecture 11 (B10): IRBC with DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
 ## Selected references
 
-### An Introduction to Statistical Learning, with Applications in R (2nd edition)
+### Deep Equilibrium Nets
 
-- **Authors:** James, G., Witten, D., Hastie, T., Tibshirani, R.
-- **Year:** 2021
-- **Venue:** Springer
-- **Link:** <https://www.statlearning.com/>
-- **Notes:** Free PDF available from statlearning.com. Accessible companion to ESL.
+- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
+- **Year:** 2022
+- **Venue:** International Economic Review
+- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
+- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
 
 ## Bibliography
 

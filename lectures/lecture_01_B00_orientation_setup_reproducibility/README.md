@@ -10,7 +10,7 @@ Get the local environment running, locate every part of the course (script, slid
 
 ## Prerequisites
 
-- _(none — start of course)_
+- _(none, start of course)_
 
 ## External prerequisites
 
@@ -20,30 +20,30 @@ Get the local environment running, locate every part of the course (script, slid
 ## Script reference
 
 - §Preface (Preface), §How to Read (How to Read This Script), §Notation (Notation and Symbols), §Execution Map (Execution Map), §Appendix E (Reproducibility Information)
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — companion script
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
 
 ## Slides
 
-_(none in this PR)_
+_(none)_
 
 ## Notebooks
 
 ### Core
 
-_(none in this PR)_
+_(none)_
 
 ### Exercises
 
-_(none in this PR)_
+_(none)_
 
 ### Solutions
 
-_(none in this PR)_
+_(none)_
 
 ### Extensions
 
-_(none in this PR)_
+_(none)_
 
 ## Checkpoint
 
@@ -56,11 +56,12 @@ _(none in this PR)_
 
 ## Navigation
 
-- **Next:** [Lecture 02 (B01): Why deep learning for economics and finance?](../lecture_02_B01_why_deep_learning/README.md)
-- [Course map](../../COURSE_MAP.md)
-- [Repository home](../../README.md)
+- Previous: _(this is the first lecture)_
+- Next: [Lecture 02 (B01), Introduction to deep learning](../lecture_02_B01_intro_deep_learning/README.md)
+- [`COURSE_MAP.md`](../../COURSE_MAP.md)
+- [`README.md`](../../README.md)
 
 ## Copyright and attribution
 
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written / graphical content is CC0 1.0 Universal.
+- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
 - Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).

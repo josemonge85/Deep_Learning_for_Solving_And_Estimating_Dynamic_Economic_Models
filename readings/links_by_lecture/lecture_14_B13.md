@@ -1,17 +1,8 @@
-# Readings — Lecture 14 (B13): Large OLG benchmark
+# Readings — Lecture 26 (B25): Structural estimation via SMM
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-## Selected references
-
-### Deep Learning for Solving Dynamic Economic Models
-
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
-
+> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).

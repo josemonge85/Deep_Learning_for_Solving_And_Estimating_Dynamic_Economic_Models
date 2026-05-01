@@ -4,6 +4,8 @@
   <img src="assets/hero/deep_learning_dynamic_models_hero.png" width="95%" alt="Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance">
 </p>
 
+<br/>
+
 > **Welcome.** This is a free, self-paced graduate course for PhD
 > students and researchers in **computational and quantitative
 > economics and finance** who want to use modern deep learning to
@@ -11,9 +13,9 @@
 > appear in macro, finance, and climate economics.
 >
 > Everything you need is in this repository: a textbook-length
-> [lecture script](lecture_script/lecture_script.pdf), 30 paired
-> lectures (slides + runnable Jupyter notebooks + exercises), a
-> 2-module toolkit on using AI coding agents as research partners,
+> [lecture script](lecture_script/lecture_script.pdf), 17 paired
+> lectures (slides, runnable Jupyter notebooks, exercises), a
+> 3-module toolkit on using AI coding agents as research partners,
 > and a curated bibliography. Work through it in your own order, at
 > your own pace.
 
@@ -26,8 +28,8 @@ Five capabilities, each motivated below.
 
 ### 1. Solving recursive equilibrium models with neural networks
 
-Most quantitative macro models reduce to functional equations — Euler
-equations, Bellman equations, market-clearing conditions — that
+Most quantitative macro models reduce to functional equations (Euler
+equations, Bellman equations, market-clearing conditions) that
 classical methods (projection, value-function iteration, perturbation)
 struggle with once the state space gets large or the policy is
 nonsmooth. **Deep Equilibrium Nets (DEQNs)** parameterize the policy
@@ -39,7 +41,7 @@ loss is the residual of a Hamilton–Jacobi–Bellman equation, automatic
 differentiation supplies the derivatives, and there is no mesh.
 You will build both end-to-end on benchmarks where the answer is known
 (Brock–Mirman, cake-eating, Black–Scholes) and then on models where it
-isn't (IRBC, OLG with 56 cohorts, Krusell–Smith with a continuum of
+is not (IRBC, OLG with 56 cohorts, Krusell–Smith with a continuum of
 agents, continuous-time heterogeneous agents).
 
 ### 2. Surrogates, Gaussian processes, and Bayesian active learning
@@ -64,28 +66,42 @@ will run single- and joint-parameter SMM on a deep surrogate of
 Brock–Mirman and see how the estimator behaves under realistic noise
 and identification challenges.
 
-### 4. Deep uncertainty quantification for climate-economic policy
+### 4. Deep UQ and Pareto-improving climate policy
 
 Integrated assessment models (DICE, CDICE) carry parameters whose
-true values are deeply uncertain — equilibrium climate sensitivity is
-the textbook example. Plugging point estimates in and reading off a
-single social cost of carbon is misleading. We solve a stochastic IAM
-with DEQNs under Epstein–Zin preferences, build GP surrogates for the
-quantities of interest with BAL, run global sensitivity analysis
-(Sobol, Shapley), and design **constrained Pareto-improving carbon-tax
-policies** that respect the deep uncertainty rather than averaging it
+true values are deeply uncertain, equilibrium climate sensitivity
+being the textbook example. Plugging point estimates in and reading
+off a single social cost of carbon is misleading; averaging the
+uncertainty out before optimization is worse, because the policy you
+would choose under expected damages is generally not the policy you
+would choose if you took the tail risk seriously.
+
+The course teaches a complete pipeline that addresses this directly.
+We solve a stochastic IAM with DEQNs under Epstein–Zin preferences,
+build GP surrogates for the quantities of interest with Bayesian
+active learning, and run global sensitivity analysis (Sobol, Shapley
+effects) to localize where the policy is actually sensitive to which
+parameters. On top of that surrogate we then **design constrained
+Pareto-improving carbon-tax policies**: tax paths that, for every
+realisation of the deep uncertainty (or every cohort, or every
+generation), leave no agent worse off than the business-as-usual
+baseline while strictly improving welfare for at least one. This turns
+"what should the carbon tax be?" from a single number computed under a
+single calibration into a defensible policy menu that respects who
+bears the risk and who benefits, *without* averaging the uncertainty
 away.
 
 ### 5. An AI-assisted research-coding workflow
 
 Modern empirical and computational economics benefits enormously from
-using AI coding agents (Claude Code) as research partners — but only
-when the workflow is set up deliberately. The two toolkit modules
+using AI coding agents (Claude Code) as research partners, but only
+when the workflow is set up deliberately. The three toolkit modules
 teach the orientation, prompt patterns, project memory (`CLAUDE.md`),
 custom skills, subagents, and hooks that turn an LLM from a clever
 autocomplete into a real research collaborator. T1 covers the
 day-to-day interaction loop; T2 covers the operational scaffolding
-that makes the workflow sustainable on a multi-month project.
+that makes the workflow sustainable on a multi-month project; T3 is
+the exercise handout that ties both together.
 
 ## How to use this course
 
@@ -94,7 +110,7 @@ Pick whichever entry point fits your goal:
 - 🚀 **I want a guided start.** Open
   [Lecture 01](lectures/lecture_01_B00_orientation_setup_reproducibility/README.md)
   and follow the **Complete path** in [`COURSE_MAP.md`](COURSE_MAP.md).
-  This walks through all 30 lectures and weaves in both toolkits at
+  This walks through all 17 lectures and weaves in the toolkits at
   their natural insertion points.
 - 🎯 **I have a specific topic in mind.** Use the **topic index**
   below to jump straight to the relevant block.
@@ -118,37 +134,42 @@ Every long-running notebook exposes a `RUN_MODE = "smoke" | "full"` switch
 at the top so you can run it on a CPU laptop in minutes (smoke mode, for a sanity
 check) or take it all the way for the published-figure quality result.
 
-## Topic index — find what you want
+## Topic index, find what you want
 
 | If you want to learn… | Read | Notebooks |
 |---|---|---|
-| **Deep-learning fundamentals** (training, generalization, sequence models) | [Lectures 02–05](lectures/lecture_02_B01_why_deep_learning/README.md) | MLP / LSTM / Transformer on Edgeworth cycles, double descent, Genz approximations |
-| **Deep Equilibrium Nets (DEQNs)** — the central method | [Lectures 06–10](lectures/lecture_06_B05_deqn_central_idea/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, autodiff |
-| **Large-scale nonlinear DSGE** (IRBC) | [Lecture 11](lectures/lecture_11_B10_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
-| **Architecture search & loss balancing** (NAS, ReLoBRaLo) | [Lecture 12](lectures/lecture_12_B11_architecture_search_loss_balancing/README.md) | Random search, Hyperband, ReLoBRaLo / SoftAdapt / GradNorm |
-| **OLG and heterogeneous agents** (discrete time) | [Lectures 13–17](lectures/lecture_13_B12_olg_models_deqns/README.md) | OLG, Krusell-Smith, Young's method, continuum-of-agents DEQN, sequence-space DEQNs |
-| **PINNs and continuous-time HA** | [Lectures 18–21](lectures/lecture_18_B17_pinn_foundations/README.md) | ODE / PDE PINNs, hard vs soft BCs, cake-eating HJB, Black-Scholes PINN, continuous-time Aiyagari |
-| **Surrogates, Gaussian processes, deep kernels** | [Lectures 22–25](lectures/lecture_22_B21_deep_surrogate_models/README.md) | Surrogate primer, GP regression + BAL, active subspaces, deep kernel learning, GP-VFI |
-| **Structural estimation via SMM** | [Lecture 26](lectures/lecture_26_B25_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
-| **Climate economics, IAMs, and deep UQ** | [Lectures 27–29](lectures/lecture_27_B26_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN, deep UQ, optimal carbon-tax design |
-| **Synthesis — when to use which method** | [Lecture 30](lectures/lecture_30_B29_synthesis_method_choice/README.md) | Decision guide and outlook |
+| **Deep-learning fundamentals** (training, generalization, sequence models) | [Lecture 02](lectures/lecture_02_B01_intro_deep_learning/README.md) | MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations |
+| **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_B02_deep_equilibrium_nets/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels |
+| **Large-scale nonlinear DSGE** (IRBC) | [Lecture 04](lectures/lecture_04_B03_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
+| **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_B04_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
+| **Automatic differentiation for DEQNs** | [Lecture 06](lectures/lecture_06_B05_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
+| **Sequence-space DEQNs** | [Lecture 07](lectures/lecture_07_B06_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
+| **OLG with DEQNs** | [Lecture 08](lectures/lecture_08_B07_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
+| **Heterogeneous agents and Young's method** | [Lecture 09](lectures/lecture_09_B08_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
+| **PINNs and continuous-time HA** | [Lectures 10–12](lectures/lecture_10_B09_pinns/README.md) | ODE / PDE PINNs, hard vs soft BCs, cake-eating HJB, Black-Scholes PINN, continuous-time Aiyagari |
+| **Surrogates, Gaussian processes, deep kernels** | [Lecture 13](lectures/lecture_13_B12_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
+| **Structural estimation via SMM** | [Lecture 14](lectures/lecture_14_B13_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
+| **Climate economics, IAMs, and deep UQ** | [Lectures 15–16](lectures/lecture_15_B14_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN, deep UQ, constrained Pareto-improving carbon-tax design |
+| **Synthesis, when to use which method** | [Lecture 17](lectures/lecture_17_B16_course_wrap_up/README.md) | Decision guide and outlook |
 | **Agentic research-coding workflow** | [Toolkit T1](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md) | AI-coding mental models, prompt engineering, the core interaction loop |
 | **Project memory, custom skills, subagents, hooks** | [Toolkit T2](toolkit/toolkit_02_T2_project_memory_agents_hooks/README.md) | CLAUDE.md, skills, subagents, hooks, data-to-paper pipelines |
+| **Agentic-programming exercise handout** | [Toolkit T3](toolkit/toolkit_03_T3_agentic_programming_exercises/README.md) | Workshop and self-study exercises that accompany T1 and T2 |
 
 For the full table including compute and time budgets, prerequisites,
 and the visual prerequisite diagram, see
 [`COURSE_MAP.md`](COURSE_MAP.md).
 
-## Toolkit modules — first-class, not optional
+## Toolkit modules, first-class, not optional
 
-The two toolkits live alongside the lectures and teach the
+The three toolkits live alongside the lectures and teach the
 **research workflow** that makes the rest of the course tractable for
-real projects. Both can be done as standalone modules.
+real projects. Each can be done as a standalone module.
 
 | Toolkit | Folder | Recommended placement |
 |---|---|---|
-| **T1 — Agentic research-coding loop** | [`toolkit/toolkit_01_T1_*/`](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md) | After Lecture 05, before starting DEQN work |
-| **T2 — Project memory, agents, and hooks** | [`toolkit/toolkit_02_T2_*/`](toolkit/toolkit_02_T2_project_memory_agents_hooks/README.md) | After Lecture 12, before the heterogeneous-agent block |
+| **T1, Agentic research-coding loop** | [`toolkit/toolkit_01_T1_*/`](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md) | After Lecture 05, before starting DEQN work |
+| **T2, Project memory, agents, and hooks** | [`toolkit/toolkit_02_T2_*/`](toolkit/toolkit_02_T2_project_memory_agents_hooks/README.md) | After Lecture 12, before the surrogate / GP block |
+| **T3, Agentic-programming exercise handout** | [`toolkit/toolkit_03_T3_*/`](toolkit/toolkit_03_T3_agentic_programming_exercises/README.md) | After T2, as workshop and self-study practice |
 
 ## Setup
 
@@ -163,9 +184,9 @@ conda env create -f environment.yml
 conda activate dlef
 ```
 
-Main dependencies: NumPy / SciPy / pandas / Matplotlib / scikit-learn,
-TensorFlow ≥ 2.15, PyTorch ≥ 2.0, JAX (selected notebooks), GPyTorch /
-BoTorch (Lectures 23–25).
+Main dependencies: NumPy, SciPy, pandas, Matplotlib, scikit-learn,
+TensorFlow ≥ 2.15, PyTorch ≥ 2.0, JAX (selected notebooks), GPyTorch
+and BoTorch (Lecture 13).
 
 ## Repository at a glance
 
@@ -174,7 +195,7 @@ BoTorch (Lectures 23–25).
 ├── README.md             ← you are here
 ├── COURSE_MAP.md         ← detailed map, learning paths, prerequisite diagram
 ├── course.yml            ← machine-readable course manifest
-├── lectures/             ← 30 lecture folders (lecture_XX_BYY_*)
+├── lectures/             ← 17 lecture folders (lecture_XX_BYY_*)
 │   └── lecture_*/
 │       ├── README.md         lecture index
 │       ├── slides/           PDFs (and .tex sources)
@@ -186,7 +207,7 @@ BoTorch (Lectures 23–25).
 │       ├── code/             auxiliary modules
 │       ├── figures/          generated and static figures
 │       └── notes/            short lecture-specific notes
-├── toolkit/              ← Toolkit T1 and T2
+├── toolkit/              ← Toolkits T1, T2, T3
 ├── lecture_script/       ← textbook-length companion script
 ├── readings/             ← per-lecture link guides + bibliography.bib
 ├── src/dlef/             ← reusable teaching package

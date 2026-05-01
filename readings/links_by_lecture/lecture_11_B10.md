@@ -1,16 +1,16 @@
-# Readings — Lecture 11 (B10): IRBC with DEQNs
+# Readings — Lecture 20 (B19): Continuous-time HA theory
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
 ## Selected references
 
-### Deep Equilibrium Nets
+### Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach
 
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
+- **Authors:** Achdou, Y., Han, J., Lasry, J.-M., Lions, P.-L., Moll, B.
 - **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
+- **Venue:** Review of Economic Studies, 89(1)
+- **Link:** <https://doi.org/10.1093/restud/rdab002>
+- **Notes:** Continuous-time heterogeneous agents (HJB + KFE). Reference for Lectures 20-21.
 
 ## Bibliography
 

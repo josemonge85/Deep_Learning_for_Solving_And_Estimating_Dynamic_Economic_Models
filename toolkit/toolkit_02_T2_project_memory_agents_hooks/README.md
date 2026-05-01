@@ -12,25 +12,22 @@ Author the operational furniture that makes agentic research-coding sustainable 
 ## When to do this
 
 - **Recommended placement:** after Lecture 12, before the
-  heterogeneous-agent block (Lectures 13+) where deeper project-memory
+  surrogate / GP block (Lecture 13+) where deeper project-memory
   practices pay off.
 - **Standalone:** can also be done independently of the rest of the course.
 
 ## Materials
 
-- `slides/05_Agentic_Programming_Exercises.pdf` — exercises handout.
-- `templates/CLAUDE_md_template.md` — project-memory starter.
-- `example_skill/SKILL.md`, `example_skill_strategic_revision/SKILL.md` —
-  skill templates.
-- `example_subagent/` — subagent templates (econometrics-reviewer,
-  monte-carlo-designer, backtest-validator, code-reviewer, doc-generator,
-  test-writer, verifier).
-- `example_hooks/settings.json` — hooks configuration sample.
+- `templates/CLAUDE_md_template.md`, project-memory starter.
+- `example_skill/SKILL.md`, `example_skill_strategic_revision/SKILL.md`, skill templates.
+- `example_subagent/`, subagent templates (econometrics-reviewer, monte-carlo-designer, backtest-validator, code-reviewer, doc-generator, test-writer, verifier).
+- `example_hooks/settings.json`, hooks configuration sample.
+- The exercise handout that covers both T1 and T2 lives in [`Toolkit T3`](../toolkit_03_T3_agentic_programming_exercises/README.md).
 
 ## Navigation
 
-- **Suggested predecessor:** [Lecture 12 (B11): Architecture search and loss balancing](../../lectures/lecture_12_B11_architecture_search_loss_balancing/README.md)
-- **Suggested successor:** [Lecture 13 (B12): OLG models with DEQNs](../../lectures/lecture_13_B12_olg_models_deqns/README.md)
+- **Suggested predecessor:** [Lecture 12 (B11): Continuous-time HA, numerics](../../lectures/lecture_12_B11_continuous_time_ha_numerics/README.md)
+- **Suggested successor:** [Toolkit 03 (T3): Agentic programming, exercise handout](../toolkit_03_T3_agentic_programming_exercises/README.md)
 - **Companion module:** [Toolkit 01 (T1): Agentic research-coding loop](../toolkit_01_T1_agentic_research_coding_loop/README.md)
 - [Course map](../../COURSE_MAP.md)
 - [Repository home](../../README.md)

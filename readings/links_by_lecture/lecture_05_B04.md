@@ -1,8 +1,17 @@
-# Readings — Lecture 05 (B04): Function approximation and loss design
+# Readings — Lecture 12 (B11): Architecture search and loss balancing
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
-> _No additional readings curated for this lecture beyond the companion lecture script. The script is the canonical reference; see [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf)._
+## Selected references
+
+### Neural Architecture Search: A Survey
+
+- **Authors:** Elsken, T., Metzen, J. H., Hutter, F.
+- **Year:** 2019
+- **Venue:** Journal of Machine Learning Research, 20(55):1-21
+- **Link:** <https://www.jmlr.org/papers/v20/18-598.html>
+- **Notes:** Open-access survey covering search-space, search-strategy, and performance-estimation choices.
+
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
