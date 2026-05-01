@@ -2,7 +2,7 @@
 
 The working knowledge of deep learning that the rest of the course assumes, with economics-flavoured worked examples throughout.
 
-`cpu-standard` · `long` · builds on [Lecture 01 (B00)](../lecture_01_B00_orientation_setup_reproducibility/README.md)
+`cpu-standard` · `long` · builds on [Lecture 01 (B00)](../lecture_01_B00_python_primer/README.md)
 
 ## What this lecture covers
 
@@ -50,4 +50,4 @@ Curated bibliography for this lecture: [`lecture_02_B01.md`](../../readings/link
 
 ---
 
-← [Previous: Orientation, setup, and reproducibility](../lecture_01_B00_orientation_setup_reproducibility/README.md) · → [Next: Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md) · [Course map](../../COURSE_MAP.md)
+← [Previous: Python primer](../lecture_01_B00_python_primer/README.md) · → [Next: Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md) · [Course map](../../COURSE_MAP.md)

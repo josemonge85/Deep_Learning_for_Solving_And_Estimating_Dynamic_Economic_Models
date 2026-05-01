@@ -20,18 +20,20 @@ REPO = Path(__file__).resolve().parents[2]
 #   "objectives": list of "After this lecture you can ..." bullets.
 CONTENT: dict[str, dict] = {
     "B00": {
-        "opener": "Pre-course orientation: get the local environment running and learn the conventions used throughout the course.",
+        "opener": "A self-paced primer in Python and Jupyter that brings readers without prior Python exposure up to the level the rest of the course assumes. Skip this lecture entirely if you write Python every day.",
         "covers": [
-            "**Repository tour.** Where the script, slide decks, notebooks, toolkits, and readings live, and how the per-lecture folders are organized.",
-            "**Course conventions.** Lecture and block IDs (`Lecture XX (BYY)`), compute and time-budget annotations, and the per-notebook `RUN_MODE` switch (`smoke` for CPU laptops, `teaching` for classroom-quality figures, `production` for full reproduction).",
-            "**Local setup.** Installing the Python environment from `requirements.txt` (or the conda equivalent) and running the smoke test that exercises the toolchain end-to-end.",
-            "**Reading paths.** How the chapter-based lecture script maps to the lecture-numbered online course via `script_to_lectures.md`, and how to pick a learning path in `COURSE_MAP.md`.",
+            "**Jupyter notebooks.** What a notebook is, how cells work, how to run code interactively in a browser.",
+            "**Python as a calculator.** Arithmetic, variables, and types (numbers, booleans, strings).",
+            "**Basic data structures.** Tuples, lists, dictionaries, and basic string handling.",
+            "**Control flow.** Conditionals, loops, and functions.",
+            "**Object-oriented Python.** Classes, methods, and a light tour of inheritance.",
+            "**Scientific Python.** NumPy arrays and linear algebra; pandas data frames; basic plotting with Matplotlib.",
         ],
         "objectives": [
-            "Install and verify the Python environment.",
-            "Locate the script, slide decks, notebooks, toolkits, and per-lecture READMEs.",
-            "Read the conventions for lecture/block IDs, the `RUN_MODE` switch, and the compute tiers.",
-            "Reproduce a smoke-test run end-to-end on your local machine.",
+            "Open and run a Jupyter notebook end-to-end on your local machine.",
+            "Write Python expressions, define functions, and use the standard control-flow constructs fluently.",
+            "Manipulate NumPy arrays and pandas data frames, and produce a basic Matplotlib plot.",
+            "Read the course's notebooks without stumbling on Python syntax.",
         ],
     },
     "B01": {
