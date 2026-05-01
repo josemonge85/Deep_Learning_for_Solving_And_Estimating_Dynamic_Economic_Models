@@ -1,35 +1,25 @@
-# Toolkit 01 (T1): Agentic research-coding loop
+# Toolkit T1: Agentic research-coding loop
 
-A cross-cutting research-workflow module on using AI coding agents (Claude
-Code) as a research partner: orientation, mental models, environment
-setup, the core interaction loop, and prompt engineering for empirical
-and computational economics work.
+A cross-cutting research-workflow module on using AI coding agents (Claude Code) as a research partner. Orientation, mental models, environment setup, the core interaction loop, and prompt engineering for empirical and computational economics work. Develop a working agentic research-coding workflow: orient yourself in an unfamiliar codebase with an AI partner, structure prompts that produce useful (not generic) work, and complete the first set of workshop exercises end-to-end.
 
-## Learning goal
+`cpu-light` · `standard` · best done after [Lecture 05 (B04)](../../lectures/lecture_05_B04_nas_loss_normalization/README.md)
 
-Develop a working agentic research-coding workflow: orient yourself in an unfamiliar codebase with an AI partner, structure prompts that produce useful (not generic) work, and complete the first set of workshop exercises end-to-end.
+## Slides
 
-## When to do this
+- [`slides/05_Agentic_Programming.pdf`](slides/05_Agentic_Programming.pdf)
+- [`slides/05_Agentic_Programming.tex`](slides/05_Agentic_Programming.tex)
 
-- **Recommended placement:** after Lecture 05, before starting the DEQN
-  exercises in Lecture 06+.
-- **Standalone:** can also be done independently of the rest of the course
-  if you only want the research-workflow training.
+## Code
 
-## Materials
+- [`code/exercise_prompts.md`](code/exercise_prompts.md), the workshop prompt pack (12 exercises).
+- [`code/exercise_solutions.md`](code/exercise_solutions.md), solution sketches.
+- [`code/agentic_ai_lecture_syllabus.md`](code/agentic_ai_lecture_syllabus.md), full syllabus.
+- [`code/generate_synthetic_data.py`](code/generate_synthetic_data.py), [`code/mincer_demo.py`](code/mincer_demo.py), and supporting CSV / outputs for the worked example.
 
-- `slides/05_Agentic_Programming.pdf`, orientation, mental models, prompt engineering.
-- `code/`, the workshop prompt pack (`exercise_prompts.md`), solution sketches (`exercise_solutions.md`), the full syllabus (`agentic_ai_lecture_syllabus.md`), and supporting Python (`generate_synthetic_data.py`, `mincer_demo.py`), data, and demo outputs.
+## Companion modules
 
-## Navigation
+T1 pairs with [`Toolkit T2`](../toolkit_02_T2_project_memory_agents_hooks/README.md) (project memory, agents, hooks) and [`Toolkit T3`](../toolkit_03_T3_agentic_programming_exercises/README.md) (the exercise handout).
 
-- **Suggested predecessor:** [Lecture 05 (B04): Architecture search and loss balancing](../../lectures/lecture_05_B04_nas_loss_normalization/README.md)
-- **Suggested successor:** [Lecture 06 (B05): Automatic differentiation for DEQNs](../../lectures/lecture_06_B05_autodiff_for_deqns/README.md)
-- **Companion modules:** [Toolkit 02 (T2)](../toolkit_02_T2_project_memory_agents_hooks/README.md), [Toolkit 03 (T3)](../toolkit_03_T3_agentic_programming_exercises/README.md)
-- [Course map](../../COURSE_MAP.md)
-- [Repository home](../../README.md)
+---
 
-## Copyright and attribution
-
-- Course author: Simon Scheidegger (University of Lausanne).
-- First-party material: code is MIT-licensed; written / graphical content is CC0 1.0 Universal.
+→ [Next: Toolkit T2, Project memory, agents, and hooks](../toolkit_02_T2_project_memory_agents_hooks/README.md) · [Course map](../../COURSE_MAP.md)

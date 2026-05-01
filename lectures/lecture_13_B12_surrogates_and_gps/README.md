@@ -1,12 +1,8 @@
 # Lecture 13 (B12): Surrogates and Gaussian processes
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
-> **Course author:** Simon Scheidegger  \
-> **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
-
-## What this lecture covers
-
 Build deep surrogate models for expensive simulators, fit Gaussian-process regressors with Bayesian active learning, scale GPs to higher dimensions via active subspaces (linear and nonlinear) and deep kernels, and run GP value-function iteration. By the end you can pick a surrogate or a GP confidently for a new estimation, calibration, or policy-evaluation problem.
+
+`gpu-recommended` · `long` · builds on [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md)
 
 ## Slides
 
@@ -26,33 +22,18 @@ Build deep surrogate models for expensive simulators, fit Gaussian-process regre
 - [`code/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb`](code/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb)
 - [`code/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb`](code/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb)
 
-## Prerequisites
+## In the lecture script
 
-- [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md), Introduction to deep learning
+§9.1-9.2 (Deep surrogates), §9.3-9.6 (GPs and Bayesian active learning), §9.7 (Active subspaces), §9.8 (GP value-function iteration), §9.9 (Deep kernels), §9.10 (GPs among Bayesian cousins). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
-## Script reference
+## By the end you should
 
-- §9.1-9.2 (Deep surrogates), §9.3-9.6 (GPs and Bayesian active learning), §9.7 (Active subspaces), §9.8 (GP value-function iteration), §9.9 (Deep kernels), §9.10 (GPs among Bayesian cousins)
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Checkpoint
-
-> Build a deep surrogate, fit a GP with Bayesian active learning, and apply linear/deep active subspaces to a 10-D test function.
+Build a deep surrogate, fit a GP with Bayesian active learning, and apply linear/deep active subspaces to a 10-D test function.
 
 ## Readings
 
-- [`readings/links_by_lecture/lecture_13_B12.md`](../../readings/links_by_lecture/lecture_13_B12.md)
-- [`readings/bibliography.bib`](../../readings/bibliography.bib)
+Curated bibliography for this lecture: [`lecture_13_B12.md`](../../readings/links_by_lecture/lecture_13_B12.md). The full BibTeX is in [`readings/bibliography.bib`](../../readings/bibliography.bib).
 
-## Navigation
+---
 
-- Previous: [Lecture 12 (B11), Continuous-time heterogeneous agents, numerics](../lecture_12_B11_continuous_time_ha_numerics/README.md)
-- Next: [Lecture 14 (B13), Structural estimation via SMM](../lecture_14_B13_structural_estimation_smm/README.md)
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
-
-## Copyright and attribution
-
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
-- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
+← [Previous: Continuous-time heterogeneous agents, numerics](../lecture_12_B11_continuous_time_ha_numerics/README.md) · → [Next: Structural estimation via SMM](../lecture_14_B13_structural_estimation_smm/README.md) · [Course map](../../COURSE_MAP.md)

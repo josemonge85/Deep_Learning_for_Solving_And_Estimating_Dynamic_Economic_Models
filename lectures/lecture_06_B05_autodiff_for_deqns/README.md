@@ -1,12 +1,8 @@
 # Lecture 06 (B05): Automatic differentiation for DEQNs
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
-> **Course author:** Simon Scheidegger  \
-> **Compute tier:** `cpu-standard` &nbsp;·&nbsp; **Time budget:** `standard`
-
-## What this lecture covers
-
 Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian primitive analytically and recover its gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation. Cross-check the autodiff residual against a hand-derived residual to machine precision.
+
+`cpu-standard` · `standard` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
 ## Slides
 
@@ -20,33 +16,18 @@ Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian
 - [`code/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb`](code/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb)
 - [`code/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb`](code/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb)
 
-## Prerequisites
+## In the lecture script
 
-- [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md), Deep Equilibrium Nets
+§2.7 (Automatic differentiation), §Appendix B (Matrix calculus). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
-## Script reference
+## By the end you should
 
-- §2.7 (Automatic differentiation), §Appendix B (Matrix calculus)
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Checkpoint
-
-> Derive a Lagrangian primitive analytically and recover its gradient via two-tape autodiff.
+Derive a Lagrangian primitive analytically and recover its gradient via two-tape autodiff.
 
 ## Readings
 
-- [`readings/links_by_lecture/lecture_06_B05.md`](../../readings/links_by_lecture/lecture_06_B05.md)
-- [`readings/bibliography.bib`](../../readings/bibliography.bib)
+Curated bibliography for this lecture: [`lecture_06_B05.md`](../../readings/links_by_lecture/lecture_06_B05.md). The full BibTeX is in [`readings/bibliography.bib`](../../readings/bibliography.bib).
 
-## Navigation
+---
 
-- Previous: [Lecture 05 (B04), Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md)
-- Next: [Lecture 07 (B06), Sequence-space DEQNs](../lecture_07_B06_sequence_space_deqns/README.md)
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
-
-## Copyright and attribution
-
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
-- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
+← [Previous: Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md) · → [Next: Sequence-space DEQNs](../lecture_07_B06_sequence_space_deqns/README.md) · [Course map](../../COURSE_MAP.md)

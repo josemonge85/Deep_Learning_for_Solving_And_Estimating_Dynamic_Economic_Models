@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Regenerate per-lecture README.md from course.yml.
 
-Per-lecture folders now have a flat structure:
+Per-lecture folders have a flat structure:
   - slides/    PDFs and .tex sources
   - code/      every .ipynb plus any auxiliary .py / data files
   - figures/   (optional) lecture-specific figure assets
   - README.md  this file
 
-The previous notebooks/{core,exercises,solutions,extensions} hierarchy
-has been collapsed into code/.
+The README leads with a one-paragraph summary of the lecture, then a
+single inline metadata line (compute, time, prerequisite), then the
+materials. No blockquote header, no per-lecture course author or
+license boilerplate (those live on the landing page).
 """
 from __future__ import annotations
 from pathlib import Path
@@ -17,14 +19,13 @@ import yaml
 REPO = Path(__file__).resolve().parents[2]
 
 
-# Per-lecture content summaries. Keyed by NEW block ID (B00..B16, T1..T3).
-# These are the "What this lecture covers" paragraphs that lead each README.
+# Per-lecture content summaries. Keyed by NEW block ID (B00..B16).
 SUMMARIES: dict[str, str] = {
-    "B00": "Get the local environment running, locate every part of the course (script, slides, code, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.",
+    "B00": "Get the local environment running, locate every part of the course (script, slides, code, toolkits, readings), understand the conventions used throughout (lecture and block IDs, the `RUN_MODE` switch, compute tiers), and reproduce a smoke-test run end-to-end.",
     "B01": "Build the working knowledge of deep learning that the rest of the course assumes: classical ML and the bias-variance trade-off; SGD and its variants; depth, width, and double descent; sequence models from MLPs through LSTMs to small Transformers, applied to economic time-series patterns. By the end you have built and trained models in both TensorFlow and PyTorch, and you can read the rest of the course's notebooks fluently.",
     "B02": "State the Deep Equilibrium Net (DEQN) idea precisely, train deterministic and stochastic Brock-Mirman DEQNs, and verify them against closed-form solutions. Handle constraints with Fischer-Burmeister complementarity, choose conditional-expectation quadrature deliberately, and compare six loss kernels (MSE, MAE, Huber, quantile, CVaR, log-cosh) on the same problem.",
     "B03": "Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.",
-    "B04": "Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch in pure Python, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.",
+    "B04": "Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.",
     "B05": "Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian primitive analytically and recover its gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation. Cross-check the autodiff residual against a hand-derived residual to machine precision.",
     "B06": "Train sequence-space DEQNs that use a long shock history (~80 steps) instead of the current-state vector as input. Reproduce the Brock-Mirman warm-up and the Krusell-Smith benchmark in sequence space, and understand why the sequence-space template generalizes to multi-equation systems with multiple shock channels.",
     "B07": "Solve OLG models with DEQNs at two scales: an analytic small OLG with a closed-form check, and the standard 56-period benchmark with borrowing constraints handled via Fischer-Burmeister complementarity. Read off lifecycle savings, aggregate dynamics, and equilibrium residuals across cohorts.",
@@ -37,9 +38,6 @@ SUMMARIES: dict[str, str] = {
     "B14": "Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario, then solve deterministic CDICE with a DEQN and verify against the production-code reference. Extend to stochastic CDICE with AR(1) productivity shocks using Gauss-Hermite quadrature for conditional expectations.",
     "B15": "Run a deep-uncertainty-quantification analysis on a stochastic IAM and use the UQ output to design constrained Pareto-improving carbon-tax policies, tax paths that, for every realisation of the deep uncertainty, leave no agent worse off than the business-as-usual baseline while strictly improving welfare for at least one. Articulate which parameters drive the policy recommendation.",
     "B16": "Synthesize the course: when is DEQN the right choice, when do you reach for PINNs, when does a surrogate-plus-GP combination win? Map each method to its sweet-spot problem class and articulate the trade-offs.",
-    "T1": "Develop a working agentic research-coding workflow: orient yourself in an unfamiliar codebase with an AI partner, structure prompts that produce useful (not generic) work, and complete the first set of workshop exercises end-to-end.",
-    "T2": "Author the operational furniture that makes agentic research-coding sustainable for real projects: a project-memory `CLAUDE.md`, custom skills (e.g. an econometrics or backtest-validation skill), subagents for review and verification, and hooks that automate routine checks.",
-    "T3": "Work through the agentic-programming exercise handout that accompanies T1 and T2, both the workshop set and the self-study extensions, and consolidate the techniques into a personal research-coding playbook.",
 }
 
 
@@ -49,17 +47,15 @@ def script_ref(entries: list[dict]) -> str:
 
 
 def list_files(folder_abs: Path, kind: str) -> list[Path]:
-    """Return sorted list of files in the named subfolder."""
     sub = folder_abs / kind
     if not sub.exists():
         return []
     return sorted(p for p in sub.rglob("*") if p.is_file())
 
 
-def render_links(folder_rel: str, files: list[Path]) -> str:
+def render_links(folder_abs: Path, files: list[Path]) -> str:
     if not files:
         return "_(none)_"
-    folder_abs = REPO / folder_rel
     out = []
     for f in files:
         rel = f.relative_to(folder_abs).as_posix()
@@ -74,90 +70,89 @@ def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
     folder = lec["folder"]
     folder_abs = REPO / folder
 
-    # Materials: walk the actual filesystem
     slide_files = list_files(folder_abs, "slides")
-    # filter out figure subfolders inside slides (they ship the .tex resources, not student materials)
     slides = [f for f in slide_files if f.suffix in {".pdf", ".tex"} and f.parent.name == "slides"]
     code_files = list_files(folder_abs, "code")
     figure_files = list_files(folder_abs, "figures")
 
     if lec["prereqs"]:
         prereq_md = ", ".join(
-            f"[Lecture {lec_index[p]['lecture']:02d} ({p})](../{Path(lec_index[p]['folder']).name}/README.md), {lec_index[p]['title']}"
+            f"[Lecture {lec_index[p]['lecture']:02d} ({p})](../{Path(lec_index[p]['folder']).name}/README.md)"
             for p in lec["prereqs"] if p in lec_index
         )
+        meta_line = f"`{lec.get('compute', 'cpu-light')}` · `{lec.get('time', 'standard')}` · builds on {prereq_md}"
     else:
-        prereq_md = "_(none, start of course)_"
+        meta_line = f"`{lec.get('compute', 'cpu-light')}` · `{lec.get('time', 'standard')}`"
 
     sorted_lecs = sorted(lec_index.values(), key=lambda x: x["lecture"])
-    prev_md = "_(this is the first lecture)_"
-    next_md = "_(this is the last lecture)_"
+    prev_link = next_link = None
     for i, l in enumerate(sorted_lecs):
         if l["block"] == block:
             if i > 0:
                 pl = sorted_lecs[i - 1]
-                prev_md = f"[Lecture {pl['lecture']:02d} ({pl['block']}), {pl['title']}](../{Path(pl['folder']).name}/README.md)"
+                prev_link = f"← [Previous: {pl['title']}](../{Path(pl['folder']).name}/README.md)"
             if i < len(sorted_lecs) - 1:
                 nl = sorted_lecs[i + 1]
-                next_md = f"[Lecture {nl['lecture']:02d} ({nl['block']}), {nl['title']}](../{Path(nl['folder']).name}/README.md)"
+                next_link = f"→ [Next: {nl['title']}](../{Path(nl['folder']).name}/README.md)"
             break
 
-    script_md = script_ref(lec.get("script") or [])
+    nav_parts = [p for p in (prev_link, next_link, "[Course map](../../COURSE_MAP.md)") if p]
+    nav = " · ".join(nav_parts)
+
     summary = SUMMARIES.get(block, "_Summary pending._")
+    script_md = script_ref(lec.get("script") or [])
 
-    figures_section = ""
+    sections = [
+        f"# Lecture {num} ({block}): {title}",
+        "",
+        summary,
+        "",
+        meta_line,
+        "",
+        "## Slides",
+        "",
+        render_links(folder_abs, slides),
+        "",
+        "## Code",
+        "",
+        render_links(folder_abs, code_files),
+    ]
+
     if figure_files:
-        figures_section = f"\n## Figures\n\n{render_links(folder, figure_files)}\n"
+        sections += [
+            "",
+            "## Figures",
+            "",
+            render_links(folder_abs, figure_files),
+        ]
 
-    return f"""# Lecture {num} ({block}): {title}
+    sections += [
+        "",
+        "## In the lecture script",
+        "",
+        f"{script_md}. The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).",
+    ]
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \\
-> **Course author:** Simon Scheidegger  \\
-> **Compute tier:** `{lec.get('compute', 'cpu-light')}` &nbsp;·&nbsp; **Time budget:** `{lec.get('time', 'standard')}`
+    if lec.get("checkpoint"):
+        sections += [
+            "",
+            "## By the end you should",
+            "",
+            lec["checkpoint"],
+        ]
 
-## What this lecture covers
-
-{summary}
-
-## Slides
-
-{render_links(folder, slides)}
-
-## Code
-
-{render_links(folder, code_files)}
-{figures_section}
-## Prerequisites
-
-- {prereq_md}
-
-## Script reference
-
-- {script_md}
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Checkpoint
-
-> {lec.get('checkpoint', '_To be filled in by the maintainer._')}
-
-## Readings
-
-- [`readings/links_by_lecture/lecture_{num}_{block}.md`](../../readings/links_by_lecture/lecture_{num}_{block}.md)
-- [`readings/bibliography.bib`](../../readings/bibliography.bib)
-
-## Navigation
-
-- Previous: {prev_md}
-- Next: {next_md}
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
-
-## Copyright and attribution
-
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
-- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
-"""
+    sections += [
+        "",
+        "## Readings",
+        "",
+        f"Curated bibliography for this lecture: [`lecture_{num}_{block}.md`](../../readings/links_by_lecture/lecture_{num}_{block}.md). The full BibTeX is in [`readings/bibliography.bib`](../../readings/bibliography.bib).",
+        "",
+        "---",
+        "",
+        nav,
+        "",
+    ]
+    return "\n".join(sections)
 
 
 def main() -> None:

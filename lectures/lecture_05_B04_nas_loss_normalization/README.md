@@ -1,12 +1,8 @@
 # Lecture 05 (B04): Architecture search and loss balancing
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
-> **Course author:** Simon Scheidegger  \
-> **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
+Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.
 
-## What this lecture covers
-
-Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch in pure Python, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.
+`gpu-recommended` · `long` · builds on [Lecture 04 (B03)](../lecture_04_B03_irbc_with_deqns/README.md)
 
 ## Slides
 
@@ -45,33 +41,18 @@ Run neural-architecture search and loss balancing systematically. Implement rand
 - [`figures/nas_search_results.pdf`](figures/nas_search_results.pdf)
 - [`figures/nas_search_results.png`](figures/nas_search_results.png)
 
-## Prerequisites
+## In the lecture script
 
-- [Lecture 04 (B03)](../lecture_04_B03_irbc_with_deqns/README.md), IRBC with DEQNs
+§Chapter 4 (Neural architecture search and loss normalization). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
-## Script reference
+## By the end you should
 
-- §Chapter 4 (Neural architecture search and loss normalization)
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Checkpoint
-
-> Run random search on a 10-D NAS problem and compare ReLoBRaLo, SoftAdapt, and GradNorm.
+Run random search on a 10-D NAS problem and compare ReLoBRaLo, SoftAdapt, and GradNorm.
 
 ## Readings
 
-- [`readings/links_by_lecture/lecture_05_B04.md`](../../readings/links_by_lecture/lecture_05_B04.md)
-- [`readings/bibliography.bib`](../../readings/bibliography.bib)
+Curated bibliography for this lecture: [`lecture_05_B04.md`](../../readings/links_by_lecture/lecture_05_B04.md). The full BibTeX is in [`readings/bibliography.bib`](../../readings/bibliography.bib).
 
-## Navigation
+---
 
-- Previous: [Lecture 04 (B03), IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md)
-- Next: [Lecture 06 (B05), Automatic differentiation for DEQNs](../lecture_06_B05_autodiff_for_deqns/README.md)
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
-
-## Copyright and attribution
-
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
-- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
+← [Previous: IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md) · → [Next: Automatic differentiation for DEQNs](../lecture_06_B05_autodiff_for_deqns/README.md) · [Course map](../../COURSE_MAP.md)

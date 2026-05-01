@@ -1,12 +1,8 @@
 # Lecture 04 (B03): IRBC with DEQNs
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
-> **Course author:** Simon Scheidegger  \
-> **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
-
-## What this lecture covers
-
 Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.
+
+`gpu-recommended` · `long` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
 ## Slides
 
@@ -40,33 +36,18 @@ Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs.
 - [`figures/nas_search_results.pdf`](figures/nas_search_results.pdf)
 - [`figures/nas_search_results.png`](figures/nas_search_results.png)
 
-## Prerequisites
+## In the lecture script
 
-- [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md), Deep Equilibrium Nets
+§Chapter 3 (International real business cycle). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
-## Script reference
+## By the end you should
 
-- §Chapter 3 (International real business cycle)
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Checkpoint
-
-> Train an N-country IRBC DEQN and reproduce the symmetric steady state.
+Train an N-country IRBC DEQN and reproduce the symmetric steady state.
 
 ## Readings
 
-- [`readings/links_by_lecture/lecture_04_B03.md`](../../readings/links_by_lecture/lecture_04_B03.md)
-- [`readings/bibliography.bib`](../../readings/bibliography.bib)
+Curated bibliography for this lecture: [`lecture_04_B03.md`](../../readings/links_by_lecture/lecture_04_B03.md). The full BibTeX is in [`readings/bibliography.bib`](../../readings/bibliography.bib).
 
-## Navigation
+---
 
-- Previous: [Lecture 03 (B02), Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md)
-- Next: [Lecture 05 (B04), Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md)
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
-
-## Copyright and attribution
-
-- First-party material: course author Simon Scheidegger. Code is MIT-licensed; written and graphical content is CC0 1.0 Universal.
-- Borrowed or adapted material (where present) preserves its upstream notice in the file header. See [`NOTICE.md`](../../NOTICE.md).
+← [Previous: Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md) · → [Next: Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md) · [Course map](../../COURSE_MAP.md)
