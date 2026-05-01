@@ -1,0 +1,8 @@
+file,kind,origin_inference,license,redistribution_allowed,attribution_target,status,notes
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/Miraculix.jpg,figure,looks third-party (Asterix comic character),unknown,review_required,assets/attributions.yml,pending,joke / mascot image used as decorative element; replace with original or remove
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/knutti.png,figure,looks third-party (Knutti et al. climate sensitivity figure),journal-publisher,review_required,assets/attributions.yml,pending,common-knowledge climate-sensitivity comparison plot; if Knutti et al. then needs explicit cite + permission
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/olg_agents.jpg,figure,unknown,unknown,review_required,assets/attributions.yml,pending,cohort-illustration stock image; verify provenance
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/quote.png,figure,unknown,unknown,review_required,assets/attributions.yml,pending,decorative quote image
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/global-warming.png,figure,unknown,unknown,review_required,assets/attributions.yml,pending,opening motivation figure; verify whether course-author original or third-party
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/damge.png,figure,unknown,unknown,review_required,assets/attributions.yml,pending,damage-function illustration; verify provenance
+lectures/lecture_27_B26_climate_economics_iams/slides/fig/CDICE-vs-DICE.png,figure,course-author original (CDICE comparison from Folini et al.),CC0 if course-author,course_author,pending,published in Folini et al. 2024 by the course author; CC0 confirmed for repo redistribution

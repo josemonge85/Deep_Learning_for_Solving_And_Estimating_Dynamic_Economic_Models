@@ -27,7 +27,15 @@ Author the operational furniture that makes agentic research-coding sustainable 
   test-writer, verifier).
 - `example_hooks/settings.json` — hooks configuration sample.
 
-## Source
+## Navigation
 
-Migrated from `lectures/day5/` of the Geneva 2026 live course.
-Course author: Simon Scheidegger.
+- **Suggested predecessor:** [Lecture 12 (B11): Architecture search and loss balancing](../../lectures/lecture_12_B11_architecture_search_loss_balancing/README.md)
+- **Suggested successor:** [Lecture 13 (B12): OLG models with DEQNs](../../lectures/lecture_13_B12_olg_models_deqns/README.md)
+- **Companion module:** [Toolkit 01 (T1): Agentic research-coding loop](../toolkit_01_T1_agentic_research_coding_loop/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
+
+## Copyright and attribution
+
+- Course author: Simon Scheidegger (University of Lausanne).
+- First-party material: code is MIT-licensed; written / graphical content is CC0 1.0 Universal.

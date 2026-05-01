@@ -43,6 +43,9 @@ jobs:
       - name: check_american_english
         run: python scripts/check_american_english.py
 
+      - name: validate_readings
+        run: python scripts/validate_readings.py
+
       - name: hyperlink check
         run: |
           python - <<'EOF'

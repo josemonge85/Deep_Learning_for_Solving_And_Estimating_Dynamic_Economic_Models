@@ -1,0 +1,19 @@
+bib_key,title,authors,year,license_known,redistribution_status,canonical_url,destination,notes
+# Schema (one row per reading in readings/bibliography.bib):
+#   bib_key                 BibTeX key as it appears in bibliography.bib
+#   title                   short descriptive title
+#   authors                 first author et al. (or full list)
+#   year                    publication year
+#   license_known           CC-BY | OA-publisher | preprint | unknown | proprietary
+#   redistribution_status   link_only | allowed_pdfs | review_required
+#   canonical_url           DOI or arXiv or publisher landing page
+#   destination             readings/links_by_lecture/lecture_XX_BYY.md (always)
+#                           plus readings/allowed_pdfs/<file>.pdf (only if redistribution_status=allowed_pdfs)
+#   notes                   free text
+#
+# Default: link_only. PDFs land in readings/allowed_pdfs/ only after a
+# row here is set to redistribution_status=allowed_pdfs by a human reviewer.
+# This file is currently empty other than this header — the per-lecture
+# readings/links_by_lecture/lecture_XX_BYY.md files already capture the
+# canonical URLs, so the CSV is the audit log for explicit copyright
+# clearance work.

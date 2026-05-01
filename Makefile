@@ -8,19 +8,19 @@
 #   make clean             # remove LaTeX intermediates
 
 .PHONY: validate validate-headers validate-paths validate-landing validate-content validate-english \
-        build-script build-slides smoke clean help
+        validate-readings build-script build-slides smoke clean help
 
 PYTHON ?= python3
 
 help:
 	@echo "Targets:"
-	@echo "  validate         Run the full validation suite (5 checks)."
+	@echo "  validate         Run the full validation suite (6 checks)."
 	@echo "  build-script     Compile lecture_script.pdf."
 	@echo "  build-slides     Compile every lecture and toolkit slide deck."
 	@echo "  smoke            Run the smoke-test harness (placeholder)."
 	@echo "  clean            Remove LaTeX intermediate files."
 
-validate: validate-headers validate-paths validate-landing validate-content validate-english
+validate: validate-headers validate-paths validate-landing validate-content validate-english validate-readings
 	@echo "All validators passed."
 
 validate-headers:
@@ -37,6 +37,9 @@ validate-content:
 
 validate-english:
 	@$(PYTHON) scripts/check_american_english.py
+
+validate-readings:
+	@$(PYTHON) scripts/validate_readings.py
 
 build-script:
 	@bash scripts/build_script.sh

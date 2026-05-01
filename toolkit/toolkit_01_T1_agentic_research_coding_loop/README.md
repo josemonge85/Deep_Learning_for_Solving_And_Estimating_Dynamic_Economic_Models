@@ -26,7 +26,15 @@ Develop a working agentic research-coding workflow: orient yourself in an unfami
 - `solutions/exercise_solutions.md` — solution sketches.
 - `notes/agentic_ai_lecture_syllabus.md` — full syllabus.
 
-## Source
+## Navigation
 
-Migrated from `lectures/day5/` of the Geneva 2026 live course.
-Course author: Simon Scheidegger.
+- **Suggested predecessor:** [Lecture 05 (B04): Function approximation and loss design](../../lectures/lecture_05_B04_function_approximation_loss_design/README.md)
+- **Suggested successor:** [Lecture 06 (B05): Deep Equilibrium Nets - the central idea](../../lectures/lecture_06_B05_deqn_central_idea/README.md)
+- **Companion module:** [Toolkit 02 (T2): Project memory, agents, and hooks](../toolkit_02_T2_project_memory_agents_hooks/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
+
+## Copyright and attribution
+
+- Course author: Simon Scheidegger (University of Lausanne).
+- First-party material: code is MIT-licensed; written / graphical content is CC0 1.0 Universal.

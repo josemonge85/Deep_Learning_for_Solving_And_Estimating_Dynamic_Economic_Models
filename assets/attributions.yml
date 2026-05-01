@@ -10,4 +10,75 @@
 #     redistribution_allowed: <true | false | review_required>
 #     notes: <free text>
 
-attributions: []
+attributions:
+
+  # ----- Stubs flagged for human review -----
+  # The entries below were pulled from the climate slide deck because
+  # their filenames suggest possible third-party origin. Each is set to
+  # redistribution_allowed: review_required until the course author
+  # confirms (or replaces with a CC0 redraw). See COPYRIGHT_AUDIT.csv
+  # for the full list and status.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/Miraculix.jpg
+    source: unknown
+    authors: unknown
+    year: unknown
+    license: unknown
+    redistribution_allowed: review_required
+    notes: |
+      Asterix-comic mascot used as decoration. Likely © Goscinny / Uderzo /
+      Les Editions Albert Rene. Recommendation: replace with a CC0 alternative
+      or remove from the deck.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/knutti.png
+    source: likely Knutti et al., Nature Geoscience (2017)
+    authors: Knutti et al.
+    year: 2017
+    license: journal-publisher (proprietary unless explicit grant)
+    redistribution_allowed: review_required
+    notes: |
+      Climate-sensitivity figure typically attributed to Knutti et al. (2017).
+      Add explicit citation in the slide caption and either confirm fair-use /
+      author permission, or redraw from the underlying public estimates.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/olg_agents.jpg
+    source: unknown
+    authors: unknown
+    year: unknown
+    license: unknown
+    redistribution_allowed: review_required
+    notes: Cohort-illustration stock image. Verify origin or replace.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/quote.png
+    source: unknown
+    authors: unknown
+    year: unknown
+    license: unknown
+    redistribution_allowed: review_required
+    notes: Decorative quote image; consider replacing with rendered LaTeX text.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/global-warming.png
+    source: unknown
+    authors: unknown
+    year: unknown
+    license: unknown
+    redistribution_allowed: review_required
+    notes: Opening motivation figure; verify whether it is a course-author original.
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/damge.png
+    source: unknown
+    authors: unknown
+    year: unknown
+    license: unknown
+    redistribution_allowed: review_required
+    notes: Damage-function illustration; verify provenance.
+
+  # ----- Course-author originals (kept for completeness; not strictly required) -----
+
+  - path: lectures/lecture_27_B26_climate_economics_iams/slides/fig/CDICE-vs-DICE.png
+    source: Folini et al. (2024), CDICE paper; rendered by the course author
+    authors: Doris Folini, Aleksandra Friedl, Felix Kuebler, Simon Scheidegger
+    year: 2024
+    license: CC0 1.0 Universal (released by course author for this repository)
+    redistribution_allowed: true
+    notes: Course-author original; published in Folini et al. 2024.
