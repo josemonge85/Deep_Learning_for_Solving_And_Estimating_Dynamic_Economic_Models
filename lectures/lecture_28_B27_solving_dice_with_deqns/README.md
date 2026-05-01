@@ -25,7 +25,7 @@ Solve deterministic CDICE with a DEQN and verify against the production-code ref
 
 ## Slides
 
-_(none in this PR)_
+- [`08_DICE_With_DEQNs.pdf`](slides/08_DICE_With_DEQNs.pdf) — stochastic IAM, Epstein-Zin loss, BAL + GP surrogates, SCC distributions.
 
 ## Notebooks
 

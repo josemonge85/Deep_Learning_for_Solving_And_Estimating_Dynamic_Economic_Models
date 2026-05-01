@@ -25,7 +25,7 @@ Scale OLG-DEQN to the standard 56-period benchmark with borrowing constraints. C
 
 ## Slides
 
-_(none in this PR)_
+- [`07_OLG_Large_Benchmark.pdf`](slides/07_OLG_Large_Benchmark.pdf) — 56-cohort AGS 2022 benchmark, bond market, lifecycle capital, training diagnostics.
 
 ## Notebooks
 

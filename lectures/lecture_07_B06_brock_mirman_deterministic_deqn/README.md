@@ -25,7 +25,7 @@ Train a DEQN on the deterministic Brock-Mirman growth model and verify the train
 
 ## Slides
 
-_(none in this PR)_
+- [`02_BrockMirman_Deterministic_DEQN.pdf`](slides/02_BrockMirman_Deterministic_DEQN.pdf) — neural network architecture, supervised vs unsupervised, deterministic Brock--Mirman.
 
 ## Notebooks
 

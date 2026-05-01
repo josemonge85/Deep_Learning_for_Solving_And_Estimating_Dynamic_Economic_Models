@@ -25,7 +25,7 @@ Run Gaussian-process value-function iteration: combine GP function approximation
 
 ## Slides
 
-_(none in this PR)_
+- [`07_GPs_For_DP.pdf`](slides/07_GPs_For_DP.pdf) — ASGP value-function iteration, active subspaces, parallelization, GPs vs DEQNs for solving dynamic models.
 
 ## Notebooks
 

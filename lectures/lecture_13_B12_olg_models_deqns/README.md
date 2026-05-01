@@ -25,7 +25,7 @@ Solve an analytic OLG (overlapping-generations) model with DEQNs and verify life
 
 ## Slides
 
-- [`07_OLG_Models_DEQNs.pdf`](slides/07_OLG_Models_DEQNs.pdf)
+- [`07_OLG_Models_DEQNs.pdf`](slides/07_OLG_Models_DEQNs.pdf) — why OLG, Krueger-Kuebler 2004 analytic 6-cohort model, DEQN architecture and training.
 
 ## Notebooks
 

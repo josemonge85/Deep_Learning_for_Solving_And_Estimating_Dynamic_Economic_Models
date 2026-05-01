@@ -25,7 +25,7 @@ State the Deep Equilibrium Net (DEQN) idea precisely: a policy network whose los
 
 ## Slides
 
-- [`02_DeepEquilibriumNets.pdf`](slides/02_DeepEquilibriumNets.pdf)
+- [`02_DeepEquilibriumNets.pdf`](slides/02_DeepEquilibriumNets.pdf) — heterogeneity, high-dimensional state spaces, abstract DEQN problem formulation.
 
 ## Notebooks
 

@@ -25,7 +25,7 @@ Scale Gaussian processes to higher-dimensional inputs using active subspaces (li
 
 ## Slides
 
-_(none in this PR)_
+- [`07_Bayesian_Active_Learning.pdf`](slides/07_Bayesian_Active_Learning.pdf) — where to sample, BAL algorithm, BAL in economics, BAL + GPs for surrogates.
 
 ## Notebooks
 

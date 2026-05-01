@@ -25,7 +25,7 @@ Fit Gaussian-process regressors and use Bayesian active learning (BAL) to choose
 
 ## Slides
 
-_(none in this PR)_
+- [`07_GP_Regression.pdf`](slides/07_GP_Regression.pdf) — kernels, posterior predictions, hyperparameter learning, deep kernel learning.
 
 ## Notebooks
 

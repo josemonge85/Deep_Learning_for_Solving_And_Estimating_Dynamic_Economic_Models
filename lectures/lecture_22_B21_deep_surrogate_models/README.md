@@ -25,7 +25,7 @@ Build a deep surrogate for an expensive simulator on a controlled test problem a
 
 ## Slides
 
-- [`07_Surrogates_and_GPs.pdf`](slides/07_Surrogates_and_GPs.pdf)
+- [`07_Deep_Surrogate_Models.pdf`](slides/07_Deep_Surrogate_Models.pdf) — pseudo-states, structural estimation, UQ, optimal policy, implied vol surfaces.
 
 ## Notebooks
 

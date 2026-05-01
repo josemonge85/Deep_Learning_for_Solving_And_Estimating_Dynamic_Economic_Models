@@ -25,7 +25,7 @@ Simulate the DICE carbon cycle and temperature dynamics under business-as-usual 
 
 ## Slides
 
-- [`08_Climate_Economics_IAMs.pdf`](slides/08_Climate_Economics_IAMs.pdf)
+- [`08_Climate_Economics_IAMs.pdf`](slides/08_Climate_Economics_IAMs.pdf) — why integrated assessment models, social cost of carbon, DICE / CDICE baseline.
 
 ## Notebooks
 

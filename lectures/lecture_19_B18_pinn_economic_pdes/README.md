@@ -25,7 +25,7 @@ Apply PINNs to economic PDEs: solve the cake-eating HJB with a hard-BC trial sol
 
 ## Slides
 
-_(none in this PR)_
+- [`06_PINN_Economic_PDEs.pdf`](slides/06_PINN_Economic_PDEs.pdf) — soft vs hard boundary conditions, HJB cake-eating, DGM architecture, Black-Scholes pricing.
 
 ## Notebooks
 

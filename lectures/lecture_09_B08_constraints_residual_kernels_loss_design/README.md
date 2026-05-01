@@ -25,7 +25,7 @@ Handle inequality constraints in DEQN training: penalty methods, Fischer-Burmeis
 
 ## Slides
 
-_(none in this PR)_
+- [`02_Constraints_Residual_Kernels.pdf`](slides/02_Constraints_Residual_Kernels.pdf) — hard vs soft constraints, six loss kernels, data parallelism for DEQNs.
 
 ## Notebooks
 

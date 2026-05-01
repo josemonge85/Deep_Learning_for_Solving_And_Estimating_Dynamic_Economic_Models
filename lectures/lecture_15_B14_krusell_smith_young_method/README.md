@@ -25,7 +25,7 @@ Implement Young's (2010) histogram method for stationary distributions in hetero
 
 ## Slides
 
-- [`08_Heterogeneous_Agents_Youngs_Method.pdf`](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)
+- [`08_KrusellSmith_Young.pdf`](slides/08_KrusellSmith_Young.pdf) — heterogeneous agents motivation, the Krusell-Smith insight, Young's non-stochastic distribution updates, traditional KS solution.
 
 ## Notebooks
 

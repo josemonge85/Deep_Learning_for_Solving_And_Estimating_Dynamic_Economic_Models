@@ -25,7 +25,7 @@ Extend the Brock-Mirman DEQN to stochastic productivity. Master the role of quad
 
 ## Slides
 
-_(none in this PR)_
+- [`02_BrockMirman_Uncertainty_Integration.pdf`](slides/02_BrockMirman_Uncertainty_Integration.pdf) — residuals, expectations, Gauss-Hermite and monomial quadrature, training diagnostics.
 
 ## Notebooks
 

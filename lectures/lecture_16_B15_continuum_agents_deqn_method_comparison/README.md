@@ -25,7 +25,7 @@ Solve continuum-of-agents models with a DEQN and compare the result, side by sid
 
 ## Slides
 
-_(none in this PR)_
+- [`08_KrusellSmith_DEQN.pdf`](slides/08_KrusellSmith_DEQN.pdf) — DEQN with histogram encoding, DeepHAM, all-in-one DL, head-to-head method comparison.
 
 ## Notebooks
 

@@ -25,7 +25,7 @@ Build PINNs (physics-informed neural networks) that solve ODEs and PDEs by minim
 
 ## Slides
 
-- [`06_PINNs.pdf`](slides/06_PINNs.pdf)
+- [`06_PINN_Foundations.pdf`](slides/06_PINN_Foundations.pdf) — DEQN vs PINN, automatic differentiation for PDEs, training pipeline, network architecture.
 
 ## Notebooks
 
