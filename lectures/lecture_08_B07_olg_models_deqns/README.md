@@ -4,6 +4,11 @@ Overlapping-generations (OLG) models with DEQNs, at two scales.
 
 `gpu-recommended` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
 
+> 📑 **Slides:** [07_OLG_Models_DEQNs.pdf](slides/07_OLG_Models_DEQNs.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb) (3 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_08_B07.md)  
+> 📖 **Script:** §5.1-5.5 (OLG with DEQNs), §5.6 (Large OLG benchmark)
+
 ## What this lecture covers
 
 - **Cohort structure.** One Euler equation per cohort, stacked into a single Lagrangian primitive; the DEQN training principle does not change.

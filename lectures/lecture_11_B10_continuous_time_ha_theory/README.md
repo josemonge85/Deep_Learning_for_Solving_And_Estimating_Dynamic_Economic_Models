@@ -4,6 +4,10 @@ The continuous-time heterogeneous-agent system, paired with the master equation 
 
 `cpu-light` · `standard` · builds on [Lecture 10 (B09)](../lecture_10_B09_pinns/README.md)
 
+> 📑 **Slides:** [07_CT_Heterogeneous_Agents_Theory.pdf](slides/07_CT_Heterogeneous_Agents_Theory.pdf)  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_11_B10.md)  
+> 📖 **Script:** §8.1-8.6 (HJB, KFE, master equation), §Appendix C (Ito calculus)
+
 ## What this lecture covers
 
 - **The HJB equation.** The individual's value function as a viscosity solution; drift, diffusion, and idiosyncratic shock terms.

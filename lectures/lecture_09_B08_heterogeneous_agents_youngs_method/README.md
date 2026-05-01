@@ -4,6 +4,11 @@ Two complementary methods for stationary distributions in heterogeneous-agent mo
 
 `gpu-recommended` · `long` · builds on [Lecture 08 (B07)](../lecture_08_B07_olg_models_deqns/README.md)
 
+> 📑 **Slides:** [08_Heterogeneous_Agents_Youngs_Method.pdf](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_09_B08_10_Youngs_Method_Examples.ipynb) (3 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_09_B08.md)  
+> 📖 **Script:** §6.1-6.3 (Heterogeneous agents I), §6.4-6.6 (Heterogeneous agents II)
+
 ## What this lecture covers
 
 - **Young's (2010) histogram method.** Discretize the individual state, iterate a transition matrix to its fixed point; the workhorse of the discrete-time HA literature.

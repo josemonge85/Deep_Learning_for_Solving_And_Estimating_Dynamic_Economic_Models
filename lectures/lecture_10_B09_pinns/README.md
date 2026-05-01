@@ -4,6 +4,11 @@ Physics-Informed Neural Networks (PINNs) solve differential equations by minimiz
 
 `cpu-standard` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
 
+> 📑 **Slides:** [06_PINNs.pdf](slides/06_PINNs.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb) (5 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_10_B09.md)  
+> 📖 **Script:** §7.1-7.4 (PINN foundations), §7.5-7.9 (Economic PDEs (HJB, Black-Scholes))
+
 ## What this lecture covers
 
 - **The PINN loss.** Differentiate the network output with autodiff, plug into the ODE/PDE residual, sum the squared residuals on collocation points.

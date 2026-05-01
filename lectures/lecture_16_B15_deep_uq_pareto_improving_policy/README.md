@@ -4,6 +4,10 @@ Stochastic IAMs depend on parameters whose true values are deeply uncertain. Plu
 
 `gpu-recommended` · `long` · builds on [Lecture 15 (B14)](../lecture_15_B14_climate_economics_iams/README.md)
 
+> 📑 **Slides:** [09_Deep_UQ_and_Optimal_Policies.pdf](slides/09_Deep_UQ_and_Optimal_Policies.pdf)  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_16_B15.md)  
+> 📖 **Script:** §11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy)
+
 ## What this lecture covers
 
 - **The deep-uncertainty problem.** Why equilibrium climate sensitivity, damage curvature, and intertemporal-substitution elasticity cannot be averaged out before optimization.

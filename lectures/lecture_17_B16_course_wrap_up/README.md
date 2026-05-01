@@ -4,6 +4,10 @@ Synthesis of the course: when to choose which method, and where the literature i
 
 `cpu-light` · `short` · builds on [Lecture 16 (B15)](../lecture_16_B15_deep_uq_pareto_improving_policy/README.md)
 
+> 📑 **Slides:** [10_Wrap_Up.pdf](slides/10_Wrap_Up.pdf)  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_17_B16.md)  
+> 📖 **Script:** §Chapter 12 (Synthesis and method choice), §Appendix A (Glossary), §Appendix D (Fixed points and Bellman)
+
 ## What this lecture covers
 
 - **Method-choice matrix.** DEQN vs PINN vs surrogate-plus-GP vs deep UQ, indexed by state dimensionality, smoothness, presence of constraints, and need for uncertainty quantification.

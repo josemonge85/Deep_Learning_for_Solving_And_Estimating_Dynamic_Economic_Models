@@ -4,6 +4,10 @@ A self-paced primer in Python and Jupyter that brings readers without prior Pyth
 
 `cpu-light` · `short`
 
+> 📓 **Notebooks:** [start here](code/jupyter_intro.ipynb) (12 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_01_B00.md)  
+> 📖 **Script:** §Preface (Preface), §How to Read (How to Read This Script), §Notation (Notation and Symbols), §Execution Map (Execution Map), §Appendix E (Reproducibility Information)
+
 ## What this lecture covers
 
 - **Jupyter notebooks.** What a notebook is, how cells work, how to run code interactively in a browser.

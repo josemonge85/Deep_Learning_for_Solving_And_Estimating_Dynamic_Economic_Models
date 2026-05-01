@@ -4,6 +4,11 @@ The automatic-differentiation machinery that DEQN training depends on, made expl
 
 `cpu-standard` · `standard` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
+> 📑 **Slides:** [05b_AutoDiff_for_DEQN.pdf](slides/05b_AutoDiff_for_DEQN.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb) (4 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_06_B05.md)  
+> 📖 **Script:** §2.7 (Automatic differentiation), §Appendix B (Matrix calculus)
+
 ## What this lecture covers
 
 - **Lagrangian primitives.** Deriving a single per-agent primitive Π whose partial derivatives give every Euler-equation residual.

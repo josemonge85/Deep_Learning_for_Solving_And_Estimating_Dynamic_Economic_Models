@@ -4,6 +4,11 @@ Two of the main hyperparameter-engineering tasks for DEQN training in practice: 
 
 `gpu-recommended` · `long` · builds on [Lecture 04 (B03)](../lecture_04_B03_irbc_with_deqns/README.md)
 
+> 📑 **Slides:** [04_Neural_Architecture_Search.pdf](slides/04_Neural_Architecture_Search.pdf) and 1 more under [`slides/`](slides/)  
+> 📓 **Notebooks:** [start here](code/lecture_05_B04_02_NAS_Random_Search_10D.ipynb) (4 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_05_B04.md)  
+> 📖 **Script:** §Chapter 4 (Neural architecture search and loss normalization)
+
 ## What this lecture covers
 
 - **Neural architecture search.** Random search and Hyperband (successive halving), implemented from scratch in pure Python.

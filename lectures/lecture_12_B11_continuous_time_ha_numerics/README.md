@@ -4,6 +4,11 @@ Two methods to solve the HJB-KFE system numerically: a finite-difference scheme 
 
 `gpu-recommended` · `long` · builds on [Lecture 11 (B10)](../lecture_11_B10_continuous_time_ha_theory/README.md)
 
+> 📑 **Slides:** [08_CT_Heterogeneous_Agents_Numerical.pdf](slides/08_CT_Heterogeneous_Agents_Numerical.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb) (4 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_12_B11.md)  
+> 📖 **Script:** §8.7 (Numerical methods for CT-HA)
+
 ## What this lecture covers
 
 - **Upwind finite-difference.** The Achdou-Han-Lasry-Lions-Moll scheme for HJB on a state grid, paired with the KFE solver on the same grid.

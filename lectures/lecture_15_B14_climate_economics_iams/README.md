@@ -4,6 +4,11 @@ Integrated assessment models (IAMs), the canonical climate-economy framework: DI
 
 `gpu-recommended` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
 
+> 📑 **Slides:** [08_Climate_Economics_IAMs.pdf](slides/08_Climate_Economics_IAMs.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_15_B14_01_Climate_Exercise.ipynb) (3 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_15_B14.md)  
+> 📖 **Script:** §11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs)
+
 ## What this lecture covers
 
 - **The IAM building blocks.** A macro-growth block, a carbon cycle, temperature dynamics, and a damage function that ties climate back to output.

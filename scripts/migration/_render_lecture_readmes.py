@@ -319,6 +319,43 @@ def render_bullets(items: list[str]) -> str:
     return "\n".join(f"- {x}" for x in items) if items else "_pending_"
 
 
+def render_agenda(folder_abs: Path, slides: list[Path], code_files: list[Path],
+                  num: str, block: str, script_md: str) -> str:
+    """Compact 'at a glance' callout with one-click links to all materials."""
+    pdfs = [s for s in slides if s.suffix == ".pdf"]
+    notebooks = [c for c in code_files if c.suffix == ".ipynb"]
+
+    if pdfs:
+        slides_link = (
+            f"[{pdfs[0].name}]({pdfs[0].relative_to(folder_abs).as_posix()})"
+            if len(pdfs) == 1
+            else f"[{pdfs[0].name}]({pdfs[0].relative_to(folder_abs).as_posix()}) "
+                 f"and {len(pdfs) - 1} more under [`slides/`](slides/)"
+        )
+        slides_part = f"📑 **Slides:** {slides_link}"
+    else:
+        slides_part = None
+
+    if notebooks:
+        first = notebooks[0]
+        link = f"[start here]({first.relative_to(folder_abs).as_posix()})"
+        if len(notebooks) > 1:
+            nb_part = f"📓 **Notebooks:** {link} ({len(notebooks)} in [`code/`](code/))"
+        else:
+            nb_part = f"📓 **Notebook:** {link}"
+    else:
+        nb_part = None
+
+    reading_part = (
+        f"📚 **Further reading:** "
+        f"[curated list](../../readings/links_by_lecture/lecture_{num}_{block}.md)"
+    )
+    script_part = f"📖 **Script:** {script_md}"
+
+    parts = [p for p in (slides_part, nb_part, reading_part, script_part) if p]
+    return "> " + "  \n> ".join(parts)
+
+
 def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
     num = f"{lec['lecture']:02d}"
     block = lec["block"]
@@ -355,6 +392,7 @@ def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
 
     content = CONTENT.get(block, {"opener": "_pending_", "covers": [], "objectives": []})
     script_md = script_ref(lec.get("script") or [])
+    agenda = render_agenda(folder_abs, slides, code_files, num, block, script_md)
 
     sections = [
         f"# Lecture {num} ({block}): {title}",
@@ -362,6 +400,8 @@ def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
         content["opener"],
         "",
         meta,
+        "",
+        agenda,
         "",
         "## What this lecture covers",
         "",

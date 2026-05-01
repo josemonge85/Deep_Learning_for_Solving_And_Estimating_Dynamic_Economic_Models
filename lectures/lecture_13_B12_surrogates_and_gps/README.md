@@ -4,6 +4,11 @@ A toolkit of cheap, differentiable approximations for expensive simulators: deep
 
 `gpu-recommended` · `long` · builds on [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md)
 
+> 📑 **Slides:** [07_Surrogates_and_GPs.pdf](slides/07_Surrogates_and_GPs.pdf) and 1 more under [`slides/`](slides/)  
+> 📓 **Notebooks:** [start here](code/lecture_13_B12_01_Surrogate_Primer.ipynb) (9 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_13_B12.md)  
+> 📖 **Script:** §9.1-9.2 (Deep surrogates), §9.3-9.6 (GPs and Bayesian active learning), §9.7 (Active subspaces), §9.8 (GP value-function iteration), §9.9 (Deep kernels), §9.10 (GPs among Bayesian cousins)
+
 ## What this lecture covers
 
 - **Deep surrogate models.** A neural network trained on simulator input-output pairs; when the surrogate pays for itself over direct simulation.

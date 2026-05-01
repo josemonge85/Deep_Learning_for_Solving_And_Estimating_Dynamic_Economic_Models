@@ -4,6 +4,11 @@ The working knowledge of deep learning that the rest of the course assumes, with
 
 `cpu-standard` · `long` · builds on [Lecture 01 (B00)](../lecture_01_B00_python_primer/README.md)
 
+> 📑 **Slides:** [01_Intro_to_DeepLearning.pdf](slides/01_Intro_to_DeepLearning.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_02_B01_01_BasicML_intro.ipynb) (9 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_02_B01.md)  
+> 📖 **Script:** §1.1-1.4 (Foundations and function approximation), §1.5-1.9 (Optimization, depth, and regularization), §1.10-1.11 (Generalization, sequence models)
+
 ## What this lecture covers
 
 - **Classical ML and the bias-variance trade-off.** Linear regression, classification, and unsupervised learning as a foundation for everything that follows.

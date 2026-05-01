@@ -4,6 +4,11 @@ The central method of the course. **Deep Equilibrium Nets (DEQNs)** parameterize
 
 `cpu-standard` · `long` · builds on [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md)
 
+> 📑 **Slides:** [02_DeepEquilibriumNets.pdf](slides/02_DeepEquilibriumNets.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb) (5 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_03_B02.md)  
+> 📖 **Script:** §2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.4, 2.9 (Constraints and residual kernels)
+
 ## What this lecture covers
 
 - **The DEQN principle.** Why minimizing the squared norm of equilibrium residuals on a simulated state distribution recovers the policy, and how this differs from projection, value-function iteration, and perturbation.

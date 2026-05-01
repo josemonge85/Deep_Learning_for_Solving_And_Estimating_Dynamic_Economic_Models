@@ -4,6 +4,11 @@ Structural estimation by simulated method of moments (SMM), made tractable by re
 
 `cpu-standard` · `long` · builds on [Lecture 13 (B12)](../lecture_13_B12_surrogates_and_gps/README.md)
 
+> 📑 **Slides:** [08_Exercise_Structural_Estimation.pdf](slides/08_Exercise_Structural_Estimation.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_14_B13_03_Structural_Estimation_BM.ipynb) (2 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_14_B13.md)  
+> 📖 **Script:** §Chapter 10 (Structural estimation via SMM)
+
 ## What this lecture covers
 
 - **SMM in one slide.** The moment-matching condition, the asymptotic distribution of the estimator, and the role of the weighting matrix.

@@ -4,6 +4,11 @@ A modern DEQN variant where the policy reads a long shock history instead of a c
 
 `gpu-recommended` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
 
+> 📑 **Slides:** [06_SequenceSpace_DEQNs.pdf](slides/06_SequenceSpace_DEQNs.pdf)  
+> 📓 **Notebooks:** [start here](code/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb) (4 in [`code/`](code/))  
+> 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_07_B06.md)  
+> 📖 **Script:** §6.7 (Sequence-space DEQNs)
+
 ## What this lecture covers
 
 - **The sequence-space idea.** Replace the high-dimensional state with the last ~80 shock realizations; the network learns the residual map directly.
