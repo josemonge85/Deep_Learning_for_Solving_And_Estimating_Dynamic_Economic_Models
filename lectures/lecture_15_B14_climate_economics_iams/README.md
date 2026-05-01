@@ -1,8 +1,25 @@
 # Lecture 15 (B14): Climate economics and integrated assessment models
 
-Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario, then solve deterministic CDICE with a DEQN and verify against the production-code reference. Extend to stochastic CDICE with AR(1) productivity shocks using Gauss-Hermite quadrature for conditional expectations.
+Integrated assessment models (IAMs), the canonical climate-economy framework: DICE and CDICE.
 
 `gpu-recommended` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
+
+## What this lecture covers
+
+- **The IAM building blocks.** A macro-growth block, a carbon cycle, temperature dynamics, and a damage function that ties climate back to output.
+- **DICE and CDICE.** The Nordhaus DICE benchmark and the calibrated CDICE extension (Folini et al. 2024).
+- **Carbon-cycle simulation.** Business-as-usual and a mitigation scenario; reading off the social cost of carbon.
+- **Deterministic CDICE-DEQN.** Solve CDICE with a DEQN and verify against the production-code reference.
+- **Stochastic CDICE-DEQN.** Add AR(1) productivity shocks and use Gauss-Hermite quadrature for the conditional expectations.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario.
+- Read off the social cost of carbon and connect IAM building blocks to climate science.
+- Solve deterministic CDICE with a DEQN and verify against the reference.
+- Extend to stochastic CDICE with AR(1) productivity shocks.
 
 ## Slides
 
@@ -18,10 +35,6 @@ Simulate the DICE carbon cycle and temperature dynamics under business-as-usual 
 ## In the lecture script
 
 §11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Simulate the DICE carbon cycle and temperature dynamics, then solve deterministic CDICE with a DEQN.
 
 ## Readings
 

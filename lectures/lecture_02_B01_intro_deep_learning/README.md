@@ -1,8 +1,26 @@
 # Lecture 02 (B01): Introduction to deep learning
 
-Build the working knowledge of deep learning that the rest of the course assumes: classical ML and the bias-variance trade-off; SGD and its variants; depth, width, and double descent; sequence models from MLPs through LSTMs to small Transformers, applied to economic time-series patterns. By the end you have built and trained models in both TensorFlow and PyTorch, and you can read the rest of the course's notebooks fluently.
+The working knowledge of deep learning that the rest of the course assumes, with economics-flavoured worked examples throughout.
 
 `cpu-standard` · `long` · builds on [Lecture 01 (B00)](../lecture_01_B00_orientation_setup_reproducibility/README.md)
+
+## What this lecture covers
+
+- **Classical ML and the bias-variance trade-off.** Linear regression, classification, and unsupervised learning as a foundation for everything that follows.
+- **Stochastic gradient descent.** SGD, mini-batches, momentum, and adaptive variants (Adam, RMSProp); when each one is the right default.
+- **Deep neural networks.** Depth, width, activation choices, and the **double-descent** phenomenon on a controlled synthetic example.
+- **Sequence models.** MLPs, LSTMs, and small Transformers compared on Edgeworth-cycle data, exposing the **memory ladder** of architectures.
+- **Tooling.** TensorFlow and PyTorch side by side, plus TensorBoard for instrumenting a training run.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Implement SGD by hand and explain mini-batch, momentum, and adaptive variants.
+- Train an MLP and a deep neural network end-to-end in TensorFlow and in PyTorch.
+- Reproduce double descent on a controlled synthetic problem.
+- Compare MLP, LSTM, and small-Transformer architectures on Edgeworth-cycle data and read off the memory ladder.
+- Use TensorBoard to instrument a training run.
 
 ## Slides
 
@@ -25,10 +43,6 @@ Build the working knowledge of deep learning that the rest of the course assumes
 ## In the lecture script
 
 §1.1-1.4 (Foundations and function approximation), §1.5-1.9 (Optimization, depth, and regularization), §1.10-1.11 (Generalization, sequence models). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Train an MLP, an LSTM, and a small Transformer on Edgeworth cycles, and read off the memory ladder.
 
 ## Readings
 

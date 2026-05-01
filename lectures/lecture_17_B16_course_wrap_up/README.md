@@ -1,8 +1,23 @@
 # Lecture 17 (B16): Course wrap-up
 
-Synthesize the course: when is DEQN the right choice, when do you reach for PINNs, when does a surrogate-plus-GP combination win? Map each method to its sweet-spot problem class and articulate the trade-offs.
+Synthesis of the course: when to choose which method, and where the literature is moving.
 
 `cpu-light` · `short` · builds on [Lecture 16 (B15)](../lecture_16_B15_deep_uq_pareto_improving_policy/README.md)
+
+## What this lecture covers
+
+- **Method-choice matrix.** DEQN vs PINN vs surrogate-plus-GP vs deep UQ, indexed by state dimensionality, smoothness, presence of constraints, and need for uncertainty quantification.
+- **The trade-offs.** Compute, sample efficiency, interpretability, and what each method gives up to scale.
+- **Open frontiers.** Active subspaces in higher dimensions; sequence-space architectures for HA; deep-UQ at the frontier of climate-economic policy.
+- **Where to go next.** Pointers into the script's bibliography for further self-study.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Articulate when to choose DEQN, PINN, GP, or surrogate methods for a new problem.
+- Explain the trade-offs each method faces (compute, smoothness, dimensionality, uncertainty quantification).
+- Identify research frontiers and open problems in computational and quantitative economics.
 
 ## Slides
 
@@ -16,10 +31,6 @@ _(none)_
 ## In the lecture script
 
 §Chapter 12 (Synthesis and method choice), §Appendix A (Glossary), §Appendix D (Fixed points and Bellman). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Articulate when to choose DEQN, PINN, or GP/surrogate methods for a new problem and justify the trade-offs.
 
 ## Readings
 

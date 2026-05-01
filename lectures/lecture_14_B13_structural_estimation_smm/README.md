@@ -1,8 +1,25 @@
 # Lecture 14 (B13): Structural estimation via SMM
 
-Estimate structural parameters by simulated method of moments (SMM) on top of a deep surrogate. Run both single-parameter (rho) and joint (beta, rho) Brock-Mirman estimations, and report identification diagnostics.
+Structural estimation by simulated method of moments (SMM), made tractable by replacing the inner-loop model solve with a deep surrogate.
 
 `cpu-standard` · `long` · builds on [Lecture 13 (B12)](../lecture_13_B12_surrogates_and_gps/README.md)
+
+## What this lecture covers
+
+- **SMM in one slide.** The moment-matching condition, the asymptotic distribution of the estimator, and the role of the weighting matrix.
+- **Surrogate-based estimation.** Why the surrogate makes a brutal repeated re-solve into a cheap optimization.
+- **Single-parameter Brock-Mirman.** Estimating the productivity persistence rho on a deep surrogate of the model.
+- **Joint estimation.** Estimating (beta, rho) together; identification diagnostics, Jacobian rank, and asymptotic standard errors.
+- **Sensitivity to the surrogate.** What happens to the estimator when the surrogate is wrong; switching to a GP for comparison.
+
+## Learning objectives
+
+After this lecture you can:
+
+- State the SMM moment condition and the asymptotic distribution of the estimator.
+- Run a single-parameter SMM (rho) on a deep surrogate of Brock-Mirman.
+- Run a joint (beta, rho) SMM and read off identification diagnostics.
+- Replace the surrogate with a GP and compare estimation behavior.
 
 ## Slides
 
@@ -17,10 +34,6 @@ Estimate structural parameters by simulated method of moments (SMM) on top of a 
 ## In the lecture script
 
 §Chapter 10 (Structural estimation via SMM). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Estimate rho, then jointly (beta, rho), in Brock-Mirman via SMM with a deep surrogate.
 
 ## Readings
 

@@ -1,8 +1,25 @@
 # Lecture 12 (B11): Continuous-time heterogeneous agents, numerics
 
-Solve continuous-time Aiyagari with two methods, a finite-difference scheme on a state grid and a PINN, then compare the resulting consumption policies and stationary distributions. Build a PINN for the coupled HJB + KFE system from scratch in the exercise notebook.
+Two methods to solve the HJB-KFE system numerically: a finite-difference scheme on a grid, and a PINN.
 
 `gpu-recommended` · `long` · builds on [Lecture 11 (B10)](../lecture_11_B10_continuous_time_ha_theory/README.md)
+
+## What this lecture covers
+
+- **Upwind finite-difference.** The Achdou-Han-Lasry-Lions-Moll scheme for HJB on a state grid, paired with the KFE solver on the same grid.
+- **Continuous-time Aiyagari.** The running example for both methods.
+- **A PINN for the coupled system.** Built from scratch; both equations as residual losses on shared collocation points.
+- **Side-by-side comparison.** Consumption policies and stationary distributions across the two methods.
+- **Method choice.** When to reach for finite-difference vs PINN as state dimensionality grows.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Implement an upwind finite-difference solver for the Aiyagari HJB-KFE system.
+- Build a PINN for the coupled HJB-KFE system from scratch.
+- Compare consumption policies and stationary distributions across the two methods.
+- Diagnose convergence on each method and choose between them for a new problem.
 
 ## Slides
 
@@ -19,10 +36,6 @@ Solve continuous-time Aiyagari with two methods, a finite-difference scheme on a
 ## In the lecture script
 
 §8.7 (Numerical methods for CT-HA). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Solve continuous-time Aiyagari via finite differences and PINN, and compare distributions.
 
 ## Readings
 

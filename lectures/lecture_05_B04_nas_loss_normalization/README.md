@@ -1,8 +1,24 @@
 # Lecture 05 (B04): Architecture search and loss balancing
 
-Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.
+Two of the main hyperparameter-engineering tasks for DEQN training in practice: choosing an architecture, and balancing the multi-component residual loss.
 
 `gpu-recommended` · `long` · builds on [Lecture 04 (B03)](../lecture_04_B03_irbc_with_deqns/README.md)
+
+## What this lecture covers
+
+- **Neural architecture search.** Random search and Hyperband (successive halving), implemented from scratch in pure Python.
+- **A 10-D NAS problem.** Searching over depth, width, activation, and learning-rate decay on a DEQN benchmark.
+- **Loss balancing.** Why different equilibrium equations on different scales kill training, and how to fix it.
+- **Three balancing schemes.** ReLoBRaLo, SoftAdapt, and GradNorm compared head-to-head on the same multi-residual run.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Implement random search and Hyperband in pure Python.
+- Run a 10-D NAS sweep on a DEQN problem and read off the winning architecture.
+- Compute ReLoBRaLo loss weights by hand on a small example.
+- Compare ReLoBRaLo, SoftAdapt, and GradNorm on a shared multi-residual training run.
 
 ## Slides
 
@@ -44,10 +60,6 @@ Run neural-architecture search and loss balancing systematically. Implement rand
 ## In the lecture script
 
 §Chapter 4 (Neural architecture search and loss normalization). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Run random search on a 10-D NAS problem and compare ReLoBRaLo, SoftAdapt, and GradNorm.
 
 ## Readings
 

@@ -1,8 +1,25 @@
 # Lecture 07 (B06): Sequence-space DEQNs
 
-Train sequence-space DEQNs that use a long shock history (~80 steps) instead of the current-state vector as input. Reproduce the Brock-Mirman warm-up and the Krusell-Smith benchmark in sequence space, and understand why the sequence-space template generalizes to multi-equation systems with multiple shock channels.
+A modern DEQN variant where the policy reads a long shock history instead of a current-state vector. Following Azinovic-Yang-Žemlička (2025).
 
 `gpu-recommended` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
+
+## What this lecture covers
+
+- **The sequence-space idea.** Replace the high-dimensional state with the last ~80 shock realizations; the network learns the residual map directly.
+- **Why it generalizes.** The same template handles multi-equation systems with multiple shock channels without re-engineering the input.
+- **Brock-Mirman warm-up.** Sequence-space DEQN with an 80-step shock history; verify the policy.
+- **Krusell-Smith benchmark.** The same template on the canonical heterogeneous-agent benchmark.
+- **Self-study extensions.** Multi-country IRBC and a borrowed JAX tutorial port (`KrusellSmith_Tutorial_CPU.ipynb`).
+
+## Learning objectives
+
+After this lecture you can:
+
+- Build the shock-history input pipeline for a sequence-space DEQN.
+- Train a sequence-space DEQN on Brock-Mirman with an 80-step shock history and verify the policy.
+- Extend the same template to Krusell-Smith.
+- Explain why sequence-space DEQNs handle multi-shock systems gracefully.
 
 ## Slides
 
@@ -19,10 +36,6 @@ Train sequence-space DEQNs that use a long shock history (~80 steps) instead of 
 ## In the lecture script
 
 §6.7 (Sequence-space DEQNs). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Train a sequence-space DEQN on Brock-Mirman with an 80-step shock history.
 
 ## Readings
 

@@ -1,8 +1,24 @@
 # Lecture 11 (B10): Continuous-time heterogeneous agents, theory
 
-State the continuous-time heterogeneous-agent system (HJB + Kolmogorov-forward) and connect each operator to its discrete-time analog. Understand the role of Ito calculus, ergodicity, and the master equation in the modern continuous-time HA literature.
+The continuous-time heterogeneous-agent system, paired with the master equation that closes it in general equilibrium.
 
 `cpu-light` · `standard` · builds on [Lecture 10 (B09)](../lecture_10_B09_pinns/README.md)
+
+## What this lecture covers
+
+- **The HJB equation.** The individual's value function as a viscosity solution; drift, diffusion, and idiosyncratic shock terms.
+- **The Kolmogorov forward equation.** Cross-sectional distribution dynamics and the stationary distribution.
+- **Aiyagari in continuous time.** The canonical example, mapped to its discrete-time analog operator by operator.
+- **Ito calculus essentials.** What you need from stochastic differential equations to read the rest of the lecture.
+- **The master equation.** Closing the system in general equilibrium and connecting to the modern continuous-time HA literature.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Write the HJB-KFE system for the Aiyagari model.
+- Identify each operator's role (drift, diffusion, idiosyncratic shock, distribution update).
+- State the master equation and its place in the modern HA literature.
 
 ## Slides
 
@@ -16,10 +32,6 @@ _(none)_
 ## In the lecture script
 
 §8.1-8.6 (HJB, KFE, master equation), §Appendix C (Ito calculus). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Write the HJB-KFE system for the Aiyagari model and identify each operator's role.
 
 ## Readings
 

@@ -1,8 +1,26 @@
 # Lecture 10 (B09): Physics-informed neural networks
 
-Build PINNs (physics-informed neural networks) that solve ODEs and economic PDEs by minimizing the PDE residual on collocation points. Distinguish soft and hard boundary-condition parametrizations, solve a 2-D Poisson PDE, then apply the same template to the cake-eating HJB and to Black-Scholes option pricing.
+Physics-Informed Neural Networks (PINNs) solve differential equations by minimizing the equation residual on collocation points.
 
 `cpu-standard` · `long` · builds on [Lecture 06 (B05)](../lecture_06_B05_autodiff_for_deqns/README.md)
+
+## What this lecture covers
+
+- **The PINN loss.** Differentiate the network output with autodiff, plug into the ODE/PDE residual, sum the squared residuals on collocation points.
+- **Boundary conditions.** Soft (penalty in the loss) versus hard (trial solution that satisfies BCs by construction); when to use each.
+- **A worked PDE.** A 2-D Poisson PDE solved end-to-end with a PINN.
+- **Two economic applications.** The cake-eating Hamilton-Jacobi-Bellman equation with hard BCs, and Black-Scholes option pricing.
+- **Optimization tricks.** Adam-then-L-BFGS schedules and FP64 for sharp PINN solutions.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Write the PINN loss for a given ODE or PDE.
+- Distinguish soft and hard boundary-condition parametrizations and choose between them.
+- Solve a 2-D Poisson PDE with a PINN.
+- Solve the cake-eating HJB with a hard-BC trial solution.
+- Price a European call option with a Black-Scholes PINN.
 
 ## Slides
 
@@ -20,10 +38,6 @@ Build PINNs (physics-informed neural networks) that solve ODEs and economic PDEs
 ## In the lecture script
 
 §7.1-7.4 (PINN foundations), §7.5-7.9 (Economic PDEs (HJB, Black-Scholes)). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Solve a 2-D Poisson PDE with a PINN; price a European call via Black-Scholes PINN.
 
 ## Readings
 

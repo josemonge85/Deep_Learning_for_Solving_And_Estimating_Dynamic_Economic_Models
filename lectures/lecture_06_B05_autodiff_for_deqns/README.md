@@ -1,8 +1,25 @@
 # Lecture 06 (B05): Automatic differentiation for DEQNs
 
-Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian primitive analytically and recover its gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation. Cross-check the autodiff residual against a hand-derived residual to machine precision.
+The automatic-differentiation machinery that DEQN training depends on, made explicit.
 
 `cpu-standard` · `standard` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
+
+## What this lecture covers
+
+- **Lagrangian primitives.** Deriving a single per-agent primitive Π whose partial derivatives give every Euler-equation residual.
+- **Two-tape autodiff.** Recovering each gradient with two `tf.GradientTape` (or equivalent) calls per Euler equation.
+- **Cross-checking.** A machine-precision comparison of autodiff residuals against hand-derived residuals on Brock-Mirman.
+- **Lifting to IRBC.** Applying the same template to the multi-country setup of the previous lecture.
+- **Common pitfalls.** Graph mode vs eager, dtype, in-place ops, and what to do when gradients silently disappear.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Derive a Lagrangian primitive analytically for a small recursive problem.
+- Implement a two-tape autodiff Euler residual and verify it against the closed-form derivative.
+- Apply the same template to deterministic and stochastic Brock-Mirman, and to multi-country IRBC.
+- Diagnose autodiff numerical issues (graph mode vs eager, dtype, in-place ops).
 
 ## Slides
 
@@ -19,10 +36,6 @@ Master the autodiff machinery that DEQN training depends on. Derive a Lagrangian
 ## In the lecture script
 
 §2.7 (Automatic differentiation), §Appendix B (Matrix calculus). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Derive a Lagrangian primitive analytically and recover its gradient via two-tape autodiff.
 
 ## Readings
 

@@ -1,8 +1,24 @@
 # Lecture 04 (B03): IRBC with DEQNs
 
-Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.
+The first large-scale nonlinear DSGE application of DEQNs.
 
 `gpu-recommended` · `long` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
+
+## What this lecture covers
+
+- **The IRBC model.** N symmetric countries with capital, country-specific productivity shocks, and risk-sharing through a complete bond market; equilibrium is N Euler equations plus a world resource constraint.
+- **Why DEQNs scale here.** The state space is 2N-dimensional; classical methods scale poorly with N, DEQNs do not.
+- **Solution and validation.** Train the DEQN, recover the symmetric steady state, and validate the policy via Euler-equation residuals along a simulated path.
+- **Comparative statics.** Read off the effect of a parameter change (e.g. doubling depreciation) directly from the trained policy.
+
+## Learning objectives
+
+After this lecture you can:
+
+- Set up the IRBC residual loss on a simulated state distribution.
+- Train an N-country IRBC DEQN and recover the symmetric steady state.
+- Run a comparative-statics exercise and read the result from the trained policy.
+- Report Euler-equation residuals as a diagnostic across the simulated state distribution.
 
 ## Slides
 
@@ -39,10 +55,6 @@ Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs.
 ## In the lecture script
 
 §Chapter 3 (International real business cycle). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
-
-## By the end you should
-
-Train an N-country IRBC DEQN and reproduce the symmetric steady state.
 
 ## Readings
 
