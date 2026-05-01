@@ -6,18 +6,25 @@
 
 <br/>
 
-> **Welcome.** This is a free, self-paced graduate course for PhD
-> students and researchers in **computational and quantitative
-> economics and finance** who want to use modern deep learning to
-> solve and estimate the kinds of dynamic stochastic models that
-> appear in macro, finance, and climate economics.
->
-> Everything you need is in this repository: a textbook-length
-> [lecture script](lecture_script/lecture_script.pdf), 17 paired
-> lectures (slides, runnable Jupyter notebooks, exercises), a
-> 3-module toolkit on using AI coding agents as research partners,
-> and a curated bibliography. Work through it in your own order, at
-> your own pace.
+**Hi, and welcome.** If you work on the kind of dynamic stochastic
+models that show up in macro, asset pricing, or climate economics, and
+you want to actually *use* modern deep learning on them rather than
+read another survey about it, this course is for you. It is free,
+self-paced, and built to be worked through with your own laptop open.
+
+Everything you need is right here in this repository:
+
+- a textbook-length [companion script](lecture_script/lecture_script.pdf) you can read end-to-end,
+- **17 paired lectures** with slides, runnable Jupyter notebooks, and exercises,
+- a **3-module toolkit** on using AI coding agents as research partners,
+- and a curated bibliography linking out to the underlying papers.
+
+Pick the lecture you actually need, run the notebooks, work the
+exercises. There is no enrollment, no cohort, no deadline. Just dig in.
+
+> 🚀 **Start here →** [Lecture 02, intro to deep learning](lectures/lecture_02_B01_intro_deep_learning/README.md)
+> &nbsp;·&nbsp; new to Python? begin with the [Python primer](lectures/lecture_01_B00_python_primer/README.md)
+> &nbsp;·&nbsp; want the panoramic view? open [`COURSE_MAP.md`](COURSE_MAP.md)
 
 ## What you will learn
 
@@ -83,7 +90,7 @@ active learning, and run global sensitivity analysis (Sobol, Shapley
 effects) to localize where the policy is actually sensitive to which
 parameters. On top of that surrogate we then **design constrained
 Pareto-improving carbon-tax policies**: tax paths that, for every
-realisation of the deep uncertainty (or every cohort, or every
+realization of the deep uncertainty (or every cohort, or every
 generation), leave no agent worse off than the business-as-usual
 baseline while strictly improving welfare for at least one. This turns
 "what should the carbon tax be?" from a single number computed under a
@@ -105,18 +112,19 @@ the exercise handout that ties both together.
 
 ## How to use this course
 
-Pick whichever entry point fits your goal:
+Different readers come in with different goals, so pick the entry point
+that fits yours:
 
-- 🚀 **I want a guided start.** Open
-  [Lecture 01](lectures/lecture_01_B00_orientation_setup_reproducibility/README.md)
-  and follow the **Complete path** in [`COURSE_MAP.md`](COURSE_MAP.md).
-  This walks through all 17 lectures and weaves in the toolkits at
-  their natural insertion points.
-- 🎯 **I have a specific topic in mind.** Use the **topic index**
-  below to jump straight to the relevant block.
+- 🚀 **I want a guided start.** Open the
+  [Python primer (Lecture 01)](lectures/lecture_01_B00_python_primer/README.md)
+  if you need it, then follow the **Complete path** in
+  [`COURSE_MAP.md`](COURSE_MAP.md). It walks through all 17 lectures and
+  weaves in the toolkits at their natural insertion points.
+- 🎯 **I have a specific topic in mind.** Jump straight to the
+  **topic index** below.
 - 🧪 **I want the research-workflow training first.** Start with the
   [agentic-programming toolkit](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md),
-  then return to the lecture sequence.
+  then come back to the lecture sequence.
 - 📖 **I want a textbook.** Read the chapter-based
   [companion script](lecture_script/lecture_script.pdf); each chapter
   links to one or more lectures via
