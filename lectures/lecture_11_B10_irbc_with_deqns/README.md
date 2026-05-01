@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.
 
 ## Prerequisites
 

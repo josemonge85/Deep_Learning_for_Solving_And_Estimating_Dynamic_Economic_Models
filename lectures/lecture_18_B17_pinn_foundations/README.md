@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Build PINNs (physics-informed neural networks) that solve ODEs and PDEs by minimizing the PDE residual on collocation points. Distinguish soft and hard boundary-condition parametrizations and choose between them. Solve a 2-D Poisson PDE end-to-end.
 
 ## Prerequisites
 

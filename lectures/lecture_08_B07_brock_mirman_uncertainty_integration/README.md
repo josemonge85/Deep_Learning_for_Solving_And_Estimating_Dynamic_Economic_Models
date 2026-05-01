@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Extend the Brock-Mirman DEQN to stochastic productivity. Master the role of quadrature for conditional expectations: choose between Gauss-Hermite, Monte Carlo, and sparse alternatives, and compare their accuracy and per-step cost.
 
 ## Prerequisites
 

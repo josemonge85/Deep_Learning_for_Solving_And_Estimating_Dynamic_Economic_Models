@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Articulate why neural networks are useful for solving and estimating dynamic stochastic models — what they buy you over projection, perturbation, value-function iteration, and other classical methods — and connect the bias-variance trade-off to function-approximation choices in economics.
 
 ## Prerequisites
 

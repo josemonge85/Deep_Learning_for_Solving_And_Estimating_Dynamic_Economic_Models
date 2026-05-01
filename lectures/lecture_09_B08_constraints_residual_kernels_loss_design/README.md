@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Handle inequality constraints in DEQN training: penalty methods, Fischer-Burmeister complementarity, and residual-kernel weighting. Build intuition for which loss-balancing approach helps when training stalls because of constraint violations.
 
 ## Prerequisites
 

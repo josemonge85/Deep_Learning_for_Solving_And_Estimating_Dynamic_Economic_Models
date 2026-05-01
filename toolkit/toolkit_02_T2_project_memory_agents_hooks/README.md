@@ -5,6 +5,10 @@ CLAUDE.md project memory, custom skills (e.g. `econometrics-reviewer`,
 `monte-carlo-designer`, `backtest-validator`), subagents, hooks, and
 data-to-paper pipelines.
 
+## Learning goal
+
+Author the operational furniture that makes agentic research-coding sustainable for real projects: a project-memory `CLAUDE.md`, custom skills (e.g. an econometrics or backtest-validation skill), subagents for review and verification, and hooks that automate routine checks.
+
 ## When to do this
 
 - **Recommended placement:** after Lecture 12, before the

@@ -5,6 +5,10 @@ Code) as a research partner: orientation, mental models, environment
 setup, the core interaction loop, and prompt engineering for empirical
 and computational economics work.
 
+## Learning goal
+
+Develop a working agentic research-coding workflow: orient yourself in an unfamiliar codebase with an AI partner, structure prompts that produce useful (not generic) work, and complete the first set of workshop exercises end-to-end.
+
 ## When to do this
 
 - **Recommended placement:** after Lecture 05, before starting the DEQN

@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Solve an analytic OLG (overlapping-generations) model with DEQNs and verify lifecycle savings against the closed form. Understand how cohort structure changes the residual operator and the training loss.
 
 ## Prerequisites
 

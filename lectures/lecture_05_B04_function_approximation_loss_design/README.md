@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Choose function-approximation architectures and loss functions appropriate to a given economic problem. Use the Genz family of test integrands to compare loss choices on a controlled benchmark with known optima.
 
 ## Prerequisites
 

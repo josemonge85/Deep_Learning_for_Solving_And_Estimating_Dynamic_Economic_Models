@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Run Gaussian-process value-function iteration: combine GP function approximation with active learning inside the VFI loop. Diagnose stability and the trade-off between training-set size and per-iteration cost.
 
 ## Prerequisites
 

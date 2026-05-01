@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Run a deep-uncertainty-quantification analysis on a stochastic IAM. Use the UQ output to identify constrained Pareto-improving carbon-tax policies and articulate which parameters drive the policy recommendation.
 
 ## Prerequisites
 

@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Build a deep surrogate for an expensive simulator on a controlled test problem and validate it out-of-sample. Develop intuition for when surrogates pay for themselves over direct simulation.
 
 ## Prerequisites
 

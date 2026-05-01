@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Fit Gaussian-process regressors and use Bayesian active learning (BAL) to choose new query points that reduce predictive uncertainty fastest. Quantify the resulting uncertainty reduction relative to passive sampling.
 
 ## Prerequisites
 

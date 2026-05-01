@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Understand how neural networks are trained: SGD and its variants, backpropagation, the role of depth and width, and how to monitor training in practice. By the end you can implement SGD by hand, build a small MLP in both TensorFlow and PyTorch, and instrument a training run with TensorBoard.
 
 ## Prerequisites
 

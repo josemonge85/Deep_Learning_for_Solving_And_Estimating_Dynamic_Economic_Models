@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Apply PINNs to economic PDEs: solve the cake-eating HJB with a hard-BC trial solution, and price a European call option via a Black-Scholes PINN. Read off the value function, optimal consumption, and option delta from the trained network.
 
 ## Prerequisites
 

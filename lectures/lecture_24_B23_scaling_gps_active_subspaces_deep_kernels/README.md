@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Scale Gaussian processes to higher-dimensional inputs using active subspaces (linear and nonlinear) and deep kernels. Compare reconstruction error on a 10-D test function across linear AS, nonlinear AS, and deep-kernel parametrizations.
 
 ## Prerequisites
 

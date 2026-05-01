@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Implement Young's (2010) histogram method for stationary distributions in heterogeneous-agent models, iterate it on Aiyagari to convergence, and read the resulting wealth distribution and aggregates.
 
 ## Prerequisites
 

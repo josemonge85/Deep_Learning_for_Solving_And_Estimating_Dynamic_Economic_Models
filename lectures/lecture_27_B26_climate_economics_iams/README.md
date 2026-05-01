@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Simulate the DICE carbon cycle and temperature dynamics under business-as-usual and a mitigation scenario. Read off the social cost of carbon and connect the IAM building blocks to the underlying climate science.
 
 ## Prerequisites
 

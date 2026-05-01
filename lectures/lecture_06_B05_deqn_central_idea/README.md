@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+State the Deep Equilibrium Net (DEQN) idea precisely: a policy network whose loss is the squared norm of equilibrium residuals, trained on simulated state distributions. Recognize when DEQNs are the right tool relative to projection, value-function iteration, and perturbation.
 
 ## Prerequisites
 

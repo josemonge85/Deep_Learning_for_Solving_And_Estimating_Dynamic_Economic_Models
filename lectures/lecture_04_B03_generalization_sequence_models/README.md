@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Reason about generalization and inductive bias in neural networks: the double-descent phenomenon, the role of architecture in handling sequences, and the relative strengths of MLPs, LSTMs, and Transformers on time-series-like economic data (Edgeworth cycles).
 
 ## Prerequisites
 

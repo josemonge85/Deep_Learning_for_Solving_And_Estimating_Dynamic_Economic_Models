@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Scale OLG-DEQN to the standard 56-period benchmark with borrowing constraints. Combine Fischer-Burmeister complementarity with cohort-stacked Lagrangians and read off the steady state.
 
 ## Prerequisites
 

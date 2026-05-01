@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Train a DEQN on the deterministic Brock-Mirman growth model and verify the trained policy against the closed-form solution. Diagnose convergence behavior and tune the basic ingredients (sampling distribution, residual normalization, training schedule).
 
 ## Prerequisites
 

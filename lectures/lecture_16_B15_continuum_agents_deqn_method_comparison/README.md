@@ -6,7 +6,7 @@
 
 ## Learning goal
 
-> _Concrete one-paragraph statement to be filled in by the maintainer; the script reference below is the canonical source of truth in the meantime._
+Solve continuum-of-agents models with a DEQN and compare the result, side by side, with the Young-method solution from the previous lecture. Diagnose when each method is preferable.
 
 ## Prerequisites
 
