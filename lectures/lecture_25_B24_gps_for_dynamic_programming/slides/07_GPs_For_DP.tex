@@ -112,6 +112,30 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Adaptive sparse GP value-function iteration (ASGP-VFI)
+  \item Active subspaces (linear and deep) for high-dimensional state spaces
+  \item Embarrassingly parallel VFI; head-to-head with DEQNs
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 23 (GP regression)
+  \item Lecture 24 (BAL)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 26 (SMM with GP surrogates)
+  \item Lectures 27-28 (climate IAMs)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \section{GPs for Dynamic Programming}
 
 % --- Section Divider ---
@@ -618,7 +642,7 @@ CPU time grows \emphc{sub-exponentially} ($<$2 days wall-clock for 500D with 100
 
 % --- Finger Exercise: GP-VFI ---
 \begin{frame}{\exercisepause{} Finger Exercise: One Step of GP-Based VFI}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 Consider a 1D growth model with $V(k) = \max_c \{ \log(c) + \beta\, V(k') \}$, $k' = k^{0.36} - c$, $\beta = 0.96$.  Suppose you have a GP trained on 3 points: $V(0.5) = -8.0$, $V(1.5) = -2.5$, $V(2.5) = 0.5$.
 \begin{enumerate}
     \item At $k = 1.0$ (a new point not in the training set): the Bellman maximization yields $V^{\text{new}}(1.0) = -4.1$.  How does the GP posterior update when you add this observation?

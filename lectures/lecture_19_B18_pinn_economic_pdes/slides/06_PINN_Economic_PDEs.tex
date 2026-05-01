@@ -113,6 +113,28 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Soft vs hard boundary-condition enforcement; trial-solution decomposition
+  \item PINN for the HJB equation (cake-eating); the DGM architecture for high-D PDEs
+  \item PINN for the Black-Scholes PDE
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 18 (PINN foundations)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 20+ (continuous-time heterogeneous agents)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{What Are Boundary Conditions?}
 \begin{center}
 \begin{tikzpicture}[scale=0.78]
@@ -474,7 +496,7 @@ def residual(model, x):
 
 % --- Finger Exercise: Hard BCs ---
 \begin{frame}{\exercisepause{} Finger Exercise: Hard Boundary Conditions}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 Consider the same ODE $u''(x) = -1$ on $[0,1]$ with $u(0)=u(1)=0$.
 \begin{enumerate}
     \item Construct a \emphc{hard-BC trial solution} of the form $\hat{u}(x) = B(x) \cdot \mathcal{N}(x; \theta)$, where $B(x)$ enforces both BCs exactly. {\small (Hint: $B$ must vanish at $x=0$ and $x=1$.)}
@@ -1020,7 +1042,6 @@ HJB equations, Black--Scholes, and any continuous-time model. Scales to \emphc{h
 \textbf{Next up (May 5th):}\\[6pt]
 {\large Continuous-Time Heterogeneous}\\
 {\large Agent Models: HJB + KFE}\\[8pt]
-{\small 09:00--12:00}
 \end{center}
 \end{columns}
 \end{frame}

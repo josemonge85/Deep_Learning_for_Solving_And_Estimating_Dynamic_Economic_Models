@@ -105,10 +105,10 @@
 }
 
 % --- Slide 2: Roadmap ---
-\begin{frame}{Roadmap of This Lecture (${\sim}20$ min)}
+\begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{I. Motivation}~~{\small(4 min)}
+\textbf{I. Motivation}
 \begin{itemize}
     \item Multi-component losses in PINNs and DEQNs
     \item The scale problem
@@ -116,7 +116,7 @@
 \end{itemize}
 
 \vspace{0.4em}
-\textbf{II. Balancing Methods}~~{\small(12 min)}
+\textbf{II. Balancing Methods}
 \begin{itemize}
     \item Equal / manual weighting
     \item Inverse-loss weighting
@@ -126,7 +126,7 @@
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{III. Experiments \& Wrap-up}~~{\small(4 min)}
+\textbf{III. Experiments \& Wrap-up}
 \begin{itemize}
     \item Setup and results
     \item Sensitivity to temperature $T$
@@ -546,7 +546,7 @@ where $\Delta_i^{(t)} = \mathcal{L}_i^{(t)} - \mathcal{L}_i^{(t-1)}$ and $T > 0$
 
 % --- Finger Exercise: ReLoBRaLo ---
 \begin{frame}{\exercisepause{} Finger Exercise: Loss Balancing}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 A DEQN has three loss components at iteration $t$: $\mathcal{L}_1^{(t)} = 10.0$, $\mathcal{L}_2^{(t)} = 0.01$, $\mathcal{L}_3^{(t)} = 1.0$.
 \begin{enumerate}
     \item If you use \emphc{equal weights} $w_i = 1/3$, which loss component dominates the gradient? Is this desirable?

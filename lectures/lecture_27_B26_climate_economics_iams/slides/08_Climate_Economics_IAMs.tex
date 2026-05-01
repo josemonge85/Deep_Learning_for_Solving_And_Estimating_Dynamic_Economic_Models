@@ -90,6 +90,29 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Why integrated assessment models; the social cost of carbon
+  \item DICE / CDICE: the carbon cycle, temperature dynamics, damage functions
+  \item Equilibrium climate sensitivity as the dominant deep uncertainty
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lectures 06-09 (DEQN block)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 28 (solving stochastic DICE with DEQNs and deep UQ)
+  \item Lecture 29 (deep UQ + optimal policy)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{Climate Block Roadmap}
 \begin{center}
 \begin{tikzpicture}[
@@ -107,12 +130,12 @@
 \end{center}
 
 \vspace{0.3cm}
-\textbf{This lecture} ($\sim$75 min):
+\textbf{This lecture}:
 \begin{enumerate}
-    \item Motivation: why climate economics? ($\sim$12 min)
-    \item The DICE/CDICE climate model ($\sim$18 min)
-    \item A stochastic IAM: full model and derivation ($\sim$25 min)
-    \item Deep uncertainty quantification ($\sim$18 min)
+    \item Motivation: why climate economics?
+    \item The DICE/CDICE climate model
+    \item A stochastic IAM: full model and derivation
+    \item Deep uncertainty quantification
 \end{enumerate}
 \end{frame}
 
@@ -314,7 +337,7 @@ M_{t+1} = (I + \Delta_t \cdot B) \cdot M_t + \Delta_t \cdot E_t
 
 % --- Finger Exercise: Carbon Cycle ---
 \begin{frame}{\exercisepause{} Finger Exercise: One-Step Carbon Cycle}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 The simplified carbon cycle has atmospheric CO$_2$ evolving as:
 \[
 M_{\text{AT}}^{t+1} = E_t + \phi_{11}\, M_{\text{AT}}^{t} + \phi_{21}\, M_{\text{UP}}^{t},

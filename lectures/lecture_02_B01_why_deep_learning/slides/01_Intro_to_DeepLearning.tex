@@ -88,6 +88,28 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Why deep learning matters for economics and finance, with concrete applications
+  \item The supervised, unsupervised, and reinforcement-learning paradigms
+  \item The end-to-end machine-learning pipeline (data, model, loss, optimization, validation)
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Basic linear algebra, calculus, probability
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 03 (training neural networks): SGD, backpropagation, optimizer choice
+\end{itemize}
+\end{block}
+\end{frame}
+
 % ============================================================================
 % PART 1: SETTING THE STAGE
 % ============================================================================
@@ -126,36 +148,35 @@
 \vspace{0.6cm}
 \begin{center}
 \textbf{All materials:}~~\url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}\\[4pt]
-\textbf{Cloud platform:}~~\url{https://nuvolos.cloud}
 \end{center}
 \end{frame}
 
 % --- Slide 3: Roadmap ---
-\begin{frame}{Roadmap of This Lecture (90 min)}
+\begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Machine Learning Foundations}~~{\small(15 min)}
+\textbf{Machine Learning Foundations}
 \begin{itemize}
     \item What is ML?  Supervised, unsupervised, RL
     \item The three-step ML recipe
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{From Perceptrons to Deep Nets}~~{\small(20 min)}
+\textbf{From Perceptrons to Deep Nets}
 \begin{itemize}
     \item The perceptron and activation functions
     \item Multi-layer networks and universal approximation
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Training, Generalization \& Practice}~~{\small(35 min)}
+\textbf{Training, Generalization \& Practice}
 \begin{itemize}
     \item Losses, gradient descent, backpropagation
     \item Regularization, optimizers, software ecosystem
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{Sequence Models}~~{\small(20 min)}
+\textbf{Sequence Models}
 \begin{itemize}
     \item RNNs, LSTMs, attention, transformers
     \item What matters for economic time series

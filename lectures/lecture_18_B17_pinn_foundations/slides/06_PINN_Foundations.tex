@@ -113,6 +113,28 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Discrete-time DEQN vs continuous-time PINN: what changes in the loss
+  \item Automatic differentiation for PDEs; collocation points
+  \item PINN training pipeline (Adam $\to$ L-BFGS in fp64), network architecture, why tanh
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 06 (DEQN loss as residual)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 19 (boundary conditions and economic PDEs: HJB, Black-Scholes)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{Outline}
 \begin{enumerate}
     \item \textbf{From DEQNs to PINNs}\\
@@ -137,10 +159,10 @@
 \end{frame}
 
 % --- Slide 3: Roadmap ---
-\begin{frame}{Roadmap of This Lecture (75 min)}
+\begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{From DEQNs to PINNs}~~{\small(10 min)}
+\textbf{From DEQNs to PINNs}
 \begin{itemize}
     \item Discrete vs.\ continuous time
     \item The PINN loss function
@@ -148,7 +170,7 @@
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{PINN Fundamentals}~~{\small(20 min)}
+\textbf{PINN Fundamentals}
 \begin{itemize}
     \item Autograd for PDEs
     \item Collocation and training
@@ -156,7 +178,7 @@
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Boundary Conditions}~~{\small(15 min)}
+\textbf{Boundary Conditions}
 \begin{itemize}
     \item Soft vs.\ hard enforcement
     \item Trial solutions
@@ -164,7 +186,7 @@
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{Econ \& Finance}~~{\small(30 min)}
+\textbf{Econ \& Finance}
 \begin{itemize}
     \item HJB / cake-eating: trial solution + hard BCs
     \item Adam warm-start, L-BFGS polish, FP64
@@ -300,7 +322,7 @@ $\mathcal{B}[u](\x) = 0$ on $\partial\Omega$, define:
 
 % --- Finger Exercise: PINN Loss ---
 \begin{frame}{\exercisepause{} Finger Exercise: Writing a PINN Loss}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 Consider the ODE $u''(x) = -1$ on $[0,1]$ with boundary conditions $u(0) = u(1) = 0$.
 \begin{enumerate}
     \item Write down the PINN residual $\mathcal{R}(x; \theta) = \ldots$ using a neural network $\mathcal{N}(x; \theta)$.

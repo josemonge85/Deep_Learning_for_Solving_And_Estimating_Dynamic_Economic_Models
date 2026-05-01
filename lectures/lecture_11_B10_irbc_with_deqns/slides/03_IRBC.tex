@@ -141,19 +141,19 @@ Brumm, Krause, Schaab \& Scheidegger (2022), ``Sparse Grids for Dynamic Economic
 
 % --- Slide 3: Roadmap ---
 \begin{frame}{Roadmap of This Lecture}
-\textbf{Scheduled across two slots} (total $\approx 95$ min, split by NAS / Loss Normalization at 10:30--11:10).
+\textbf{Two parts}, with NAS / Loss Normalization (Lecture 12) recommended in between.
 
 \vspace{0.4em}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Slot A: 09:00--09:50}~~{\small(50 min)}
+\textbf{Part A}
 \begin{itemize}
     \item \textbf{Part I.} The IRBC model: preferences, production, TFP, adjustment costs, irreversibility, Fischer--Burmeister
-    \item Equilibrium system + finger exercise (09:50--09:55)
+    \item Equilibrium system + finger exercise
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Slot B: 11:15--12:00}~~{\small(45 min)}
+\textbf{Part B}
 \begin{itemize}
     \item \textbf{Part II.} DEQN formulation: states, architecture, loss, Gauss--Hermite, training algorithm
     \item \textbf{Part III.} Implementation: Keras code, convergence, policy functions, validation
@@ -677,7 +677,7 @@ $N$ & \textbf{States} & \textbf{Policies} & \textbf{Equations} \\
 
 % --- Finger Exercise: IRBC ---
 \begin{frame}{\exercisepause{} Finger Exercise: IRBC Euler Equations}
-\begin{exampleblock}{Exercise (5 min)}
+\begin{exampleblock}{Exercise}
 Consider the 2-country IRBC model. Suppose we \emphc{double} the capital depreciation rate $\delta$ from the baseline $0.01$ to $0.02$.
 \begin{enumerate}
     \item Without running any code: will the steady-state capital stock in each country \emph{increase} or \emph{decrease}? Why?
@@ -1456,7 +1456,6 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \textbf{Next up:}\\[6pt]
 {\large AutoDiff $\to$ Sequence Space $\to$ OLG\\[2pt]
 (Heterogeneous Agents = self-study)}\\[12pt]
-{\small Thursday morning, 09:00--12:00}
 \end{center}
 \end{columns}
 \end{frame}

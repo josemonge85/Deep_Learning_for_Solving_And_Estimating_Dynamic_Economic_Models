@@ -94,6 +94,30 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Neural-network architecture for DEQNs: layer structure, activations, supervised vs unsupervised framing
+  \item The Brock-Mirman deterministic growth model: setup, Euler equation, closed-form policy
+  \item End-to-end DEQN training pass on a model whose true solution is known analytically
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 06 (DEQN central idea)
+  \item Lectures 03-05 (training mechanics, loss design)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 08 (adding stochastic shocks; Gauss-Hermite quadrature)
+  \item Lecture 09 (constraints and loss kernels)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{What is a Deep Neural Network?}
 A deep neural network (DNN) $\mathcal{N}_\rho : \R^{d_{\text{in}}} \to \R^{d_{\text{out}}}$ is a \emphc{parametric function approximator}.
 

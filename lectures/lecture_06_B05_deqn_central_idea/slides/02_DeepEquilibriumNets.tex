@@ -94,6 +94,30 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Why DSGE models are computationally hard: heterogeneity and high-dimensional state spaces
+  \item The ergodic set is not a hypercube; volumes scale badly in high dimensions
+  \item The Deep Equilibrium Net (DEQN) approach in abstract: what is being learned, and against what target
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lectures 02-05 (deep learning foundations)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 07 (Brock-Mirman deterministic case, end-to-end)
+  \item Lecture 08 (uncertainty and integration)
+  \item Lecture 09 (constraints and loss-kernel design)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{Outline}
 \begin{enumerate}
     \item \textbf{Motivation}\\
@@ -119,14 +143,14 @@
 \vspace{0.3em}
 \hrule
 \vspace{0.2em}
-{\footnotesize Wrap-up: \textbf{hands-on notebooks} on Nuvolos Cloud.  Notebook 01 reproduces the slide derivation; 02 adds AR(1) productivity shocks; 03/04 are the blank/solved versions of the morning's exercises.}
+{\footnotesize Wrap-up: \textbf{hands-on notebooks} are in this repository.  Notebook 01 reproduces the slide derivation; 02 adds AR(1) productivity shocks; 03/04 are the blank/solved versions of the exercises.}
 \end{frame}
 
 % --- Slide 3: Roadmap ---
-\begin{frame}{Roadmap of This Lecture (75 min)}
+\begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Motivation}~~{\small(14 min)}
+\textbf{Motivation}
 \begin{itemize}
     \item Heterogeneity and high dimensions
     \item Nonlinearities and kinks
@@ -135,7 +159,7 @@
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{From ANNs to DEQNs}~~{\small(25 min)}
+\textbf{From ANNs to DEQNs}
 \begin{itemize}
     \item DNNs as function approximators
     \item Supervised vs.\ unsupervised loss
@@ -143,21 +167,21 @@
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Brock--Mirman Benchmark}~~{\small(18 min)}
+\textbf{Brock--Mirman Benchmark}
 \begin{itemize}
     \item Analytical test case
     \item DEQN implementation
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{Parallelization \& HPC}~~{\small(10 min)}
+\textbf{Parallelization \& HPC}
 \begin{itemize}
     \item Data parallelism (MPI/Horovod)
     \item Scalability to many nodes
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{Wrap-up + Hands-on}~~{\small(10 min)}
+\textbf{Wrap-up + Hands-on}
 \begin{itemize}
     \item Four notebooks: BM (01), BM+shocks (02), exercises blank/solved (03/04)
     \item Exercise preview: KKT + Fischer--Burmeister, 6-period OLG

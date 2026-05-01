@@ -94,6 +94,29 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Hard vs soft constraints in equilibrium models (KKT, Fischer-Burmeister)
+  \item Six families of loss kernels; how the kernel choice changes convergence behavior
+  \item Data parallelism and multi-GPU scaling for DEQN training
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 07 (deterministic Brock-Mirman)
+  \item Lecture 08 (residual + integration)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 10+ (autodiff for DEQNs, IRBC, OLG, larger models)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{Brock--Mirman: Hard vs.\ Soft Constraints}
 \small
 \textbf{Split the equilibrium conditions by what the architecture can enforce exactly.}
@@ -310,16 +333,16 @@ CVaR     & mean of top $10\%$ of $|r|$                        & explicitly train
     \item \texttt{02\_Brock\_Mirman\_Uncertainty\_DEQN.ipynb}\\
     {\small Stochastic Brock--Mirman ($\varrho > 0$, $\sigma_z > 0$), \emphc{simulation-based sampling} on the ergodic set.}
 
-    \item \texttt{03\_DEQN\_Exercises\_Blanks.ipynb} (morning exercises, blank template for student populate)
+    \item \texttt{03\_DEQN\_Exercises\_Blanks.ipynb} (exercises, blank template for student populate)
 
-    \item \texttt{04\_DEQN\_Exercises\_Solutions.ipynb} (morning exercises, solved)
+    \item \texttt{04\_DEQN\_Exercises\_Solutions.ipynb} (exercises, solved)
 \end{enumerate}
 
 \vspace{0.3em}
 {\footnotesize Notebooks 01--02 illustrate the sampling progression: uniform random $\to$ simulated trajectories.  Notebooks 03--04 add KKT multipliers + Fischer--Burmeister + the 6-period OLG structure previewed on the previous slide.}
 
 \vspace{0.4em}
-All notebooks are on \emphc{Nuvolos Cloud} and the course GitHub repository.
+All notebooks are in the course repository.
 \end{frame}
 \begin{frame}{}
 \begin{columns}[c]
@@ -340,7 +363,6 @@ All notebooks are on \emphc{Nuvolos Cloud} and the course GitHub repository.
 \begin{center}
 \textbf{Next up:}\\[6pt]
 {\large DEQN Exercises}\\[12pt]
-{\small 10:45--12:00}
 \end{center}
 \end{columns}
 \end{frame}

@@ -112,6 +112,29 @@
 \end{frame}
 }
 
+% --- About-this-lecture orientation ---
+\begin{frame}{About this lecture}
+\small
+\begin{block}{What this lecture covers}
+\begin{itemize}\itemsep2pt
+  \item Embedding Young's method inside a DEQN training loop
+  \item Three deep-learning recipes for KS: all-in-one, DeepHAM, histogram-DEQN
+  \item Head-to-head: when to use which architecture
+\end{itemize}
+\end{block}
+\begin{block}{Builds on}
+\begin{itemize}\itemsep2pt
+  \item Lecture 15 (Young's method, traditional KS)
+\end{itemize}
+\end{block}
+\begin{block}{Leads to}
+\begin{itemize}\itemsep2pt
+  \item Lecture 17 (sequence-space DEQNs)
+  \item Lecture 20+ (continuous-time HA)
+\end{itemize}
+\end{block}
+\end{frame}
+
 \begin{frame}{Architecture Comparison: Traditional KS vs.\ DEQN}
 \vspace{-0.3em}
 \begin{columns}[T]
@@ -770,7 +793,7 @@ Main reference & Azinovic et al.\ (2022) & Maliar, Maliar \& Winant (2021) & Han
 \texttt{github.com/marcmaliar/deep-learning-euler-method-krusell-smith}
 
 \vspace{0.4em}
-\textbf{In this course.}  Notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} is a classroom-scale caricature of this approach: single policy network, panel of $N \sim 100$ agents, CPU-friendly, $\sim$10 min to convergence.
+\textbf{In this course.}  Notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} is a classroom-scale caricature of this approach: single policy network, panel of $N \sim 100$ agents, CPU-friendly,  to convergence.
 \end{frame}
 
 % --- Slide: DeepHAM (Part 1 of 2) ---
@@ -854,7 +877,7 @@ Histogram DEQN & \texttt{sischei/DeepEquilibriumNets} \\
 & \quad\emph{Azinovic, Gaegauf \& Scheidegger (2022) code.} \\
 \addlinespace
 Classroom MMW-style (this course) & \texttt{day4/code/\allowbreak 12\_KrusellSmith\_\allowbreak DeepLearning.ipynb} \\
-& \quad\emph{Self-contained, CPU-friendly, $\sim$10 min training.} \\
+& \quad\emph{Self-contained, CPU-friendly,  training.} \\
 \addlinespace
 DeepHAM & Authors' page; contact the authors for code. \\
 \bottomrule
@@ -927,7 +950,7 @@ DeepHAM & Authors' page; contact the authors for code. \\
 \end{columns}
 
 \vspace{0.3em}
-{\footnotesize All notebooks are on \emphc{Nuvolos Cloud} and the course GitHub repository.}
+{\footnotesize All notebooks are in the course repository.}
 \end{frame}
 
 % --- Slide 59: Questions ---
