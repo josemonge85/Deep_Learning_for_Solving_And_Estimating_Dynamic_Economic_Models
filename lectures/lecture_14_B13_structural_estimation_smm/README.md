@@ -1,49 +1,32 @@
 # Lecture 14 (B13): Structural estimation via SMM
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `cpu-standard` &nbsp;·&nbsp; **Time budget:** `long`
 
-## Learning goal
+## What this lecture covers
 
 Estimate structural parameters by simulated method of moments (SMM) on top of a deep surrogate. Run both single-parameter (rho) and joint (beta, rho) Brock-Mirman estimations, and report identification diagnostics.
+
+## Slides
+
+- [`slides/08_Exercise_Structural_Estimation.pdf`](slides/08_Exercise_Structural_Estimation.pdf)
+- [`slides/08_Exercise_Structural_Estimation.tex`](slides/08_Exercise_Structural_Estimation.tex)
+
+## Code
+
+- [`code/lecture_14_B13_03_Structural_Estimation_BM.ipynb`](code/lecture_14_B13_03_Structural_Estimation_BM.ipynb)
+- [`code/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb`](code/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb)
 
 ## Prerequisites
 
 - [Lecture 13 (B12)](../lecture_13_B12_surrogates_and_gps/README.md), Surrogates and Gaussian processes
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §Chapter 10 (Structural estimation via SMM)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`08_Exercise_Structural_Estimation.pdf`](slides/08_Exercise_Structural_Estimation.pdf)
-
-## Notebooks
-
-### Core
-
-- [`lecture_14_B13_03_Structural_Estimation_BM.ipynb`](notebooks/core/lecture_14_B13_03_Structural_Estimation_BM.ipynb)
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-- [`lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb`](notebooks/extensions/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb)
 
 ## Checkpoint
 

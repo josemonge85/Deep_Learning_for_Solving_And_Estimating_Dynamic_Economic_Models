@@ -197,16 +197,10 @@ and BoTorch (Lecture 13).
 ├── course.yml            ← machine-readable course manifest
 ├── lectures/             ← 17 lecture folders (lecture_XX_BYY_*)
 │   └── lecture_*/
-│       ├── README.md         lecture index
-│       ├── slides/           PDFs (and .tex sources)
-│       ├── notebooks/
-│       │   ├── core/         walkthroughs
-│       │   ├── exercises/    blanks
-│       │   ├── solutions/    filled-in
-│       │   └── extensions/   advanced
-│       ├── code/             auxiliary modules
-│       ├── figures/          generated and static figures
-│       └── notes/            short lecture-specific notes
+│       ├── README.md         summary, slides, code, prerequisites, readings
+│       ├── slides/           PDFs and .tex sources
+│       ├── code/             notebooks, supporting .py modules, data files
+│       └── figures/          (optional) lecture-specific figure assets
 ├── toolkit/              ← Toolkits T1, T2, T3
 ├── lecture_script/       ← textbook-length companion script
 ├── readings/             ← per-lecture link guides + bibliography.bib

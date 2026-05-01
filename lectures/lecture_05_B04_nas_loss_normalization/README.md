@@ -1,52 +1,59 @@
 # Lecture 05 (B04): Architecture search and loss balancing
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
 
-## Learning goal
+## What this lecture covers
 
 Run neural-architecture search and loss balancing systematically. Implement random search and successive halving (Hyperband) from scratch in pure Python, and compare ReLoBRaLo, SoftAdapt, and GradNorm for multi-component loss balancing on a DEQN problem.
+
+## Slides
+
+- [`slides/04_Neural_Architecture_Search.pdf`](slides/04_Neural_Architecture_Search.pdf)
+- [`slides/04_Neural_Architecture_Search.tex`](slides/04_Neural_Architecture_Search.tex)
+- [`slides/05_Loss_Normalization.pdf`](slides/05_Loss_Normalization.pdf)
+- [`slides/05_Loss_Normalization.tex`](slides/05_Loss_Normalization.tex)
+
+## Code
+
+- [`code/lecture_05_B04_02_NAS_Random_Search_10D.ipynb`](code/lecture_05_B04_02_NAS_Random_Search_10D.ipynb)
+- [`code/lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb`](code/lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb)
+- [`code/lecture_05_B04_04_Loss_Normalization.ipynb`](code/lecture_05_B04_04_Loss_Normalization.ipynb)
+- [`code/lecture_05_B04_05_IRBC_Exercise.ipynb`](code/lecture_05_B04_05_IRBC_Exercise.ipynb)
+
+## Figures
+
+- [`figures/irbc_4approach_loss.pdf`](figures/irbc_4approach_loss.pdf)
+- [`figures/irbc_4approach_loss.png`](figures/irbc_4approach_loss.png)
+- [`figures/loss_norm_T_sensitivity.pdf`](figures/loss_norm_T_sensitivity.pdf)
+- [`figures/loss_norm_T_sensitivity.png`](figures/loss_norm_T_sensitivity.png)
+- [`figures/loss_norm_equal_errmap.pdf`](figures/loss_norm_equal_errmap.pdf)
+- [`figures/loss_norm_equal_errmap.png`](figures/loss_norm_equal_errmap.png)
+- [`figures/loss_norm_equal_weights.pdf`](figures/loss_norm_equal_weights.pdf)
+- [`figures/loss_norm_equal_weights.png`](figures/loss_norm_equal_weights.png)
+- [`figures/loss_norm_method_comparison.pdf`](figures/loss_norm_method_comparison.pdf)
+- [`figures/loss_norm_method_comparison.png`](figures/loss_norm_method_comparison.png)
+- [`figures/loss_norm_relobralo_errmap.pdf`](figures/loss_norm_relobralo_errmap.pdf)
+- [`figures/loss_norm_relobralo_errmap.png`](figures/loss_norm_relobralo_errmap.png)
+- [`figures/loss_norm_relobralo_weights.pdf`](figures/loss_norm_relobralo_weights.pdf)
+- [`figures/loss_norm_relobralo_weights.png`](figures/loss_norm_relobralo_weights.png)
+- [`figures/nas_best_surface.pdf`](figures/nas_best_surface.pdf)
+- [`figures/nas_best_surface.png`](figures/nas_best_surface.png)
+- [`figures/nas_random_search.pdf`](figures/nas_random_search.pdf)
+- [`figures/nas_random_search.png`](figures/nas_random_search.png)
+- [`figures/nas_search_results.pdf`](figures/nas_search_results.pdf)
+- [`figures/nas_search_results.png`](figures/nas_search_results.png)
 
 ## Prerequisites
 
 - [Lecture 04 (B03)](../lecture_04_B03_irbc_with_deqns/README.md), IRBC with DEQNs
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §Chapter 4 (Neural architecture search and loss normalization)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`04_Neural_Architecture_Search.pdf`](slides/04_Neural_Architecture_Search.pdf)
-- [`05_Loss_Normalization.pdf`](slides/05_Loss_Normalization.pdf)
-
-## Notebooks
-
-### Core
-
-- [`lecture_05_B04_02_NAS_Random_Search_10D.ipynb`](notebooks/core/lecture_05_B04_02_NAS_Random_Search_10D.ipynb)
-- [`lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb`](notebooks/core/lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb)
-- [`lecture_05_B04_04_Loss_Normalization.ipynb`](notebooks/core/lecture_05_B04_04_Loss_Normalization.ipynb)
-
-### Exercises
-
-- [`lecture_05_B04_05_IRBC_Exercise.ipynb`](notebooks/exercises/lecture_05_B04_05_IRBC_Exercise.ipynb)
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

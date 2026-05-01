@@ -1,49 +1,30 @@
 # Lecture 01 (B00): Orientation, setup, and reproducibility
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `cpu-light` &nbsp;·&nbsp; **Time budget:** `short`
 
-## Learning goal
+## What this lecture covers
 
-Get the local environment running, locate every part of the course (script, slides, notebooks, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.
+Get the local environment running, locate every part of the course (script, slides, code, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.
+
+## Slides
+
+_(none)_
+
+## Code
+
+_(none)_
 
 ## Prerequisites
 
 - _(none, start of course)_
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §Preface (Preface), §How to Read (How to Read This Script), §Notation (Notation and Symbols), §Execution Map (Execution Map), §Appendix E (Reproducibility Information)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-_(none)_
-
-## Notebooks
-
-### Core
-
-_(none)_
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

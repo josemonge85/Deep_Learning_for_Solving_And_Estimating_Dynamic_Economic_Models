@@ -18,13 +18,8 @@ Develop a working agentic research-coding workflow: orient yourself in an unfami
 
 ## Materials
 
-- `slides/05_Agentic_Programming.pdf` — orientation, mental models,
-  prompt engineering.
-- `code/` — `generate_synthetic_data.py`, `mincer_demo.py`, supporting
-  CSV, demo outputs.
-- `exercises/exercise_prompts.md` — workshop prompt pack (12 exercises).
-- `solutions/exercise_solutions.md` — solution sketches.
-- `notes/agentic_ai_lecture_syllabus.md` — full syllabus.
+- `slides/05_Agentic_Programming.pdf`, orientation, mental models, prompt engineering.
+- `code/`, the workshop prompt pack (`exercise_prompts.md`), solution sketches (`exercise_solutions.md`), the full syllabus (`agentic_ai_lecture_syllabus.md`), and supporting Python (`generate_synthetic_data.py`, `mincer_demo.py`), data, and demo outputs.
 
 ## Navigation
 

@@ -1,50 +1,33 @@
 # Lecture 09 (B08): Heterogeneous agents and Young's method
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
 
-## Learning goal
+## What this lecture covers
 
 Solve heterogeneous-agent models with two complementary methods: Young's (2010) histogram for the stationary distribution on Aiyagari, and a continuum-of-agents DEQN. Run both and diagnose when each is preferable. The Krusell-Smith deep-learning extension is provided as further reading.
+
+## Slides
+
+- [`slides/08_Heterogeneous_Agents_Youngs_Method.pdf`](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)
+- [`slides/08_Heterogeneous_Agents_Youngs_Method.tex`](slides/08_Heterogeneous_Agents_Youngs_Method.tex)
+
+## Code
+
+- [`code/lecture_09_B08_10_Youngs_Method_Examples.ipynb`](code/lecture_09_B08_10_Youngs_Method_Examples.ipynb)
+- [`code/lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb`](code/lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb)
+- [`code/lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb`](code/lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb)
 
 ## Prerequisites
 
 - [Lecture 08 (B07)](../lecture_08_B07_olg_models_deqns/README.md), OLG models with DEQNs
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §6.1-6.3 (Heterogeneous agents I), §6.4-6.6 (Heterogeneous agents II)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`08_Heterogeneous_Agents_Youngs_Method.pdf`](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)
-
-## Notebooks
-
-### Core
-
-- [`lecture_09_B08_10_Youngs_Method_Examples.ipynb`](notebooks/core/lecture_09_B08_10_Youngs_Method_Examples.ipynb)
-- [`lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb`](notebooks/core/lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb)
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-- [`lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb`](notebooks/extensions/lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb)
 
 ## Checkpoint
 

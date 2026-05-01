@@ -1,49 +1,31 @@
 # Lecture 17 (B16): Course wrap-up
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `cpu-light` &nbsp;·&nbsp; **Time budget:** `short`
 
-## Learning goal
+## What this lecture covers
 
 Synthesize the course: when is DEQN the right choice, when do you reach for PINNs, when does a surrogate-plus-GP combination win? Map each method to its sweet-spot problem class and articulate the trade-offs.
+
+## Slides
+
+- [`slides/10_Wrap_Up.pdf`](slides/10_Wrap_Up.pdf)
+- [`slides/10_Wrap_Up.tex`](slides/10_Wrap_Up.tex)
+
+## Code
+
+_(none)_
 
 ## Prerequisites
 
 - [Lecture 16 (B15)](../lecture_16_B15_deep_uq_pareto_improving_policy/README.md), Deep uncertainty quantification and Pareto-improving climate policy
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §Chapter 12 (Synthesis and method choice), §Appendix A (Glossary), §Appendix D (Fixed points and Bellman)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`10_Wrap_Up.pdf`](slides/10_Wrap_Up.pdf)
-
-## Notebooks
-
-### Core
-
-_(none)_
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

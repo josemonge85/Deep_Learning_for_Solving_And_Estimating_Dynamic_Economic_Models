@@ -1,51 +1,35 @@
 # Lecture 03 (B02): Deep Equilibrium Nets
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `cpu-standard` &nbsp;·&nbsp; **Time budget:** `long`
 
-## Learning goal
+## What this lecture covers
 
 State the Deep Equilibrium Net (DEQN) idea precisely, train deterministic and stochastic Brock-Mirman DEQNs, and verify them against closed-form solutions. Handle constraints with Fischer-Burmeister complementarity, choose conditional-expectation quadrature deliberately, and compare six loss kernels (MSE, MAE, Huber, quantile, CVaR, log-cosh) on the same problem.
+
+## Slides
+
+- [`slides/02_DeepEquilibriumNets.pdf`](slides/02_DeepEquilibriumNets.pdf)
+- [`slides/02_DeepEquilibriumNets.tex`](slides/02_DeepEquilibriumNets.tex)
+
+## Code
+
+- [`code/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb`](code/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb)
+- [`code/lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb`](code/lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb)
+- [`code/lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb`](code/lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb)
+- [`code/lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb`](code/lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb)
+- [`code/lecture_03_B02_05_StochasticBM_LossComparison.ipynb`](code/lecture_03_B02_05_StochasticBM_LossComparison.ipynb)
 
 ## Prerequisites
 
 - [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md), Introduction to deep learning
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.4, 2.9 (Constraints and residual kernels)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`02_DeepEquilibriumNets.pdf`](slides/02_DeepEquilibriumNets.pdf)
-
-## Notebooks
-
-### Core
-
-- [`lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb`](notebooks/core/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb)
-- [`lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb`](notebooks/core/lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb)
-- [`lecture_03_B02_05_StochasticBM_LossComparison.ipynb`](notebooks/core/lecture_03_B02_05_StochasticBM_LossComparison.ipynb)
-
-### Exercises
-
-- [`lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb`](notebooks/exercises/lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb)
-
-### Solutions
-
-- [`lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb`](notebooks/solutions/lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb)
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

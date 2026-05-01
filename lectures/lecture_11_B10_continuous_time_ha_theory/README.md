@@ -1,49 +1,31 @@
 # Lecture 11 (B10): Continuous-time heterogeneous agents, theory
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `cpu-light` &nbsp;·&nbsp; **Time budget:** `standard`
 
-## Learning goal
+## What this lecture covers
 
 State the continuous-time heterogeneous-agent system (HJB + Kolmogorov-forward) and connect each operator to its discrete-time analog. Understand the role of Ito calculus, ergodicity, and the master equation in the modern continuous-time HA literature.
+
+## Slides
+
+- [`slides/07_CT_Heterogeneous_Agents_Theory.pdf`](slides/07_CT_Heterogeneous_Agents_Theory.pdf)
+- [`slides/07_CT_Heterogeneous_Agents_Theory.tex`](slides/07_CT_Heterogeneous_Agents_Theory.tex)
+
+## Code
+
+_(none)_
 
 ## Prerequisites
 
 - [Lecture 10 (B09)](../lecture_10_B09_pinns/README.md), Physics-informed neural networks
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §8.1-8.6 (HJB, KFE, master equation), §Appendix C (Ito calculus)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`07_CT_Heterogeneous_Agents_Theory.pdf`](slides/07_CT_Heterogeneous_Agents_Theory.pdf)
-
-## Notebooks
-
-### Core
-
-_(none)_
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

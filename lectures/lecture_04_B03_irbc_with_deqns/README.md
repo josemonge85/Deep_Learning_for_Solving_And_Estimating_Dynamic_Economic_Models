@@ -1,49 +1,54 @@
 # Lecture 04 (B03): IRBC with DEQNs
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \
+> **Course author:** Simon Scheidegger  \
 > **Compute tier:** `gpu-recommended` &nbsp;·&nbsp; **Time budget:** `long`
 
-## Learning goal
+## What this lecture covers
 
 Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.
+
+## Slides
+
+- [`slides/03_IRBC.pdf`](slides/03_IRBC.pdf)
+- [`slides/03_IRBC.tex`](slides/03_IRBC.tex)
+
+## Code
+
+- [`code/lecture_04_B03_01_IRBC_DEQN.ipynb`](code/lecture_04_B03_01_IRBC_DEQN.ipynb)
+
+## Figures
+
+- [`figures/irbc_4approach_loss.pdf`](figures/irbc_4approach_loss.pdf)
+- [`figures/irbc_4approach_loss.png`](figures/irbc_4approach_loss.png)
+- [`figures/loss_norm_T_sensitivity.pdf`](figures/loss_norm_T_sensitivity.pdf)
+- [`figures/loss_norm_T_sensitivity.png`](figures/loss_norm_T_sensitivity.png)
+- [`figures/loss_norm_equal_errmap.pdf`](figures/loss_norm_equal_errmap.pdf)
+- [`figures/loss_norm_equal_errmap.png`](figures/loss_norm_equal_errmap.png)
+- [`figures/loss_norm_equal_weights.pdf`](figures/loss_norm_equal_weights.pdf)
+- [`figures/loss_norm_equal_weights.png`](figures/loss_norm_equal_weights.png)
+- [`figures/loss_norm_method_comparison.pdf`](figures/loss_norm_method_comparison.pdf)
+- [`figures/loss_norm_method_comparison.png`](figures/loss_norm_method_comparison.png)
+- [`figures/loss_norm_relobralo_errmap.pdf`](figures/loss_norm_relobralo_errmap.pdf)
+- [`figures/loss_norm_relobralo_errmap.png`](figures/loss_norm_relobralo_errmap.png)
+- [`figures/loss_norm_relobralo_weights.pdf`](figures/loss_norm_relobralo_weights.pdf)
+- [`figures/loss_norm_relobralo_weights.png`](figures/loss_norm_relobralo_weights.png)
+- [`figures/nas_best_surface.pdf`](figures/nas_best_surface.pdf)
+- [`figures/nas_best_surface.png`](figures/nas_best_surface.png)
+- [`figures/nas_random_search.pdf`](figures/nas_random_search.pdf)
+- [`figures/nas_random_search.png`](figures/nas_random_search.png)
+- [`figures/nas_search_results.pdf`](figures/nas_search_results.pdf)
+- [`figures/nas_search_results.png`](figures/nas_search_results.png)
 
 ## Prerequisites
 
 - [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md), Deep Equilibrium Nets
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - §Chapter 3 (International real business cycle)
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-- [`03_IRBC.pdf`](slides/03_IRBC.pdf)
-
-## Notebooks
-
-### Core
-
-- [`lecture_04_B03_01_IRBC_DEQN.ipynb`](notebooks/core/lecture_04_B03_01_IRBC_DEQN.ipynb)
-
-### Exercises
-
-_(none)_
-
-### Solutions
-
-_(none)_
-
-### Extensions
-
-_(none)_
 
 ## Checkpoint
 

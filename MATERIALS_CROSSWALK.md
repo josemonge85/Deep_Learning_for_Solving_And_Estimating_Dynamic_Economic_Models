@@ -76,64 +76,64 @@ and the `RUN_MODE = "smoke"` switch are added in a follow-up pass.
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day1/code/01_BasicML_intro.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_01_BasicML_intro.ipynb` | migrated (core) |
-| `lectures/day1/code/02_GradientDescent_and_StochasticGradientDescent.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_02_GradientDescent_and_StochasticGradientDescent.ipynb` | migrated (core) |
-| `lectures/day1/code/SGD_data.txt` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/SGD_data.txt` | migrated (asset) |
-| `lectures/day1/code/03_Double_Descent.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_03_Double_Descent.ipynb` | migrated (core) |
-| `lectures/day1/code/04_Gentle_DNN.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_04_Gentle_DNN.ipynb` | migrated (core) |
-| `lectures/day1/code/05_Tensorboard.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/extensions/lecture_02_B01_05_Tensorboard.ipynb` | migrated (extension) |
-| `lectures/day1/code/06_PyTorch_intro.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_06_PyTorch_intro.ipynb` | migrated (core) |
-| `lectures/day1/code/07_Genz_Approximation_and_Loss_Functions.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_07_Genz_Approximation_and_Loss_Functions.ipynb` | migrated (core) |
-| `lectures/day1/code/08_MLP_LSTM_Transformer_Edgeworth_Cycles.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/core/lecture_02_B01_08_MLP_LSTM_Transformer_Edgeworth_Cycles.ipynb` | migrated (core) |
-| `lectures/day1/code/09_Transformer_InContext_AR1.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/notebooks/extensions/lecture_02_B01_09_Transformer_InContext_AR1.ipynb` | migrated (extension) |
+| `lectures/day1/code/01_BasicML_intro.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_01_BasicML_intro.ipynb` | migrated (core) |
+| `lectures/day1/code/02_GradientDescent_and_StochasticGradientDescent.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_02_GradientDescent_and_StochasticGradientDescent.ipynb` | migrated (core) |
+| `lectures/day1/code/SGD_data.txt` | `lectures/lecture_02_B01_intro_deep_learning/code/SGD_data.txt` | migrated (asset) |
+| `lectures/day1/code/03_Double_Descent.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_03_Double_Descent.ipynb` | migrated (core) |
+| `lectures/day1/code/04_Gentle_DNN.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_04_Gentle_DNN.ipynb` | migrated (core) |
+| `lectures/day1/code/05_Tensorboard.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_05_Tensorboard.ipynb` | migrated (extension) |
+| `lectures/day1/code/06_PyTorch_intro.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_06_PyTorch_intro.ipynb` | migrated (core) |
+| `lectures/day1/code/07_Genz_Approximation_and_Loss_Functions.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_07_Genz_Approximation_and_Loss_Functions.ipynb` | migrated (core) |
+| `lectures/day1/code/08_MLP_LSTM_Transformer_Edgeworth_Cycles.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_08_MLP_LSTM_Transformer_Edgeworth_Cycles.ipynb` | migrated (core) |
+| `lectures/day1/code/09_Transformer_InContext_AR1.ipynb` | `lectures/lecture_02_B01_intro_deep_learning/code/lecture_02_B01_09_Transformer_InContext_AR1.ipynb` | migrated (extension) |
 
 ### Day 2 → Lecture 03 (Deep Equilibrium Nets)
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day2/code/01_Brock_Mirman_1972_DEQN.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/notebooks/core/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb` | migrated (core) |
-| `lectures/day2/code/02_Brock_Mirman_Uncertainty_DEQN.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/notebooks/core/lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb` | migrated (core) |
-| `lectures/day2/code/03_DEQN_Exercises_Blanks.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/notebooks/exercises/lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb` | migrated (exercise) |
-| `lectures/day2/code/04_DEQN_Exercises_Solutions.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/notebooks/solutions/lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb` | migrated (solution) |
-| `lectures/day2/code/05_StochasticBM_LossComparison.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/notebooks/core/lecture_03_B02_05_StochasticBM_LossComparison.ipynb` | migrated (core) |
+| `lectures/day2/code/01_Brock_Mirman_1972_DEQN.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/code/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb` | migrated (core) |
+| `lectures/day2/code/02_Brock_Mirman_Uncertainty_DEQN.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/code/lecture_03_B02_02_Brock_Mirman_Uncertainty_DEQN.ipynb` | migrated (core) |
+| `lectures/day2/code/03_DEQN_Exercises_Blanks.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/code/lecture_03_B02_03_DEQN_Exercises_Blanks.ipynb` | migrated (exercise) |
+| `lectures/day2/code/04_DEQN_Exercises_Solutions.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/code/lecture_03_B02_04_DEQN_Exercises_Solutions.ipynb` | migrated (solution) |
+| `lectures/day2/code/05_StochasticBM_LossComparison.ipynb` | `lectures/lecture_03_B02_deep_equilibrium_nets/code/lecture_03_B02_05_StochasticBM_LossComparison.ipynb` | migrated (core) |
 
 ### Day 3 → Lectures 04 (IRBC) and 05 (NAS / Loss Normalization)
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day3/code/01_IRBC_DEQN.ipynb` | `lectures/lecture_04_B03_irbc_with_deqns/notebooks/core/lecture_04_B03_01_IRBC_DEQN.ipynb` | migrated (core) |
-| `lectures/day3/code/02_NAS_Random_Search_10D.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/notebooks/core/lecture_05_B04_02_NAS_Random_Search_10D.ipynb` | migrated (core) |
-| `lectures/day3/code/03_NAS_RandomSearch_Hyperband.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/notebooks/core/lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb` | migrated (core) |
-| `lectures/day3/code/04_Loss_Normalization.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/notebooks/core/lecture_05_B04_04_Loss_Normalization.ipynb` | migrated (core) |
-| `lectures/day3/code/05_IRBC_Exercise.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/notebooks/exercises/lecture_05_B04_05_IRBC_Exercise.ipynb` | migrated (exercise) |
+| `lectures/day3/code/01_IRBC_DEQN.ipynb` | `lectures/lecture_04_B03_irbc_with_deqns/code/lecture_04_B03_01_IRBC_DEQN.ipynb` | migrated (core) |
+| `lectures/day3/code/02_NAS_Random_Search_10D.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/code/lecture_05_B04_02_NAS_Random_Search_10D.ipynb` | migrated (core) |
+| `lectures/day3/code/03_NAS_RandomSearch_Hyperband.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/code/lecture_05_B04_03_NAS_RandomSearch_Hyperband.ipynb` | migrated (core) |
+| `lectures/day3/code/04_Loss_Normalization.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/code/lecture_05_B04_04_Loss_Normalization.ipynb` | migrated (core) |
+| `lectures/day3/code/05_IRBC_Exercise.ipynb` | `lectures/lecture_05_B04_nas_loss_normalization/code/lecture_05_B04_05_IRBC_Exercise.ipynb` | migrated (exercise) |
 
 ### Day 4 → Lectures 06 (AutoDiff), 07 (Sequence-Space), 08 (OLG), 09 (Young's method)
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day4/code/01_AutoDiff_Analytical_Examples.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/notebooks/core/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb` | migrated (core) |
-| `lectures/day4/code/02_Brock_Mirman_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/notebooks/core/lecture_06_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb` | migrated (core) |
-| `lectures/day4/code/03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/notebooks/core/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb` | migrated (core) |
-| `lectures/day4/code/04_IRBC_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/notebooks/extensions/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb` | migrated (extension) |
-| `lectures/day4/code/05_SequenceSpace_BrockMirman.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/notebooks/core/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb` | migrated (core) |
-| `lectures/day4/code/05b_SequenceSpace_IRBC.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/notebooks/extensions/lecture_07_B06_05b_SequenceSpace_IRBC.ipynb` | migrated (extension) |
-| `lectures/day4/code/06_SequenceSpace_KrusellSmith.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/notebooks/core/lecture_07_B06_06_SequenceSpace_KrusellSmith.ipynb` | migrated (core) |
-| `lectures/day4/code/07_OLG_Analytic_DEQN.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/notebooks/core/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb` | migrated (core) |
-| `lectures/day4/code/08_OLG_Benchmark_DEQN.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/notebooks/core/lecture_08_B07_08_OLG_Benchmark_DEQN.ipynb` | migrated (core) |
-| `lectures/day4/code/09_OLG_Exercise.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/notebooks/exercises/lecture_08_B07_09_OLG_Exercise.ipynb` | migrated (exercise) |
-| `lectures/day4/code/10_Youngs_Method_Examples.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/notebooks/core/lecture_09_B08_10_Youngs_Method_Examples.ipynb` | migrated (core) |
-| `lectures/day4/code/11_Continuum_of_Agents_DEQN.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/notebooks/core/lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb` | migrated (core) |
-| `lectures/day4/code/12_KrusellSmith_DeepLearning.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/notebooks/extensions/lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb` | migrated (extension) |
-| `lectures/day4/code/KrusellSmith_Tutorial_CPU.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/notebooks/extensions/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb` | migrated (extension; **borrowed/adapted**, upstream JAX tutorial; preserve upstream notice) |
+| `lectures/day4/code/01_AutoDiff_Analytical_Examples.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/code/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb` | migrated (core) |
+| `lectures/day4/code/02_Brock_Mirman_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/code/lecture_06_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb` | migrated (core) |
+| `lectures/day4/code/03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/code/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb` | migrated (core) |
+| `lectures/day4/code/04_IRBC_AutoDiff_DEQN.ipynb` | `lectures/lecture_06_B05_autodiff_for_deqns/code/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb` | migrated (extension) |
+| `lectures/day4/code/05_SequenceSpace_BrockMirman.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb` | migrated (core) |
+| `lectures/day4/code/05b_SequenceSpace_IRBC.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_05b_SequenceSpace_IRBC.ipynb` | migrated (extension) |
+| `lectures/day4/code/06_SequenceSpace_KrusellSmith.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_06_SequenceSpace_KrusellSmith.ipynb` | migrated (core) |
+| `lectures/day4/code/07_OLG_Analytic_DEQN.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/code/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb` | migrated (core) |
+| `lectures/day4/code/08_OLG_Benchmark_DEQN.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/code/lecture_08_B07_08_OLG_Benchmark_DEQN.ipynb` | migrated (core) |
+| `lectures/day4/code/09_OLG_Exercise.ipynb` | `lectures/lecture_08_B07_olg_models_deqns/code/lecture_08_B07_09_OLG_Exercise.ipynb` | migrated (exercise) |
+| `lectures/day4/code/10_Youngs_Method_Examples.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/code/lecture_09_B08_10_Youngs_Method_Examples.ipynb` | migrated (core) |
+| `lectures/day4/code/11_Continuum_of_Agents_DEQN.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/code/lecture_09_B08_11_Continuum_of_Agents_DEQN.ipynb` | migrated (core) |
+| `lectures/day4/code/12_KrusellSmith_DeepLearning.ipynb` | `lectures/lecture_09_B08_heterogeneous_agents_youngs_method/code/lecture_09_B08_12_KrusellSmith_DeepLearning.ipynb` | migrated (extension) |
+| `lectures/day4/code/KrusellSmith_Tutorial_CPU.ipynb` | `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb` | migrated (extension; **borrowed/adapted**, upstream JAX tutorial; preserve upstream notice) |
 
 ### Day 5 → Toolkits T1, T2, T3
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day5/agentic_ai_lecture_syllabus.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/notes/agentic_ai_lecture_syllabus.md` | migrated |
+| `lectures/day5/agentic_ai_lecture_syllabus.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/agentic_ai_lecture_syllabus.md` | migrated |
 | `lectures/day5/code/README.md` | `toolkit/README.md` | migrated |
-| `lectures/day5/code/exercise_prompts.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/exercises/exercise_prompts.md` | migrated |
-| `lectures/day5/code/exercise_solutions.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/solutions/exercise_solutions.md` | migrated |
+| `lectures/day5/code/exercise_prompts.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/exercise_prompts.md` | migrated |
+| `lectures/day5/code/exercise_solutions.md` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/exercise_solutions.md` | migrated |
 | `lectures/day5/code/generate_synthetic_data.py` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/generate_synthetic_data.py` | migrated |
 | `lectures/day5/code/mincer_demo.py` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/mincer_demo.py` | migrated |
 | `lectures/day5/code/data/synthetic_panel.csv` | `toolkit/toolkit_01_T1_agentic_research_coding_loop/code/data/synthetic_panel.csv` | migrated |
@@ -148,40 +148,40 @@ and the `RUN_MODE = "smoke"` switch are added in a follow-up pass.
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day6/code/01_ODE_PINN_ZeroBCs.ipynb` | `lectures/lecture_10_B09_pinns/notebooks/core/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb` | migrated (core) |
-| `lectures/day6/code/02_ODE_PINN_SoftVsHardBCs.ipynb` | `lectures/lecture_10_B09_pinns/notebooks/core/lecture_10_B09_02_ODE_PINN_SoftVsHardBCs.ipynb` | migrated (core) |
-| `lectures/day6/code/03_PDE_PINN_Poisson2D.ipynb` | `lectures/lecture_10_B09_pinns/notebooks/core/lecture_10_B09_03_PDE_PINN_Poisson2D.ipynb` | migrated (core) |
-| `lectures/day6/code/04_Cake_Eating_HJB_PINN.ipynb` | `lectures/lecture_10_B09_pinns/notebooks/core/lecture_10_B09_04_Cake_Eating_HJB_PINN.ipynb` | migrated (core) |
-| `lectures/day6/code/05_Black_Scholes_PINN.ipynb` | `lectures/lecture_10_B09_pinns/notebooks/core/lecture_10_B09_05_Black_Scholes_PINN.ipynb` | migrated (core) |
-| `lectures/day6/code/06_PE_Discrete_HJB_PINN.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/notebooks/core/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb` | migrated (core) |
-| `lectures/day6/code/07_PE_Diffusion_HJB_PINN.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/notebooks/core/lecture_12_B11_07_PE_Diffusion_HJB_PINN.ipynb` | migrated (core) |
-| `lectures/day6/code/08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/notebooks/core/lecture_12_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb` | migrated (core) |
-| `lectures/day6/code/09_PINN_Exercise.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/notebooks/exercises/lecture_12_B11_09_PINN_Exercise.ipynb` | migrated (exercise) |
+| `lectures/day6/code/01_ODE_PINN_ZeroBCs.ipynb` | `lectures/lecture_10_B09_pinns/code/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb` | migrated (core) |
+| `lectures/day6/code/02_ODE_PINN_SoftVsHardBCs.ipynb` | `lectures/lecture_10_B09_pinns/code/lecture_10_B09_02_ODE_PINN_SoftVsHardBCs.ipynb` | migrated (core) |
+| `lectures/day6/code/03_PDE_PINN_Poisson2D.ipynb` | `lectures/lecture_10_B09_pinns/code/lecture_10_B09_03_PDE_PINN_Poisson2D.ipynb` | migrated (core) |
+| `lectures/day6/code/04_Cake_Eating_HJB_PINN.ipynb` | `lectures/lecture_10_B09_pinns/code/lecture_10_B09_04_Cake_Eating_HJB_PINN.ipynb` | migrated (core) |
+| `lectures/day6/code/05_Black_Scholes_PINN.ipynb` | `lectures/lecture_10_B09_pinns/code/lecture_10_B09_05_Black_Scholes_PINN.ipynb` | migrated (core) |
+| `lectures/day6/code/06_PE_Discrete_HJB_PINN.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/code/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb` | migrated (core) |
+| `lectures/day6/code/07_PE_Diffusion_HJB_PINN.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/code/lecture_12_B11_07_PE_Diffusion_HJB_PINN.ipynb` | migrated (core) |
+| `lectures/day6/code/08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/code/lecture_12_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb` | migrated (core) |
+| `lectures/day6/code/09_PINN_Exercise.ipynb` | `lectures/lecture_12_B11_continuous_time_ha_numerics/code/lecture_12_B11_09_PINN_Exercise.ipynb` | migrated (exercise) |
 
 ### Day 7 → Lectures 13 (Surrogates and GPs) and 14 (SMM)
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day7/code/01_Surrogate_Primer.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_01_Surrogate_Primer.ipynb` | migrated (core) |
-| `lectures/day7/code/02_GP_and_BAL.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_02_GP_and_BAL.ipynb` | migrated (core) |
-| `lectures/day7/code/03_Structural_Estimation_BM.ipynb` | `lectures/lecture_14_B13_structural_estimation_smm/notebooks/core/lecture_14_B13_03_Structural_Estimation_BM.ipynb` | migrated (core) |
-| `lectures/day7/code/03b_Structural_Estimation_BM_Joint.ipynb` | `lectures/lecture_14_B13_structural_estimation_smm/notebooks/extensions/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb` | migrated (extension) |
-| `lectures/day7/code/04_GP_Value_Function_Iteration.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_04_GP_Value_Function_Iteration.ipynb` | migrated (core) |
-| `lectures/day7/code/05_Active_Subspace_2D.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_05_Active_Subspace_2D.ipynb` | migrated (core) |
-| `lectures/day7/code/06_Active_Subspace_10D.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_06_Active_Subspace_10D.ipynb` | migrated (core) |
-| `lectures/day7/code/07_Active_Subspace_Nonlinear.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/extensions/lecture_13_B12_07_Active_Subspace_Nonlinear.ipynb` | migrated (extension) |
-| `lectures/day7/code/08_Deep_Kernel_Learning.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/core/lecture_13_B12_08_Deep_Kernel_Learning.ipynb` | migrated (core) |
-| `lectures/day7/code/09_Deep_Active_Subspace_Ridge.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/extensions/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb` | migrated (extension) |
-| `lectures/day7/code/10_Deep_AS_vs_Linear_AS_Borehole.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/notebooks/extensions/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb` | migrated (extension) |
+| `lectures/day7/code/01_Surrogate_Primer.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_01_Surrogate_Primer.ipynb` | migrated (core) |
+| `lectures/day7/code/02_GP_and_BAL.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_02_GP_and_BAL.ipynb` | migrated (core) |
+| `lectures/day7/code/03_Structural_Estimation_BM.ipynb` | `lectures/lecture_14_B13_structural_estimation_smm/code/lecture_14_B13_03_Structural_Estimation_BM.ipynb` | migrated (core) |
+| `lectures/day7/code/03b_Structural_Estimation_BM_Joint.ipynb` | `lectures/lecture_14_B13_structural_estimation_smm/code/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb` | migrated (extension) |
+| `lectures/day7/code/04_GP_Value_Function_Iteration.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_04_GP_Value_Function_Iteration.ipynb` | migrated (core) |
+| `lectures/day7/code/05_Active_Subspace_2D.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_05_Active_Subspace_2D.ipynb` | migrated (core) |
+| `lectures/day7/code/06_Active_Subspace_10D.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_06_Active_Subspace_10D.ipynb` | migrated (core) |
+| `lectures/day7/code/07_Active_Subspace_Nonlinear.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_07_Active_Subspace_Nonlinear.ipynb` | migrated (extension) |
+| `lectures/day7/code/08_Deep_Kernel_Learning.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_08_Deep_Kernel_Learning.ipynb` | migrated (core) |
+| `lectures/day7/code/09_Deep_Active_Subspace_Ridge.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb` | migrated (extension) |
+| `lectures/day7/code/10_Deep_AS_vs_Linear_AS_Borehole.ipynb` | `lectures/lecture_13_B12_surrogates_and_gps/code/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb` | migrated (extension) |
 | `lectures/day7/code/plot_cell_*.png` | — | excluded:not_referenced_in_source_readme |
 
 ### Day 8 → Lecture 15 (Climate / IAMs)
 
 | Source | Destination | Status |
 |---|---|---|
-| `lectures/day8/code/01_Climate_Exercise.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/notebooks/exercises/lecture_15_B14_01_Climate_Exercise.ipynb` | migrated (exercise) |
-| `lectures/day8/code/02_DICE_DEQN_Library_Port.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/notebooks/core/lecture_15_B14_02_DICE_DEQN_Library_Port.ipynb` | migrated (core) |
-| `lectures/day8/code/03_Stochastic_DICE_DEQN.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/notebooks/extensions/lecture_15_B14_03_Stochastic_DICE_DEQN.ipynb` | migrated (extension) |
+| `lectures/day8/code/01_Climate_Exercise.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/code/lecture_15_B14_01_Climate_Exercise.ipynb` | migrated (exercise) |
+| `lectures/day8/code/02_DICE_DEQN_Library_Port.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/code/lecture_15_B14_02_DICE_DEQN_Library_Port.ipynb` | migrated (core) |
+| `lectures/day8/code/03_Stochastic_DICE_DEQN.ipynb` | `lectures/lecture_15_B14_climate_economics_iams/code/lecture_15_B14_03_Stochastic_DICE_DEQN.ipynb` | migrated (extension) |
 
 ### Excluded notebooks and code (Day 8 research artefacts)
 

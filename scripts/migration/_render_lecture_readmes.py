@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
-"""Regenerate per-lecture README.md from course.yml after the
-30-lecture-to-17-lecture re-coarsening."""
+"""Regenerate per-lecture README.md from course.yml.
+
+Per-lecture folders now have a flat structure:
+  - slides/    PDFs and .tex sources
+  - code/      every .ipynb plus any auxiliary .py / data files
+  - figures/   (optional) lecture-specific figure assets
+  - README.md  this file
+
+The previous notebooks/{core,exercises,solutions,extensions} hierarchy
+has been collapsed into code/.
+"""
 from __future__ import annotations
 from pathlib import Path
 import yaml
@@ -8,9 +17,10 @@ import yaml
 REPO = Path(__file__).resolve().parents[2]
 
 
-# Per-lecture learning-goal paragraphs. Keyed by NEW block ID (B00..B16, T1..T3).
-LEARNING_GOALS: dict[str, str] = {
-    "B00": "Get the local environment running, locate every part of the course (script, slides, notebooks, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.",
+# Per-lecture content summaries. Keyed by NEW block ID (B00..B16, T1..T3).
+# These are the "What this lecture covers" paragraphs that lead each README.
+SUMMARIES: dict[str, str] = {
+    "B00": "Get the local environment running, locate every part of the course (script, slides, code, toolkits, readings), understand the conventions used throughout (lecture/block IDs, RUN_MODE switch, compute tiers), and reproduce a smoke-test run end-to-end.",
     "B01": "Build the working knowledge of deep learning that the rest of the course assumes: classical ML and the bias-variance trade-off; SGD and its variants; depth, width, and double descent; sequence models from MLPs through LSTMs to small Transformers, applied to economic time-series patterns. By the end you have built and trained models in both TensorFlow and PyTorch, and you can read the rest of the course's notebooks fluently.",
     "B02": "State the Deep Equilibrium Net (DEQN) idea precisely, train deterministic and stochastic Brock-Mirman DEQNs, and verify them against closed-form solutions. Handle constraints with Fischer-Burmeister complementarity, choose conditional-expectation quadrature deliberately, and compare six loss kernels (MSE, MAE, Huber, quantile, CVaR, log-cosh) on the same problem.",
     "B03": "Solve a multi-country International Real Business Cycle (IRBC) model with DEQNs. Recover the symmetric steady state, run a comparative-statics exercise (e.g. doubling depreciation), and report Euler-equation residuals across the simulated state distribution.",
@@ -38,23 +48,38 @@ def script_ref(entries: list[dict]) -> str:
     return ", ".join(parts) if parts else "—"
 
 
-def list_links(items: list[str]) -> str:
-    if not items:
+def list_files(folder_abs: Path, kind: str) -> list[Path]:
+    """Return sorted list of files in the named subfolder."""
+    sub = folder_abs / kind
+    if not sub.exists():
+        return []
+    return sorted(p for p in sub.rglob("*") if p.is_file())
+
+
+def render_links(folder_rel: str, files: list[Path]) -> str:
+    if not files:
         return "_(none)_"
-    return "\n".join(f"- [`{Path(rel).name}`]({rel})" for rel in items)
+    folder_abs = REPO / folder_rel
+    out = []
+    for f in files:
+        rel = f.relative_to(folder_abs).as_posix()
+        out.append(f"- [`{rel}`]({rel})")
+    return "\n".join(out)
 
 
 def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
     num = f"{lec['lecture']:02d}"
     block = lec["block"]
     title = lec["title"]
+    folder = lec["folder"]
+    folder_abs = REPO / folder
 
-    slides = lec.get("slides") or []
-    nb = lec.get("notebooks") or {}
-    core = nb.get("core") or []
-    exercises = nb.get("exercises") or []
-    solutions = nb.get("solutions") or []
-    extensions = nb.get("extensions") or []
+    # Materials: walk the actual filesystem
+    slide_files = list_files(folder_abs, "slides")
+    # filter out figure subfolders inside slides (they ship the .tex resources, not student materials)
+    slides = [f for f in slide_files if f.suffix in {".pdf", ".tex"} and f.parent.name == "slides"]
+    code_files = list_files(folder_abs, "code")
+    figure_files = list_files(folder_abs, "figures")
 
     if lec["prereqs"]:
         prereq_md = ", ".join(
@@ -64,7 +89,6 @@ def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
     else:
         prereq_md = "_(none, start of course)_"
 
-    # Prev / next nav: walk lectures in `lecture` order
     sorted_lecs = sorted(lec_index.values(), key=lambda x: x["lecture"])
     prev_md = "_(this is the first lecture)_"
     next_md = "_(this is the last lecture)_"
@@ -79,54 +103,39 @@ def render_lecture_readme(lec: dict, lec_index: dict[str, dict]) -> str:
             break
 
     script_md = script_ref(lec.get("script") or [])
-    learning_goal = LEARNING_GOALS.get(block, "_Learning goal pending._")
+    summary = SUMMARIES.get(block, "_Summary pending._")
+
+    figures_section = ""
+    if figure_files:
+        figures_section = f"\n## Figures\n\n{render_links(folder, figure_files)}\n"
 
     return f"""# Lecture {num} ({block}): {title}
 
-> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
-> **Course author:** Simon Scheidegger
+> **Course:** Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance  \\
+> **Course author:** Simon Scheidegger  \\
 > **Compute tier:** `{lec.get('compute', 'cpu-light')}` &nbsp;·&nbsp; **Time budget:** `{lec.get('time', 'standard')}`
 
-## Learning goal
+## What this lecture covers
 
-{learning_goal}
+{summary}
 
+## Slides
+
+{render_links(folder, slides)}
+
+## Code
+
+{render_links(folder, code_files)}
+{figures_section}
 ## Prerequisites
 
 - {prereq_md}
-
-## External prerequisites
-
-- Python 3.10+ environment (`requirements.txt` at repo root, or run on the course platform).
-- Familiarity with the math listed under **Script reference** below.
 
 ## Script reference
 
 - {script_md}
 - [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map
 - [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), companion script
-
-## Slides
-
-{list_links(slides)}
-
-## Notebooks
-
-### Core
-
-{list_links(core)}
-
-### Exercises
-
-{list_links(exercises)}
-
-### Solutions
-
-{list_links(solutions)}
-
-### Extensions
-
-{list_links(extensions)}
 
 ## Checkpoint
 
