@@ -25,7 +25,7 @@ Understand how neural networks are trained: SGD and its variants, backpropagatio
 
 ## Slides
 
-_(none in this PR)_
+- [`02_Training_Neural_Networks.pdf`](slides/02_Training_Neural_Networks.pdf) — perceptron, multilayer networks, gradient descent / SGD, backprop, optimizers, batch normalization, software ecosystem.
 
 ## Notebooks
 

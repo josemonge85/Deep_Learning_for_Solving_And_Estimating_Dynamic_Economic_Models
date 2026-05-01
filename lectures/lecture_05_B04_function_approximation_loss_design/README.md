@@ -25,7 +25,7 @@ Choose function-approximation architectures and loss functions appropriate to a 
 
 ## Slides
 
-_(none in this PR)_
+- [`04_Function_Approximation_Loss_Design.pdf`](slides/04_Function_Approximation_Loss_Design.pdf) — universal approximation, loss-function design, robust and asymmetric losses, the curse of dimensionality.
 
 ## Notebooks
 

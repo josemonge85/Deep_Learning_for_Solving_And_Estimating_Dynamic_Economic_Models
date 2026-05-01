@@ -25,7 +25,7 @@ Reason about generalization and inductive bias in neural networks: the double-de
 
 ## Slides
 
-_(none in this PR)_
+- [`03_Generalization_Sequence_Models.pdf`](slides/03_Generalization_Sequence_Models.pdf) — overfitting, regularization, double descent, RNN / LSTM / Transformer.
 
 ## Notebooks
 
