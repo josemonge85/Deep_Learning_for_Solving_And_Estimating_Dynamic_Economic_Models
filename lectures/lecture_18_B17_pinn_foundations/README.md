@@ -58,8 +58,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 17 (B16): Sequence-space DEQNs](../lecture_17_B16_sequence_space_deqns/README.md)
+- **Next:** [Lecture 19 (B18): PINNs II - economic PDEs](../lecture_19_B18_pinn_economic_pdes/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

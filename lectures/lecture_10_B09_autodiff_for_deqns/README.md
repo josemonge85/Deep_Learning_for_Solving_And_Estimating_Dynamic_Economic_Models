@@ -58,8 +58,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 09 (B08): Constraints, residual kernels, and loss design](../lecture_09_B08_constraints_residual_kernels_loss_design/README.md)
+- **Next:** [Lecture 11 (B10): IRBC with DEQNs](../lecture_11_B10_irbc_with_deqns/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

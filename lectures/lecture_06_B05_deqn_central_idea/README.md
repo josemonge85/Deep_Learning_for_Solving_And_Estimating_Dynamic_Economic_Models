@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 05 (B04): Function approximation and loss design](../lecture_05_B04_function_approximation_loss_design/README.md)
+- **Next:** [Lecture 07 (B06): Brock-Mirman I - deterministic DEQN](../lecture_07_B06_brock_mirman_deterministic_deqn/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

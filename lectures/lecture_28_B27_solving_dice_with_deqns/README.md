@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 27 (B26): Climate economics and IAMs](../lecture_27_B26_climate_economics_iams/README.md)
+- **Next:** [Lecture 29 (B28): Deep uncertainty quantification and policy](../lecture_29_B28_deep_uq_policy/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

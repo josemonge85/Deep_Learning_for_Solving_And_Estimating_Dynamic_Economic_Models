@@ -58,8 +58,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 16 (B15): Continuum-of-agents DEQN and method comparison](../lecture_16_B15_continuum_agents_deqn_method_comparison/README.md)
+- **Next:** [Lecture 18 (B17): PINNs I - residual learning for ODEs and PDEs](../lecture_18_B17_pinn_foundations/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

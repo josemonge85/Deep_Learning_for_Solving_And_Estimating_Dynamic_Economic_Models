@@ -57,8 +57,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 03 (B02): Training neural networks](../lecture_03_B02_training_neural_networks/README.md)
+- **Next:** [Lecture 05 (B04): Function approximation and loss design](../lecture_05_B04_function_approximation_loss_design/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

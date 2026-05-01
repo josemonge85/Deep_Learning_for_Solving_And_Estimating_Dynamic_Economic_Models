@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 15 (B14): Krusell-Smith and Young's method](../lecture_15_B14_krusell_smith_young_method/README.md)
+- **Next:** [Lecture 17 (B16): Sequence-space DEQNs](../lecture_17_B16_sequence_space_deqns/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

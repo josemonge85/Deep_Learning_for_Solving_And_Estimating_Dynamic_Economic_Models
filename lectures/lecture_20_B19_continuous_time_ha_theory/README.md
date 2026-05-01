@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 19 (B18): PINNs II - economic PDEs](../lecture_19_B18_pinn_economic_pdes/README.md)
+- **Next:** [Lecture 21 (B20): Continuous-time HA numerics](../lecture_21_B20_continuous_time_ha_numerics/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

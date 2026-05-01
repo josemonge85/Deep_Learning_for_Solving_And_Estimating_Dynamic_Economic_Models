@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 13 (B12): OLG models with DEQNs](../lecture_13_B12_olg_models_deqns/README.md)
+- **Next:** [Lecture 15 (B14): Krusell-Smith and Young's method](../lecture_15_B14_krusell_smith_young_method/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

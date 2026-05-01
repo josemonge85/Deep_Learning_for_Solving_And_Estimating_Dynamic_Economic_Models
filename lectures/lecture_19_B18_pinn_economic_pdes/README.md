@@ -57,8 +57,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 18 (B17): PINNs I - residual learning for ODEs and PDEs](../lecture_18_B17_pinn_foundations/README.md)
+- **Next:** [Lecture 20 (B19): Continuous-time HA theory](../lecture_20_B19_continuous_time_ha_theory/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

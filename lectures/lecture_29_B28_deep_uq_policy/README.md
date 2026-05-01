@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 28 (B27): Solving DICE with DEQNs](../lecture_28_B27_solving_dice_with_deqns/README.md)
+- **Next:** [Lecture 30 (B29): Synthesis and method choice](../lecture_30_B29_synthesis_method_choice/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

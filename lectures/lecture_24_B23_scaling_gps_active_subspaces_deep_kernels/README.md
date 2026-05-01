@@ -60,8 +60,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 23 (B22): Gaussian processes and Bayesian active learning](../lecture_23_B22_gp_bayesian_active_learning/README.md)
+- **Next:** [Lecture 25 (B24): GPs for dynamic programming](../lecture_25_B24_gps_for_dynamic_programming/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

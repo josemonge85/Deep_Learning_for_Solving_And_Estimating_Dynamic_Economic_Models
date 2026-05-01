@@ -56,8 +56,9 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Next:** [Lecture 02 (B01): Why deep learning for economics and finance?](../lecture_02_B01_why_deep_learning/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

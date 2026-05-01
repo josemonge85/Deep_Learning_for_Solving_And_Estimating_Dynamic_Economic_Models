@@ -58,8 +58,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 02 (B01): Why deep learning for economics and finance?](../lecture_02_B01_why_deep_learning/README.md)
+- **Next:** [Lecture 04 (B03): Generalization and sequence models](../lecture_04_B03_generalization_sequence_models/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

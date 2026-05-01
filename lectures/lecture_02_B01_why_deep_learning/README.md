@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 01 (B00): Orientation, setup, and reproducibility](../lecture_01_B00_orientation_setup_reproducibility/README.md)
+- **Next:** [Lecture 03 (B02): Training neural networks](../lecture_03_B02_training_neural_networks/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

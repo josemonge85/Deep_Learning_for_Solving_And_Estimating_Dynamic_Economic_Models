@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 14 (B13): Large OLG benchmark](../lecture_14_B13_large_olg_benchmark/README.md)
+- **Next:** [Lecture 16 (B15): Continuum-of-agents DEQN and method comparison](../lecture_16_B15_continuum_agents_deqn_method_comparison/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

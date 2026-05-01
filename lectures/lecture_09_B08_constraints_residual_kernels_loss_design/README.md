@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 08 (B07): Brock-Mirman II - uncertainty and integration](../lecture_08_B07_brock_mirman_uncertainty_integration/README.md)
+- **Next:** [Lecture 10 (B09): Automatic differentiation for DEQNs](../lecture_10_B09_autodiff_for_deqns/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

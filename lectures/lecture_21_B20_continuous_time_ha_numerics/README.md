@@ -58,8 +58,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 20 (B19): Continuous-time HA theory](../lecture_20_B19_continuous_time_ha_theory/README.md)
+- **Next:** [Lecture 22 (B21): Deep surrogate models](../lecture_22_B21_deep_surrogate_models/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 

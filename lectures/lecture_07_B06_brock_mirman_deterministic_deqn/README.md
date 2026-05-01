@@ -56,8 +56,10 @@ _(none in this PR)_
 
 ## Navigation
 
-- [`COURSE_MAP.md`](../../COURSE_MAP.md)
-- [`README.md`](../../README.md)
+- **Previous:** [Lecture 06 (B05): Deep Equilibrium Nets - the central idea](../lecture_06_B05_deqn_central_idea/README.md)
+- **Next:** [Lecture 08 (B07): Brock-Mirman II - uncertainty and integration](../lecture_08_B07_brock_mirman_uncertainty_integration/README.md)
+- [Course map](../../COURSE_MAP.md)
+- [Repository home](../../README.md)
 
 ## Copyright and attribution
 
