@@ -1,4 +1,6 @@
-# Readings — Lecture 21 (B20): Continuous-time HA numerics
+# Readings — Lecture 12 (B11): Continuous-time heterogeneous agents, numerics
+
+## Readings — Lecture 12 (B20): Continuous-time HA numerics
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

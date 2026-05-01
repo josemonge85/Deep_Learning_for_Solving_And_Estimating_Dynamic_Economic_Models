@@ -1,4 +1,6 @@
-# Readings — Lecture 26 (B25): Structural estimation via SMM
+# Readings — Lecture 14 (B13): Structural estimation via SMM
+
+## Readings — Lecture 14 (B25): Structural estimation via SMM
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

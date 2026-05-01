@@ -1,4 +1,6 @@
-# Readings — Lecture 02 (B01): Why deep learning for economics and finance?
+# Readings — Lecture 02 (B01): Introduction to deep learning
+
+## Readings — Lecture 02 (B01): Why deep learning for economics and finance?
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -39,7 +41,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 03 (B02): Training neural networks
+## Readings — Lecture 03 (B02): Training neural networks
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -72,7 +74,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 04 (B03): Generalization and sequence models
+## Readings — Lecture 04 (B03): Generalization and sequence models
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -97,7 +99,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 05 (B04): Function approximation and loss design
+## Readings — Lecture 05 (B04): Function approximation and loss design
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

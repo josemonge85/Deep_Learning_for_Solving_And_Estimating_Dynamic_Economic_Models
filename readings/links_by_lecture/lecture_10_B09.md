@@ -1,4 +1,6 @@
-# Readings — Lecture 18 (B17): PINNs I — residual learning for ODEs and PDEs
+# Readings — Lecture 10 (B09): Physics-informed neural networks
+
+## Readings — Lecture 10 (B17): PINNs I — residual learning for ODEs and PDEs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -31,7 +33,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 19 (B18): PINNs II — economic PDEs
+## Readings — Lecture 10 (B18): PINNs II — economic PDEs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -51,7 +53,7 @@ Default policy: link only. PDFs are not redistributed unless their license clear
 - **Year:** 1973
 - **Venue:** Journal of Political Economy, 81(3)
 - **Link:** <https://doi.org/10.1086/260062>
-- **Notes:** Original Black-Scholes paper, referenced in Lecture 19's PINN pricing notebook.
+- **Notes:** Original Black-Scholes paper, referenced in Lecture 10's PINN pricing notebook.
 
 ## Bibliography
 

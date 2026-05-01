@@ -1,4 +1,6 @@
-# Readings — Lecture 30 (B29): Synthesis and method choice
+# Readings — Lecture 17 (B16): Course wrap-up
+
+## Readings — Lecture 07 (B29): Synthesis and method choice
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

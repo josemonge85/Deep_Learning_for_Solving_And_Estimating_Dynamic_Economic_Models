@@ -1,7 +1,7 @@
 # Geneva 2026 — original live-course timetable
 
 > **Note.** This file is **historical context only**. The public course
-> in this repository is organized as a 30-lecture self-study sequence
+> in this repository is organized as a 17-lecture self-study sequence plus 3 toolkit modules
 > (see [`README.md`](../README.md) and [`COURSE_MAP.md`](../COURSE_MAP.md)),
 > not as a day-by-day live schedule. The day numbering below refers to
 > the live mini-course held at the University of Geneva in

@@ -67,8 +67,8 @@ self-paced, lecture-numbered, open-source course.
 - All Codex experiment notebooks (`*_codex.ipynb`) and supporting
   research scripts (`train_codex_surrogate_*.py`, `dice_2p_*.py`,
   `dice_deqn_codex_lib.py`).
-- Day-N recap decks (`00_Recap_DayN.pdf`) — live-class only; the
-  30-lecture structure does not need cross-day recaps.
+- Day-N recap decks (`00_Recap_DayN.pdf`), live-class only; the
+  self-study structure does not need cross-day recaps.
 - LaTeX build artefacts, `.claude/` agent state, alternative cover
   designs, private working notes (`suggestion.md`, `TODO_review.md`,
   `codex_results/`).

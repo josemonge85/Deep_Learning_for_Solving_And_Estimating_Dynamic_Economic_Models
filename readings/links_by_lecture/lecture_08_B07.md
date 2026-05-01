@@ -1,4 +1,6 @@
-# Readings — Lecture 13 (B12): OLG models with DEQNs
+# Readings — Lecture 08 (B07): OLG models with DEQNs
+
+## Readings — Lecture 08 (B12): OLG models with DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -23,7 +25,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 14 (B13): Large OLG benchmark
+## Readings — Lecture 08 (B13): Large OLG benchmark
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

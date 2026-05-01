@@ -1,4 +1,6 @@
-# Readings — Lecture 15 (B14): Krusell-Smith and Young's method
+# Readings — Lecture 09 (B08): Heterogeneous agents and Young's method
+
+## Readings — Lecture 09 (B14): Krusell-Smith and Young's method
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -23,7 +25,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 16 (B15): Continuum-of-agents DEQN and method comparison
+## Readings — Lecture 09 (B15): Continuum-of-agents DEQN and method comparison
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

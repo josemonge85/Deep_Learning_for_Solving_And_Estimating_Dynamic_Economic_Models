@@ -1,4 +1,6 @@
-# Readings — Lecture 20 (B19): Continuous-time HA theory
+# Readings — Lecture 11 (B10): Continuous-time heterogeneous agents, theory
+
+## Readings — Lecture 11 (B19): Continuous-time HA theory
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

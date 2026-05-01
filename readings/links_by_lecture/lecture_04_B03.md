@@ -1,4 +1,6 @@
-# Readings — Lecture 11 (B10): IRBC with DEQNs
+# Readings — Lecture 04 (B03): IRBC with DEQNs
+
+## Readings — Lecture 04 (B10): IRBC with DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

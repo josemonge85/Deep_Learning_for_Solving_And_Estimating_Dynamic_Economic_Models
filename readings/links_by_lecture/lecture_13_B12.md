@@ -1,4 +1,6 @@
-# Readings — Lecture 22 (B21): Deep surrogate models
+# Readings — Lecture 13 (B12): Surrogates and Gaussian processes
+
+## Readings — Lecture 13 (B21): Deep surrogate models
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -14,7 +16,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 23 (B22): Gaussian processes and Bayesian active learning
+## Readings — Lecture 13 (B22): Gaussian processes and Bayesian active learning
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -30,7 +32,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 24 (B23): Scaling GPs — active subspaces and deep kernels
+## Readings — Lecture 13 (B23): Scaling GPs — active subspaces and deep kernels
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -46,7 +48,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 25 (B24): GPs for dynamic programming
+## Readings — Lecture 13 (B24): GPs for dynamic programming
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

@@ -1,4 +1,6 @@
-# Readings — Lecture 17 (B16): Sequence-space DEQNs
+# Readings — Lecture 07 (B06): Sequence-space DEQNs
+
+## Readings — Lecture 07 (B16): Sequence-space DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -10,7 +12,7 @@ Default policy: link only. PDFs are not redistributed unless their license clear
 - **Year:** 2021
 - **Venue:** Econometrica, 89(5)
 - **Link:** <https://doi.org/10.3982/ECTA17434>
-- **Notes:** Sequence-space methods that motivate sequence-space DEQNs in Lecture 17.
+- **Notes:** Sequence-space methods that motivate sequence-space DEQNs in Lecture 07.
 
 ### Deep Learning in the Sequence Space
 

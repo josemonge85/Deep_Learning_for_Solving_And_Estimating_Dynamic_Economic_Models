@@ -1,4 +1,6 @@
-# Readings — Lecture 29 (B28): Deep uncertainty quantification and policy
+# Readings — Lecture 16 (B15): Deep uncertainty quantification and Pareto-improving climate policy
+
+## Readings — Lecture 09 (B28): Deep uncertainty quantification and policy
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -26,7 +28,7 @@ Default policy: link only. PDFs are not redistributed unless their license clear
 - **Year:** 2024
 - **Venue:** Review of Economic Studies, 91(5)
 - **Link:** <https://doi.org/10.1093/restud/rdae011>
-- **Notes:** Calibrated DICE-extended (CDICE) climate-economy model used in Lectures 27-28.
+- **Notes:** Calibrated DICE-extended (CDICE) climate-economy model used in Lecture 09.
 
 ## Bibliography
 

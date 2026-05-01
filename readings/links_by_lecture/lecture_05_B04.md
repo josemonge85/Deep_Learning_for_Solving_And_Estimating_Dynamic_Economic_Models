@@ -1,4 +1,6 @@
-# Readings — Lecture 12 (B11): Architecture search and loss balancing
+# Readings — Lecture 05 (B04): Architecture search and loss balancing
+
+## Readings — Lecture 05 (B11): Architecture search and loss balancing
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

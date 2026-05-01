@@ -1,4 +1,6 @@
-# Readings — Lecture 06 (B05): Deep Equilibrium Nets — the central idea
+# Readings — Lecture 03 (B02): Deep Equilibrium Nets
+
+## Readings — Lecture 06 (B05): Deep Equilibrium Nets — the central idea
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -31,7 +33,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 07 (B06): Brock-Mirman I — deterministic DEQN
+## Readings — Lecture 07 (B06): Brock-Mirman I — deterministic DEQN
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -56,7 +58,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 08 (B07): Brock-Mirman II — uncertainty and integration
+## Readings — Lecture 08 (B07): Brock-Mirman II — uncertainty and integration
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
@@ -81,7 +83,7 @@ All references for this course are collected in [`readings/bibliography.bib`](..
 
 ---
 
-# Readings — Lecture 09 (B08): Constraints, residual kernels, and loss design
+## Readings — Lecture 09 (B08): Constraints, residual kernels, and loss design
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 

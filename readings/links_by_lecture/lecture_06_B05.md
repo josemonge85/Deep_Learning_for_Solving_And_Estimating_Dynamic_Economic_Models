@@ -1,4 +1,6 @@
-# Readings — Lecture 10 (B09): Automatic differentiation for DEQNs
+# Readings — Lecture 06 (B05): Automatic differentiation for DEQNs
+
+## Readings — Lecture 10 (B09): Automatic differentiation for DEQNs
 
 Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
 
