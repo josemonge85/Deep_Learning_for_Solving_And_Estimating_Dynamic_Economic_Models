@@ -1,0 +1,68 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Run validation suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install minimal dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install nbformat pyyaml
+
+      - name: validate_headers
+        run: python scripts/validate_headers.py
+
+      - name: validate_no_private_paths
+        run: python scripts/validate_no_private_paths.py
+
+      - name: validate_landing_page_assets
+        run: python scripts/validate_landing_page_assets.py
+
+      - name: validate_no_content_loss
+        run: python scripts/validate_no_content_loss.py
+
+      - name: check_american_english
+        run: python scripts/check_american_english.py
+
+      - name: hyperlink check
+        run: |
+          python - <<'EOF'
+          import re, sys
+          from pathlib import Path
+          repo = Path('.').resolve()
+          broken=[]; checked=0
+          for md in list(repo.rglob('*.md')):
+              if '.git' in md.parts or '_dev' in md.parts: continue
+              txt = md.read_text(encoding='utf-8')
+              for m in re.finditer(r'\[([^\]]*)\]\(([^)#]+?)(?:#[^)]*)?\)', txt):
+                  tgt = m.group(2).strip()
+                  if tgt.startswith(('http:', 'https:', 'mailto:', '<')): continue
+                  if not (md.parent / tgt).resolve().exists():
+                      broken.append((str(md.relative_to(repo)), tgt))
+                  checked += 1
+          if broken:
+              print(f"FAIL: {len(broken)} broken links of {checked} checked", file=sys.stderr)
+              for s, t in broken[:30]:
+                  print(f"  {s} -> {t}", file=sys.stderr)
+              sys.exit(1)
+          print(f"OK: {checked} links resolve")
+          EOF
