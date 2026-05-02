@@ -72,4 +72,4 @@ Curated bibliography for this lecture: [`lecture_05_B04.md`](../../readings/link
 
 ---
 
-← [Previous: IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md) · → [Next: Automatic differentiation for DEQNs](../lecture_06_B05_autodiff_for_deqns/README.md) · [Course map](../../COURSE_MAP.md)
+← [Previous: IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md) · → [Next: Agentic programming](../lecture_06_B17_agentic_programming/README.md) · [Course map](../../COURSE_MAP.md)

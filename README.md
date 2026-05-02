@@ -15,8 +15,8 @@ self-paced, and built to be worked through with your own laptop open.
 Everything you need is right here in this repository:
 
 - a textbook-length [companion script](lecture_script/lecture_script.pdf) you can read end-to-end,
-- **17 paired lectures** with slides, runnable Jupyter notebooks, and exercises,
-- a **3-module toolkit** on using AI coding agents as research partners,
+- **18 paired lectures** with slides, runnable Jupyter notebooks, and exercises,
+- a workshop on using AI coding agents as research partners (Lecture 06),
 - and a curated bibliography linking out to the underlying papers.
 
 Pick the lecture you actually need, run the notebooks, work the
@@ -102,13 +102,12 @@ away.
 
 Modern empirical and computational economics benefits enormously from
 using AI coding agents (Claude Code) as research partners, but only
-when the workflow is set up deliberately. The three toolkit modules
-teach the orientation, prompt patterns, project memory (`CLAUDE.md`),
-custom skills, subagents, and hooks that turn an LLM from a clever
-autocomplete into a real research collaborator. T1 covers the
-day-to-day interaction loop; T2 covers the operational scaffolding
-that makes the workflow sustainable on a multi-month project; T3 is
-the exercise handout that ties both together.
+when the workflow is set up deliberately. **Lecture 06** is a
+hands-on workshop that teaches the orientation, prompt patterns,
+project memory (`CLAUDE.md`), custom skills, subagents, and hooks
+that turn an LLM from a clever autocomplete into a real research
+collaborator, paired with twelve self-paced exercises so you walk
+out with reusable templates rather than slideware.
 
 ## How to use this course
 
@@ -118,13 +117,13 @@ that fits yours:
 - 🚀 **I want a guided start.** Open the
   [Python primer (Lecture 01)](lectures/lecture_01_B00_python_primer/README.md)
   if you need it, then follow the **Complete path** in
-  [`COURSE_MAP.md`](COURSE_MAP.md). It walks through all 17 lectures and
-  weaves in the toolkits at their natural insertion points.
+  [`COURSE_MAP.md`](COURSE_MAP.md). It walks through all 18 lectures
+  in their natural order.
 - 🎯 **I have a specific topic in mind.** Jump straight to the
   **topic index** below.
-- 🧪 **I want the research-workflow training first.** Start with the
-  [agentic-programming toolkit](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md),
-  then come back to the lecture sequence.
+- 🧪 **I want the research-workflow training first.** Jump to
+  [Lecture 06, agentic programming](lectures/lecture_06_B17_agentic_programming/README.md),
+  then come back to the rest of the sequence.
 - 📖 **I want a textbook.** Read the chapter-based
   [companion script](lecture_script/lecture_script.pdf); each chapter
   links to one or more lectures via
@@ -150,34 +149,20 @@ check) or take it all the way for the published-figure quality result.
 | **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_B02_deep_equilibrium_nets/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels |
 | **Large-scale nonlinear DSGE** (IRBC) | [Lecture 04](lectures/lecture_04_B03_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
 | **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_B04_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
-| **Automatic differentiation for DEQNs** | [Lecture 06](lectures/lecture_06_B05_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
-| **Sequence-space DEQNs** | [Lecture 07](lectures/lecture_07_B06_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
-| **OLG with DEQNs** | [Lecture 08](lectures/lecture_08_B07_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
-| **Heterogeneous agents and Young's method** | [Lecture 09](lectures/lecture_09_B08_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
-| **PINNs and continuous-time HA** | [Lectures 10–12](lectures/lecture_10_B09_pinns/README.md) | ODE / PDE PINNs, hard vs soft BCs, cake-eating HJB, Black-Scholes PINN, continuous-time Aiyagari |
-| **Surrogates, Gaussian processes, deep kernels** | [Lecture 13](lectures/lecture_13_B12_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
-| **Structural estimation via SMM** | [Lecture 14](lectures/lecture_14_B13_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
-| **Climate economics, IAMs, and deep UQ** | [Lectures 15–16](lectures/lecture_15_B14_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN, deep UQ, constrained Pareto-improving carbon-tax design |
-| **Synthesis, when to use which method** | [Lecture 17](lectures/lecture_17_B16_course_wrap_up/README.md) | Decision guide and outlook |
-| **Agentic research-coding workflow** | [Toolkit T1](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md) | AI-coding mental models, prompt engineering, the core interaction loop |
-| **Project memory, custom skills, subagents, hooks** | [Toolkit T2](toolkit/toolkit_02_T2_project_memory_agents_hooks/README.md) | CLAUDE.md, skills, subagents, hooks, data-to-paper pipelines |
-| **Agentic-programming exercise handout** | [Toolkit T3](toolkit/toolkit_03_T3_agentic_programming_exercises/README.md) | Workshop and self-study exercises that accompany T1 and T2 |
+| **Agentic programming** (AI coding agents as research partners) | [Lecture 06](lectures/lecture_06_B17_agentic_programming/README.md) | Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, plus a 12-exercise workshop |
+| **Automatic differentiation for DEQNs** | [Lecture 07](lectures/lecture_07_B05_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
+| **Sequence-space DEQNs** | [Lecture 08](lectures/lecture_08_B06_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
+| **OLG with DEQNs** | [Lecture 09](lectures/lecture_09_B07_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
+| **Heterogeneous agents and Young's method** | [Lecture 10](lectures/lecture_10_B08_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
+| **PINNs and continuous-time HA** | [Lectures 11-13](lectures/lecture_11_B09_pinns/README.md) | ODE / PDE PINNs, hard vs soft BCs, cake-eating HJB, Black-Scholes PINN, continuous-time Aiyagari |
+| **Surrogates, Gaussian processes, deep kernels** | [Lecture 14](lectures/lecture_14_B12_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
+| **Structural estimation via SMM** | [Lecture 15](lectures/lecture_15_B13_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
+| **Climate economics, IAMs, and deep UQ** | [Lectures 16-17](lectures/lecture_16_B14_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN, deep UQ, constrained Pareto-improving carbon-tax design |
+| **Synthesis, when to use which method** | [Lecture 18](lectures/lecture_18_B16_course_wrap_up/README.md) | Decision guide and outlook |
 
 For the full table including compute and time budgets, prerequisites,
 and the visual prerequisite diagram, see
 [`COURSE_MAP.md`](COURSE_MAP.md).
-
-## Toolkit modules, first-class, not optional
-
-The three toolkits live alongside the lectures and teach the
-**research workflow** that makes the rest of the course tractable for
-real projects. Each can be done as a standalone module.
-
-| Toolkit | Folder | Recommended placement |
-|---|---|---|
-| **T1, Agentic research-coding loop** | [`toolkit/toolkit_01_T1_*/`](toolkit/toolkit_01_T1_agentic_research_coding_loop/README.md) | After Lecture 05, before starting DEQN work |
-| **T2, Project memory, agents, and hooks** | [`toolkit/toolkit_02_T2_*/`](toolkit/toolkit_02_T2_project_memory_agents_hooks/README.md) | After Lecture 12, before the surrogate / GP block |
-| **T3, Agentic-programming exercise handout** | [`toolkit/toolkit_03_T3_*/`](toolkit/toolkit_03_T3_agentic_programming_exercises/README.md) | After T2, as workshop and self-study practice |
 
 ## Setup
 
@@ -202,13 +187,12 @@ and BoTorch (Lecture 13).
 .
 ├── README.md             ← you are here
 ├── COURSE_MAP.md         ← detailed map, learning paths, prerequisite diagram
-├── lectures/             ← 17 lecture folders (lecture_XX_BYY_*)
+├── lectures/             ← 18 lecture folders (lecture_XX_BYY_*)
 │   └── lecture_*/
 │       ├── README.md         summary, slides, code, prerequisites, readings
 │       ├── slides/           PDFs and .tex sources
 │       ├── code/             notebooks, supporting .py modules, data files
 │       └── figures/          (optional) lecture-specific figure assets
-├── toolkit/              ← Toolkits T1, T2, T3
 ├── lecture_script/       ← textbook-length companion script
 ├── readings/             ← per-lecture link guides + bibliography.bib
 └── assets/               ← hero figure, generated figures, attributions

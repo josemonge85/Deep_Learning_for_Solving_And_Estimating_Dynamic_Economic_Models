@@ -8,7 +8,7 @@ latter so attribution and licensing remain auditable.
 
 | File | Origin | Notes |
 |---|---|---|
-| `lectures/lecture_07_B06_sequence_space_deqns/code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb` | Upstream Krusell-Smith JAX tutorial | Adapted with a `TUTORIAL_MODE` switch. Upstream header retained verbatim in the notebook. |
+| `lectures/lecture_08_B06_sequence_space_deqns/code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb` | Upstream Krusell-Smith JAX tutorial | Adapted with a `TUTORIAL_MODE` switch. Upstream header retained verbatim in the notebook. |
 
 ## External readings
 
