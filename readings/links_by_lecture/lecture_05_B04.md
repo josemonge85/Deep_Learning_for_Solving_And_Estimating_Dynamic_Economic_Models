@@ -1,24 +1,23 @@
-# Readings — Lecture 05 (B04): Architecture search and loss balancing
+# Readings, Lecture 05 (B04): Architecture search and loss balancing
 
-## Readings — Lecture 05 (B11): Architecture search and loss balancing
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Neural architecture search
 
-## Selected references
+- **Elsken, Metzen, Hutter (2019), "Neural architecture search: a survey,"** *JMLR*, 20(55). [link](https://www.jmlr.org/papers/v20/18-598.html). Open-access survey covering search space, search strategy, and performance estimation.
+- **Li, Jamieson, DeSalvo, Rostamizadeh, Talwalkar (2017), "Hyperband,"** *JMLR*, 18. [arXiv](https://arxiv.org/abs/1603.06560). The reference for the successive-halving / Hyperband notebook.
 
-### Neural Architecture Search: A Survey
+## Loss balancing for multi-residual training
 
-- **Authors:** Elsken, T., Metzen, J. H., Hutter, F.
-- **Year:** 2019
-- **Venue:** Journal of Machine Learning Research, 20(55):1-21
-- **Link:** <https://www.jmlr.org/papers/v20/18-598.html>
-- **Notes:** Open-access survey covering search-space, search-strategy, and performance-estimation choices.
+- **Bischof, Kraus (2025), "Multi-objective loss balancing for physics-informed deep learning (ReLoBRaLo),"** *CMAME*, 441. The ReLoBRaLo paper that names and motivates the lecture's main loss-balancing technique.
+- **Heydari, Thompson, Mehmood (2019), "SoftAdapt: techniques for adaptive loss weighting of neural networks with multi-part loss functions,"** [arXiv](https://arxiv.org/abs/1912.12355). The SoftAdapt baseline.
+- **Chen, Badrinarayanan, Lee, Rabinovich (2018), "GradNorm: gradient normalization for adaptive loss balancing in deep multitask networks,"** *ICML*. The GradNorm baseline.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

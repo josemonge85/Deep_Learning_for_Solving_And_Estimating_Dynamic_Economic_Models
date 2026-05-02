@@ -1,40 +1,27 @@
-# Readings — Lecture 16 (B15): Deep uncertainty quantification and Pareto-improving climate policy
+# Readings, Lecture 17 (B15): Deep uncertainty quantification and Pareto-improving climate policy
 
-## Readings — Lecture 09 (B28): Deep uncertainty quantification and policy
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Deep uncertainty in IAMs
 
-## Selected references
+- **Folini, Friedl, Kübler, Scheidegger (2024), "The climate in climate economics,"** *Review of Economic Studies*. Identifies the parameters where the deep uncertainty actually bites.
+- **Fernández-Villaverde, Gillingham, Scheidegger (2025), "Climate change through the lens of macroeconomic modeling,"** *Annual Review of Economics*, 17. Survey context.
 
-### Deep Uncertainty Quantification: With an Application to Integrated Assessment Models
+## Pareto-improving carbon taxation
 
-- **Authors:** Friedl, A., Kuebler, F., Scheidegger, S., Usui, T.
-- **Year:** 2023
-- **Venue:** Working paper
-- **Link:** <https://scholar.google.com/scholar?q=Deep+Uncertainty+Quantification+Integrated+Assessment+Models+Scheidegger>
-- **Notes:** Deep-UQ framework applied to climate-economy models. Working-paper version on author pages.
+- **Kotlikoff, Kubler, Polbin, Sachs, Scheidegger, "Making carbon taxation a generational win-win,"** *International Economic Review*. The Pareto-improving framework used in the policy-design notebook.
+- **Kotlikoff, Kubler, Polbin, Scheidegger, "Pareto-improving carbon-risk taxation,"** working paper. Extension to deep uncertainty.
 
-### Using Machine Learning to Compute Constrained Optimal Carbon Tax Rules
+## Sensitivity analysis
 
-- **Authors:** Kuebler, F., Scheidegger, S., Surbek, O.
-- **Year:** 2026
-- **Venue:** Journal of Political Economy: Macroeconomics (forthcoming)
-- **Link:** <https://scholar.google.com/scholar?q=Kuebler+Scheidegger+Surbek+constrained+optimal+carbon+tax>
-- **Notes:** Constrained optimal carbon-tax design via deep surrogate models.
+- **Sobol (2001), "Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates,"** *Mathematics and Computers in Simulation*, 55(1). The Sobol-index reference.
+- **Owen (2014), "Sobol' indices and Shapley value,"** *SIAM/ASA J. Uncertainty Quantification*, 2(1). The Shapley-effects companion.
 
-### The Climate in Climate Economics
+## Companion lecture script
 
-- **Authors:** Folini, D., Friedl, A., Kuebler, F., Scheidegger, S.
-- **Year:** 2024
-- **Venue:** Review of Economic Studies, 91(5)
-- **Link:** <https://doi.org/10.1093/restud/rdae011>
-- **Notes:** Calibrated DICE-extended (CDICE) climate-economy model used in Lecture 09.
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

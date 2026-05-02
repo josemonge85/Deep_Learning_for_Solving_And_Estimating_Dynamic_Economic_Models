@@ -1,32 +1,24 @@
-# Readings — Lecture 07 (B06): Sequence-space DEQNs
+# Readings, Lecture 08 (B06): Sequence-space DEQNs
 
-## Readings — Lecture 07 (B16): Sequence-space DEQNs
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Sequence-space methods
 
-## Selected references
+- **Auclert, Bardóczy, Rognlie, Straub (2021), "Using the sequence-space Jacobian to solve and estimate heterogeneous-agent models,"** *Econometrica*, 89(5). [DOI](https://doi.org/10.3982/ECTA17434). The sequence-space framework the lecture builds on.
 
-### Using the Sequence-Space Jacobian to Solve and Estimate Heterogeneous-Agent Models
+## Deep-learning analogue
 
-- **Authors:** Auclert, A., Bardóczy, B., Rognlie, M., Straub, L.
-- **Year:** 2021
-- **Venue:** Econometrica, 89(5)
-- **Link:** <https://doi.org/10.3982/ECTA17434>
-- **Notes:** Sequence-space methods that motivate sequence-space DEQNs in Lecture 07.
+- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). DEQNs adapted to a shock-history input.
 
-### Deep Learning in the Sequence Space
+## Krusell-Smith with deep learning (extension notebook)
 
-- **Authors:** Azinovic, M., Yang, Y., Žemlička, J.
-- **Year:** 2025
-- **Venue:** Working paper
-- **Link:** <https://scholar.google.com/scholar?q=Azinovic+Yang+Zemlicka+sequence+space+deep+learning>
-- **Notes:** Sequence-space DEQNs. Working-paper version available on the authors' pages.
+- **Han, Yang, E (2022), "DeepHAM: a global solution method for heterogeneous agent models with aggregate shocks,"** [arXiv](https://arxiv.org/abs/2112.14377). The Krusell-Smith deep-learning tutorial in this lecture's extensions is closely related.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

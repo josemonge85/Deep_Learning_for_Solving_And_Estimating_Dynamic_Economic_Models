@@ -1,57 +1,26 @@
-# Readings — Lecture 09 (B08): Heterogeneous agents and Young's method
+# Readings, Lecture 10 (B08): Heterogeneous agents and Young's method
 
-## Readings — Lecture 09 (B14): Krusell-Smith and Young's method
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Heterogeneous-agent foundations
 
-## Selected references
+- **Aiyagari (1994), "Uninsured idiosyncratic risk and aggregate saving,"** *QJE*, 109(3). The benchmark stationary HA model.
+- **Huggett (1993), "The risk-free rate in heterogeneous-agent incomplete-insurance economies,"** *JEDC*, 17(5/6). The closed-economy companion.
+- **Krusell, Smith (1998), "Income and wealth heterogeneity in the macroeconomy,"** *JPE*, 106(5). Heterogeneous agents with aggregate shocks.
 
-### Solving the Incomplete Markets Model with Aggregate Uncertainty using the Krusell-Smith Algorithm and Non-Stochastic Simulations
+## Young's method
 
-- **Authors:** Young, E. R.
-- **Year:** 2010
-- **Venue:** Journal of Economic Dynamics and Control, 34(1)
-- **Link:** <https://doi.org/10.1016/j.jedc.2008.11.010>
-- **Notes:** Histogram method for stationary distributions in heterogeneous-agent models.
+- **Young (2010), "Solving the incomplete-markets model with aggregate uncertainty using the Krusell-Smith algorithm and non-stochastic simulations,"** *JEDC*, 34(1). [DOI](https://doi.org/10.1016/j.jedc.2008.11.010). The histogram-based distribution evolution that the lecture replicates.
+
+## Deep-learning approach to a continuum of agents
+
+- **Han, Yang, E (2022), "DeepHAM,"** [arXiv](https://arxiv.org/abs/2112.14377). Deep-learning Krusell-Smith solver.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 09 (B15): Continuum-of-agents DEQN and method comparison
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Deep Learning for Solving Dynamic Economic Models
-
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
-
-### DeepHAM: A Global Solution Method for Heterogeneous Agent Models with Aggregate Shocks
-
-- **Authors:** Han, J., Yang, Y., E, W.
-- **Year:** 2023
-- **Venue:** arXiv
-- **Link:** <https://arxiv.org/abs/2112.14377>
-- **Notes:** Krusell-Smith with deep learning, including aggregate-shock handling.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

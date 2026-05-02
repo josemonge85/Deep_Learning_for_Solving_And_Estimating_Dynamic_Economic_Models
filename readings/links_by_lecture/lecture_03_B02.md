@@ -1,107 +1,25 @@
-# Readings — Lecture 03 (B02): Deep Equilibrium Nets
+# Readings, Lecture 03 (B02): Deep Equilibrium Nets
 
-## Readings — Lecture 06 (B05): Deep Equilibrium Nets — the central idea
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Foundational paper
 
-## Selected references
+- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *International Economic Review*, 63(4). [DOI](https://doi.org/10.1111/iere.12575). The DEQN paper the lecture is built on.
 
-### Deep Equilibrium Nets
+## Background
 
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
-- **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
+- **Maliar, Maliar, Winant (2021), "Deep learning for solving dynamic economic models,"** *Journal of Monetary Economics*, 122. [DOI](https://doi.org/10.1016/j.jmoneco.2021.07.004). A close cousin from the same family; useful for comparing notational and algorithmic choices.
+- **Fernández-Villaverde, Nuño, Perla (2024), "Taming the curse of dimensionality: quantitative economics with deep learning,"** NBER WP. [link](https://www.nber.org/papers/w33117). A broad survey of where DEQNs fit in the deep-learning-for-economics landscape.
 
-### Taming the Curse of Dimensionality: Quantitative Economics with Deep Learning
+## Loss design
 
-- **Authors:** Fernandez-Villaverde, J., Nuno, G., Perla, J.
-- **Year:** 2025
-- **Venue:** NBER Working Paper / forthcoming
-- **Link:** <https://www.nber.org/papers/w33117>
-- **Notes:** Survey of deep-learning methods for quantitative economic modeling. Read alongside Lectures 02 and 06.
+- **Bischof, Kraus (2025), "Multi-objective loss balancing for physics-informed deep learning (ReLoBRaLo),"** *CMAME*, 441. The reference for the loss-balancing material previewed in this lecture and developed fully in Lecture 05.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 07 (B06): Brock-Mirman I — deterministic DEQN
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Deep Equilibrium Nets
-
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
-- **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 08 (B07): Brock-Mirman II — uncertainty and integration
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Deep Equilibrium Nets
-
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
-- **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 09 (B08): Constraints, residual kernels, and loss design
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Deep Equilibrium Nets
-
-- **Authors:** Azinovic, M., Gaegauf, L., Scheidegger, S.
-- **Year:** 2022
-- **Venue:** International Economic Review
-- **Link:** <https://onlinelibrary.wiley.com/doi/10.1111/iere.12575>
-- **Notes:** Foundational DEQN paper. Working-paper version on author pages; SSRN/arXiv search will surface a freely available preprint.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

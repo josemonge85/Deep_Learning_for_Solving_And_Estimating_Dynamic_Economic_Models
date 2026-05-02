@@ -1,24 +1,25 @@
-# Readings — Lecture 11 (B10): Continuous-time heterogeneous agents, theory
+# Readings, Lecture 12 (B10): Continuous-time heterogeneous agents, theory
 
-## Readings — Lecture 11 (B19): Continuous-time HA theory
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## The core reference
 
-## Selected references
+- **Achdou, Han, Lasry, Lions, Moll (2022), "Income and wealth distribution in macroeconomics: a continuous-time approach,"** *Review of Economic Studies*, 89(1). [DOI](https://doi.org/10.1093/restud/rdab002). The HJB-KFE framework the lecture follows.
 
-### Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach
+## Mean-field-game foundations
 
-- **Authors:** Achdou, Y., Han, J., Lasry, J.-M., Lions, P.-L., Moll, B.
-- **Year:** 2022
-- **Venue:** Review of Economic Studies, 89(1)
-- **Link:** <https://doi.org/10.1093/restud/rdab002>
-- **Notes:** Continuous-time heterogeneous agents (HJB + KFE). Reference for Lectures 20-21.
+- **Lasry, Lions (2007), "Mean field games,"** *Japanese Journal of Mathematics*, 2. The mathematical foundation behind the master equation introduced in this lecture.
+- **Achdou, Capuzzo-Dolcetta (2010), "Mean field games: numerical methods,"** *SIAM J. Numerical Analysis*, 48(3). The numerical companion (developed further in L13).
+
+## Application
+
+- **Kaplan, Moll, Violante (2018), "Monetary policy according to HANK,"** *AER*, 108(3). [DOI](https://doi.org/10.1257/aer.20160042). The HANK paper that pushed continuous-time HA into mainstream macro.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

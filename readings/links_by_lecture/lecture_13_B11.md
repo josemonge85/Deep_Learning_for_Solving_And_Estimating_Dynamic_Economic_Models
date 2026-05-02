@@ -1,24 +1,22 @@
-# Readings — Lecture 12 (B11): Continuous-time heterogeneous agents, numerics
+# Readings, Lecture 13 (B11): Continuous-time heterogeneous agents, numerics
 
-## Readings — Lecture 12 (B20): Continuous-time HA numerics
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Finite-difference methods for HJB
 
-## Selected references
+- **Achdou, Han, Lasry, Lions, Moll (2022), "Income and wealth distribution in macroeconomics: a continuous-time approach,"** *RES*, 89(1). [DOI](https://doi.org/10.1093/restud/rdab002). The upwind finite-difference scheme the lecture implements.
+- **Barles, Souganidis (1991), "Convergence of approximation schemes for fully nonlinear second-order equations,"** *Asymptotic Analysis*, 4(3). The convergence theorem for monotone schemes on viscosity solutions.
 
-### Income and Wealth Distribution in Macroeconomics: A Continuous-Time Approach
+## Deep-learning routes
 
-- **Authors:** Achdou, Y., Han, J., Lasry, J.-M., Lions, P.-L., Moll, B.
-- **Year:** 2022
-- **Venue:** Review of Economic Studies, 89(1)
-- **Link:** <https://doi.org/10.1093/restud/rdab002>
-- **Notes:** Continuous-time heterogeneous agents (HJB + KFE). Reference for Lectures 20-21.
+- **Sirignano, Spiliopoulos (2018), "DGM,"** *JCP*, 375. PDE solver via deep learning.
+- **Fernández-Villaverde, Hurtado, Nuño (2023), "Financial frictions and the wealth distribution,"** *Econometrica*, 91(3). Continuous-time HA solved with neural networks.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

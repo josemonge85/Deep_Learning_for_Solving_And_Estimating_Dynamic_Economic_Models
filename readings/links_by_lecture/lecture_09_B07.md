@@ -1,49 +1,22 @@
-# Readings — Lecture 08 (B07): OLG models with DEQNs
+# Readings, Lecture 09 (B07): OLG models with DEQNs
 
-## Readings — Lecture 08 (B12): OLG models with DEQNs
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## OLG-DEQN application
 
-## Selected references
+- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). Section on large-scale OLG with borrowing constraints.
+- **Kotlikoff, Kubler, Polbin, Scheidegger, "Pareto-improving carbon-risk taxation,"** working paper. An OLG-DEQN application that uses the same architecture for climate-economic policy.
 
-### Deep Learning for Solving Dynamic Economic Models
+## Classical OLG references
 
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
+- **Diamond (1965), "National debt in a neoclassical growth model,"** *American Economic Review*, 55(5). The two-period OLG reference.
+- **Auerbach, Kotlikoff (1987),** *Dynamic Fiscal Policy*, Cambridge UP. The benchmark large-scale OLG model the 56-cohort experiment is calibrated against.
+
+## Companion lecture script
+
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 08 (B13): Large OLG benchmark
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Deep Learning for Solving Dynamic Economic Models
-
-- **Authors:** Maliar, L., Maliar, S., Winant, P.
-- **Year:** 2021
-- **Venue:** Journal of Monetary Economics
-- **Link:** <https://doi.org/10.1016/j.jmoneco.2021.07.004>
-- **Notes:** DEQN-style methods applied to representative-agent and heterogeneous-agent DSGE models.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map

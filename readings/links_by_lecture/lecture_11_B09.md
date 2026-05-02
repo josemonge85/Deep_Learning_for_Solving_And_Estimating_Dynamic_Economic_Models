@@ -1,65 +1,23 @@
-# Readings — Lecture 10 (B09): Physics-informed neural networks
+# Readings, Lecture 11 (B09): Physics-informed neural networks
 
-## Readings — Lecture 10 (B17): PINNs I — residual learning for ODEs and PDEs
+Default policy: link only.
 
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
+## Foundational PINN papers
 
-## Selected references
+- **Raissi, Perdikaris, Karniadakis (2019), "Physics-informed neural networks,"** *JCP*, 378. [DOI](https://doi.org/10.1016/j.jcp.2018.10.045). The reference paper for the PINN method.
+- **Sirignano, Spiliopoulos (2018), "DGM: a deep learning algorithm for solving partial differential equations,"** *JCP*, 375. [DOI](https://doi.org/10.1016/j.jcp.2018.08.029). A close cousin / contemporary of PINNs.
+- **Han, Jentzen, E (2018), "Solving high-dimensional partial differential equations using deep learning,"** *PNAS*, 115(34). [DOI](https://doi.org/10.1073/pnas.1718942115). Backward-SDE-based PDE solver, the spiritual ancestor for HJB PINNs.
 
-### Physics-Informed Neural Networks: A Deep Learning Framework for Solving Forward and Inverse Problems Involving Nonlinear Partial Differential Equations
+## Economic PDE applications
 
-- **Authors:** Raissi, M., Perdikaris, P., Karniadakis, G. E.
-- **Year:** 2019
-- **Venue:** Journal of Computational Physics, 378
-- **Link:** <https://doi.org/10.1016/j.jcp.2018.10.045>
-- **Notes:** Foundational PINN paper.
+- **Duarte (2018), "Machine learning for continuous-time economics,"** WP. Black-Scholes and HJB via deep learning.
+- **Fernández-Villaverde, Hurtado, Nuño (2023), "Financial frictions and the wealth distribution,"** *Econometrica*, 91(3). HJB-based HA model that motivates the L12-L13 sequence.
 
-### DGM: A Deep Learning Algorithm for Solving Partial Differential Equations
+## Companion lecture script
 
-- **Authors:** Sirignano, J., Spiliopoulos, K.
-- **Year:** 2018
-- **Venue:** Journal of Computational Physics, 375
-- **Link:** <https://doi.org/10.1016/j.jcp.2018.08.029>
-- **Notes:** Deep Galerkin method for high-dimensional PDEs.
+- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf), chapter-based reference text.
+- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md), full chapter-to-lecture map.
 
 ## Bibliography
 
 All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
-
----
-
-## Readings — Lecture 10 (B18): PINNs II — economic PDEs
-
-Default policy: link only. PDFs are not redistributed unless their license clearly permits it (see `READINGS_AUDIT.csv` once populated).
-
-## Selected references
-
-### Physics-Informed Neural Networks: A Deep Learning Framework for Solving Forward and Inverse Problems Involving Nonlinear Partial Differential Equations
-
-- **Authors:** Raissi, M., Perdikaris, P., Karniadakis, G. E.
-- **Year:** 2019
-- **Venue:** Journal of Computational Physics, 378
-- **Link:** <https://doi.org/10.1016/j.jcp.2018.10.045>
-- **Notes:** Foundational PINN paper.
-
-### The Pricing of Options and Corporate Liabilities
-
-- **Authors:** Black, F., Scholes, M.
-- **Year:** 1973
-- **Venue:** Journal of Political Economy, 81(3)
-- **Link:** <https://doi.org/10.1086/260062>
-- **Notes:** Original Black-Scholes paper, referenced in Lecture 10's PINN pricing notebook.
-
-## Bibliography
-
-All references for this course are collected in [`readings/bibliography.bib`](../bibliography.bib).
-
-## Companion lecture script
-
-- [`lecture_script/lecture_script.pdf`](../../lecture_script/lecture_script.pdf) — chapter-based reference text
-- [`lecture_script/script_to_lectures.md`](../../lecture_script/script_to_lectures.md) — full chapter-to-lecture map
