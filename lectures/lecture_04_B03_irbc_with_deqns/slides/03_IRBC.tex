@@ -1,7 +1,5 @@
 % ============================================================================
 % Solving Nonlinear DSGE Models with DEQNs: The IRBC Model
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 60 minutes
 % ============================================================================
 
@@ -94,12 +92,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Solving nonlinear dynamic stochastic models in 4 to 100+ dimensions}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -125,27 +123,9 @@ Brumm, Krause, Schaab \& Scheidegger (2022), ``Sparse Grids for Dynamic Economic
 \end{frame}
 }
 
-% --- Slide 2: Outline ---
-\begin{frame}{Outline}
-\begin{enumerate}
-    \item \textbf{The IRBC Model}\\
-    {\small $N$-country model with irreversible investment, adjustment costs, complete markets.}
-
-    \vspace{0.4em}
-    \item \textbf{DEQN Formulation for the IRBC}\\
-    {\small State \& policy variables, network architecture, loss function, training algorithm.}
-
-    \vspace{0.4em}
-    \item \textbf{Implementation \& Results}\\
-    {\small Code walkthrough, convergence, policy functions, economic diagnostics.}
-\end{enumerate}
-\end{frame}
-
-% --- Slide 3: Roadmap ---
+% --- Slide 2: Roadmap ---
 \begin{frame}{Roadmap of This Lecture}
-\textbf{Scheduled across two slots} (total $\approx 95$ min, split by NAS / Loss Normalization at 10:30--11:10).
-
-\vspace{0.4em}
+\vspace{0.2em}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Part A}
@@ -159,10 +139,23 @@ Brumm, Krause, Schaab \& Scheidegger (2022), ``Sparse Grids for Dynamic Economic
 \begin{itemize}
     \item \textbf{Part II.} DEQN formulation: states, architecture, loss, Gauss--Hermite, training algorithm
     \item \textbf{Part III.} Implementation: Keras code, convergence, policy functions, validation
-    \item Bridge to the production-code DEQN library (Day 4)
+    \item Bridge to the production-code DEQN library
 \end{itemize}
 \end{columns}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Set up the International Real Business Cycle model with multi-country state space, capital adjustment costs, and irreversibility constraints
+  \item Derive first-order conditions (Euler equations, consumption sharing) and convert KKT conditions into smooth complementarity functions (Fischer--Burmeister)
+  \item Formulate the DEQN loss function for multi-country DSGE models and train the network on simulated paths
+  \item Implement policy functions in Keras and validate numerical solutions against theoretical steady states
+  \item Extend the framework to 4--100+ dimensional problems and perform sensitivity analysis on model parameters
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART I: THE IRBC MODEL
@@ -277,22 +270,22 @@ Policy: $(k^{1\prime}, \ldots, k^{N\prime}, \lambda, \mu^1, \ldots, \mu^N) \in \
 
 % --- Slide 7: Preferences ---
 \begin{frame}{Preferences}
-Each country $j$ has \emphc{CRRA utility}:
+Each country $j$ has \emphc{CRRA utility} (with the standard log limit at $\gamma_j = 1$):
 \[
-u^j(c) = \frac{c^{\,1 - 1/\gamma_j}}{1 - 1/\gamma_j}
+u^j(c) \;=\; \begin{cases} \dfrac{c^{\,1 - 1/\gamma_j}}{1 - 1/\gamma_j}, & \gamma_j \neq 1, \\[4pt] \ln c, & \gamma_j = 1. \end{cases}
 \]
 
 \vspace{0.3em}
 \begin{itemize}
     \item $\gamma_j$: intertemporal elasticity of substitution for country $j$
     \item \emphc{Heterogeneous} across countries: $\gamma_j$ linearly spaced in $[\gamma_{\min}, \gamma_{\max}]$
-    \item $\gamma_{\min} = 0.25$, $\gamma_{\max} = 1.0$ (risk aversion $= 1/\gamma_j$ ranges from 1 to 4)
+    \item $\gamma_{\min} = 0.25$, $\gamma_{\max} = 1.0$ (risk aversion $= 1/\gamma_j$ ranges from 1 to 4; the notebook uses the $\ln c$ branch when $\gamma_j = 1$)
 \end{itemize}
 
 \vspace{0.5em}
 \textbf{Social planner} maximizes with Pareto weights $\tau^j$:
 \[
-\max \; \sum_{t=0}^{\infty} \beta^t \, \E{\sum_{j=1}^{N} \tau^j \, u^j(c_t^j)}
+\max \; \mathbb{E}_0\!\left[\sum_{t=0}^{\infty} \beta^t \sum_{j=1}^{N} \tau^j \, u^j(c_t^j)\right]
 \]
 \end{frame}
 
@@ -435,7 +428,7 @@ The planner chooses $\{c_t^j, k_{t+1}^j\}_{j,t}$ subject to these constraints.
 \begin{frame}{Planner's Problem (Dynamic Optimization)}
 \footnotesize
 \[
-\max_{\{c_t^j,\, k_{t+1}^j\}} \;\; \E{\sum_{t=0}^{\infty} \beta^{t} \sum_{j=1}^{N} \tau^j \, \frac{(c_t^j)^{1 - 1/\gamma_j}}{1 - 1/\gamma_j}}
+\max_{\{c_t^j,\, k_{t+1}^j\}} \;\; \mathbb{E}_0\!\left[\sum_{t=0}^{\infty} \beta^{t} \sum_{j=1}^{N} \tau^j \, \frac{(c_t^j)^{1 - 1/\gamma_j}}{1 - 1/\gamma_j}\right]
 \]
 \textbf{subject to:}
 \begin{align*}
@@ -459,11 +452,11 @@ Attach one multiplier per active constraint of the planner's problem:
 \end{itemize}
 
 \[
-\mathcal{L} \;=\; \E{\,\sum_{t=0}^{\infty} \beta^{t}\!\left[\,
+\mathcal{L} \;=\; \mathbb{E}_0\!\left[\,\sum_{t=0}^{\infty} \beta^{t}\!\left(\,
   \sum_{j} \tau^j \tfrac{(c_t^j)^{1-1/\gamma_j}}{1-1/\gamma_j}
   + \lambda_t\!\sum_{j}\!\bigl(Y_t^j + (1-\delta) k_t^j - k_{t+1}^j - \Gamma_t^j - c_t^j\bigr)
   + \sum_{j}\! \mu_t^j \bigl(k_{t+1}^j - (1-\delta) k_t^j\bigr)
-\right]\,}
+\right)\,\right]
 \]
 
 \smallskip
@@ -1250,7 +1243,7 @@ def compute_cost(states, nn):
 \end{frame}
 
 % --- Slide 42: Training: Simulation-Based ---
-\begin{frame}{Training Phase 2: Simulation-Based Sampling}
+\begin{frame}[shrink=20]{Training Phase 2: Simulation-Based Sampling}
 \textbf{Phase 2} trains on the \emphc{ergodic distribution} of the model.
 
 \vspace{0.4em}
@@ -1271,7 +1264,7 @@ def compute_cost(states, nn):
 \end{frame}
 
 % --- Slide 43: Convergence: Loss Curves ---
-\begin{frame}{Convergence: Four Training Strategies}
+\begin{frame}[shrink=15]{Convergence: Four Training Strategies}
 \begin{center}
 \includegraphics[width=0.95\linewidth]{../figures/irbc_4approach_loss.pdf}
 \end{center}
@@ -1414,14 +1407,14 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \end{columns}
 \end{frame}
 
-% --- Slide 48: Bridge to Day 4 ---
-\begin{frame}{Bridge to Day 4: AutoDiff, Sequence Space, OLG}
+% --- Bridge frame ---
+\begin{frame}[shrink=20]{Bridge: AutoDiff, Sequence Space, OLG}
 \textbf{What we leave with today.}  An IRBC DEQN that converges with NAS-tuned width and ReLoBRaLo-balanced loss components: the same recipe scales from $N=2$ to $N=10$ countries with no architectural change.
 
 \vspace{0.4em}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Day 4, morning (in class).}
+\textbf{In-class follow-up.}
 \begin{itemize}
     \item Reverse-mode automatic differentiation \emph{inside} the equilibrium loss (forward/reverse modes, JVP/VJP, AD pitfalls).
     \item \emph{Sequence-space} DEQNs: collapsing the recursion into a finite-horizon DAG (Brock--Mirman warm-up, then IRBC).
@@ -1429,7 +1422,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Day 4, self-study.}
+\textbf{Self-study extension.}
 \begin{itemize}
     \item Heterogeneous-agent solvers via Young's method (continuum approximated as a histogram).
     \item Continuum-of-agents DEQN.
@@ -1456,7 +1449,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 \column{0.45\textwidth}
 \begin{center}
-\textbf{Next up (Day 4):}\\[6pt]
+\textbf{Next up:}\\[6pt]
 {\large AutoDiff $\to$ Sequence Space $\to$ OLG\\[2pt]
 (Heterogeneous Agents = self-study)}\\[12pt]
 \end{center}

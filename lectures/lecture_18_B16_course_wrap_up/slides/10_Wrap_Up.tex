@@ -1,7 +1,5 @@
 % ============================================================================
 % Course Wrap-Up and Outlook
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 25 minutes
 % ============================================================================
 
@@ -64,12 +62,12 @@
 \newcommand{\E}[1]{\mathbb{E}\!\left[#1\right]}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Key takeaways, method choice, and outlook}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -79,7 +77,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Closing lecture for Day 8: climate economics, deep UQ, and policy design}\\[4pt]
+{\footnotesize Closing lecture: climate economics, deep UQ, and policy design}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -90,10 +88,23 @@
 \begin{enumerate}
     \item \textbf{Synthesis of the full course pipeline}
     \item \textbf{Decision guide: DEQN, PINN, Surrogates, GP}
-    \item \textbf{Day 8 lessons for climate-policy modeling}
+    \item \textbf{Climate-policy lessons}
     \item \textbf{Implementation checklist and outlook}
 \end{enumerate}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of the course you should be able to:}
+\begin{itemize}
+  \item Choose between DEQN, PINN, deep surrogates, and GP+BAL based on problem structure and scalability
+  \item Design residual-loss functions that embed economic and climate equations for end-to-end equilibrium learning
+  \item Articulate when to include parameters as pseudo-states versus solving repeatedly
+  \item Evaluate whether a trained surrogate meets publication standards through residual diagnostics and stress tests
+  \item Synthesize deep learning, uncertainty quantification, and constrained optimization for evidence-based policy design
+\end{itemize}
+\end{frame}
+
 
 % --- Slide 3: Big picture ---
 \begin{frame}{The Big Picture: One Computational Paradigm}
@@ -123,7 +134,7 @@ but share the same core optimization logic.
 \end{frame}
 
 % --- Slide 4: Course arc ---
-\begin{frame}{Course Arc: Day 1 to Day 8}
+\begin{frame}{Course Arc}
 \small
 \begin{center}
 \begin{tabular}{ll}
@@ -154,12 +165,12 @@ The toolkit is modular: solve, emulate, quantify uncertainty, then optimize poli
                  inner sep=2.5pt},
     arr/.style={-{Stealth[length=2.2mm]}, thick, uzhblue!80}
 ]
-\node[phasebox, fill=softblue!25]   (d1) at (0,0)    {Day 1\\DL basics};
-\node[phasebox, fill=softblue!25]   (d2) at (2.3,0)  {Days 2--4\\DEQN solvers};
-\node[phasebox, fill=gray!20]       (d5) at (4.6,0)  {Day 5\\Agents};
-\node[phasebox, fill=softgreen!25]  (d6) at (6.9,0)  {Day 6\\PINNs, CT HA};
-\node[phasebox, fill=softorange!25] (d7) at (9.2,0)  {Day 7\\Surrogates, GP};
-\node[phasebox, fill=softorange!35] (d8) at (11.5,0) {Day 8\\Climate UQ};
+\node[phasebox, fill=softblue!25]   (d1) at (0,0)    {DL basics};
+\node[phasebox, fill=softblue!25]   (d2) at (2.3,0)  {the discrete-time lectures\\DEQN solvers};
+\node[phasebox, fill=gray!20]       (d5) at (4.6,0)  {Agents};
+\node[phasebox, fill=softgreen!25]  (d6) at (6.9,0)  {PINNs, CT HA};
+\node[phasebox, fill=softorange!25] (d7) at (9.2,0)  {Surrogates, GP};
+\node[phasebox, fill=softorange!35] (d8) at (11.5,0) {Climate UQ};
 
 \draw[arr] (d1.east) -- (d2.west);
 \draw[arr] (d2.east) -- (d5.west);
@@ -189,9 +200,9 @@ GP + BAL & UQ and active design & Built-in uncertainty and sample efficiency \\
 \end{center}
 \end{frame}
 
-% --- Slide 6: Day 8 contributions ---
-\begin{frame}{Day 8 in One Slide}
-\textbf{Day 8 in context.}  Pseudo-states let one trained DEQN answer policy questions for \emph{all} plausible parameter values simultaneously.  A GP surrogate on top enables fast computation of SCC, temperature paths, and welfare across the parameter space.  Bayesian active learning then identifies which parameters drive policy recommendations, for example, climate sensitivity matters more than the pure rate of time preference for carbon-tax design.
+% --- Climate UQ contributions ---
+\begin{frame}{Climate UQ in One Slide}
+\textbf{Climate UQ in context.}  Pseudo-states let one trained DEQN answer policy questions for \emph{all} plausible parameter values simultaneously.  A GP surrogate on top enables fast computation of SCC, temperature paths, and welfare across the parameter space.  Bayesian active learning then identifies which parameters drive policy recommendations, for example, climate sensitivity matters more than the pure rate of time preference for carbon-tax design.
 
 \vspace{0.25cm}
 \begin{exampleblock}{The payoff}
@@ -265,7 +276,7 @@ Left: SCC uncertainty decomposition (Friedl et al., 2023). Right: constrained po
 % --- Slide 10: Reading map ---
 \begin{frame}{Reading and Notebook Map}
 \small
-\textbf{Day 8 readings}
+\textbf{Climate readings}
 \begin{itemize}
     \item \texttt{lectures/day8/readings/CDICE\_Restud\_production.pdf}
     \item \texttt{lectures/day8/readings/CDICE\_Restud\_production\_appendix.pdf}
@@ -274,7 +285,7 @@ Left: SCC uncertainty decomposition (Friedl et al., 2023). Right: constrained po
 \end{itemize}
 
 \vspace{0.2cm}
-\textbf{Day 8 notebooks} (suggested order)
+\textbf{Climate notebooks} (suggested order)
 \begin{itemize}
     \item \texttt{01\_Climate\_Exercise.ipynb} \hfill (NumPy warm-up: carbon cycle, damages, BAU vs mitigation)
     \item \texttt{02\_DICE\_DEQN\_Library\_Port.ipynb} \hfill (deterministic CDICE-DEQN, library port)

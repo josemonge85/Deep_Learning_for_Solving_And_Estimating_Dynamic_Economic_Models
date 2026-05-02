@@ -5,7 +5,7 @@ Integrated assessment models (IAMs), the canonical climate-economy framework: DI
 `gpu-recommended` · `long` · builds on [Lecture 07 (B05)](../lecture_07_B05_autodiff_for_deqns/README.md)
 
 > 📑 **Slides:** [08_Climate_Economics_IAMs.pdf](slides/08_Climate_Economics_IAMs.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_15_B14_01_Climate_Exercise.ipynb) (3 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_16_B14_01_Climate_Exercise.ipynb) (3 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_16_B14.md)  
 > 📖 **Script:** §11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs)
 
@@ -33,9 +33,9 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_15_B14_01_Climate_Exercise.ipynb`](code/lecture_15_B14_01_Climate_Exercise.ipynb)
-- [`code/lecture_15_B14_02_DICE_DEQN_Library_Port.ipynb`](code/lecture_15_B14_02_DICE_DEQN_Library_Port.ipynb)
-- [`code/lecture_15_B14_03_Stochastic_DICE_DEQN.ipynb`](code/lecture_15_B14_03_Stochastic_DICE_DEQN.ipynb)
+- [`code/lecture_16_B14_01_Climate_Exercise.ipynb`](code/lecture_16_B14_01_Climate_Exercise.ipynb)
+- [`code/lecture_16_B14_02_DICE_DEQN_Library_Port.ipynb`](code/lecture_16_B14_02_DICE_DEQN_Library_Port.ipynb)
+- [`code/lecture_16_B14_03_Stochastic_DICE_DEQN.ipynb`](code/lecture_16_B14_03_Stochastic_DICE_DEQN.ipynb)
 
 ## In the lecture script
 

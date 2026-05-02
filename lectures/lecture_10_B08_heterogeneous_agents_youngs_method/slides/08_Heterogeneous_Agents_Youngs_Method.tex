@@ -1,8 +1,6 @@
 % ============================================================================
 % Young's (2010) Method and Heterogeneous Agents in DEQNs
-% University of Geneva
-% April 20--23 & May 4--7, 2026
-% Self-study extension to Day 4 (Young/KS = optional reading)
+% Self-study extension to the discrete-time block (Young/KS = optional reading)
 % ============================================================================
 
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -95,12 +93,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Histogram non-stochastic distribution updates, Krusell--Smith, continuum-of-agents DEQN}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -135,10 +133,10 @@ Azinovic, Gaegauf \& Scheidegger (2022), \emph{International Economic Review} 63
 \end{center}
 \vspace{0.4cm}
 \begin{itemize}\setlength\itemsep{0.3em}
-    \item The Day 4 in-class lecture covers \textbf{Automatic Differentiation}, \textbf{Sequence-Space DEQNs}, and \textbf{OLG models} with DEQNs.
+    \item The discrete-time lectures covers \textbf{Automatic Differentiation}, \textbf{Sequence-Space DEQNs}, and \textbf{OLG models} with DEQNs.
     \item This Young's-method deck, together with the companion notebooks \texttt{10\_Youngs\_Method\_Examples}, \texttt{11\_Continuum\_of\_Agents\_DEQN}, and \texttt{12\_KrusellSmith\_DeepLearning}, is provided as \textbf{additional materials / further reading} for heterogeneous-agent solution methods.
     \item The slides are fully self-contained: motivation, the Young (2010) histogram update operator, the Krusell--Smith benchmark, and the Appendix A.5 DEQN teaching implementation.
-    \item Students interested in heterogeneous-agent work in discrete time should read this deck alongside the PINN-based continuous-time treatment in \textbf{Day 6}.
+    \item Students interested in heterogeneous-agent work in discrete time should read this deck alongside the PINN-based continuous-time treatment.
 \end{itemize}
 \end{frame}
 }
@@ -167,6 +165,19 @@ Azinovic, Gaegauf \& Scheidegger (2022), \emph{International Economic Review} 63
 \end{enumerate}
 \end{frame}
 
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Recognize why aggregate state becomes infinite-dimensional in heterogeneous-agent economies and how Young's method avoids the curse
+  \item Implement a histogram-based distribution simulator that updates aggregate states without Monte Carlo noise
+  \item Build and train a policy network on a two-dimensional wealth distribution in the Krusell--Smith benchmark
+  \item Diagnose the failure mode of state-space deep learning when the distribution shifts and explain how sequence space addresses it
+  \item Deploy shape-preserving (I-spline) parameterizations to enforce marginal-propensity-to-consume monotonicity by construction
+\end{itemize}
+\end{frame}
+
+
 % ============================================================================
 % PART I: MOTIVATION
 % ============================================================================
@@ -185,7 +196,7 @@ Azinovic, Gaegauf \& Scheidegger (2022), \emph{International Economic Review} 63
 \begin{frame}{From Representative Agent to Heterogeneous Agents}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Days 2--4 recap:}
+\textbf{the discrete-time lectures recap:}
 \begin{itemize}
     \item Brock--Mirman: single agent, single capital stock
     \item IRBC: $N$ countries, but a \emphc{social planner} with complete markets
@@ -2225,7 +2236,7 @@ All-in-one DL (MMW 2021) & \texttt{marcmaliar/deep-learning-\allowbreak euler-me
 Histogram DEQN & \texttt{sischei/DeepEquilibriumNets} \\
 & \quad\emph{Azinovic, Gaegauf \& Scheidegger (2022) code.} \\
 \addlinespace
-Classroom MMW-style (this course) & \texttt{day4/code/\allowbreak 12\_KrusellSmith\_\allowbreak DeepLearning.ipynb} \\
+Classroom MMW-style (this course) & \texttt{lecture\_10\_B08/\allowbreak code/\allowbreak 12\_KrusellSmith\_\allowbreak DeepLearning.ipynb} \\
 & \quad\emph{Self-contained, CPU-friendly,  training.} \\
 \addlinespace
 DeepHAM & Authors' page; contact the authors for code. \\
@@ -2267,11 +2278,11 @@ DeepHAM & Authors' page; contact the authors for code. \\
 \end{itemize}
 }
 
-{\scriptsize Bold-face entries are the two alternative DL methods covered in Part V and in the reading PDFs in \texttt{day4/readings/}.}
+{\scriptsize Bold-face entries are the two alternative DL methods covered in Part V and in the reading guide for this lecture.}
 \end{frame}
 
 % --- Notebook Map ---
-\begin{frame}{Day 4 Core Notebook Map}
+\begin{frame}{Core Notebook Map (Discrete-Time Block)}
 \footnotesize
 \begin{columns}[T]
 \column{0.48\textwidth}
@@ -2320,12 +2331,12 @@ DeepHAM & Authors' page; contact the authors for code. \\
 
 \column{0.48\textwidth}
 \begin{center}
-\textbf{Next up --- Session 2 opens May 4:}\\[6pt]
-{\large Day 5: Agentic Programming}\\[4pt]
+\textbf{Next up:}\\[6pt]
+{\large Agentic Programming}\\[4pt]
 {\small Using AI agents for research}\\[10pt]
-{\footnotesize Day 6: PINNs \& continuous-time HA\\
-Day 7: Surrogates \& GPs\\
-Day 8: Climate \& Deep UQ}
+{\footnotesize PINNs \& continuous-time HA\\
+Surrogates \& GPs\\
+Climate \& Deep UQ}
 \end{center}
 \end{columns}
 \end{frame}

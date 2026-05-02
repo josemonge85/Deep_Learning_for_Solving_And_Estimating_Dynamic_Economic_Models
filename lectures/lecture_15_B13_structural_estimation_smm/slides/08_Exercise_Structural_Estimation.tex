@@ -37,12 +37,12 @@
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Surrogate-based simulated method of moments in the Brock--Mirman model}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -60,7 +60,107 @@
 \end{frame}
 }
 
-% --- Slide 2: model ---
+% --- Slide 2: Roadmap ---
+\begin{frame}{Roadmap of This Lecture}
+\small
+\begin{enumerate}
+    \item \textbf{The model.} Brock--Mirman with stochastic TFP, calibration, what is observed.
+    \vspace{0.2em}
+    \item \textbf{SMM primer.} Moment condition, weighting matrix, asymptotic distribution.
+    \vspace{0.2em}
+    \item \textbf{Why surrogates.} Direct simulation of the SMM objective is too expensive; replace the inner solver with a trained network.
+    \vspace{0.2em}
+    \item \textbf{Task 1: Train surrogate} with $\varrho$ as pseudo-state, Euler-residual loss, Gauss--Hermite quadrature.
+    \vspace{0.2em}
+    \item \textbf{Task 2: Compute identifying moments} from surrogate-driven simulations.
+    \vspace{0.2em}
+    \item \textbf{Task 3: Estimate $\hat\varrho$} via SMM under common random numbers.
+    \vspace{0.2em}
+    \item \textbf{Task 4: Joint $(\beta, \varrho)$} estimation -- identification ridge, over- vs just-identified moment sets.
+\end{enumerate}
+\end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Build and train a neural surrogate with pseudo-state parameters to replace expensive inner-loop solvers
+  \item Compute identifying moments from surrogate-driven simulations under common random numbers
+  \item Implement the SMM estimator using differentiable surrogates and verify interior solutions
+  \item Diagnose parameter identification through SMM-criterion profiles and moment sensitivity
+  \item Extend single-parameter SMM to joint estimation and visualize the identification ridge
+\end{itemize}
+\end{frame}
+
+
+% --- SMM primer 1: moment condition ---
+\begin{frame}{SMM Primer (1/3): The Moment Condition}
+\small
+Let the data generate $T$ observations $\{y_t\}$. Pick a vector of \emphc{moment functions} $g(y) \in \mathbb{R}^{q}$ such that, under the true parameter $\theta_0 \in \mathbb{R}^{p}$ ($q \geq p$),
+\[
+    \mathbb{E}\bigl[g(y_t) - m(\theta_0)\bigr] = 0,
+\]
+where $m(\theta) = \mathbb{E}_\theta[g(y_t)]$ are the \emphc{model-implied moments}. The empirical and simulated counterparts are
+\[
+    \widehat g_T = \tfrac{1}{T}\sum_{t=1}^{T} g(y_t), \qquad
+    \widehat m_S(\theta) = \tfrac{1}{S}\sum_{s=1}^{S} g\bigl(y_s^{\text{sim}}(\theta)\bigr).
+\]
+\textbf{Identification.} $\theta_0$ is the unique zero of $\mathbb{E}[g(y_t)] - m(\theta)$ on the parameter space. Just-identified: $q = p$. Over-identified: $q > p$ (testable restrictions).
+
+\vspace{0.2em}
+\textbf{This lecture.} $y_t$ = log output / consumption / capital. $g$ = three autocorrelation and volatility moments. $\theta = \varrho$ (Task 1--3) or $\theta = (\beta, \varrho)$ (Task 4).
+\end{frame}
+
+% --- SMM primer 2: estimator and weighting matrix ---
+\begin{frame}{SMM Primer (2/3): Estimator and Weighting}
+\small
+The SMM estimator solves
+\[
+    \widehat\theta_{\text{SMM}} \;=\; \argmin_{\theta} \;
+        \bigl[\widehat g_T - \widehat m_S(\theta)\bigr]^{\!\top}\, W \;
+        \bigl[\widehat g_T - \widehat m_S(\theta)\bigr],
+\]
+where $W$ is a positive-definite \emphc{weighting matrix}.
+
+\vspace{0.3em}
+\textbf{Common random numbers (CRN).} Hold the random draws $\{\varepsilon_s\}$ fixed across $\theta$. Then $\widehat m_S(\theta)$ is a smooth function of $\theta$ -- simulation noise no longer disrupts the optimizer.
+
+\vspace{0.3em}
+\textbf{Weighting matrix choice.}
+\begin{itemize}\itemsep1pt
+    \item \emphc{Identity} $W = I$: easy, but inefficient.
+    \item \emphc{Diagonal} $W = \mathrm{diag}(1/\widehat\sigma_g^2)$: rescales each moment by its sampling variance.
+    \item \emphc{Optimal} $W^\star = \widehat\Sigma_g^{-1}$ where $\widehat\Sigma_g$ is the long-run covariance of $g(y_t)$. Achieves minimum asymptotic variance.
+\end{itemize}
+\end{frame}
+
+% --- SMM primer 3: asymptotic distribution ---
+\begin{frame}{SMM Primer (3/3): Asymptotic Distribution}
+\small
+Under standard regularity conditions (smoothness of $m$, stationarity, identification), as $T,S\to\infty$ with $T/S \to \tau \in [0,\infty)$,\footnote{\scriptsize Notation bridge to the script: the script parameterises $S$ independent simulated panels each of length $\tau T$ (so its $\tau$ is the relative panel-length factor), giving an asymptotic factor $(1+1/(\tau S))\Sigma_m$. Both conventions yield the same consistent estimator; the symbol $\tau$ plays inverse roles.}
+\[
+    \sqrt{T}\,(\widehat\theta_{\text{SMM}} - \theta_0)
+    \;\xrightarrow{d}\; \mathcal{N}\bigl(0, V(W)\bigr),
+\]
+\[
+    V(W) \;=\; \bigl(G^\top W G\bigr)^{-1} G^\top W \bigl(1 + \tau\bigr)\Sigma_g\, W G \bigl(G^\top W G\bigr)^{-1},
+\]
+where $G = \partial m(\theta_0)/\partial\theta^\top$ is the moment Jacobian and $\Sigma_g$ is the long-run covariance.
+
+\vspace{0.3em}
+\textbf{Optimal weighting.} With $W = W^\star = \Sigma_g^{-1}$,
+\[
+    V(W^\star) \;=\; (1+\tau)\,\bigl(G^\top \Sigma_g^{-1} G\bigr)^{-1}.
+\]
+
+\vspace{0.3em}
+\textbf{Identification, geometrically.} $G$ has full column rank $\Rightarrow$ the moment surface bends sharply along every parameter direction. A flat direction = an \emph{identification ridge} (Task 4 visualizes one).
+
+\vspace{0.3em}
+\textbf{Why the surrogate?} $G$ and $m$ require simulating the model. With a deep surrogate the inner loop is differentiable and three orders of magnitude cheaper.
+\end{frame}
+
+% --- Slide: model ---
 \begin{frame}{The Model: Brock--Mirman with Stochastic TFP}
 \small
 Stochastic growth model:

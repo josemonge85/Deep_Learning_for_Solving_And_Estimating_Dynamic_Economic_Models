@@ -1,7 +1,5 @@
 % ============================================================================
 % OLG Models with Deep Equilibrium Nets
-% Deep Learning in Economics and Finance -- University of Geneva, April 2026
-% Duration: 55 min (Day 4 OLG slot)
 %
 % Organization (Turin-style, analytic-model first):
 %   Part 0   Title + roadmap                        (2)
@@ -82,12 +80,12 @@
 \newcommand{\ubr}[2]{\underbrace{#1}_{\text{\scriptsize #2}}}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Overlapping generations, borrowing constraints, Fischer--Burmeister complementarity}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -127,6 +125,19 @@
 \end{itemize}
 \end{block}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Construct a finite-dimensional overlapping-generations equilibrium with cohort-specific savings and lifecycle heterogeneity
+  \item Derive equilibrium conditions and build the mean-squared Euler-residual loss for a multi-cohort OLG model
+  \item Implement the DEQN recipe: model specification, equilibrium definition, cost function, network training, and validation
+  \item Validate a learned solution against the closed-form equilibrium in the analytic Krueger--Kuebler model
+  \item Scale the method from six cohorts to research benchmarks with capital adjustment costs, multiple assets, and binding constraints
+\end{itemize}
+\end{frame}
+
 
 
 % =====================================================================
@@ -278,7 +289,7 @@ Agents supply their labor \emphc{inelastically} for a market wage $w_t$.
 \vspace{0.6em}
 An agent \emphc{currently of age $s$} alive at $t$ maximises remaining time-separable discounted expected lifetime utility ($\beta < 1$):
 \[
-\E{\sum_{i=0}^{A-s} \beta^i \,\ln\!\bigl(c_{t+i}^{\,s+i}\bigr)} \qquad (1)
+\mathbb{E}_t\!\left[\sum_{i=0}^{A-s} \beta^i \,\ln\!\bigl(c_{t+i}^{\,s+i}\bigr)\right] \qquad (1)
 \]
 
 \vspace{0.3em}
@@ -772,7 +783,7 @@ Open notebook 07.  Default \texttt{MODE = "classroom"} ($\sim 5$ min, 1\,000 ep)
 \small
 An agent of age $s$ alive at $t$ maximises
 \[
-\E{\sum_{i=0}^{A-s} \beta^i \,u\!\bigl(c_{t+i}^{\,s+i}\bigr)}, \qquad u(c) = \frac{c^{1-\gamma}}{1-\gamma}, \qquad \gamma = 2. \qquad (1')
+\mathbb{E}_t\!\left[\sum_{i=0}^{A-s} \beta^i \,u\!\bigl(c_{t+i}^{\,s+i}\bigr)\right], \qquad u(c) = \frac{c^{1-\gamma}}{1-\gamma}, \qquad \gamma = 2. \qquad (1')
 \]
 
 \vspace{0.3em}
@@ -1146,21 +1157,21 @@ Four distinct profiles, ordered as in the table above.  The exact magnitudes and
 \end{frame}
 
 
-% --- Bridge to Day 5 ---------------------------------------------------
-\begin{frame}{Bridge to Day 5: Agentic Programming}
+% --- Bridge to the Agentic-Programming Lecture ---
+\begin{frame}{Bridge to the Agentic-Programming Lecture}
 \footnotesize
 \textbf{Where the technical content rests.}  At this point we have a complete discrete-time DEQN toolkit: feed-forward policy net + softplus output, Euler/KKT residuals + Fischer--Burmeister, simulation-based sampling, NAS-tuned architecture, and ReLoBRaLo-balanced losses, all of it scaling from a single-shock RBC sandbox up to a 56-cohort OLG benchmark with two binding constraints.
 
 \vspace{0.4em}
-\textbf{Day 5 (workshop, no lecture script chapter).}  We turn the workflow on its head and treat the model file, the loss, and the diagnostics as artefacts that an LLM-driven coding agent can author, refactor, and debug in conversation.  Concretely, you will:
+\textbf{The agentic-programming lecture (workshop, no lecture script chapter).}  We turn the workflow on its head and treat the model file, the loss, and the diagnostics as artefacts that an LLM-driven coding agent can author, refactor, and debug in conversation.  Concretely, you will:
 \begin{itemize}\itemsep1pt
-    \item Use Claude Code / Cursor / Codex-style agents as pair programmers on a fresh DEQN model derived from the chapters of Days 2--4.
+    \item Use Claude Code / Cursor / Codex-style agents as pair programmers on a fresh DEQN model derived from the chapters of the discrete-time lectures.
     \item Practice the loop \emphc{specification $\to$ scaffold $\to$ run $\to$ diagnose $\to$ refactor}, with the agent doing the typing and you driving the economics.
     \item Connect the slide-deck $\to$ notebook $\to$ figure $\to$ commit pipeline that the manuscript itself was built with.
 \end{itemize}
 
 \vspace{0.4em}
-\textbf{Self-study extension (notebooks 10--12, deck 08).}  Heterogeneous agents on a histogram (Young's method), continuum-of-agents DEQN, and Krusell--Smith with deep learning.  These pieces sit \emph{above} today's OLG content and can be revisited any time before the Day 6 PINN material.
+\textbf{Self-study extension (notebooks 10--12, deck 08).}  Heterogeneous agents on a histogram (Young's method), continuum-of-agents DEQN, and Krusell--Smith with deep learning.  These pieces sit \emph{above} the OLG content and can be revisited any time before the the PINN material.
 \end{frame}
 
 

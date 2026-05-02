@@ -5,7 +5,7 @@ Physics-Informed Neural Networks (PINNs) solve differential equations by minimiz
 `cpu-standard` · `long` · builds on [Lecture 07 (B05)](../lecture_07_B05_autodiff_for_deqns/README.md)
 
 > 📑 **Slides:** [06_PINNs.pdf](slides/06_PINNs.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb) (5 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_11_B09_01_ODE_PINN_ZeroBCs.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_11_B09.md)  
 > 📖 **Script:** §7.1-7.4 (PINN foundations), §7.5-7.9 (Economic PDEs (HJB, Black-Scholes))
 
@@ -34,11 +34,11 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb`](code/lecture_10_B09_01_ODE_PINN_ZeroBCs.ipynb)
-- [`code/lecture_10_B09_02_ODE_PINN_SoftVsHardBCs.ipynb`](code/lecture_10_B09_02_ODE_PINN_SoftVsHardBCs.ipynb)
-- [`code/lecture_10_B09_03_PDE_PINN_Poisson2D.ipynb`](code/lecture_10_B09_03_PDE_PINN_Poisson2D.ipynb)
-- [`code/lecture_10_B09_04_Cake_Eating_HJB_PINN.ipynb`](code/lecture_10_B09_04_Cake_Eating_HJB_PINN.ipynb)
-- [`code/lecture_10_B09_05_Black_Scholes_PINN.ipynb`](code/lecture_10_B09_05_Black_Scholes_PINN.ipynb)
+- [`code/lecture_11_B09_01_ODE_PINN_ZeroBCs.ipynb`](code/lecture_11_B09_01_ODE_PINN_ZeroBCs.ipynb)
+- [`code/lecture_11_B09_02_ODE_PINN_SoftVsHardBCs.ipynb`](code/lecture_11_B09_02_ODE_PINN_SoftVsHardBCs.ipynb)
+- [`code/lecture_11_B09_03_PDE_PINN_Poisson2D.ipynb`](code/lecture_11_B09_03_PDE_PINN_Poisson2D.ipynb)
+- [`code/lecture_11_B09_04_Cake_Eating_HJB_PINN.ipynb`](code/lecture_11_B09_04_Cake_Eating_HJB_PINN.ipynb)
+- [`code/lecture_11_B09_05_Black_Scholes_PINN.ipynb`](code/lecture_11_B09_05_Black_Scholes_PINN.ipynb)
 
 ## In the lecture script
 

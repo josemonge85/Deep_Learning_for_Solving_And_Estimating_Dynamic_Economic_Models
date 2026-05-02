@@ -56,15 +56,15 @@
 
 % ---------- Math commands ----------
 \newcommand{\X}{\bm{X}}
-\newcommand{\E}{\mathcal{E}}
+\newcommand{\histE}{\mathcal{E}}  % shock-history symbol; reserve \mathbb{E} for expectations
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Azinovic--Yang--Zemlicka: shock-history inputs for high-dimensional models}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -109,7 +109,7 @@
 \end{frame}
 
 
-\begin{frame}{What this lecture covers}
+\begin{frame}[shrink=10]{Roadmap of This Lecture}
 \small
 \begin{block}{Today: the Brock--Mirman warm-up}
 The simplest setting in which the history-to-policy idea is visible. One representative household, one aggregate shock, an analytic policy under $\delta=1$, log utility for cross-checking.
@@ -131,6 +131,19 @@ The simplest setting in which the history-to-policy idea is visible. One represe
 Companion deck \texttt{08\_Heterogeneous\_Agents\_Youngs\_Method.pdf} (heterogeneous agents = self-study); reference notebook \texttt{06\_SequenceSpace\_KrusellSmith.ipynb} and the JAX implementation \texttt{KrusellSmith\_Tutorial\_CPU.ipynb}.
 \end{block}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Reformulate a state-space equilibrium as a truncated sequence-space equilibrium, mapping endogenous state into exogenous shock history
+  \item Diagnose ergodicity and justify truncation length using decay rates of partial derivatives
+  \item Implement residual minimization to train a neural-network policy on exogenous shock histories
+  \item Compare state-space and sequence-space deep learning and recognize the stability advantages of exogenous inputs
+  \item Build and validate a history-dependent policy network using the cloud method on Monte Carlo shock paths
+\end{itemize}
+\end{frame}
+
 
 
 % =====================================================================
@@ -176,16 +189,16 @@ y_t \;=\; \underbrace{\Psi}_{\substack{\text{seq.\ space}\\ \text{solution}}}\!\
 
 \item \textbf{State} is then a function of the history and the initial condition:
 \[
-x_t \;=\; \underbrace{\mathcal{H}}_{\substack{\text{iterated}\\ \text{law of motion}}}\!\bigl(\E_t,\, x_0 \,\bigm|\, \Psi\bigr).
+x_t \;=\; \underbrace{\mathcal{H}}_{\substack{\text{iterated}\\ \text{law of motion}}}\!\bigl(\histE_t,\, x_0 \,\bigm|\, \Psi\bigr).
 \]
 
 \item \textbf{Equilibrium:} $\Psi$ satisfies an equivalent set of conditions
 \[
-\boxed{\;G(\Psi, \E, x_0) \;=\; 0 \quad \forall \E,\;\forall x_0\;.}
+\boxed{\;G(\Psi, \histE, x_0) \;=\; 0 \quad \forall \histE,\;\forall x_0\;.}
 \]
 \end{itemize}
 \vspace{0.2em}
-{\footnotesize Domain of $\Psi$: shock history $\E_t = (\varepsilon_t, \varepsilon_{t-1}, \ldots)$ -- \emphc{exogenously driven}.}
+{\footnotesize Domain of $\Psi$: shock history $\histE_t = (\varepsilon_t, \varepsilon_{t-1}, \ldots)$ -- \emphc{exogenously driven}.}
 \end{frame}
 
 
@@ -207,7 +220,7 @@ y_t \;\approx\; \underbrace{\widehat\Psi}_{\substack{\text{trunc.\ seq.}\\ \text
 \[
 \log K_t \;=\; c \,+\, \log A_{t-1} \,+\, \alpha \log A_{t-2} \,+\, \alpha^2 \log A_{t-3} \,+\, \cdots
 \]
-Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1.4\!\times\!10^{-12}$.
+Lag-$\tau$ weight is $\alpha^{\tau-1}$ (with $A_{t-1}$ at lag $1$).  At $\tau = 25$, $\alpha = 1/3$, the weight $\alpha^{24} \approx 3.5\!\times\!10^{-12}$.
 \end{itemize}
 \end{frame}
 
@@ -223,8 +236,8 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 
 \item \textbf{Solution:} deep learning.
 \begin{enumerate}\itemsep1pt
-    \item Parameterise $\widehat\Psi$ using a neural network $\mathcal{N}_\theta(\E)$.
-    \item Train the network, i.e.\ find $\underbrace{\theta}_{\substack{\text{netw.}\\ \text{param.}}}$ such that $\mathcal{N}_\theta(\E) \approx \widehat\Psi$.
+    \item Parameterise $\widehat\Psi$ using a neural network $\mathcal{N}_\theta(\histE)$.
+    \item Train the network, i.e.\ find $\underbrace{\theta}_{\substack{\text{netw.}\\ \text{param.}}}$ such that $\mathcal{N}_\theta(\histE) \approx \widehat\Psi$.
 \end{enumerate}
 
 \item \textbf{Two algorithms:}
@@ -244,21 +257,21 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 \item<1-> \textbf{Initialisation:} set $\text{iter} = 1$.
     \begin{itemize}
     \item<1-> initialise network parameters $\theta^0$;
-    \item<1-> sample initial state-history pairs $\bigl\{(x^0_j,\,\E^0_j)\bigr\}_{j=1}^N$.
+    \item<1-> sample initial state-history pairs $\bigl\{(x^0_j,\,\histE^0_j)\bigr\}_{j=1}^N$.
     \end{itemize}
 
 \item<2-> \textbf{Training loop:}
     \begin{enumerate}
     \item<2-> \emphc{Simulation.}  Fixing $\theta^{\text{iter}}$, sample shocks and simulate the policies $T$ periods forward.
         \begin{itemize}
-        \item<2-> start with $\bigl\{(x^{\text{iter}-1}_j,\,\E^{\text{iter}-1}_j)\bigr\}_{j=1}^N$;
-        \item<2-> collect terminal pairs $\bigl\{(x^{\text{iter}}_j,\,\E^{\text{iter}}_j)\bigr\}_{j=1}^N$.
+        \item<2-> start with $\bigl\{(x^{\text{iter}-1}_j,\,\histE^{\text{iter}-1}_j)\bigr\}_{j=1}^N$;
+        \item<2-> collect terminal pairs $\bigl\{(x^{\text{iter}}_j,\,\histE^{\text{iter}}_j)\bigr\}_{j=1}^N$.
         \end{itemize}
 
     \item<3-> \emphc{Policy improvement.}  Evaluate the mean squared residual and its gradient.
         \begin{itemize}
         \item<3-> for each pair $j$: evaluate $\theta^{\text{iter}}$ to get current endogenous $y_j$;
-        \item<4-> use $y_j$ and $M$-point quadrature to construct $\bigl\{(x'_{j,m},\,\E'_{j,m})\bigr\}_{m=1}^M$;
+        \item<4-> use $y_j$ and $M$-point quadrature to construct $\bigl\{(x'_{j,m},\,\histE'_{j,m})\bigr\}_{m=1}^M$;
         \item<5-> evaluate the policy at quadrature nodes; compute $\mathbb{E}[\,\cdots\,]$ and the equilibrium-conditions residual $\mathcal{R}_j$;
         \item<6-> compute $\tfrac{1}{N}\sum_j \mathcal{R}_j^2$, get its gradient via backprop, update $\theta$ by SGD.
         \end{itemize}
@@ -282,7 +295,7 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 \end{alertblock}
 
 \vspace{0.4em}
-\textbf{Sequence space breaks the loop.}  The network input is the truncated shock history $\E_t$, drawn from the \emphc{exogenous} aggregate-shock law of motion.  That distribution is fixed by model primitives and \emphc{does not move} with the policy update.
+\textbf{Sequence space breaks the loop.}  The network input is the truncated shock history $\histE_t$, drawn from the \emphc{exogenous} aggregate-shock law of motion.  That distribution is fixed by model primitives and \emphc{does not move} with the policy update.
 
 \vspace{0.4em}
 {\footnotesize The single biggest source of stability gains documented in Azinovic-Yang \& \v{Z}emli\v{c}ka (2025).}
@@ -297,7 +310,7 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 \small
 \begin{columns}[T]
 \column{0.48\textwidth}
-\begin{block}{State-space warm-up (Day 4 nb 02--03)}
+\begin{block}{State-space warm-up (discrete-time DEQN warm-up)}
 \begin{itemize}\itemsep3pt
     \item \textbf{Input:} $(K_t, A_t)$ -- 2 floats.
     \item \textbf{Network output:} $C_t$ (or savings rate).
@@ -308,7 +321,7 @@ Lag-$\tau$ weight is $\alpha^\tau$.  With $\alpha = 1/3$, $\alpha^{25} \approx 1
 \column{0.48\textwidth}
 \begin{block}{Sequence-space warm-up (this notebook)}
 \begin{itemize}\itemsep3pt
-    \item \textbf{Input:} $\E_t^T = (\varepsilon_{t-T+1}, \ldots, \varepsilon_t)$ -- 25 floats.
+    \item \textbf{Input:} $\histE_t^T = (\varepsilon_{t-T+1}, \ldots, \varepsilon_t)$ -- 25 floats.
     \item \textbf{Network output:} savings rate $s$.
     \item \textbf{Recover:} $K_{t+1} = s\cdot y_t$ with $y_t = A_t K_t^\alpha + (1-\delta) K_t$.
 \end{itemize}
@@ -332,7 +345,7 @@ The \emphc{economic model and Euler equation do not change}.  What changes is th
     \item \emphc{\S 1--4 markdown:} model, sequence-space formulation, ergodicity, algorithm sketch.
     \item \emphc{\S 5--8 setup:} imports, calibration ($\alpha = 1/3$, $\beta = 0.97$, $\gamma = \delta = 1$), Gauss--Hermite (8 nodes), steady-state init.
     \item \emphc{\S 11 network:} 25-input, 3$\times$64 GELU, sigmoid output -- savings rate.
-    \item \emphc{\S 12--13 loss core:} \texttt{Policy\_sequence}, then \texttt{E\_sequence} (Euler residual; network called twice -- at $\E_t$ and at every quadrature node $\E_{t+1}$).
+    \item \emphc{\S 12--13 loss core:} \texttt{Policy\_sequence}, then \texttt{E\_sequence} (Euler residual; network called twice -- at $\histE_t$ and at every quadrature node $\histE_{t+1}$).
     \item \emphc{\S 14--16 loop:} forward simulator (history rolls one period), train step, cloud-method outer loop.
     \item \emphc{\S 17 diagnostics:} loss curve, ergodic $(K, z)$ cloud, BM closed-form comparison.
 \end{enumerate}

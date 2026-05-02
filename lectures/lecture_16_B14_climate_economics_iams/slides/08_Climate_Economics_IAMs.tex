@@ -72,12 +72,12 @@
 \DeclareMathOperator{\Var}{Var}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{DICE, CDICE, the carbon cycle, temperature dynamics, deterministic baseline}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -104,20 +104,20 @@
 \end{frame}
 }
 
-% --- Frame 2: Day 8 Roadmap ---
-\begin{frame}{Day 8 Roadmap}
+% --- Frame 2: Roadmap ---
+\begin{frame}{Roadmap of This Lecture}
 \begin{center}
 \begin{tikzpicture}[
     box/.style={rectangle, draw=uzhblue, fill=uzhgreylight, rounded corners=4pt,
                 minimum width=3.2cm, minimum height=1.1cm, align=center, font=\small},
     arr/.style={-{Stealth[length=2.8mm]}, very thick, uzhblue!75}
 ]
-\node[box, fill=softblue!25] (l08) at (0,0) {\textbf{Lecture 08}\\Climate IAMs\\+ DEQNs};
-\node[box] (l09) at (4.5,0) {\textbf{Lecture 09}\\Optimal Policy\\in OLG-IAMs};
-\node[box] (l10) at (9,0) {\textbf{Wrap-Up}\\Course synthesis\\+ outlook};
+\node[box, fill=softblue!25] (here) at (0,0) {\textbf{This lecture}\\Climate IAMs\\+ DEQNs};
+\node[box] (next) at (4.5,0) {\textbf{Next}\\Deep UQ \&\\Pareto policy};
+\node[box] (wrap) at (9,0) {\textbf{Wrap-Up}\\Course synthesis\\+ outlook};
 
-\draw[arr] (l08) -- (l09);
-\draw[arr] (l09) -- (l10);
+\draw[arr] (here) -- (next);
+\draw[arr] (next) -- (wrap);
 \end{tikzpicture}
 \end{center}
 
@@ -130,6 +130,19 @@
     \item Deep uncertainty quantification
 \end{enumerate}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Derive climate-economic coupling equations from Lagrangian FOCs and envelope conditions
+  \item Implement deterministic and stochastic IAMs with DEQNs handling nonstationary exogenous sequences
+  \item Construct GP surrogates for SCC and welfare outputs via Bayesian active learning
+  \item Compute global sensitivity decompositions (Sobol, Shapley) to identify parameter drivers of uncertainty
+  \item Apply deep-UQ pipelines to quantify tail distributions and risk in long-horizon climate projections
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % SECTION I: MOTIVATION
@@ -364,11 +377,11 @@ The two-layer energy balance model in DICE-2016:
 
 \textbf{Radiative forcing:}
 \[
-    F_{t} = F_{\mathrm{2\times CO_2}} \frac{\log(M^{\mathrm{AT}}_{t}/M^{\mathrm{AT}}_{\mathrm{EQ}})}{\log(2)} + F^{\mathrm{EX}}_{t}
+    F_{t} = F_{\mathrm{2\times CO_2}} \frac{\log(M^{\mathrm{AT}}_{t}/M^{\mathrm{AT}}_{\mathrm{PI}})}{\log(2)} + F^{\mathrm{EX}}_{t}
 \]
 
 \begin{alertblock}{Key parameters}
-$\lambda = F_{\mathrm{2\times CO_2}}/\Delta T_{\mathrm{AT},\times 2}$ where $\Delta T_{\mathrm{AT},\times 2}$ is the \emphc{equilibrium climate sensitivity} (ECS) --- the long-run warming from CO$_2$ doubling.
+$\lambda = F_{\mathrm{2\times CO_2}}/\Delta T_{\mathrm{AT},\times 2}$ where $\Delta T_{\mathrm{AT},\times 2}$ is the \emphc{equilibrium climate sensitivity} (ECS) --- the long-run warming from CO$_2$ doubling. $M^{\mathrm{AT}}_{\mathrm{PI}}$ is the preindustrial atmospheric CO$_2$ stock.
 \end{alertblock}
 \end{frame}
 
@@ -378,17 +391,17 @@ $\lambda = F_{\mathrm{2\times CO_2}}/\Delta T_{\mathrm{AT},\times 2}$ where $\De
 \begin{columns}[T]
 \column{0.38\textwidth}
 \includegraphics[width=0.88\linewidth]{damge.png}
-{\scriptsize Retained-output damage factors decline as warming rises.}
+{\scriptsize Damage fraction $\Omega(T)$: the share of gross output lost at warming $T$. Increasing in $T$.}
 
 \column{0.60\textwidth}
 \textbf{Nordhaus (2013):}
 \[
-\Omega^N_t(T_{\mathrm{AT},t}) = \frac{1}{1 + \pi_1 T_{\mathrm{AT},t} + \pi_2 T_{\mathrm{AT},t}^2}
+\Omega^N(T_{\mathrm{AT}}) = \pi_1 T_{\mathrm{AT}} + \pi_2 T_{\mathrm{AT}}^{2}
 \]
 
 \textbf{Weitzman (2012) --- with tipping:}
 \[
-\Omega_t(T_{\mathrm{AT},t}) = \frac{1}{1 + \left(\frac{1}{\psi_1} T_{\mathrm{AT},t}\right)^{2} + \left(\frac{1}{2 \cdot TP_t} T_{\mathrm{AT},t}\right)^{6.754}}
+\Omega^W(T_{\mathrm{AT}}) = 1 - \frac{1}{1 + \left(\frac{1}{\psi_1} T_{\mathrm{AT}}\right)^{2} + \left(\frac{1}{2\, TP} T_{\mathrm{AT}}\right)^{6.754}}
 \]
 \end{columns}
 
@@ -536,7 +549,7 @@ Separate risk aversion from intertemporal substitution --- crucial for long-run 
   \begin{minipage}{1.2\linewidth}
 \begin{align*}
   &\text{Budget:} &
-    (1-\Theta(\mu_{t}))\Omega_t(T_{\mathrm{AT},t})K_{t}^{\alpha}( A_{t}L_{t} )^{1-\alpha}
+    \bigl(1-\Omega(T_{\mathrm{AT},t}) - \Theta(\mu_t)\bigr) K_{t}^{\alpha}( A_{t}L_{t} )^{1-\alpha}
     - C_{t} - I_{t} &= 0 \\
   &\text{Capital:} &
     ( 1-\delta )K_{t} + I_{t} - K_{t+1} &= 0\\
@@ -566,13 +579,13 @@ Separate risk aversion from intertemporal substitution --- crucial for long-run 
 
 % --- Frame 21: KEY SLIDE --- Nonstationarity and time as state ---
 \begin{frame}{Nonstationarity and Time as a State Variable}
-\begin{alertblock}{The key difference from Days 2--4}
+\begin{alertblock}{The key difference from the discrete-time lectures}
 IAMs are \emphc{nonstationary}: $A_t$ (TFP), $L_t$ (population), $\sigma_t$ (carbon intensity), $E_{\mathrm{Land},t}$, $F^{\mathrm{EX}}_t$ all change exogenously over time.
 \end{alertblock}
 
 \vspace{0.2cm}
 \begin{itemize}
-    \item Unlike Brock-Mirman (day 2) or stationary OLG (day 4), we \emphc{cannot} have a time-invariant policy function.
+    \item Unlike Brock-Mirman or stationary OLG, we \emphc{cannot} have a time-invariant policy function.
     \item \textbf{Solution:} add $t$ as an explicit state variable to the neural network input.
     \item For neural net stability, transform: $\tau = 1 - \exp(-\vartheta \cdot t) \in [0,1)$
     \item Normalize capital, consumption, investment by $A_t \times L_t$ to detrend what we can.
@@ -614,7 +627,7 @@ The policy network is $\nn(\tau_t, \text{states}, \text{params})$ --- transforme
 \begin{itemize}
     \item Solve the model \emphc{once} for all parameter combinations
     \item UQ becomes interpolation on the learned surrogate
-    \item From days 2--3: the same trick used for $\beta, \alpha$ in Brock-Mirman
+    \item From earlier DEQN lectures: the same trick used for $\beta, \alpha$ in Brock-Mirman
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -628,7 +641,7 @@ Write the Lagrangian with multipliers ($\lambda$ for budget, $\xi$ for capital, 
   \begin{minipage}{\linewidth}
 \begin{align*}
 \mathcal{L} &= V(\X_t)^{1-1/\psi} \\
- &\quad + \lambda_t \Big[(1-\Theta(\mu_t))\Omega_t K_t^\alpha (A_t L_t)^{1-\alpha} - C_t - I_t\Big] \\
+ &\quad + \lambda_t \Big[\bigl(1-\Omega(T_{\mathrm{AT},t}) - \Theta(\mu_t)\bigr) K_t^\alpha (A_t L_t)^{1-\alpha} - C_t - I_t\Big] \\
  &\quad + \xi_t \Big[(1-\delta)K_t + I_t - K_{t+1}\Big] \\
  &\quad + \eta_t \Big[1 - \mu_t\Big] \\
  &\quad + \text{[multipliers for carbon cycle, temperature, learning dynamics]}
@@ -657,7 +670,7 @@ Write the Lagrangian with multipliers ($\lambda$ for budget, $\xi$ for capital, 
 
 \textbf{w.r.t.\ $\mu_t$} (marginal abatement cost = marginal emission damage):
 \[
-\lambda_t \frac{\partial \Theta}{\partial \mu_t} \Omega_t K_t^\alpha (A_t L_t)^{1-\alpha} = \eta_t + \text{[shadow value of reduced emissions]}
+\lambda_t \frac{\partial \Theta}{\partial \mu_t} K_t^\alpha (A_t L_t)^{1-\alpha} = \eta_t + \text{[shadow value of reduced emissions]}
 \]
 
 \vspace{0.2cm}
@@ -671,7 +684,7 @@ Cannot compute $\partial V / \partial(\text{state}_{t+1})$ analytically $\righta
 \small
 The envelope theorem gives us derivatives of the value function w.r.t.\ \emphc{current} states:
 \[
-\frac{\partial V(\X_t)^{1-1/\psi}}{\partial k_t} = \lambda_t \left[\alpha (1-\Theta)\Omega_t k_t^{\alpha-1}(A_t L_t)^{1-\alpha} + (1-\delta)\right] \cdot \xi_t / \lambda_t
+\frac{\partial V(\X_t)^{1-1/\psi}}{\partial k_t} = \lambda_t \cdot \alpha \bigl(1-\Omega(T_{\mathrm{AT},t}) - \Theta(\mu_t)\bigr) k_t^{\alpha-1}(A_t L_t)^{1-\alpha} + \xi_t \cdot (1-\delta)
 \]
 \[
 \frac{\partial V(\X_t)^{1-1/\psi}}{\partial M_{\mathrm{AT},t}} = \text{[shadow value of atmospheric carbon]}
@@ -1067,7 +1080,7 @@ Typically: ECS uncertainty and damage specification dominate SCC variability.
 \begin{enumerate}
     \item \textbf{Climate calibration matters}: CDICE-style tests anchor the climate block in science benchmarks.
     \item \textbf{DEQNs scale nonstationary IAMs}: full Lagrangian $\rightarrow$ FOCs $\rightarrow$ envelope $\rightarrow$ Euler $\rightarrow$ residual loss.
-    \item \textbf{Time as state variable}: the critical bridge from stationary models (days 2--4) to real-world applications.
+    \item \textbf{Time as state variable}: the critical bridge from stationary models (earlier discrete-time lectures) to real-world applications.
     \item \textbf{Pseudo-states enable one-shot UQ}: solve once, evaluate everywhere via GP + BAL.
 \end{enumerate}
 

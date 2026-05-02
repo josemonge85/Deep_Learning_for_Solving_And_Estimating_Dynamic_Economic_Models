@@ -1,7 +1,5 @@
 % ============================================================================
 % Solving CT Heterogeneous Agent Models: PINNs and Deep Learning
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 75 minutes
 % ============================================================================
 
@@ -93,12 +91,12 @@
 \newcommand{\ubar}[1]{\underline{#1}}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Finite-difference and PINN solvers for the HJB+KFE system}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -145,6 +143,19 @@
 \begin{frame}{Table of Contents}
 \tableofcontents[hideallsubsections]
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Implement finite-difference schemes (upwind discretization) to solve HJB equations on wealth grids
+  \item Compare finite-difference solutions with PINN and EMINN approaches, recognizing computational trade-offs (speed, accuracy, dimensionality)
+  \item Deploy physics-informed neural networks to solve the coupled HJB+KFE system for stationary equilibrium in heterogeneous-agent economies
+  \item Apply equation-constrained multi-output neural networks (EMINNs) to solve the master equation with aggregate shocks (Krusell--Smith)
+  \item Validate deep-learning solutions against finite-difference benchmarks and assess the deep-learning conundrum in macro-finance
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART I: FINITE DIFFERENCES (BRIEF)
@@ -438,6 +449,28 @@ where $s_j = r\,a + w\,z_j - c_j^*$ is \emphc{savings}.
 \end{columns}
 \end{frame}
 
+% --- Slide: FD primer ---
+\begin{frame}{From Continuous HJB to a Linear System (Primer)}
+\small
+On a uniform grid $a_i$ with spacing $\Delta a$, replace the partial derivative $V_a$ by a finite-difference quotient:
+\[
+\underbrace{V_a^F(a_i) = \tfrac{V_{i+1}-V_i}{\Delta a}}_{\text{forward}}
+\qquad
+\underbrace{V_a^B(a_i) = \tfrac{V_i-V_{i-1}}{\Delta a}}_{\text{backward}}.
+\]
+\textbf{Upwind rule.} Use $V_a^F$ where the optimal drift $s_j(a_i) > 0$, $V_a^B$ where $s_j(a_i) < 0$. This is the standard stability fix for first-order PDEs (Courant-Isaacson-Rees / Barles-Souganidis).
+
+\vspace{0.3em}
+\textbf{Assemble the operator.} The choice of forward/backward at every grid point gives a sparse tridiagonal matrix $A_a$ acting on the vector $V \in \mathbb{R}^{I\times J}$. Coupling the discrete income states adds the block $\Lambda \otimes I_J$, so the full generator is
+\[
+A \;=\; A_a(\text{upwind}) + \Lambda \otimes I_J \;\in\; \mathbb{R}^{(IJ)\times(IJ)}.
+\]
+\textbf{Implicit step.} Rearrange the discretized HJB into $(\tfrac{1}{\Delta}+\rho)V^{n+1} - A V^{n+1} = u(c) + V^n/\Delta$ -- one sparse linear solve per outer iteration.
+
+\vspace{0.3em}
+{\scriptsize Goal of next slide: combine these three ingredients into the algorithm. The pseudocode mirrors Achdou et al.\ (2022, REStud), Appendix~B.}
+\end{frame}
+
 % --- Slide: PE Discrete — Upwind FD ---
 \begin{frame}{PE Discrete Income: Upwind Finite-Difference Scheme}
 \small
@@ -571,10 +604,14 @@ where $c^*=(V_a)^{-1/\gamma}$, $s=r\,a+w\,z-c^*$.
 \vspace{0.2em}
 {\centering\scriptsize
 \begin{tabular}{@{}r@{\;}l@{}}
-\textcolor{darkred}{\textbf{Left/right}} ($a$): & Neumann $V_a = u'(\text{inc})$ \\
+\textcolor{darkred}{\textbf{Left} ($\ubar a$):} & state-constraint $V_a \geq u'(\text{inc}\!\mid\!\ubar a)$ \\
+\textcolor{darkred}{\textbf{Right} ($\bar a$):} & truncation Neumann $V_a = u'(\text{inc}\!\mid\!\bar a)$ \\
 \textcolor{softblue}{\textbf{Top/bottom}} ($z$): & Reflecting $V_z = 0$ \\
 \end{tabular}
 \par}
+
+\vspace{0.2em}
+{\scriptsize At $\ubar a$ the inequality is the borrowing-constraint complementarity (binds when consumption hits $r\ubar a + w z$); at $\bar a$ we impose Neumann as a truncation choice on the artificial upper boundary.}
 
 \vspace{0.3em}
 \begin{center}
@@ -686,7 +723,7 @@ V_zz = grad(V_z, z)  # diffusion!
 Term & Description \\
 \midrule
 $\mathcal{L}_{\text{PDE}}$ & 2D HJB residual MSE \\
-$\mathcal{L}_{\text{BC}}$  & Dirichlet on all 4 edges \\
+$\mathcal{L}_{\text{BC}}$  & Neumann on $a$-edges (FOC); reflecting $V_z=0$ on $z$ \\
 $\mathcal{L}_{\text{curv}}$ & Concavity: $\text{relu}(V_{aa})^2$ \\
 \bottomrule
 \end{tabular}
@@ -718,7 +755,7 @@ $\mathcal{L}_{\text{curv}}$ & Concavity: $\text{relu}(V_{aa})^2$ \\
 \vspace{0.2em}
 \colorbox{uzhgreylight}{\parbox{0.95\linewidth}{\centering\scriptsize
 \textbf{1D $\to$ 2D}: add $z$ as 1 extra input neuron.\\
-No grid explosion --- collocation cost is \emphc{dimension-free}.}}
+No tensor-product blow-up --- sample cost grows \emphc{polynomially}, not exponentially, in $d$.}}
 \end{columns}
 \end{frame}
 
@@ -1743,7 +1780,7 @@ Must sample from \emphc{economically relevant} regions.
 
 \vspace{0.05em}
 \footnotesize
-\textbf{Q\&A: Key differences from discrete time (Day 2--4)?}
+\textbf{Q\&A: Key differences from discrete time?}
 \begin{itemize}\itemsep0pt
     \item Derivatives replace expectations, so automatic differentiation is essential.
     \item Collocation and shape constraints replace simulation grids and false-time steps.
@@ -2063,11 +2100,11 @@ Low-dim accuracy & $\sim 10^{-6}$ & problem-dependent & reported $\sim 10^{-5}$ 
     current/.style={box, fill=harvardcrimson!15, draw=harvardcrimson},
     arrow/.style={-Stealth, thick}
 ]
-\node[box] (d2) at (0,3.5) {Day 2: DEQNs (discrete)};
-\node[box] (d4) at (0,2.6) {Day 4: Young's (discrete)};
-\node[box] (d5) at (0,1.7) {Day 6 Blk 1: PINNs (single PDE)};
-\node[current] (d6a) at (0,0.8) {Day 6 Blk 2: PINNs (HJB+KFE)};
-\node[current] (d6b) at (0,-0.1) {Day 6 Blk 2: EMINNs (master eq.)};
+\node[box] (d2) at (0,3.5) {DEQNs (discrete)};
+\node[box] (d4) at (0,2.6) {Young's (discrete)};
+\node[box] (d5) at (0,1.7) {PINN single-PDE lecture};
+\node[current] (d6a) at (0,0.8) {PINNs for HJB+KFE};
+\node[current] (d6b) at (0,-0.1) {EMINNs (master eq.)};
 
 \draw[arrow] (d2) -- (d4);
 \draw[arrow] (d4) -- (d5);
@@ -2192,7 +2229,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 % --- Slide: Code Companion ---
 \begin{frame}{Code Companion: Run This Live}
 \footnotesize
-\textbf{Day 6 companion notebooks (self-contained, PyTorch):}
+\textbf{Companion notebooks for this lecture (self-contained, PyTorch):}
 \begin{itemize}\itemsep2pt
     \item \textbf{NB 06} \textit{(self-study)}: \texttt{06\_PE\_Discrete\_HJB\_PINN.ipynb} --- 1D PE with discrete income: upwind FD + PINN
     \item \textbf{NB 07} \textit{(self-study)}: \texttt{07\_PE\_Diffusion\_HJB\_PINN.ipynb} --- 2D PE with OU earnings: 2D FD + PINN
@@ -2281,7 +2318,7 @@ IV & Results \& Outlook \\
 }
 
 \vspace{0.8cm}
-\textbf{Tomorrow (Day 7):}\\[6pt]
+\textbf{Where to Next:}\\[6pt]
 {\large Surrogate Models}\\
 {\large \& Gaussian Processes}\\[8pt]
 \end{center}

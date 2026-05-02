@@ -5,7 +5,7 @@ A modern DEQN variant where the policy reads a long shock history instead of a c
 `gpu-recommended` · `long` · builds on [Lecture 07 (B05)](../lecture_07_B05_autodiff_for_deqns/README.md)
 
 > 📑 **Slides:** [06_SequenceSpace_DEQNs.pdf](slides/06_SequenceSpace_DEQNs.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb) (4 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_08_B06_05_SequenceSpace_BrockMirman.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_08_B06.md)  
 > 📖 **Script:** §6.7 (Sequence-space DEQNs)
 
@@ -33,10 +33,10 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb`](code/lecture_07_B06_05_SequenceSpace_BrockMirman.ipynb)
-- [`code/lecture_07_B06_05b_SequenceSpace_IRBC.ipynb`](code/lecture_07_B06_05b_SequenceSpace_IRBC.ipynb)
-- [`code/lecture_07_B06_06_SequenceSpace_KrusellSmith.ipynb`](code/lecture_07_B06_06_SequenceSpace_KrusellSmith.ipynb)
-- [`code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb`](code/lecture_07_B06_KrusellSmith_Tutorial_CPU.ipynb)
+- [`code/lecture_08_B06_05_SequenceSpace_BrockMirman.ipynb`](code/lecture_08_B06_05_SequenceSpace_BrockMirman.ipynb)
+- [`code/lecture_08_B06_05b_SequenceSpace_IRBC.ipynb`](code/lecture_08_B06_05b_SequenceSpace_IRBC.ipynb)
+- [`code/lecture_08_B06_06_SequenceSpace_KrusellSmith.ipynb`](code/lecture_08_B06_06_SequenceSpace_KrusellSmith.ipynb)
+- [`code/lecture_08_B06_KrusellSmith_Tutorial_CPU.ipynb`](code/lecture_08_B06_KrusellSmith_Tutorial_CPU.ipynb)
 
 ## In the lecture script
 

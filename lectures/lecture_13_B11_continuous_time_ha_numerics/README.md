@@ -5,7 +5,7 @@ Two methods to solve the HJB-KFE system numerically: a finite-difference scheme 
 `gpu-recommended` · `long` · builds on [Lecture 12 (B10)](../lecture_12_B10_continuous_time_ha_theory/README.md)
 
 > 📑 **Slides:** [08_CT_Heterogeneous_Agents_Numerical.pdf](slides/08_CT_Heterogeneous_Agents_Numerical.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb) (4 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_13_B11_06_PE_Discrete_HJB_PINN.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_13_B11.md)  
 > 📖 **Script:** §8.7 (Numerical methods for CT-HA)
 
@@ -33,10 +33,10 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb`](code/lecture_12_B11_06_PE_Discrete_HJB_PINN.ipynb)
-- [`code/lecture_12_B11_07_PE_Diffusion_HJB_PINN.ipynb`](code/lecture_12_B11_07_PE_Diffusion_HJB_PINN.ipynb)
-- [`code/lecture_12_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb`](code/lecture_12_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb)
-- [`code/lecture_12_B11_09_PINN_Exercise.ipynb`](code/lecture_12_B11_09_PINN_Exercise.ipynb)
+- [`code/lecture_13_B11_06_PE_Discrete_HJB_PINN.ipynb`](code/lecture_13_B11_06_PE_Discrete_HJB_PINN.ipynb)
+- [`code/lecture_13_B11_07_PE_Diffusion_HJB_PINN.ipynb`](code/lecture_13_B11_07_PE_Diffusion_HJB_PINN.ipynb)
+- [`code/lecture_13_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb`](code/lecture_13_B11_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb)
+- [`code/lecture_13_B11_09_PINN_Exercise.ipynb`](code/lecture_13_B11_09_PINN_Exercise.ipynb)
 
 ## In the lecture script
 

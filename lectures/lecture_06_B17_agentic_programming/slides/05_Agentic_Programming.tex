@@ -1,7 +1,5 @@
 % ============================================================================
 % Agentic Programming: Using AI Agents for Research
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: ~4 hours (two 90-min blocks with breaks + exercises)
 % ============================================================================
 
@@ -149,12 +147,12 @@
 }
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Agentic Programming: Using AI Agents for Research}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -176,17 +174,17 @@ Cherny (2025), ``10 Claude Code Tips''; Anthropic Docs (2026).}\\[4pt]
 \end{frame}
 }
 
-% --- Recap of Day 4 / Bridge to Day 5 ---
-\begin{frame}{From Day 4 to Day 5: From Models to the Workflow That Ships Them}
+% --- Bridge to the Agentic-Programming Lecture ---
+\begin{frame}{From Building Models to Shipping Workflows}
 \small
 \begin{columns}[T]
 \column{0.50\textwidth}
-\textbf{Days 1--4 built the models.}
+\textbf{The earlier lectures built the models.}
 \begin{itemize}\itemsep0pt
-    \item Day 1: deep-learning fundamentals
-    \item Day 2: Deep Equilibrium Nets (DEQNs)
-    \item Day 3: IRBC, NAS, loss normalization
-    \item Day 4: autodiff, sequence space, OLG
+    \item Deep-learning fundamentals
+    \item Deep Equilibrium Nets (DEQNs)
+    \item IRBC, NAS, loss normalization
+    \item Autodiff, sequence space, OLG
 \end{itemize}
 
 \vspace{0.3em}
@@ -195,7 +193,7 @@ modeling: it was wiring data, debugging shapes, refactoring loss terms,
 testing on toy problems, and rebuilding figures.}
 
 \column{0.48\textwidth}
-\textbf{Day 5 builds the \emphc{workflow}.}
+\textbf{This lecture builds the \emphc{workflow}.}
 \begin{itemize}\itemsep0pt
     \item Set up Claude Code for research projects
     \item Drive it with Level-3 prompts
@@ -361,47 +359,8 @@ One supervised workflow can produce code, tables, figures, LaTeX, and notes in t
 \end{columns}
 \end{frame}
 
-% --- Outline ---
-\begin{frame}{Outline}
-\small
-\begin{columns}[T]
-\column{0.48\textwidth}
-\begin{enumerate}
-    \item \textbf{Orientation \& Mental Models}\\
-    {\scriptsize Why agentic AI matters; hierarchy of tools; context window.}
-    \vspace{0.15em}
-    \item \textbf{Production Environment Setup}\\
-    {\scriptsize Terminal, Claude Code, Git, Python, MCP.}
-    \vspace{0.15em}
-    \item \textbf{The Core Interaction Loop}\\
-    {\scriptsize Feedback loop; prompt quality; parallel sessions.}
-    \vspace{0.15em}
-    \item \textbf{Prompt Engineering for Research}\\
-    {\scriptsize 6-component anatomy; templates; failure modes.}
-\end{enumerate}
-
-\column{0.48\textwidth}
-\begin{itemize}
-    \item[\textbf{5.}] \textbf{Project Memory \& CLAUDE.md}\\
-    {\scriptsize Persistent context; self-improving memory; three-layer architecture.}
-    \vspace{0.1em}
-    \item[\textbf{6.}] \textbf{Skills, Subagents \& Hooks}\\
-    {\scriptsize Custom commands; specialized agents; plan mode; hooks.}
-    \vspace{0.1em}
-    \item[\textbf{7.}] \textbf{Autonomous Loops with Ralph}\\
-    {\scriptsize Wake-sleep pattern; \texttt{/ralph-loop} plugin; PRD-driven \texttt{ralph.sh}.}
-    \vspace{0.1em}
-    \item[\textbf{8.}] \textbf{From Data to Paper \& Replication}\\
-    {\scriptsize Full pipeline; AI-assisted paper replication.}
-    \vspace{0.1em}
-    \item[\textbf{9.}] \textbf{Verification, Ethics \& Best Practices}\\
-    {\scriptsize Failure modes; integrity; disclosure norms; Boris Cherny's 10 tips.}
-\end{itemize}
-\end{columns}
-\end{frame}
-
 % --- Roadmap ---
-\begin{frame}{Roadmap (3-hour classroom slot)}
+\begin{frame}{Roadmap of This Lecture}
 \scriptsize
 \textit{Pre-flight: run Exercise 0 (\texttt{exercise\_prompts.md}) once before class.}
 \vspace{0.3em}
@@ -417,10 +376,10 @@ One supervised workflow can produce code, tables, figures, LaTeX, and notes in t
 \end{itemize}
 
 \vspace{0.2em}
-\textit{Coffee break (30 min)}
+\textit{--- end of Block 1 ---}
 
 \vspace{0.2em}
-\textbf{Block 2: Advanced \& Hands-On}~~(75 min, Parts V--IX)
+\textbf{Block 2: Advanced \& Hands-On}~~(Parts V--IX)
 \begin{itemize}\itemsep0pt
     \item CLAUDE.md + \textbf{Ex.\,4} (15 min)
     \item Skills, subagents \& hooks + \textbf{Ex.\,5} (15 min)
@@ -517,7 +476,7 @@ All AI coding tools use the same underlying models. The difference is \emphc{sca
 % --- AI Landscape ---
 \begin{frame}{The AI Landscape: Three Major Players}
 \scriptsize
-\textbf{\textcolor{darkred}{Snapshot as of April 2026 \(\bullet\) semi-subjective \(\bullet\) re-check before re-using.}}\\
+\textbf{\textcolor{darkred}{Snapshot as of early 2026 \(\bullet\) semi-subjective \(\bullet\) re-check before re-using.}}\\
 Frontier models, pricing, and rankings change on a monthly cadence. Treat this
 slide as a working opinion, not a benchmark.
 
@@ -630,7 +589,7 @@ The next slide maps that progression onto five discrete levels.
 \renewcommand{\arraystretch}{1.1}
 \begin{tabular}{c p{6.0cm} p{4.7cm}}
 \toprule
-\textbf{Level} & \textbf{Capability} & \textbf{Examples (April 2026)} \\
+\textbf{Level} & \textbf{Capability} & \textbf{Examples (early 2026)} \\
 \midrule
 \textbf{0--1} & Browser chatbot + copy-paste & ChatGPT, Claude.ai, Gemini \\
 \textbf{2} & Inline IDE assistant & Copilot (autocomplete), Cursor (composer) \\
@@ -2037,7 +1996,7 @@ Create a CLAUDE.md for a real or hypothetical research project.
 \end{frame}
 
 % --- Skills vs Subagents vs MCP map ---
-\begin{frame}{Skills vs.\ Subagents vs.\ Hooks vs.\ MCP --- a Quick Map}
+\begin{frame}[shrink=10]{Skills vs.\ Subagents vs.\ Hooks vs.\ MCP --- a Quick Map}
 \scriptsize
 Four extension mechanisms; each does one thing the others can't.
 
@@ -2937,7 +2896,7 @@ Choose a target:
     \item \textbf{Intermediate:} SINDy\\[-2pt]
     {\scriptsize Brunton et al.\ (2016), Figure 3}
     \item \textbf{Advanced:} DEQN policy function\\[-2pt]
-    {\scriptsize From Days 1--4 notebooks}
+    {\scriptsize From earlier-lecture notebooks}
 \end{itemize}
 
 \vspace{0.2em}
@@ -3325,8 +3284,8 @@ Ralph Loop \url{https://claude.com/plugins/ralph-loop} \,$\bullet$\,
 Course repo: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}.
 \end{frame}
 
-% --- Bridge to Day 6 ---
-\begin{frame}{Tomorrow: Day 6 --- PINNs \& Continuous-Time HA Models}
+% --- Where to Next ---
+\begin{frame}{Where to Next: PINNs \& Continuous-Time HA Models}
 \small
 \begin{columns}[T]
 \column{0.55\textwidth}
@@ -3346,7 +3305,7 @@ Course repo: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estim
 \end{itemize}
 
 \column{0.43\textwidth}
-\begin{block}{Suggested workflow for Day 6}
+\begin{block}{Suggested workflow for the next lecture}
 \scriptsize
 For every notebook you read:
 \begin{enumerate}\itemsep0pt

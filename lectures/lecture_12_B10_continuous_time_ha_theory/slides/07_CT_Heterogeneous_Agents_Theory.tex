@@ -1,7 +1,5 @@
 % ============================================================================
 % Continuous-Time Heterogeneous Agent Models: Theory
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 75 minutes
 % ============================================================================
 
@@ -93,12 +91,12 @@
 \setlength{\parskip}{0pt}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{HJB, Kolmogorov forward, Aiyagari in continuous time}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -137,14 +135,14 @@
     future/.style={daybox, fill=white, draw=uzhgreydark, dashed},
     arrow/.style={-Stealth, thick, uzhgreydark}
 ]
-\node[done] (d1) {Day 1\\DL Basics};
-\node[done, right=of d1] (d2) {Day 2\\DEQNs};
-\node[done, right=of d2] (d3) {Day 3\\IRBC, NAS};
-\node[done, right=of d3] (d4) {Day 4\\OLG, Young's};
-\node[done, right=of d4] (d5) {Day 5\\Agents};
-\node[current, right=of d5] (d6) {\textbf{Day 6}\\PINNs + CT HA};
-\node[future, right=of d6] (d7) {Day 7\\Surrogates};
-\node[future, right=of d7] (d8) {Day 8\\Climate};
+\node[done] (d1) {Discrete-time\\block};
+\node[done, right=of d1] (d2) {DEQNs};
+\node[done, right=of d2] (d3) {IRBC, NAS};
+\node[done, right=of d3] (d4) {OLG, Young's};
+\node[done, right=of d4] (d5) {Agents};
+\node[current, right=of d5] (d6) {\textbf{This lecture}\\PINNs + CT HA};
+\node[future, right=of d6] (d7) {Surrogates};
+\node[future, right=of d7] (d8) {Climate};
 
 \draw[arrow] (d1) -- (d2);
 \draw[arrow] (d2) -- (d3);
@@ -233,7 +231,7 @@ The key insight: in continuous-time macro with heterogeneous agents, \emphc{equi
 \vspace{0.3em}
 \begin{alertblock}{\small Discrete $\to$ Continuous}
 \small
-Day 4 (DEQNs, Young's method) used \emph{discrete time}.\\
+The DEQN/Young's method block used \emph{discrete time}.\\
 Today: \emph{continuous time} $\Rightarrow$ PDEs.
 \end{alertblock}
 \end{columns}
@@ -279,7 +277,7 @@ Today: \emph{continuous time} $\Rightarrow$ PDEs.
 \vspace{0.3em}
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.8\textwidth}{\centering\small
-\textbf{Deck~2} (after coffee): \emph{numerical methods} --- finite differences, PINNs, and deep learning (EMINNs) for solving these coupled PDEs.}}
+\textbf{Companion deck (numerical methods)}: finite differences, PINNs, and deep learning (EMINNs) for solving these coupled PDEs.}}
 \end{center}
 \end{frame}
 
@@ -287,6 +285,19 @@ Today: \emph{continuous time} $\Rightarrow$ PDEs.
 \begin{frame}{Table of Contents}
 \tableofcontents[hideallsubsections]
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Derive the Hamilton--Jacobi--Bellman equation from stochastic optimal-control problems with idiosyncratic risk
+  \item Construct and solve the Kolmogorov forward (Fokker--Planck) equation for wealth-distribution dynamics given optimal policies
+  \item Recognize how continuous-time stochastic calculus (Brownian motion, Ito's lemma, Poisson jumps) replaces discrete expectation operators
+  \item Assemble coupled HJB + KFE + market-clearing systems to define competitive equilibrium in heterogeneous-agent economies (Huggett, Aiyagari, Krusell--Smith)
+  \item Reformulate a coupled PDE system as a single master equation and interpret its solution structure
+\end{itemize}
+\end{frame}
+
 
 % --- Slide 8: References ---
 \begin{frame}{Key References}
@@ -2056,7 +2067,7 @@ where:
 \vspace{0.3em}
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.85\textwidth}{\centering\small
-\textbf{Deck 2 (after coffee)}: Three approaches to approximate $g$ in finite dimensions:\\
+\textbf{Companion (numerical) deck}: three approaches to approximate $g$ in finite dimensions:\\
 (1) Finite population, (2) Discrete state space, (3) Projection onto basis functions.\\
 Then: solve the master equation with \emphc{EMINNs} (neural networks + auto-diff).
 }}
@@ -2101,18 +2112,18 @@ Optimal control $\Rightarrow$ HJB. Coupled with KFE via savings policy. Master e
 
 \vspace{0.2em}
 \begin{center}
-\colorbox{uzhgreylight}{\parbox{0.5\textwidth}{\centering\small
-\textbf{Coffee break!}\\
-Back at 10:45 for numerical methods.}}
+\colorbox{uzhgreylight}{\parbox{0.6\textwidth}{\centering\small
+\textbf{End of theory.}\\
+The numerical methods deck picks up here.}}
 \end{center}
 \end{frame}
 
 % --- Slide: Theory-to-Code Bridge ---
-\begin{frame}{From Theory to Code (Day 6 Notebook)}
+\begin{frame}{From Theory to Code (Companion Notebook)}
 \footnotesize
 \textbf{After this theory deck, implement directly in:}
 \begin{itemize}\itemsep2pt
-    \item \texttt{lectures/day6/code/08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb}
+    \item \texttt{lecture\_13\_B11\_continuous\_time\_ha\_numerics/code/\allowbreak lecture\_13\_B11\_08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb}
 \end{itemize}
 
 \vspace{0.2em}

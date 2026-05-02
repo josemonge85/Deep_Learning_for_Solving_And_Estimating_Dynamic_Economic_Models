@@ -5,7 +5,7 @@ A toolkit of cheap, differentiable approximations for expensive simulators: deep
 `gpu-recommended` · `long` · builds on [Lecture 02 (B01)](../lecture_02_B01_intro_deep_learning/README.md)
 
 > 📑 **Slides:** [07_Surrogates_and_GPs.pdf](slides/07_Surrogates_and_GPs.pdf) and 1 more under [`slides/`](slides/)  
-> 📓 **Notebooks:** [start here](code/lecture_13_B12_01_Surrogate_Primer.ipynb) (9 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_14_B12_01_Surrogate_Primer.ipynb) (9 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_14_B12.md)  
 > 📖 **Script:** §9.1-9.2 (Deep surrogates), §9.3-9.6 (GPs and Bayesian active learning), §9.7 (Active subspaces), §9.8 (GP value-function iteration), §9.9 (Deep kernels), §9.10 (GPs among Bayesian cousins)
 
@@ -36,15 +36,15 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_13_B12_01_Surrogate_Primer.ipynb`](code/lecture_13_B12_01_Surrogate_Primer.ipynb)
-- [`code/lecture_13_B12_02_GP_and_BAL.ipynb`](code/lecture_13_B12_02_GP_and_BAL.ipynb)
-- [`code/lecture_13_B12_04_GP_Value_Function_Iteration.ipynb`](code/lecture_13_B12_04_GP_Value_Function_Iteration.ipynb)
-- [`code/lecture_13_B12_05_Active_Subspace_2D.ipynb`](code/lecture_13_B12_05_Active_Subspace_2D.ipynb)
-- [`code/lecture_13_B12_06_Active_Subspace_10D.ipynb`](code/lecture_13_B12_06_Active_Subspace_10D.ipynb)
-- [`code/lecture_13_B12_07_Active_Subspace_Nonlinear.ipynb`](code/lecture_13_B12_07_Active_Subspace_Nonlinear.ipynb)
-- [`code/lecture_13_B12_08_Deep_Kernel_Learning.ipynb`](code/lecture_13_B12_08_Deep_Kernel_Learning.ipynb)
-- [`code/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb`](code/lecture_13_B12_09_Deep_Active_Subspace_Ridge.ipynb)
-- [`code/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb`](code/lecture_13_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb)
+- [`code/lecture_14_B12_01_Surrogate_Primer.ipynb`](code/lecture_14_B12_01_Surrogate_Primer.ipynb)
+- [`code/lecture_14_B12_02_GP_and_BAL.ipynb`](code/lecture_14_B12_02_GP_and_BAL.ipynb)
+- [`code/lecture_14_B12_04_GP_Value_Function_Iteration.ipynb`](code/lecture_14_B12_04_GP_Value_Function_Iteration.ipynb)
+- [`code/lecture_14_B12_05_Active_Subspace_2D.ipynb`](code/lecture_14_B12_05_Active_Subspace_2D.ipynb)
+- [`code/lecture_14_B12_06_Active_Subspace_10D.ipynb`](code/lecture_14_B12_06_Active_Subspace_10D.ipynb)
+- [`code/lecture_14_B12_07_Active_Subspace_Nonlinear.ipynb`](code/lecture_14_B12_07_Active_Subspace_Nonlinear.ipynb)
+- [`code/lecture_14_B12_08_Deep_Kernel_Learning.ipynb`](code/lecture_14_B12_08_Deep_Kernel_Learning.ipynb)
+- [`code/lecture_14_B12_09_Deep_Active_Subspace_Ridge.ipynb`](code/lecture_14_B12_09_Deep_Active_Subspace_Ridge.ipynb)
+- [`code/lecture_14_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb`](code/lecture_14_B12_10_Deep_AS_vs_Linear_AS_Borehole.ipynb)
 
 ## In the lecture script
 

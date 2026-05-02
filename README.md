@@ -6,25 +6,56 @@
 
 <br/>
 
-**Hi, and welcome.** If you work on the kind of dynamic stochastic
-models that show up in macro, asset pricing, or climate economics, and
-you want to actually *use* modern deep learning on them rather than
-read another survey about it, this course is for you. It is free,
-self-paced, and built to be worked through with your own laptop open.
+## About this course
 
-Everything you need is right here in this repository:
+Modern macroeconomics, finance, and climate economics have outgrown the
+grid-based numerical methods that dominated a generation ago. Once you
+add heterogeneous agents, overlapping generations, occasionally binding
+constraints, continuous-time dynamics, or coupled climate-economic
+interactions, the state space becomes too large for tensor-product
+grids and classical methods (projection, value-function iteration,
+perturbation) hit a wall. If you are trying to solve models with ten or
+more state dimensions, estimate them, or design policy under deep
+uncertainty, you need a different toolbox.
 
-- a textbook-length [companion script](lecture_script/lecture_script.pdf) you can read end-to-end,
-- **18 paired lectures** with slides, runnable Jupyter notebooks, and exercises,
-- a workshop on using AI coding agents as research partners (Lecture 06),
-- and a curated bibliography linking out to the underlying papers.
+This course teaches a coherent set of deep-learning methods built *for*
+the recursive, stochastic, often high-dimensional models that
+economists actually solve. The methods work by letting economic
+structure drive the learning problem: equilibrium conditions, Bellman
+equations, and PDEs become the residual loss, e.g., in Deep
+Equilibrium Nets or Physics-Informed Neural Networks (an unsupervised
+setup), or they shape the simulator that generates the (input, output)
+pairs a deep surrogate or Gaussian process then learns in the standard
+supervised way. You will build
+each method from scratch on benchmarks where the answer is known
+(Brock-Mirman, cake-eating, Black-Scholes) before applying them to
+models where it is not (IRBC, OLG with 56 cohorts, Krusell-Smith with
+a continuum, continuous-time heterogeneous agents, climate-economic
+coupling). By the end you will be able to solve models that were out
+of reach with classical tools, estimate them when re-solving is too
+expensive, and design policies that take deep uncertainty seriously.
 
-Pick the lecture you actually need, run the notebooks, work the
-exercises. There is no enrollment, no cohort, no deadline. Just dig in.
+Everything is self-contained and free: a textbook-length
+[companion script](lecture_script/lecture_script.pdf), **18 paired
+lectures** with slides and runnable Jupyter notebooks, exercises with
+solutions, a hands-on workshop on AI coding agents as research
+partners (Lecture 06), and a curated bibliography linking out to the
+underlying papers. There is no enrollment, no cohort, no deadline,
+just pick the method you need and dig in.
 
-> 🚀 **Start here →** [Lecture 02, intro to deep learning](lectures/lecture_02_B01_intro_deep_learning/README.md)
-> &nbsp;·&nbsp; new to Python? begin with the [Python primer](lectures/lecture_01_B00_python_primer/README.md)
-> &nbsp;·&nbsp; want the panoramic view? open [`COURSE_MAP.md`](COURSE_MAP.md)
+This is a curated, working snapshot of a fast-moving field. The
+selection of methods, papers, and implementation choices reflects what
+I currently find to be some of the most useful entry points for
+economists and finance researchers starting to work with deep learning
+in dynamic models, not a definitive
+survey, and the bibliography is necessarily incomplete. Treat the
+material as a practical entry point to study, run, adapt, and question.
+
+> ### 🚀 Start here
+>
+> - **Jump in:** [Lecture 02 — Intro to deep learning](lectures/lecture_02_B01_intro_deep_learning/README.md)
+> - **New to Python?** Begin with the [Python primer (Lecture 01)](lectures/lecture_01_B00_python_primer/README.md)
+> - **Want the panoramic view?** Open the [course map](COURSE_MAP.md)
 
 ## What you will learn
 
@@ -133,13 +164,15 @@ For each lecture, the workflow is the same:
 
 1. read the relevant chapter or section of the script;
 2. step through the lecture's slide deck (under `slides/`);
-3. run the **core** notebooks (under `notebooks/core/`);
-4. attempt the **exercise** notebooks, then check the **solutions**;
-5. optionally explore the **extensions** for advanced material.
+3. run the lecture's notebooks under `code/` (numbered in suggested
+   order; files ending in `_Exercises_Blanks.ipynb` /
+   `_Exercises_Solutions.ipynb` are paired exercise/solution sets).
 
-Every long-running notebook exposes a `RUN_MODE = "smoke" | "full"` switch
-at the top so you can run it on a CPU laptop in minutes (smoke mode, for a sanity
-check) or take it all the way for the published-figure quality result.
+Every long-running notebook exposes a `RUN_MODE` switch near the top with
+three values: `"smoke"` (CPU-bounded, runs in minutes for a sanity check
+or CI), `"teaching"` (laptop figures, intermediate fidelity), and
+`"production"` (full reproduction, published-figure quality). Each
+notebook also fixes a `SEED` for reproducibility.
 
 ## Topic index, find what you want
 
@@ -213,15 +246,10 @@ live under
 the full bibliography is in
 [`readings/bibliography.bib`](readings/bibliography.bib).
 
-## License and citation
-
-- **Code:** [MIT](LICENSE)
-- **Text, slides, script, figures:** [CC0 1.0 Universal](LICENSE-content.md)
-- **Third-party material:** see [`NOTICE.md`](NOTICE.md) and
-  [`assets/attributions.yml`](assets/attributions.yml)
-- **Citation:** [`CITATION.cff`](CITATION.cff)
-
 Course author: **Simon Scheidegger** (University of Lausanne).
+Code is MIT-licensed; text, slides, script, and figures are CC0
+(see [`LICENSE`](LICENSE) for both).
+To cite: [`CITATION.cff`](CITATION.cff).
 
 ## Errata, contributions, and contact
 

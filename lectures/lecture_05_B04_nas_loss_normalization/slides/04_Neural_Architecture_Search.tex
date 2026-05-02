@@ -1,7 +1,5 @@
 % ============================================================================
 % Neural Architecture Search for Function Approximation
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 45 minutes
 % ============================================================================
 
@@ -76,12 +74,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Random search and Hyperband for DEQN architectures}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -144,6 +142,19 @@
 \texttt{03\_NAS\_RandomSearch\_Hyperband.ipynb} (Random Search + SHA)}
 \end{center}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Diagnose architecture sensitivity and quantify how network depth and width affect approximation error
+  \item Compare grid search, random search, Bayesian optimization, and Hyperband on their computational cost and sample efficiency
+  \item Implement random search and successive halving from scratch in plain Python
+  \item Apply NAS to function approximation problems and choose appropriate search spaces for economic models
+  \item Select production tools (KerasTuner, Optuna, Ray Tune) and apply best practices to scale architecture search efficiently
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART 1: MOTIVATION

@@ -5,6 +5,7 @@ Stochastic IAMs depend on parameters whose true values are deeply uncertain. Plu
 `gpu-recommended` · `long` · builds on [Lecture 16 (B14)](../lecture_16_B14_climate_economics_iams/README.md)
 
 > 📑 **Slides:** [09_Deep_UQ_and_Optimal_Policies.pdf](slides/09_Deep_UQ_and_Optimal_Policies.pdf)  
+> 📓 **Notebooks:** [`code/lecture_17_B15_09_DICE_2P_UQ_Analysis.ipynb`](code/lecture_17_B15_09_DICE_2P_UQ_Analysis.ipynb)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_17_B15.md)  
 > 📖 **Script:** §11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy)
 
@@ -32,7 +33,8 @@ After this lecture you can:
 
 ## Code
 
-_(none)_
+- [`code/lecture_17_B15_09_DICE_2P_UQ_Analysis.ipynb`](code/lecture_17_B15_09_DICE_2P_UQ_Analysis.ipynb) -- Sobol indices and univariate effects on $(\rho, \pi_2)$ from 25 reference DICE solutions cached under [`code/_pt_solutions/2p/`](code/_pt_solutions/2p/). Runs end-to-end on CPU in about a minute.
+- Supporting pipeline: [`dice_2p_surrogate_lib.py`](code/dice_2p_surrogate_lib.py), [`train_dice_2p_pointsolutions.py`](code/train_dice_2p_pointsolutions.py), [`train_dice_2p_surrogate.py`](code/train_dice_2p_surrogate.py), [`compute_dice_2p_gp_anchors.py`](code/compute_dice_2p_gp_anchors.py), [`run_dice_2p_pipeline.sh`](code/run_dice_2p_pipeline.sh).
 
 ## In the lecture script
 

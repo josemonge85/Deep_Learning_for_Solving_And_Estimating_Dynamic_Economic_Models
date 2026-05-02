@@ -5,7 +5,7 @@ Overlapping-generations (OLG) models with DEQNs, at two scales.
 `gpu-recommended` · `long` · builds on [Lecture 07 (B05)](../lecture_07_B05_autodiff_for_deqns/README.md)
 
 > 📑 **Slides:** [07_OLG_Models_DEQNs.pdf](slides/07_OLG_Models_DEQNs.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb) (3 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb) (3 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_09_B07.md)  
 > 📖 **Script:** §5.1-5.5 (OLG with DEQNs), §5.6 (Large OLG benchmark)
 
@@ -33,9 +33,9 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb`](code/lecture_08_B07_07_OLG_Analytic_DEQN.ipynb)
-- [`code/lecture_08_B07_08_OLG_Benchmark_DEQN.ipynb`](code/lecture_08_B07_08_OLG_Benchmark_DEQN.ipynb)
-- [`code/lecture_08_B07_09_OLG_Exercise.ipynb`](code/lecture_08_B07_09_OLG_Exercise.ipynb)
+- [`code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb`](code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb)
+- [`code/lecture_09_B07_08_OLG_Benchmark_DEQN.ipynb`](code/lecture_09_B07_08_OLG_Benchmark_DEQN.ipynb)
+- [`code/lecture_09_B07_09_OLG_Exercise.ipynb`](code/lecture_09_B07_09_OLG_Exercise.ipynb)
 
 ## In the lecture script
 

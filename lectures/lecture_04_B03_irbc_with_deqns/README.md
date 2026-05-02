@@ -5,7 +5,7 @@ The first large-scale nonlinear DSGE application of DEQNs.
 `gpu-recommended` · `long` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
 > 📑 **Slides:** [03_IRBC.pdf](slides/03_IRBC.pdf)  
-> 📓 **Notebook:** [start here](code/lecture_04_B03_01_IRBC_DEQN.ipynb)  
+> 📓 **Notebooks:** [start here](code/lecture_04_B03_01_IRBC_DEQN.ipynb)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_04_B03.md)  
 > 📖 **Script:** §Chapter 3 (International real business cycle)
 
@@ -38,24 +38,6 @@ After this lecture you can:
 
 - [`figures/irbc_4approach_loss.pdf`](figures/irbc_4approach_loss.pdf)
 - [`figures/irbc_4approach_loss.png`](figures/irbc_4approach_loss.png)
-- [`figures/loss_norm_T_sensitivity.pdf`](figures/loss_norm_T_sensitivity.pdf)
-- [`figures/loss_norm_T_sensitivity.png`](figures/loss_norm_T_sensitivity.png)
-- [`figures/loss_norm_equal_errmap.pdf`](figures/loss_norm_equal_errmap.pdf)
-- [`figures/loss_norm_equal_errmap.png`](figures/loss_norm_equal_errmap.png)
-- [`figures/loss_norm_equal_weights.pdf`](figures/loss_norm_equal_weights.pdf)
-- [`figures/loss_norm_equal_weights.png`](figures/loss_norm_equal_weights.png)
-- [`figures/loss_norm_method_comparison.pdf`](figures/loss_norm_method_comparison.pdf)
-- [`figures/loss_norm_method_comparison.png`](figures/loss_norm_method_comparison.png)
-- [`figures/loss_norm_relobralo_errmap.pdf`](figures/loss_norm_relobralo_errmap.pdf)
-- [`figures/loss_norm_relobralo_errmap.png`](figures/loss_norm_relobralo_errmap.png)
-- [`figures/loss_norm_relobralo_weights.pdf`](figures/loss_norm_relobralo_weights.pdf)
-- [`figures/loss_norm_relobralo_weights.png`](figures/loss_norm_relobralo_weights.png)
-- [`figures/nas_best_surface.pdf`](figures/nas_best_surface.pdf)
-- [`figures/nas_best_surface.png`](figures/nas_best_surface.png)
-- [`figures/nas_random_search.pdf`](figures/nas_random_search.pdf)
-- [`figures/nas_random_search.png`](figures/nas_random_search.png)
-- [`figures/nas_search_results.pdf`](figures/nas_search_results.pdf)
-- [`figures/nas_search_results.png`](figures/nas_search_results.png)
 
 ## In the lecture script
 

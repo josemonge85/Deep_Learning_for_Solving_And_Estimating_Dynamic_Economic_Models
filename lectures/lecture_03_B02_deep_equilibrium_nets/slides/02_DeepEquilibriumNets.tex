@@ -1,7 +1,5 @@
 % ============================================================================
 % Deep Equilibrium Nets (DEQNs)
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 75 minutes
 % ============================================================================
 
@@ -77,12 +75,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{From representative-agent Brock--Mirman through stochastic models, KKT constraints, and loss kernels}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -103,36 +101,7 @@ DOI: \url{https://doi.org/10.1111/iere.12575}}\\[4pt]
 \end{frame}
 }
 
-% --- Slide 2: Outline ---
-\begin{frame}{Outline}
-\begin{enumerate}
-    \item \textbf{Motivation}\\
-    {\small Why heterogeneous-agent models? The curse of dimensionality.}
-
-    \vspace{0.4em}
-    \item \textbf{From ANNs to Deep Equilibrium Nets}\\
-    {\small DNNs as function approximators, supervised vs.\ unsupervised loss, the DEQN training algorithm.}
-
-    \vspace{0.4em}
-    \item \textbf{Brock--Mirman Benchmark}\\
-    {\small Analytical test case, DEQN implementation.}
-
-    \vspace{0.4em}
-    \item \textbf{Parallelization \& HPC}\\
-    {\small Data parallelism, MPI/Horovod, scalability to many nodes.}
-
-    \vspace{0.4em}
-    \item \textbf{Hands-on exercises}\\
-    {\small Notebooks 03/04 extend Brock--Mirman to uncertain, constrained, and multi-agent settings (endogenous labor, KKT multipliers with Fischer--Burmeister, 6-period OLG).}
-\end{enumerate}
-
-\vspace{0.3em}
-\hrule
-\vspace{0.2em}
-{\footnotesize Wrap-up: \textbf{hands-on notebooks} are in this repository.  Notebook 01 reproduces the slide derivation; 02 adds AR(1) productivity shocks; 03/04 are the blank/solved versions of the exercises.}
-\end{frame}
-
-% --- Slide 3: Roadmap ---
+% --- Slide 2: Roadmap ---
 \begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
@@ -174,6 +143,19 @@ DOI: \url{https://doi.org/10.1111/iere.12575}}\\[4pt]
 \end{itemize}
 \end{columns}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Formulate dynamic stochastic economic models as equilibrium systems and identify computational challenges in high dimensions
+  \item Replace grid-based collocation with unsupervised neural-network training using equilibrium errors as the loss function
+  \item Build and train Deep Equilibrium Nets (DEQNs) to solve representative-agent and heterogeneous-agent models
+  \item Implement simulated paths from the model's ergodic distribution to construct training data without explicit grids
+  \item Parallelize DEQN training across multiple nodes and scale solutions to 100+ dimensions
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART I: MOTIVATION
@@ -257,7 +239,7 @@ with transition law $\x_{t+1} = h\bigl(\x_t,\,p(\x_t),\,\varepsilon_{t+1}\bigr)$
 \end{enumerate}
 
 \vspace{0.2em}
-{\footnotesize No classical method addresses all four jointly: sparse grids cover (1-3) but fail past $d \sim 20$; Gaussian processes cover (1,2,4) but choke on large data.}
+{\footnotesize No classical method addresses all four jointly: sparse grids cover (1--3) but become impractical past $d \sim 20$ under conventional smoothness assumptions; Gaussian processes cover (1,2,4) but their $O(N^3)$ training cost limits them to small $N$.}
 \end{frame}
 
 % --- Slide 7: What is High-Dimensional? ---
@@ -1069,7 +1051,7 @@ The budget then implies $K_{t+1} = \phi\, z_t K_t^{\alpha}$.
 \end{frame}
 
 % --- Slide 28: Brock-Mirman residual ---
-\begin{frame}{Brock--Mirman: Residual, Expectation, Loss}
+\begin{frame}[shrink=10]{Brock--Mirman: Residual, Expectation, Loss}
 \textbf{Pathwise residual used in the notebook} (full-depreciation $\delta=1$ benchmark):
 \[
 G_t = 1 - \beta \, \frac{C_t}{C_{t+1}} \cdot \alpha z_{t+1} K_{t+1}^{\alpha-1},

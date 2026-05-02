@@ -19,6 +19,14 @@
 % ---------- Mathematics ----------
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
 \usepackage{graphicx}
+\graphicspath{%
+  {./}%
+  {../assets/hero/}%
+  {../lectures/lecture_03_B02_deep_equilibrium_nets/slides/figures/}%
+  {../lectures/lecture_14_B12_surrogates_and_gps/slides/}%
+  {../lectures/lecture_14_B12_surrogates_and_gps/slides/fig/}%
+  {../lectures/lecture_15_B13_structural_estimation_smm/slides/fig/}%
+}
 \usepackage{bm}
 
 % ---------- Graphics and TikZ ----------
@@ -194,7 +202,7 @@
       \raisebox{-\paperheight}{%
         \makebox[\paperwidth][c]{%
           \includegraphics[width=\paperwidth,height=\paperheight]%
-                          {../fig/cover_D.png}%
+                          {deep_learning_dynamic_models_hero.png}%
         }%
       }%
     }%
@@ -215,13 +223,11 @@
 {\large Simon Scheidegger\\[0.5em]
 \normalsize HEC, University of Lausanne\par}
 \vfill
-{\small Course materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}\\[4pt]
-Cloud platform: \url{https://nuvolos.cloud}\par}
+{\small Course materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}\par}
 \vspace{0.6cm}
 {\footnotesize Last updated: April~2026\\[3pt]
-\copyright{} 2026 Simon Scheidegger.  Released under the
-Creative Commons Attribution 4.0 International License (CC BY 4.0):
-\url{https://creativecommons.org/licenses/by/4.0/}\par}
+\copyright{} 2026 Simon Scheidegger.  Code under MIT, text/figures under CC0 1.0 Universal:\\
+\url{https://creativecommons.org/publicdomain/zero/1.0/}\par}
 \end{titlepage}
 
 % ============================================================================
@@ -255,20 +261,20 @@ Creative Commons Attribution 4.0 International License (CC BY 4.0):
 
 Quantitative economics and finance increasingly rely on models that are richer, more realistic, and more computationally demanding than anything attempted a generation ago.  In macroeconomics, heterogeneous-agent economies, overlapping-generations models with aggregate risk, continuous-time models with occasionally binding constraints, and integrated assessment models coupling climate and economic dynamics all share the challenge of high-dimensional state spaces where traditional grid-based numerical methods are computationally infeasible.  Macro-finance and asset pricing raise the same challenge from a different direction: production economies with many risky assets and leverage or collateral constraints, sovereign-default and international macro-finance models with occasionally binding frictions, dynamic portfolio choice with transaction costs and multiple illiquid assets, and the large cross-section of test assets that modern empirical asset pricing must confront all push state and parameter spaces well past the reach of tensor-product grids.  Deep learning provides a promising new set of tools for addressing these challenges.
 
-This script grew out of courses taught at multiple universities and central bank seminars over the past several years.  It offers an implementation-oriented introduction to deep learning methods for solving and estimating dynamic stochastic economic models, drawing heavily on the author's own research but also on the rapidly growing body of work by many colleagues in this field.  Although the companion course is delivered over eight classroom sessions, the manuscript is written to be self-contained and suitable for independent study.  Throughout the text, the exposition follows chapters and sections rather than the calendar of the live course.  The list of references is necessarily incomplete; the literature is expanding faster than any single manuscript can track.  For comprehensive surveys of deep learning for dynamic economic models, the reader is referred to \citet{fernandezvillaverde2024taming}; for machine learning in empirical asset pricing and finance, to \citet{gukellyxiu2020}, \citet{nagel2021mlap}, and \citet{kellyxiu2023fml}; and to the references therein.  The present script aims to complement such surveys by providing concrete algorithms, working code, and step-by-step examples that readers can adapt to their own research problems.
+This script grew out of courses taught at multiple universities and central bank seminars over the past several years.  It offers an implementation-oriented introduction to deep learning methods for solving and estimating dynamic stochastic economic models, drawing heavily on the author's own research but also on the rapidly growing body of work by many colleagues in this field.  Although the companion course is delivered over eight classroom sessions, the manuscript is written to be self-contained and suitable for independent study.  Throughout the text, the exposition follows chapters and sections rather than the calendar of the live course.  The list of references is necessarily incomplete; the literature is expanding faster than any single manuscript can track, and the selection of topics reflects one researcher's judgment about which methods give economists and finance researchers some of the most useful entry points today.  For comprehensive surveys of deep learning for dynamic economic models, the reader is referred to \citet{fernandezvillaverde2024taming}; for machine learning in empirical asset pricing and finance, to \citet{gukellyxiu2020}, \citet{nagel2021mlap}, and \citet{kellyxiu2023fml}; and to the references therein.  The present script aims to complement such surveys by providing concrete algorithms, working code, and step-by-step examples that readers can adapt to their own research problems.
 
 \paragraph{What these notes cover.}
 The exposition is organized around four complementary methodologies:
 \begin{enumerate}[itemsep=2pt]
 \item \textbf{Deep Equilibrium Nets} (DEQNs), which embed the equilibrium conditions of a dynamic stochastic model directly into the loss function of a neural network, replacing the traditional numerical solution step with gradient-based optimization \citep{azinovicDEEPEQUILIBRIUMNETS2022}.  We apply this framework to representative-agent models, international business cycles, overlapping generations, and heterogeneous-agent economies, including the histogram-based treatment of distributions building on \citet{young2010} and the later sequence-space extension of \citet{azinovicyangzemlicka2025sequencespace}.
-\item \textbf{Physics-Informed Neural Networks} (PINNs), which approximate Hamilton--Jacobi--Bellman equations and Kolmogorov forward equations in continuous time without computing conditional expectations \citep{sirignano2018dgm, raissi2019physics}.  We develop this machinery for consumption-savings problems and option pricing, and compare it with finite-difference HJB--KFE methods for continuous-time heterogeneous-agent models in the tradition of \citet{achdou2022income}.
-\item \textbf{Deep surrogate models and Gaussian processes}, which construct fast, differentiable approximations of expensive structural models, enabling rapid estimation, uncertainty quantification, and global sensitivity analysis \citep{rennerscheidegger_2018, SCHEIDEGGER201968, chen2025Deep}.
-\item \textbf{GP-based dynamic programming}, which embeds Gaussian process regression into a value function iteration algorithm \citep{engel2005reinforcement, deisenroth2009gaussian} and, when combined with active subspaces, scales to economies with up to 500 continuous state variables \citep{SCHEIDEGGER201968}.
+\item \textbf{Physics-Informed Neural Networks} (PINNs), which approximate Hamilton--Jacobi--Bellman equations and Kolmogorov forward equations in continuous time without computing conditional expectations \citep{sirignano2018dgm, raissi2019physics}.  We develop this machinery for consumption-savings problems and option pricing, and compare it with finite-difference HJB--KFE methods for continuous-time heterogeneous-agent models in the tradition of \citet{achdou2022income} and with the Economic Model Informed Neural Networks (EMINNs) of \citet{gu2024masterequations}.
+\item \textbf{Deep surrogate models and Gaussian processes}, which construct fast, differentiable approximations of expensive structural models, enabling rapid estimation, uncertainty quantification, and global sensitivity analysis \citep{SCHEIDEGGER201968, chen2025Deep}.  Once trained, the same surrogates can also be used to \emph{design constrained optimal policies}, including in dynamic stochastic heterogeneous-agent models: a long search over policy parameters that would require thousands of full re-solves of the structural model collapses into a small optimization on the surrogate.  The climate-economics chapter uses this construction to derive Pareto-improving carbon-tax rules in an OLG--IAM with deep uncertainty \citep{kubler2025using}.
+\item \textbf{GP-based dynamic programming}, which embeds Gaussian process regression into a value function iteration algorithm \citep{engel2005reinforcement, deisenroth2009gaussian, rennerscheidegger_2018} and, when combined with active subspaces \citep{constantine2015active}, scales to economies with up to 500 continuous state variables \citep{SCHEIDEGGER201968}.
 \end{enumerate}
-The unifying theme throughout is that \emph{economic structure} (equilibrium conditions, PDEs, Bellman equations) is embedded directly in the neural network or GP loss function, rather than in labeled training data.  This makes the methods fundamentally different from standard supervised learning.
+The unifying theme throughout is that \emph{economic structure} (equilibrium conditions, PDEs, Bellman equations) shapes how each method learns: in DEQNs, PINNs, and EMINNs the structure is embedded directly into a neural-network loss as residual terms, making the training objective itself unsupervised; in the surrogate and GP-based estimation chapters the structure instead appears upstream, in the model that generates the (input, output) training pairs the surrogate then learns in a standard supervised regression. Either way, the model's economic content drives the learning problem rather than being separated from it.
 
 \paragraph{How these notes are organized.}
-The first six chapters build the discrete-time toolkit layer by layer: from the foundations of machine learning and deep learning (Chapter~1), through DEQNs for representative-agent models (Chapter~2), to the international real business cycle model (Chapter~3), neural architecture search and loss normalization (Chapter~4), overlapping generations (Chapter~5), and heterogeneous agents via Young's histogram method \citep{young2010} together with a sequence-space DEQN extension \citep{azinovicyangzemlicka2025sequencespace} (Chapter~6).  Chapters~7--8 introduce continuous-time methods: PINNs for economic PDEs and the coupled HJB--Kolmogorov Forward system for heterogeneous-agent models in the tradition of \citet{achdou2022income}.  Chapters~9--10 cover surrogate-based estimation and Gaussian processes, including active subspaces, Bayesian active learning, deep kernel learning, and GP-based value function iteration.  Chapter~11 applies the DEQN and surrogate toolbox to climate economics and deep uncertainty quantification.  Chapter~12 synthesizes the key ideas and discusses open challenges.
+At a high level, Chapters~1--6 build the discrete-time toolkit (foundations, DEQNs, IRBC, architecture search and loss normalization, OLG, heterogeneous agents). Chapters~7--8 turn to continuous-time methods (PINNs, HJB--KFE for heterogeneous agents). Chapters~9--10 cover surrogate-based estimation and Gaussian processes. Chapter~11 applies the toolbox to climate economics under deep uncertainty, and Chapter~12 closes by comparing methods and highlighting open problems. The next chapter, \emph{How to Read This Script}, expands this overview into a full reading guide: cover-to-cover and selective paths, notation and cross-references, the role of the companion notebooks, and the visual conventions used throughout.
 
 \paragraph{Audience and prerequisites.}
 These notes are aimed at PhD students in economics, finance, and computational social science, as well as researchers at central banks and policy institutions who wish to apply these methods to their own models.  We assume familiarity with basic econometrics, Python programming, and undergraduate-level calculus and probability.  For readers who need a refresher on these foundations, we recommend \citet{goodfellow2016deep} for deep learning, \citet{judd1998numerical} for numerical methods in economics, the open-source QuantEcon lectures (\url{https://quantecon.org}) for Python programming and quantitative economics, and the Econ-ARK toolkit (\url{https://econ-ark.org}) for heterogeneous-agent modeling.
@@ -517,7 +523,7 @@ In \emph{continuous-time settings}, neural networks approximate Hamilton--Jacobi
 %
 \emph{Climate economics} poses particularly severe computational challenges: integrated assessment models couple economic dynamics with climate systems across many state variables.  DEQNs have proven effective at solving such models \citep{kubler2025using}, while careful calibration of the underlying climate emulators is itself a substantive prerequisite \citep{Folini_2021}; for a review of how deep learning methods can be applied to integrated assessment models, see \citet{fernandezvillaverde2025climate}.
 %
-In \emph{finance}, deep surrogate models dramatically accelerate option pricing and risk management \citep{hutchinson1994nonparametric}; in macro-finance and sovereign default settings, they are equally attractive because the equilibrium mapping is highly nonlinear and expensive to solve \citep{arellano2008default}; and GP-based methods with active subspaces enable the solution of dynamic portfolio choice problems with transaction costs \citep{gaegauf2023portfolio} and private asset allocation \citep{chen2025private}.
+In \emph{finance}, deep surrogate models dramatically accelerate option pricing and risk management \citep{hutchinson1994nonparametric, scheideggertreccani_2018, chen2025Deep}; in macro-finance and sovereign default settings, they are equally attractive because the equilibrium mapping is highly nonlinear and expensive to solve \citep{arellano2008default}; and GP-based methods with active subspaces enable the solution of dynamic portfolio choice problems with transaction costs \citep{gaegauf2023portfolio} and private asset allocation \citep{chen2025private}.
 %
 In \emph{structural estimation}, neural networks make it feasible to estimate rich heterogeneous-agent models that were previously computationally prohibitive \citep{kase2022estimating}, while deep surrogates combined with Gaussian processes enable global uncertainty quantification for complex integrated assessment models \citep{friedlDeep2023}.
 %
@@ -1792,7 +1798,7 @@ The following Jupyter notebooks implement and extend the material in this chapte
 \begin{keyinsightbox}[Chapter Summary]
 \label{sec:ch1_summary}
 \begin{itemize}[itemsep=2pt, leftmargin=*]
-\item Deep networks compose simple nonlinear coordinate transformations; depth, not width, is what gives them efficient representational power for compositional functions \citep{cybenko1989approximation, hornik1989multilayer}.
+\item Deep networks compose simple nonlinear coordinate transformations: sufficiently wide shallow networks already attain universal approximation \citep{cybenko1989approximation, hornik1989multilayer}, but depth gives provably more efficient representations for compositional functions \citep{telgarsky2016benefits, barron1993universal}.
 \item Training rests on three pillars: He/Xavier initialization, smooth non-saturating activations, and adaptive optimizers (SGD with momentum $\to$ RMSprop $\to$ Adam $\to$ AdamW); backpropagation makes the gradient cost essentially the same as the forward pass \citep{rumelhart1986learning, baydin2018automatic}.
 \item Generalization in modern over-parameterized regimes is described by the double-descent curve and explained theoretically via the Neural Tangent Kernel and benign-overfitting results, not by classical bias--variance \citep{jacot2018neural, belkin2019reconciling, nakkiran2020deep, bartlett2020benign}.
 \item Sequence architectures (RNN $\to$ LSTM $\to$ Transformer) are mentioned for completeness; the rest of the script uses feed-forward MLPs because DEQNs and PINNs operate on unstructured state vectors.
@@ -1994,7 +2000,7 @@ Several features of this algorithm deserve emphasis:
 \item \textbf{JIT-compile every gradient step.}  In any production or classroom-scale implementation, the per-batch gradient step (lines~5--6 inside the inner loop) should be wrapped in \texttt{@tf.function} (TensorFlow), \texttt{torch.compile} (PyTorch), or \texttt{@jax.jit} (JAX).  The speed-up over an un-traced Python loop is typically $5$--$50\times$ for the per-step kernel, and the trace cost is amortized after the first call.  All companion notebooks in this course follow this convention; un-traced Python loops are simply too slow for classroom use, let alone for research-scale runs.
 \end{itemize}
 
-\paragraph{Episode length $T_{\mathrm{sim}}$.}  The simulated-trajectory length~$T_{\mathrm{sim}}$ controls the effective size of the training set within an episode.  \citet{azinovicDEEPEQUILIBRIUMNETS2022} use $T_{\mathrm{sim}} = 10{,}000$ time steps (split into many short mini-batches) in their 110-dimensional OLG benchmark.  Shorter episodes (e.g., $T_{\mathrm{sim}} = 1000$) speed up early training because the distribution is re-drawn more frequently, at the cost of higher variance; longer episodes produce smoother gradient estimates but run the risk of stale data if the policy has drifted during training.  A pragmatic rule is to start short, lengthen $T_{\mathrm{sim}}$ as the loss plateaus, and check out-of-sample accuracy on an \emph{independent} simulated trajectory.
+\paragraph{Episode length $T_{\mathrm{sim}}$.}  The simulated-trajectory length~$T_{\mathrm{sim}}$ controls the effective size of the training set within an episode.  \citet{azinovicDEEPEQUILIBRIUMNETS2022} use $T_{\mathrm{sim}} = 10{,}000$ time steps (split into many short mini-batches) in their 113-dimensional 56-agent OLG benchmark.  Shorter episodes (e.g., $T_{\mathrm{sim}} = 1000$) speed up early training because the distribution is re-drawn more frequently, at the cost of higher variance; longer episodes produce smoother gradient estimates but run the risk of stale data if the policy has drifted during training.  A pragmatic rule is to start short, lengthen $T_{\mathrm{sim}}$ as the loss plateaus, and check out-of-sample accuracy on an \emph{independent} simulated trajectory.
 
 \paragraph{Connection to continuous-time methods.}  The DEQN residual loss is the discrete-time analogue of the Deep Galerkin Method (DGM) of \citet{sirignano2018dgm}, which minimizes a PDE residual on neural-network-parameterized PDE solutions in continuous time, and of the deep BSDE solver of \citet{han2018solving} (Han--Jentzen--E), which formulates the same problem as a backward stochastic differential equation.  Within the discrete-time deep-learning toolkit, \citet{maliar2021deep} unify lifetime-reward, Bellman-equation, and Euler-equation training into a single framework, paired with an ``all-in-one'' integration operator that estimates all conditional expectations from a single Monte Carlo realization; DEQN as developed here is the Euler-equation branch of that taxonomy.  Chapters~\ref{ch:pinn} and~\ref{ch:ct_theory} develop the continuous-time analogues explicitly; the present chapter should be read as introducing the discrete-time machinery on which those continuous-time methods are built.
 
@@ -2143,7 +2149,7 @@ e^{\mathrm{REE}}_{\x_j}(\rho)
 \;-\; 1,
 \label{eq:ree_bm}
 \end{equation}
-where $C_\rho = \mathcal{N}_\rho$, $K'_j$ is next-period capital under the network policy, the expectation conditions on $\x_j$, and the $^{-1}$ inverts the marginal-utility relation $u'(c) = 1/c$.  The value $e^{\mathrm{REE}} = 10^{-4}$ means the agent's optimal consumption is mispriced by $0.01\%$, independent of units or utility scale.  This is the metric reported in Table~3 of \citet{azinovicDEEPEQUILIBRIUMNETS2022}, where the trained DEQN achieves mean errors of $0.02\%$ on the 110-dimensional OLG benchmark.
+where $C_\rho = \mathcal{N}_\rho$, $K'_j$ is next-period capital under the network policy, the expectation conditions on $\x_j$, and the $^{-1}$ inverts the marginal-utility relation $u'(c) = 1/c$.  The value $e^{\mathrm{REE}} = 10^{-4}$ means the agent's optimal consumption is mispriced by $0.01\%$, independent of units or utility scale.  This is the metric reported in Table~3 of \citet{azinovicDEEPEQUILIBRIUMNETS2022}, where the trained DEQN achieves mean relative Euler errors of order $10^{-4}$ on the 113-dimensional 56-agent OLG benchmark.
 
 \begin{remarkbox}[Why does this work so well?]
 The success of the DEQN approach rests on three pillars.  First, neural networks are universal function approximators that can represent the smooth policy functions arising in most economic models.  Second, the training distribution is endogenous: the network learns on the model's own ergodic distribution, concentrating computational effort precisely where it matters.  Third, stochastic gradient descent operates directly on the economic equilibrium conditions, so the loss function has a clear economic interpretation: a pointwise relative Euler error of $10^{-4}$ means the consumption level implied by the Euler equation differs from the network's consumption by about $0.01\%$.
@@ -2169,7 +2175,7 @@ def deqn_loss(model, K, z, beta, alpha, z_next):
 \subsection{Why We End Up Integrating, and What Numerical Integration Is}
 \label{sec:integration_primer}
 
-\paragraph{Why an integral always shows up.}  Sooner or later, every dynamic stochastic model in this script presents the same algorithmic bottleneck: a forward-looking agent has to form an expectation over future shocks before any decision can be made.  The Euler equation~\eqref{eq:bm_euler} hinges on $\mathbb{E}_t[\,\alpha z_{t+1} K_{t+1}^{\alpha-1}/C_{t+1}\,]$; the Bellman operator behind a value-function iteration evaluates $\mathbb{E}[V(\bm{s}')\mid\bm{s},a]$ at every state and action; the relative Euler error~\eqref{eq:ree_bm} embeds the same expectation in the diagnostic; the integrated-assessment models of Chapter~\ref{ch:climate} require expected discounted utility under climate-shock distributions; and the structural-estimation moments of Chapter~\ref{ch:gp} are themselves expectations over simulated paths.  Outside a handful of conjugate or fully-linear-quadratic-Gaussian special cases, none of these expectations admit closed-form expressions, so the integral $\mathbb{E}[g(\bm\varepsilon)] = \int g(\bm\varepsilon)\mu(\bm\varepsilon)\,d\bm\varepsilon$ has to be approximated numerically by a finite, cheap-to-evaluate, ideally differentiable, weighted sum $\sum_q w_q\, g(\bm\varepsilon_q)$.  Choosing the nodes $\bm\varepsilon_q$ and weights $w_q$ well is the entire content of \emph{quadrature theory}.  The path-averaging recipe used in the Brock--Mirman code above is one such choice (a Monte Carlo sample average with one node per state along a simulated trajectory); the rest of this section makes the deterministic and quasi-random alternatives explicit and explains when each is preferable.
+\paragraph{Why an integral always shows up.}  Sooner or later, every dynamic stochastic model in this script presents the same algorithmic bottleneck: a forward-looking agent has to form an expectation over future shocks before any decision can be made.  The Euler equation~\eqref{eq:bm_euler} hinges on $\mathbb{E}_t[\,\alpha z_{t+1} K_{t+1}^{\alpha-1}/C_{t+1}\,]$; the Bellman operator behind a value-function iteration evaluates $\mathbb{E}[V(\bm{s}')\mid\bm{s},a]$ at every state and action; the relative Euler error~\eqref{eq:ree_bm} embeds the same expectation in the diagnostic; the integrated-assessment models of Chapter~\ref{ch:climate} require expected discounted utility under climate-shock distributions; and the structural-estimation moments of Chapter~\ref{ch:estimation} are themselves expectations over simulated paths.  Outside a handful of conjugate or fully-linear-quadratic-Gaussian special cases, none of these expectations admit closed-form expressions, so the integral $\mathbb{E}[g(\bm\varepsilon)] = \int g(\bm\varepsilon)\mu(\bm\varepsilon)\,d\bm\varepsilon$ has to be approximated numerically by a finite, cheap-to-evaluate, ideally differentiable, weighted sum $\sum_q w_q\, g(\bm\varepsilon_q)$.  Choosing the nodes $\bm\varepsilon_q$ and weights $w_q$ well is the entire content of \emph{quadrature theory}.  The path-averaging recipe used in the Brock--Mirman code above is one such choice (a Monte Carlo sample average with one node per state along a simulated trajectory); the rest of this section makes the deterministic and quasi-random alternatives explicit and explains when each is preferable.
 
 \paragraph{Picture~1: a definite integral as area, and the Riemann/midpoint sum.}  Strip away the economics.  A definite integral $\int_a^b f(x)\,dx$ is the (signed) area between the graph of $f$ and the $x$-axis on $[a,b]$.  The simplest deterministic numerical rule, the \emph{midpoint rule}, replaces this area by a stack of $N$ rectangles of equal width $\Delta x = (b-a)/N$, each one as tall as $f$ at the midpoint of its base (Figure~\ref{fig:integration_primer}, left).  Adding the rectangle areas yields
 \begin{equation}
@@ -2590,7 +2596,7 @@ def euler_residual(K_t, z_t, K_tp1, K_tp2, z_tp1):
     return d2 + beta * d1
 \end{lstlisting}
 
-\paragraph{Cross-checking the autodiff loss.}  An important pedagogical point is that the autodiff residual~\eqref{eq:ad_euler} and the hand-derived residual of \S\ref{sec:bm} are the same mathematical object.  The Day 4 notebooks implement both expressions on the same network and report the maximum absolute difference: $4.8\cdot 10^{-7}$ in the deterministic case and $8.1\cdot 10^{-6}$ in the stochastic case with Gauss--Hermite quadrature, both consistent with float32-level arithmetic, graph ordering, and quadrature accumulation.  The trained policy from the autodiff loss matches the analytical closed-form $K_{t+1} = \alpha\beta K_t^{\alpha}$ (respectively $\alpha\beta z_t K_t^{\alpha}$) to mean relative error $\sim 10^{-4}$, confirming that minimizing the autodiff residual recovers the true policy when one is available.
+\paragraph{Cross-checking the autodiff loss.}  An important pedagogical point is that the autodiff residual~\eqref{eq:ad_euler} and the hand-derived residual of \S\ref{sec:bm} are the same mathematical object.  The companion autodiff notebooks implement both expressions on the same network and report the maximum absolute difference: $4.8\cdot 10^{-7}$ in the deterministic case and $8.1\cdot 10^{-6}$ in the stochastic case with Gauss--Hermite quadrature, both consistent with float32-level arithmetic, graph ordering, and quadrature accumulation.  Under full depreciation ($\delta = 1$) the trained policy from the autodiff loss matches the analytical closed-form $K_{t+1} = \alpha\beta K_t^{\alpha}$ (respectively $\alpha\beta z_t K_t^{\alpha}$) to mean relative error $\sim 10^{-4}$, confirming that minimizing the autodiff residual recovers the true policy when one is available.
 
 \subsection{Pitfalls of autodiff}
 \label{sec:ad_pitfalls}
@@ -2611,7 +2617,7 @@ AD is exact and cheap but it is not magical.  Five pitfalls are worth naming; ea
 
 \paragraph{\texttt{stop\_gradient} and the envelope theorem.}  A subtle point worth emphasizing.  The envelope identity $V'(K) = \partial_1 \Pi(K, g(K))$ holds at the optimum because the FOC kills the term $(-u'(C) + \beta V'(g(K)))\cdot g'(K)$ that otherwise contributes to the total derivative of the composed continuation value.  During training we are not yet at the optimum.  Two natural codings of the next-period term therefore give different numbers: one differentiates \emph{through} the policy $g$ and computes a total derivative of a rollout, while the other treats $K'=g(K)$ as a fixed choice and computes the partial derivative used in the Euler FOC.  The autodiff residual~\eqref{eq:ad_euler} uses the latter, which is what falls out of \texttt{t2.gradient(pi\_tp1, K\_tp1)} in Listing~\ref{lst:autodiff_euler}.  This is the correct residual for checking the Euler equation; differentiating through the policy is a different object.  The two codings agree as the FOC residual vanishes, but off the optimum they can disagree.
 
-\paragraph{Companion notebooks.}  Three notebooks on Day 4 put the above into practice:
+\paragraph{Companion notebooks.}  Three notebooks (in the autodiff chapter's code folder) put the above into practice:
 \begin{itemize}[itemsep=2pt]
 \item \texttt{01\_AutoDiff\_Analytical\_Examples}: warm-up ($y=x^2 + \sin x$), the FD U-curve regenerated numerically, CRRA utility's first and second derivative, Cobb--Douglas production's 2-D gradient field, the capital adjustment cost $\Gamma(K,K')$ with AD vs hand partials side by side, and the Hessian of Cobb--Douglas via a nested \texttt{GradientTape}.
 \item \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}: the loss of~\eqref{eq:ad_euler} implemented on the deterministic model of \S\ref{sec:bm}; cross-check against the hand residual at float32 tolerance; cross-check of the trained policy against $K_{t+1} = \alpha\beta K_t^\alpha$.
@@ -2674,7 +2680,7 @@ The full experiment, including a path-residual histogram, a policy-error heatmap
 The Brock--Mirman model establishes the core DEQN recipe, but it is only the starting point.  Later chapters modify the same template in several directions: Chapter~\ref{ch:olg} adds lifecycle structure and complementarity constraints, Chapter~\ref{ch:young} replaces a finite vector of states by a histogram representation of the cross-sectional distribution, Section~\ref{sec:sequence_space} then shows that one can also feed \emph{shock histories} to the network rather than the current endogenous aggregate state, and Chapter~\ref{ch:climate} extends the method to nonstationary climate-economy models with pseudo-states.  The equilibrium logic is the same in all cases: choose a network parameterization, simulate the model forward, evaluate equilibrium residuals, and update the network by gradient descent.
 
 \paragraph{Code examples.}
-The following Jupyter notebooks implement and extend the material in this chapter.  Notebooks~01 and~02 illustrate the \emph{sampling progression} that is pedagogically central to the method: 01 uses uniform random states to isolate the loss-and-architecture mechanics, while 02 replaces the exogenous grid by simulated trajectories and learns on the model's ergodic set (§\ref{sec:deqn_algo}); both derive the FOC and apply the envelope theorem on paper before writing the loss.  Notebooks~03 and~04 introduce additional techniques (endogenous labor, a KKT-constrained labor-time ceiling encoded via a \emph{Fischer--Burmeister} complementarity function, and a six-period OLG extension) that anticipate material developed formally in Chapters~\ref{ch:irbc} and~\ref{ch:olg}.  Three further notebooks that re-solve the same two Brock--Mirman models with an \emph{autodiff} loss (illustrating the template of \S\ref{sec:autodiff}) are placed on Day 4 as the autodiff primer: \tpath{01_AutoDiff_Analytical_Examples.ipynb}, \tpath{02_Brock_Mirman_AutoDiff_DEQN.ipynb}, \tpath{03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb}.
+The following Jupyter notebooks implement and extend the material in this chapter.  Notebooks~01 and~02 illustrate the \emph{sampling progression} that is pedagogically central to the method: 01 uses uniform random states to isolate the loss-and-architecture mechanics, while 02 replaces the exogenous grid by simulated trajectories and learns on the model's ergodic set (§\ref{sec:deqn_algo}); both derive the FOC and apply the envelope theorem on paper before writing the loss.  Notebooks~03 and~04 introduce additional techniques (endogenous labor, a KKT-constrained labor-time ceiling encoded via a \emph{Fischer--Burmeister} complementarity function, and a six-period OLG extension) that anticipate material developed formally in Chapters~\ref{ch:irbc} and~\ref{ch:olg}.  Three further notebooks that re-solve the same two Brock--Mirman models with an \emph{autodiff} loss (illustrating the template of \S\ref{sec:autodiff}) are placed in the autodiff-chapter code folder as the autodiff primer: \tpath{01_AutoDiff_Analytical_Examples.ipynb}, \tpath{02_Brock_Mirman_AutoDiff_DEQN.ipynb}, \tpath{03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb}.
 \begin{itemize}[itemsep=2pt]
 \item \tpath{01_Brock_Mirman_1972_DEQN.ipynb}: deterministic Brock--Mirman; exogenous uniform sampling; hand-derived FOC + envelope.
 \item \tpath{02_Brock_Mirman_Uncertainty_DEQN.ipynb}: stochastic Brock--Mirman ($\varrho > 0$, $\sigma_z > 0$); simulation-based sampling on the ergodic set; hand-derived FOC + envelope.
@@ -2767,10 +2773,10 @@ This normalization ensures that the deterministic steady state lies at $(k^\star
 
 \paragraph{TFP process.}  Log productivity follows an AR(1) with common and idiosyncratic shocks:
 \begin{equation}
-z^{j\prime} = \rho_z z^j + \sigma_e(\varepsilon^j + \varepsilon^\mathrm{agg}), \qquad \varepsilon^j, \varepsilon^\mathrm{agg} \sim \mathcal{N}(0,1)\text{ i.i.d.}
+z^{j\prime} = \rho_z z^j + \sigma_e(\varepsilon^j + \varepsilon^\mathrm{agg}), \qquad \varepsilon^j, \varepsilon^\mathrm{agg} \sim \mathcal{N}(0,1)\text{ i.i.d.}, \qquad |\rho_z| < 1
 \label{eq:irbc_tfp}
 \end{equation}
-Here $\sigma_e$ is the per-component standard deviation, so the marginal innovation variance for country $j$ is $2\sigma_e^2$ and the cross-country innovation covariance is $\sigma_e^2$.  These two facts imply a fixed cross-country innovation correlation of $1/2$ regardless of $N$, a direct consequence of the equal-weighted aggregate-shock decomposition $\varepsilon^j + \varepsilon^\mathrm{agg}$.  Asset-pricing implications (in particular the international consumption-correlation puzzle and the cyclicality of trade balances) inherit this hard-wired common-factor structure: results below should be interpreted with that calibration choice in mind.  If a desired total innovation scale $\bar\sigma$ is targeted instead, set $\sigma_e = \bar\sigma/\sqrt{2}$.
+The persistence restriction $|\rho_z|<1$ guarantees stationarity of the TFP process, which in turn underlies the existence of an ergodic distribution on which DEQN training samples (Section~\ref{sec:deqn_algo}).  Here $\sigma_e$ is the per-component standard deviation, so the marginal innovation variance for country $j$ is $2\sigma_e^2$ and the cross-country innovation covariance is $\sigma_e^2$.  These two facts imply a fixed cross-country innovation correlation of $1/2$ regardless of $N$, a direct consequence of the equal-weighted aggregate-shock decomposition $\varepsilon^j + \varepsilon^\mathrm{agg}$.  Asset-pricing implications (in particular the international consumption-correlation puzzle and the cyclicality of trade balances) inherit this hard-wired common-factor structure: results below should be interpreted with that calibration choice in mind.  If a desired total innovation scale $\bar\sigma$ is targeted instead, set $\sigma_e = \bar\sigma/\sqrt{2}$.
 
 \paragraph{Adjustment costs and irreversibility.}  Changing the capital stock incurs a quadratic adjustment cost:
 \begin{equation}
@@ -2783,7 +2789,7 @@ with marginal derivatives that appear in the Euler equations:
 \frac{\partial \Gamma^j}{\partial k^j} &= \frac{\kappa}{2}\left(1 - \left(\frac{k^{j\prime}}{k^j}\right)^{\!2}\right).
 \label{eq:irbc_adjcost_derivs}
 \end{align}
-Investment is irreversible: $I^j = k^{j\prime} - (1-\delta)k^j \geq 0$.
+Note that $\partial\Gamma^j/\partial k^j$ is \emph{negative} whenever $k^{j\prime} > k^j$, i.e.\ in expanding states.  Consequently the term $-\partial\Gamma^j/\partial k^j$ that appears in the marginal product of capital below~\eqref{eq:irbc_mpk} \emph{raises} MPK in expansion phases; a reader who plugs in $|\partial\Gamma/\partial k|$ here will introduce a sign error.  Investment is irreversible: $I^j = k^{j\prime} - (1-\delta)k^j \geq 0$.
 
 \paragraph{Pareto-weight calibration.}  With heterogeneous IES $\gamma_j$, a symmetric deterministic steady state is most easily obtained by choosing the Pareto weights as
 \begin{equation}
@@ -3122,12 +3128,12 @@ Beyond the IRBC setting, closely related neural-equilibrium methods have been ap
 \chapter{Neural Architecture Search and Loss Normalization}
 \label{ch:nas}
 
-The DEQN models of Chapters~\ref{ch:deqn}--\ref{ch:irbc} involve several hyperparameters (network depth, width, activation functions, learning rate) and multi-component loss functions whose relative scales can differ by orders of magnitude.  To fix ideas, a modest sweep over depth $\in\{1,\ldots,10\}$ and width $\in\{16, 32, 64, 128, 256, 512\}$ on the Day-3 NAS notebook regression task already spans $\sim 3{,}000$ configurations; on that task, the best mean absolute error ($\approx 3\times 10^{-3}$) is attained at a $5\times 256$ network, while $10\times 512$ overfits by almost an order of magnitude ($\approx 2\times 10^{-2}$).  Hand-tuning at this scale is infeasible.  This chapter addresses both challenges.  We first survey hyperparameter-search methods (random search, Bayesian optimization, Hyperband, BOHB) \citep{bergstra2012random, snoek2012practical, jamieson2016nonstochastic, li2018hyperband, falkner2018bohb, garnett2023bayesian}, and then develop a classroom-friendly version of the ReLoBRaLo algorithm \citep{bischof2025relobralo} for adaptive multi-objective loss balancing.  In the notebooks, this is implemented as a deterministic convex blend of step-wise and baseline loss comparisons, which keeps the code compact while preserving the balancing intuition.
+The DEQN models of Chapters~\ref{ch:deqn}--\ref{ch:irbc} involve several hyperparameters (network depth, width, activation functions, learning rate) and multi-component loss functions whose relative scales can differ by orders of magnitude.  To fix ideas, even a modest sweep over depth $\in\{1,\ldots,10\}$ and width $\in\{16, 32, 64, 128, 256, 512\}$ on the companion NAS regression task already spans $10\times 6 = 60$ configurations, and the production sweep below (six axes) reaches $\sim 3{,}000$; on that task, the best mean absolute error ($\approx 3\times 10^{-3}$) is attained at a $5\times 256$ network, while $10\times 512$ overfits by almost an order of magnitude ($\approx 2\times 10^{-2}$).  Hand-tuning at this scale is infeasible.  This chapter addresses both challenges.  We first survey hyperparameter-search methods (random search, Bayesian optimization, Hyperband, BOHB) \citep{bergstra2012random, snoek2012practical, jamieson2016nonstochastic, li2018hyperband, falkner2018bohb, garnett2023bayesian}, and then develop a classroom-friendly version of the ReLoBRaLo algorithm \citep{bischof2025relobralo} for adaptive multi-objective loss balancing.  In the notebooks, this is implemented as a deterministic convex blend of step-wise and baseline loss comparisons, which keeps the code compact while preserving the balancing intuition.
 
 A terminology note before we begin: in this chapter we use ``NAS'' loosely to cover both \emph{hyperparameter optimization} (HPO; choosing widths, depths, activations, learning rates from a fixed parameterization) and ``true'' NAS in the sense of \citet{elsken2019neural}, where the network's wiring graph itself is searched (e.g.\ regularized evolution \citep{real2019regularized}).  The two literatures share methodology (Random / Bayesian / Hyperband-style search) but differ in scope.  All four methods discussed here are HPO; for graph-level NAS, the textbook reference is \citet{hutter2019automl}.  \citet{elsken2019neural} provide the canonical survey; the local copy in \texttt{lectures/day3/readings/} is recommended as the first deep-dive reference.
 
 \paragraph{Hands-on notebooks for this chapter.}
-Two NAS walkthroughs are provided alongside the ReLoBRaLo notebook.  All three live in the Day-3 code folder:
+Two NAS walkthroughs are provided alongside the ReLoBRaLo notebook.  All three live in the NAS chapter's code folder:
 \begin{itemize}
     \item \tpath{02_NAS_Random_Search_10D.ipynb}: a framework-free Random Search on a 10-dimensional analytical regression task, used to illustrate the projection argument of \citet{bergstra2012random} in its cleanest form.
     \item \tpath{03_NAS_RandomSearch_Hyperband.ipynb}: from-scratch Random Search and Successive Halving (Hyperband's inner loop) on a two-dimensional Genz Gaussian, written in $\sim$25 lines of plain Python so the algorithms in this chapter are visible without library abstraction; pre-computed sweeps in \tpath{nas_results/} give instant classroom inspection.
@@ -3881,6 +3887,7 @@ Each cohort $h\in\{1,\ldots,A-1\}$ contributes \emph{four} residuals, one per eq
 \mathcal{D}^h_b(\x_t) &:= \hat p.
 \end{aligned}
 \end{equation*}
+The bond Euler reduces to the textbook stochastic-discount-factor form $\hat p = \beta\,\mathbb{E}[u'(c')]/u'(c)$ \emph{only when the collateral constraint is slack} ($\hat\mu^h = 0$); whenever $\hat\mu^h > 0$, the bond price carries an additional shadow-value term $\kappa\hat\mu^h/u'(\hat c^h)$ that captures the value of relaxing the collateral constraint.
 The four per-cohort residuals are then
 \begin{equation}
 \begin{aligned}
@@ -3937,7 +3944,7 @@ Market clearing (bonds) & $e_{\mathrm{MC},b} = \sum_h \hat b'^h$ & 1 \\
 Production training uses 60,000 episodes at lr $= 10^{-5}$ followed by 140,000 episodes at lr $= 10^{-6}$, with runtime of several hours on GPU.  The classroom version (2,000 episodes, 128-128 hidden units) runs in $\sim$30 minutes on CPU and is meant to show the mechanics and qualitative lifecycle patterns, not final accuracy.  The loss trajectory typically exhibits oscillations, caused by re-simulation of the capital path at each episode, but the overall trend is steadily downward.
 
 \paragraph{Lifecycle diagnostics.}
-The trained model produces economically plausible lifecycle patterns.  Capital savings $k'^h$ follow a hump shape that mirrors the labor income profile: young agents save little (borrowing constraint binds), mid-career agents accumulate rapidly, and older agents decumulate.  Bond holdings $b'^h$ are initially negative (young agents borrow against future income) and increase with age as agents shift from illiquid capital to liquid bonds.  Bond prices vary across shock states, with higher prices in high-TFP states reflecting stronger demand for savings.  In the classroom run the Euler residuals are still large enough to treat the output as diagnostic; in production runs the mean Euler equation errors are of order $10^{-3}$ for both capital and bond equations, corresponding to a $\sim$0.1\% deviation in consumption.  Market clearing residuals are comparably small.
+The trained model produces economically plausible lifecycle patterns.  Capital savings $k'^h$ follow a hump shape that mirrors the labor income profile: young agents save little (borrowing constraint binds), mid-career agents accumulate rapidly, and older agents decumulate.  Bond holdings $b'^h$ are initially negative (young agents borrow against future income) and increase with age as agents shift from illiquid capital to liquid bonds.  Bond prices vary across shock states, with higher prices in high-TFP states reflecting stronger demand for savings.  In the classroom run the Euler residuals are still large enough to treat the output as diagnostic; in production runs the mean Euler equation errors are of order $10^{-4}$--$10^{-3}$ for both capital and bond equations (matching Table~3 of \citet{azinovicDEEPEQUILIBRIUMNETS2022}), corresponding to a $\sim$0.01\%--0.1\% deviation in consumption.  Market clearing residuals are comparably small.
 
 \begin{keyinsightbox}[Scalability of the DEQN framework]
 The \emph{same algorithm} that solved the 6-agent model scales to 56 agents with two assets and inequality constraints.  Only the network size and training duration change; the DEQN framework itself is unchanged.  The 56-agent benchmark has a 113-dimensional minimal state and a 236-dimensional engineered network input, both infeasible for traditional grid-based methods.
@@ -4045,7 +4052,7 @@ There are two main strategies for handling heterogeneous agents in discrete time
 State & $(k_1,\ldots,k_N)$, finite-dimensional & $\mu_t(\cdot)$, infinite-dimensional \\
 Pro & Exact, no approximation of $\mu_t$ & Law of large numbers eliminates sampling noise; no permutation problem \\
 Con & Permutation problem; scales poorly with $N$ & Must approximate $\mu_t$ \\
-Examples & OLG (Ch.~\ref{ch:olg}); Maliar et al.\ (2010) & Krusell--Smith (1998); Young (2010) \\
+Examples & OLG (Ch.~\ref{ch:olg}); \citet{maliarmaliarvalli2010} & \citet{krusell1998income}; \citet{young2010} \\
 \bottomrule
 \end{tabular}
 \caption{Two discrete-time representations of household heterogeneity.  A finite-agent representation tracks each labelled agent and must deal with permutation symmetry and growth in $N$; a continuum-agent representation tracks the law $\mu_t$ directly, eliminating sampling noise but requiring an approximation to an infinite-dimensional object.}
@@ -4071,14 +4078,14 @@ Each agent must forecast future prices to make optimal savings decisions.  But p
 \hat{H}(m_1, a) = \exp\!\bigl(A(a) + B(a)\log m_1\bigr),
 \label{eq:ks_forecast}
 \end{equation}
-where $m_1 = \int k\, d\mu$ is mean capital and $a$ is the aggregate shock, achieves $R^2 > 0.999$ in practice.
+where $m_1 = \int k\, d\mu$ is mean capital and $a$ is the aggregate shock, achieves $R^2 > 0.9999$ in practice.
 
 \begin{remarkbox}[Approximate aggregation: what it means and what it does \emph{not} mean]
 The empirical observation that a single moment $m_1 = \int k\,d\mu$ is sufficient for price forecasting is known as \emph{approximate aggregation}.  Conceptually, it says that the equilibrium price mapping $r_{t+1}, w_{t+1}$ depends on the cross-sectional distribution \emph{almost only through its mean}, so the high-dimensional state $\mu_t$ collapses to a one-dimensional summary for forecasting purposes.
 
 Importantly, \citet{krusell1998income} did not restrict themselves to the one-moment specification.  Their original paper explicitly reports results for two- and three-moment forecasting rules (adding the variance, and further adding the skewness of the wealth distribution) and finds that additional moments provide only marginal improvement: $R^2$ barely changes.  The one-moment benchmark is therefore an \emph{empirical} finding, not a modeling assumption.
 
-Two cautions are essential.  First, this is a property of the \emph{Krusell--Smith model class} (one risky asset, modest wealth dispersion, moderate income risk) and is not a general theorem; in models with multiple assets, large MPC heterogeneity, or occasionally binding constraints that bite on a non-trivial mass of agents, the forecasting rule typically requires higher moments or a more flexible function approximator (Chapters~\ref{ch:gp},~\ref{ch:climate}).  Second, $R^2 > 0.999$ on simulated mean dynamics does \emph{not} imply that the distribution itself is well summarized by its mean: tails, percentiles, and the borrowing-constrained mass continue to matter for welfare and policy analysis.  Approximate aggregation is therefore best read as a \emph{computational} result, and Sections~\ref{sec:young_method}--\ref{sec:young_deqn} accordingly track the full histogram and use the mean only as one of the network's input features rather than as a state-space substitute.
+Two cautions are essential.  First, this is a property of the \emph{Krusell--Smith model class} (one risky asset, modest wealth dispersion, moderate income risk) and is not a general theorem; in models with multiple assets, large MPC heterogeneity, or occasionally binding constraints that bite on a non-trivial mass of agents, the forecasting rule typically requires higher moments or a more flexible function approximator (Chapters~\ref{ch:gp},~\ref{ch:climate}).  Second, $R^2 > 0.9999$ on simulated mean dynamics does \emph{not} imply that the distribution itself is well summarized by its mean: tails, percentiles, and the borrowing-constrained mass continue to matter for welfare and policy analysis.  Approximate aggregation is therefore best read as a \emph{computational} result, and Sections~\ref{sec:young_method}--\ref{sec:young_deqn} accordingly track the full histogram and use the mean only as one of the network's input features rather than as a state-space substitute.
 \end{remarkbox}
 
 \paragraph{Equilibrium.}
@@ -4533,7 +4540,7 @@ Combining value function iteration (VFI) with Young's simulation yields:
 Young's non-stochastic simulation makes step~3 essentially noise-free and fast relative to a large Monte Carlo panel.  The full outer-loop iteration count and wall-clock time, however, remain implementation- and tolerance-dependent because the VFI solve and forecasting-rule fixed point are still present; the speedup applies to the simulation step, not as a generic wall-clock guarantee for the traditional KS workflow.
 
 \paragraph{Convergence and accuracy.}
-A remarkable empirical finding is that the log-linear forecasting rule~\eqref{eq:ks_forecast} achieves $R^2 > 0.999$ in the standard Krusell--Smith economy: the first moment of the wealth distribution is a nearly sufficient statistic for predicting next-period prices.  Adding higher moments (variance, skewness) to the forecasting rule barely improves the fit.  This ``approximate aggregation'' result does not hold universally; it relies on the specific features of the Krusell--Smith calibration (small aggregate shocks, moderate borrowing constraint), but it is a useful benchmark against which richer models can be compared.
+A remarkable empirical finding is that the log-linear forecasting rule~\eqref{eq:ks_forecast} achieves $R^2 > 0.9999$ in the standard Krusell--Smith economy: the first moment of the wealth distribution is a nearly sufficient statistic for predicting next-period prices.  Adding higher moments (variance, skewness) to the forecasting rule barely improves the fit.  This ``approximate aggregation'' result does not hold universally; it relies on the specific features of the Krusell--Smith calibration (small aggregate shocks, moderate borrowing constraint), but it is a useful benchmark against which richer models can be compared.
 
 \section{DEQN with a Continuum of Agents}
 \label{sec:young_deqn}
@@ -5188,7 +5195,7 @@ $\mathcal{B}$                           & Replay buffer of $(z^H, \mu)$ pairs   
 \chapter{Physics-Informed Neural Networks}
 \label{ch:pinn}
 
-Day 5 introduced agentic programming as a tool for supervising and debugging research code at scale.  Day 6 returns to numerical methods, this time applying neural networks to partial differential equations rather than equilibrium fixed-point conditions.  The PINN loss is structurally analogous to the DEQN loss of Chapter~\ref{ch:deqn}, but the equations are now in continuous time, which lets us solve a single PDE globally over the state space rather than time-step it.
+The companion agentic-programming workshop (taught as a separate hands-on module without an associated chapter in this script) introduces agentic programming as a tool for supervising and debugging research code at scale.  This chapter returns to numerical methods, this time applying neural networks to partial differential equations rather than equilibrium fixed-point conditions.  The PINN loss is structurally analogous to the DEQN loss of Chapter~\ref{ch:deqn}, but the equations are now in continuous time, which lets us solve a single PDE globally over the state space rather than time-step it.
 
 Chapters~\ref{ch:deqn}--\ref{ch:young} operated in discrete time, where the equilibrium conditions take the form of expectational equations (Euler equations).  We now shift to \emph{continuous time}, where the optimality conditions are partial differential equations, Hamilton--Jacobi--Bellman (HJB) equations and Kolmogorov forward equations.  Physics-Informed Neural Networks (PINNs) approximate the solution of these PDEs by minimizing the PDE residual at collocation points, using automatic differentiation to compute the required derivatives \citep{sirignano2018dgm, raissi2019physics}.  This chapter develops the PINN methodology from simple ODEs through boundary condition strategies to the HJB equation for consumption-savings problems, with applications to macro-finance.
 
@@ -5505,7 +5512,7 @@ Consider a household with wealth $a(t) > 0$ that chooses a consumption stream $c
 \label{eq:cake_problem}
 \end{equation}
 where $\rho > 0$ is the subjective discount rate, $\gamma > 0$ ($\gamma \neq 1$) is the coefficient of relative risk aversion (CRRA), and $r$ is the interest rate on wealth.  The budget constraint says that wealth grows at rate $r$ minus consumption; this is the ``cake-eating'' problem because the household is consuming out of a finite asset.
-The dynamic-programming perspective is classical in economics; see \citet{StokeyLucasPrescott89} for the standard textbook treatment.
+The dynamic-programming perspective is classical in economics; see \citet{stokeylucas1989} for the standard textbook treatment.
 
 \paragraph{Deriving the HJB equation.}
 Define the \emph{value function} $V(a)$ as the maximum attainable lifetime utility starting from wealth $a$:
@@ -5567,11 +5574,13 @@ To solve the HJB equation~\eqref{eq:cake_hjb} with a PINN (rather than using the
 \begin{equation}
 \hat{c}(a) = \bigl(\hat{V}'(a)\bigr)^{-1/\gamma}.
 \end{equation}
-Substituting $\hat{V}$, $\hat{V}'$, and $\hat{c}$ into the HJB~\eqref{eq:cake_hjb} and moving everything to one side defines the \emph{PDE residual}:
+Substituting $\hat{V}$, $\hat{V}'$, and $\hat{c}$ into the HJB~\eqref{eq:cake_hjb} and moving everything to one side defines the \emph{PDE residual}.  In practice both the FOC inversion and the residual evaluation use a positivity-guarded derivative $\widetilde V_a := \operatorname{softplus}(\hat V'(a)) + \varepsilon$ rather than the raw $\hat V'(a)$, so that consumption is well-defined even where the network's raw derivative is negative during early training (see also the listing below):
 \begin{equation}
-\mathcal{R}(a) = \rho\,\hat{V}(a) - \left[\frac{\hat{c}(a)^{1-\gamma}}{1-\gamma} + \hat{V}'(a)\,(ra - \hat{c}(a))\right].
+\hat{c}(a) = \widetilde V_a^{-1/\gamma}, \qquad
+\mathcal{R}(a) = \rho\,\hat{V}(a) - \left[\frac{\hat{c}(a)^{1-\gamma}}{1-\gamma} + \widetilde V_a\,(ra - \hat{c}(a))\right].
 \label{eq:cake_residual}
 \end{equation}
+Once training has converged with $\hat V'(a) \gg 0$ on the support, $\operatorname{softplus}(\hat V'(a)) \approx \hat V'(a)$ to high precision (the exponential tail decays rapidly), so the safeguarded residual is asymptotically equivalent to the original HJB residual; using $\widetilde V_a$ throughout keeps the FOC inversion and the HJB residual mutually consistent during training, when $\hat V'(a)$ may transiently be small or negative.
 If the network has perfectly learned the true value function, $\mathcal{R}(a) = 0$ for all $a$.  The PINN loss is the mean squared residual over a set of collocation points $\{a_i\}_{i=1}^M$ sampled in the interior of the domain:
 \begin{equation}
 \ell_{\mathrm{HJB}} = \frac{1}{M}\sum_{i=1}^{M} \mathcal{R}(a_i)^2.
@@ -6025,6 +6034,9 @@ Substituting back eliminates the maximization, yielding a nonlinear PDE in $V$. 
 \end{aligned}
 \]
 For CRRA utility this gives the boundary policy $c^*(\underline{a},n)=\min\{[V_a(\underline{a},n)]^{-1/\gamma},\,wn+r\underline{a}\}$ and $s(\underline{a},n)\geq 0$.  This is the state-constraint form of the borrowing limit; numerical solvers usually impose it with one-sided derivatives, a constrained policy rule, or a penalty on negative boundary drift.
+
+\paragraph{Boundary atoms in the stationary distribution.}
+When the borrowing constraint binds on a positive mass of agents, the stationary measure is not absolutely continuous with respect to Lebesgue measure: it carries a Dirac atom at $a=\underline a$.  The decomposition is $g(a,n) = g_{\mathrm{ac}}(a,n) + \alpha(n)\,\delta(a-\underline a)$, where $g_{\mathrm{ac}}$ is the absolutely-continuous interior density and $\alpha(n)\geq 0$ is the constrained mass for income state $n$.  The KFE~\eqref{eq:kfe_econ} as written governs only the interior part $g_{\mathrm{ac}}$; the atomic mass $\alpha(n)$ is determined by a separate flux-balance equation that equates inflows from the no-flux boundary condition with the income-driven outflow back into the interior.  Finite-difference implementations typically represent $\alpha(n)$ as the mass in the first grid cell, and PINN implementations either absorb the atom implicitly into a smooth density approximation (with corresponding accuracy loss near $\underline a$) or explicitly parameterize $\alpha(n)$ alongside the interior network.
 
 \section{Competitive Equilibrium: Huggett and Aiyagari}
 \label{sec:ct_equilibrium}
@@ -6501,9 +6513,9 @@ The posterior variance $\sigma_*^2$ is small near observed data (the GP is confi
 
 The kernel hyperparameters $\bm{\vartheta} = (\ell, \sigma_f, \sigma_y)$ are learned by maximizing the log marginal likelihood:
 \begin{equation}
-\log p(\bm{y} | \X, \bm{\vartheta}) = -\frac{1}{2}\bm{y}^\top K_y^{-1}\bm{y} - \frac{1}{2}\log|K_y| - \frac{n}{2}\log 2\pi,
+\log p(\bm{y} | \X, \bm{\vartheta}) = -\frac{1}{2}(\bm{y}-\bm{\mu}_X)^\top K_y^{-1}(\bm{y}-\bm{\mu}_X) - \frac{1}{2}\log|K_y| - \frac{n}{2}\log 2\pi,
 \end{equation}
-where $K_y = K + \sigma_y^2 I$.
+where $K_y = K + \sigma_y^2 I$ and $\bm{\mu}_X$ is the prior mean evaluated on the training inputs.  In the zero-mean convention used elsewhere in this section, set $\bm{\mu}_X = 0$ (or center the outputs).
 
 \paragraph{Why marginal likelihood?}  The log evidence $\log p(\bm y \mid \X, \bm\vartheta)$ encodes both data fit \emph{and} an automatic complexity penalty in a single closed-form expression.  The quadratic form $-\tfrac{1}{2}\bm y^\top K_y^{-1}\bm y$ rewards hyperparameters that explain the centered observations with a small inverse-covariance norm, while the log-determinant term $-\tfrac{1}{2}\log|K_y|$ penalises overly flexible kernels that admit too many possible functions, giving Bayesian Occam's razor \citep[see, e.g.,][Ch.~5]{Rasmussen:2005:GPM:1162254}.  Compared with cross-validated MSE, this approach requires no held-out split, makes use of all $n$ observations, and exposes a closed-form gradient with respect to $\bm\vartheta$, which is essential for L-BFGS-style optimization in scikit-learn / GPyTorch.  The maximum is reached at the kernel that is just expressive enough to fit the data but no more (Figure~\ref{fig:occam_marginal_likelihood}).
 
@@ -7039,7 +7051,7 @@ where the expectation is over the stochastic transition.  The \emph{Bellman oper
 \[
 (TV)(\x) = \max_{\xi \in \Lambda(\x)} \bigl\{ r(\x, \xi) + \beta\, \mathbb{E}\bigl[V(\x')\bigr] \bigr\}.
 \]
-Under standard regularity conditions (bounded returns, $\beta < 1$, monotonicity, discounting), $T$ is a \emph{contraction mapping} on the Banach space of bounded continuous functions with sup-norm, with modulus $\beta$.  By the Banach fixed-point theorem, $T$ admits a unique fixed point $V^*$, and iterating $V^{s+1} = TV^s$ from any initial guess $V^0$ converges geometrically: $\|V^s - V^*\|_\infty \le \beta^s \|V^0 - V^*\|_\infty$.  The classical references in economics are \citet[Chs.~3--4]{StokeyLucasPrescott89} for the formal contraction-and-fixed-point theory of the Bellman operator and \citet[][Ch.~12]{judd1998numerical} for the numerical implementation in continuous-state settings; \citet[Chs.~3--4]{ljungqvist2018recursive} and \citet{sargentstachurski2026dp} provide modern macroeconomic treatments.  In the operations-research and optimal-control literature, \citet{Bertsekas:2000:DPO:517430} is the canonical reference, with extensive coverage of approximate dynamic programming.  The contraction modulus $\beta$ applies to the \emph{exact} Bellman operator; convergence of the GP-fitted iterates additionally requires controlling the per-step interpolation error of the surrogate, otherwise the approximate operator can fail to contract globally even though the exact one does.  This is the standard textbook VFI loop: guess a value function, apply the Bellman operator, interpolate the updated values, and repeat until convergence.  In the present chapter, the only change is the interpolant: a GP replaces the grid or polynomial basis when the state space is irregular or moderately high-dimensional.  For a comprehensive treatment of dynamic programming in economics, see also the open-source QuantEcon lectures.\footnote{\url{https://dp.quantecon.org/}}
+Under standard regularity conditions (bounded returns, $\beta < 1$, monotonicity, discounting), $T$ is a \emph{contraction mapping} on the Banach space of bounded continuous functions with sup-norm, with modulus $\beta$.  By the Banach fixed-point theorem, $T$ admits a unique fixed point $V^*$, and iterating $V^{s+1} = TV^s$ from any initial guess $V^0$ converges geometrically: $\|V^s - V^*\|_\infty \le \beta^s \|V^0 - V^*\|_\infty$.  The classical references in economics are \citet[Chs.~3--4]{stokeylucas1989} for the formal contraction-and-fixed-point theory of the Bellman operator and \citet[][Ch.~12]{judd1998numerical} for the numerical implementation in continuous-state settings; \citet[Chs.~3--4]{ljungqvist2018recursive} and \citet{sargentstachurski2026dp} provide modern macroeconomic treatments.  In the operations-research and optimal-control literature, \citet{Bertsekas:2000:DPO:517430} is the canonical reference, with extensive coverage of approximate dynamic programming.  The contraction modulus $\beta$ applies to the \emph{exact} Bellman operator; convergence of the GP-fitted iterates additionally requires controlling the per-step interpolation error of the surrogate, otherwise the approximate operator can fail to contract globally even though the exact one does.  This is the standard textbook VFI loop: guess a value function, apply the Bellman operator, interpolate the updated values, and repeat until convergence.  In the present chapter, the only change is the interpolant: a GP replaces the grid or polynomial basis when the state space is irregular or moderately high-dimensional.  For a comprehensive treatment of dynamic programming in economics, see also the open-source QuantEcon lectures.\footnote{\url{https://dp.quantecon.org/}}
 
 \paragraph{The computational challenge.}
 At every VFI iteration, we must \emph{approximate} $V^{s+1}$ as a function of the full state vector $\x \in \R^D$.  Traditional approaches (finite grids, Smolyak sparse grids, tensor-product polynomial bases) suffer from the curse of dimensionality: the number of grid points grows exponentially in $D$, and they require hypercubic state-space geometries.  For $D > 20$, these methods become infeasible.
@@ -7268,7 +7280,7 @@ Reference              & \citet{Rasmussen:2005:GPM:1162254} & \citet{gal2016drop
 \begin{itemize}[itemsep=2pt, leftmargin=*]
 \item Gaussian processes attach calibrated uncertainty to non-parametric regression at $\mathcal{O}(n^3)$ cost; the marginal likelihood implements an automatic Occam's razor that chooses model complexity without held-out validation.
 \item Active subspaces collapse $d$-dimensional inputs to $m \ll d$ via the gradient outer product; this is the trick that makes GPs viable past $d \sim 10$.
-\item Bayesian active learning closes the surrogate loop: train, evaluate uncertainty, request next design point where it's largest, repeat.  The Scheidegger--Bilionis pipeline is the canonical example.
+\item Bayesian active learning closes the surrogate loop: train, evaluate uncertainty, request next design point where it's largest, repeat.  \citet{SCHEIDEGGER201968} provide one canonical example.
 \item Deep kernel learning composes a NN feature extractor with a GP head; an alternative to plain GPs and to deep ensembles.
 \end{itemize}
 \end{keyinsightbox}
@@ -7398,7 +7410,7 @@ which is necessary for the parameter to be identified from the chosen moments.  
 (M^\top W M)^{-1}M^\top W\Omega W M(M^\top W M)^{-1}
 \right).
 \end{equation}
-For independent simulated panels with the same length as the data, $\Omega=(1+1/S)\Sigma_m$.  As $S\to\infty$, the \emph{extra} simulation variance vanishes and $\Omega\to\Sigma_m$; the factor itself tends to one, not zero.  The efficient SMM weight is $W^\star=\Omega^{-1}$.  See \citet{duffie1993simulated} for the corresponding large-sample theory in the simulated-moments setting.
+For $S$ independent simulated panels each of length $\tau T$ (with $\tau \geq 1$ a relative-length factor), $\Omega = (1 + 1/(\tau S))\,\Sigma_m$.  The classroom benchmark used below sets $\tau = 1$ (simulated panels of the same length as the data), giving the familiar $\Omega = (1+1/S)\Sigma_m$.  As $\tau S \to \infty$, the \emph{extra} simulation variance vanishes and $\Omega \to \Sigma_m$; the factor itself tends to one, not zero.  The efficient SMM weight is $W^\star = \Omega^{-1}$.  See \citet{duffie1993simulated} for the corresponding large-sample theory in the simulated-moments setting.
 
 \section{The SMM Workflow in the Exercise}
 
@@ -7479,7 +7491,7 @@ where $\hat{M}$ and $\hat{\Sigma}$ are estimated at $\hat{\theta}$ under the equ
 
 \paragraph{Weak-identification workflow.}  If the smallest singular values of $\hat{M}$ are close to zero, inference based purely on local curvature is fragile.  In that case, complement Hessian-based standard errors with profile-criterion diagnostics: vary one parameter at a time (or along weak singular vectors), re-optimize the remaining parameters, and report objective-function contour sets in addition to pointwise intervals.
 
-\paragraph{Why the surrogate still matters.}  Even though the estimation step is standard SMM, the pseudo-state surrogate changes the computational bottleneck.  Without it, each candidate $\theta$ would require re-solving the dynamic program.  With it, the optimization reduces to repeated forward simulations under an already-trained policy rule.  This is the same computational leverage exploited in recent applications of deep surrogates to dynamic structural models, both in macro-finance \citep{kase2022estimating, payne2024deepsam, chen2025Deep, kubler2025using} and in climate-economics integrated assessment \citep{friedlDeep2023}.
+\paragraph{Why the surrogate still matters.}  Even though the estimation step is standard SMM, the pseudo-state surrogate changes the computational bottleneck.  Without it, each candidate $\theta$ would require re-solving the dynamic program.  With it, the optimization reduces to repeated forward simulations under an already-trained policy rule.  This is the same computational leverage exploited in recent applications of deep surrogates and neural surrogates more broadly to dynamic structural models: heterogeneous-agent estimation \citep{kase2022estimating}, search-and-matching \citep{payne2024deepsam}, finance and asset pricing \citep{chen2025Deep}, and climate-economy policy design and uncertainty quantification \citep{kubler2025using, friedlDeep2023}.
 
 \section{GP Surrogate over the Moment Map}
 \label{sec:smm_gp_moments}
@@ -7587,7 +7599,7 @@ SMM matches a hand-picked vector of moments.  Two close cousins are worth knowin
 \addcontentsline{toc}{section}{Further Reading}
 \begin{itemize}[itemsep=2pt]
 \item \citet{mcfadden1989method, pakes1989simulation, duffie1993simulated}, the foundational SMM trio.
-\item \citet{kase2022estimating, chen2025Deep}, modern deep-surrogate-based estimation in macro-finance.
+\item \citet{kase2022estimating}, neural-network estimation of nonlinear heterogeneous-agent models; \citet{chen2025Deep}, deep surrogates for finance and option pricing.
 \item \citet{cranmer2020frontier}, contemporary simulation-based inference.
 \end{itemize}
 
@@ -7610,7 +7622,7 @@ SMM matches a hand-picked vector of moments.  Two close cousins are worth knowin
 \chapter{Climate Economics and Deep Uncertainty Quantification}
 \label{ch:climate}
 
-This chapter brings together the methods developed throughout this script and applies them to one of the most consequential computational challenges in economics: \emph{climate change policy}.  Integrated assessment models (IAMs) couple economic growth with the carbon cycle, temperature dynamics, and climate damages, creating high-dimensional nonstationary dynamic programming problems that are ideal candidates for the DEQN and surrogate methods we have developed.  We present the CDICE model of \citet{Folini_2021}, solve it with DEQNs, and then use GP surrogates and Bayesian active learning for deep uncertainty quantification \citep{friedlDeep2023} and constrained Pareto-improving carbon tax rules \citep{kubler2025using}.  For broader overviews of climate economics and IAMs, see \citet{hassler2016environmental} on environmental macroeconomics, \citet{DIETZ20241} on IAMs, \citet{fernandezvillaverde2025climate} on the intersection of climate economics and deep learning, and \citet{vanderploegrezai2026climate} on the macroeconomics of climate policy.
+This chapter brings together the methods developed throughout this script and applies them to one of the most consequential computational challenges in economics: \emph{climate change policy}.  Integrated assessment models (IAMs) couple economic growth with the carbon cycle, temperature dynamics, and climate damages, creating high-dimensional nonstationary dynamic programming problems that are ideal candidates for the DEQN and surrogate methods we have developed.  We present the CDICE model of \citet{Folini_2021}, solve it with DEQNs, and then use GP surrogates and Bayesian active learning, first for deep uncertainty quantification \citep{friedlDeep2023}, and then, on the very same surrogate, to \emph{search over policy parameters} and derive constrained Pareto-improving carbon tax rules in an OLG--IAM with deep uncertainty \citep{kubler2025using}.  This last step illustrates a general use of surrogates that goes beyond estimation and UQ: once the structural model has been mapped into a fast, differentiable surrogate, the costly outer loop of an optimal-policy search in a dynamic stochastic heterogeneous-agent economy collapses into a small optimization on the surrogate.  For broader overviews of climate economics and IAMs, see \citet{hassler2016environmental} on environmental macroeconomics, \citet{DIETZ20241} on IAMs, \citet{fernandezvillaverde2025climate} on the intersection of climate economics and deep learning, and \citet{vanderploegrezai2026climate} on the macroeconomics of climate policy.
 
 \section{The Macroeconomics of Climate Change}
 \label{sec:climate_motivation}
@@ -7640,10 +7652,10 @@ The central output of an IAM is the \textbf{social cost of carbon} (SCC): the ma
 \mathrm{SCC}_t = -\frac{\partial V_t / \partial E_t}{\partial V_t / \partial C_t},
 \label{eq:scc}
 \end{equation}
-where $V_t$ is the value function, $E_t$ is emissions, and $C_t$ is consumption.  In a first-best allocation, the optimal carbon tax equals the SCC \citep{golosov2014optimal}.  The SCC is high when climate damages are steep, the climate response is strong, discounting is low, and tipping risks are material \citep{caiSocialCostCarbon2019, DIETZ20241}.
+where $V_t$ is the value function, $E_t$ denotes a marginal pulse of contemporaneous emissions (interpreted as a one-unit shift in next-period atmospheric carbon $M^{\mathrm{AT}}_{t+1}$ via the carbon-cycle transition), and $C_t$ is consumption.  The closely related stock-based form $\mathrm{SCC}^M_t = -(\partial V_t/\partial M^{\mathrm{AT}}_t)/(\partial V_t/\partial C_t)$, derived in Section~\ref{sec:dice_deqn}, prices the existing carbon stock; the two definitions differ by the marginal loading of emissions into $M^{\mathrm{AT}}$ and the carbon-to-CO$_2$ unit conversion.  In a first-best allocation, the optimal carbon tax equals the SCC \citep{golosov2014optimal}.  The SCC is high when climate damages are steep, the climate response is strong, discounting is low, and tipping risks are material \citep{caiSocialCostCarbon2019, DIETZ20241}.
 
-\paragraph{From Day~7 surrogates to climate IAMs.}
-Chapter~\ref{ch:gp} (Day~7) introduced surrogates and Bayesian active learning as fast approximators for repeated model evaluations.  Climate IAMs are the natural application: each parameter configuration (climate sensitivity, damage curvature, discount rate) is expensive to solve, yet policy questions require evaluating thousands of configurations to map out tail risks and Pareto-improving rules.  The DEQN approach of Chapters~\ref{ch:deqn}--\ref{ch:irbc}, combined with the GP and active-learning toolkit of Chapter~\ref{ch:gp}, is therefore the natural workhorse for climate-policy uncertainty quantification.
+\paragraph{From surrogates to climate IAMs.}
+Chapter~\ref{ch:gp} introduced surrogates and Bayesian active learning as fast approximators for repeated model evaluations.  Climate IAMs are the natural application: each parameter configuration (climate sensitivity, damage curvature, discount rate) is expensive to solve, yet policy questions require evaluating thousands of configurations to map out tail risks and Pareto-improving rules.  The DEQN approach of Chapters~\ref{ch:deqn}--\ref{ch:irbc}, combined with the GP and active-learning toolkit of Chapter~\ref{ch:gp}, is therefore the natural workhorse for climate-policy uncertainty quantification.
 
 \paragraph{Why computation matters.}
 Solving IAMs globally, as opposed to linearization or certainty equivalence, is computationally demanding for several reasons:
@@ -7700,24 +7712,26 @@ T^{\mathrm{OC}}_{t+1} &= T^{\mathrm{OC}}_t + \Delta_t \cdot c_4 \bigl(T^{\mathrm
 \end{align}
 where radiative forcing is
 \begin{equation}
-F_t = F_{\mathrm{2\times CO_2}} \frac{\log(M^{\mathrm{AT}}_t / M^{\mathrm{AT}}_{\mathrm{EQ}})}{\log 2} + F^{\mathrm{EX}}_t.
+F_t = F_{\mathrm{2\times CO_2}} \frac{\log(M^{\mathrm{AT}}_t / M^{\mathrm{AT}}_{\mathrm{PI}})}{\log 2} + F^{\mathrm{EX}}_t.
 \label{eq:forcing}
 \end{equation}
 The parameter $\lambda = F_{\mathrm{2\times CO_2}} / \Delta T_{\mathrm{AT},\times 2}$ is determined by the \emph{equilibrium climate sensitivity} (ECS), defined as the long-run atmospheric warming from a doubling of CO$_2$ concentration.  ECS is one of the most consequential and uncertain parameters in climate science \citep{roe2007climate, knutti2017beyond}.  Observational and model-based estimates place ECS in a \emph{likely} (66\,\%) range of 2.5\textdegree C--4\textdegree C and a \emph{very likely} (90\,\%) range of 2\textdegree C--5\textdegree C, with a best estimate of approximately 3\textdegree C \citep[IPCC AR6 Synthesis Report;][]{calvinIPCC2023Climate2023a}; ECS uncertainty is one of the largest single sources of variance in the SCC.
 
 \subsection{Damage Functions}
 
-Climate damages reduce gross output multiplicatively.  \citet{nordhaus2008question} proposed the quadratic specification
+Following the convention in \citet{Folini_2021}, Online Appendix~D, we treat $\Omega(T_{\mathrm{AT}})$ as the \emph{damage fraction} of gross output (the fraction lost to climate damages, increasing in $T$), and $\Theta(\mu)$ as the \emph{abatement-cost fraction}.  Net (after-damages, after-abatement) output is therefore $\bigl(1 - \Omega(T_{\mathrm{AT}}) - \Theta(\mu)\bigr) K^\alpha (A L)^{1-\alpha}$.  This additive specification is what CDICE and the production-grade DEQN library port use; for an alternative multiplicative form $(1-\Omega^{\mathrm{ret}})(1-\Theta)$ with $\Omega^{\mathrm{ret}}$ a retained-output factor, see \citet{nordhaus2008question}.
+
+\citet{nordhaus2008question}'s quadratic damage specification, in our convention, reads
 \begin{equation}
-\Omega^N_t(T_{\mathrm{AT},t}) = \frac{1}{1 + \pi_1 T_{\mathrm{AT},t} + \pi_2 T_{\mathrm{AT},t}^2},
+\Omega^N(T_{\mathrm{AT}}) \;=\; \pi_1 T_{\mathrm{AT}} + \pi_2 T_{\mathrm{AT}}^2,
 \label{eq:damage_nordhaus}
 \end{equation}
 which is relatively benign for moderate warming.  \citet{weitzman2012ghg} argued that catastrophic tipping points require a steeper damage function:
 \begin{equation}
-\Omega^W_t(T_{\mathrm{AT},t}) = \frac{1}{1 + \bigl(\tfrac{1}{\psi_1} T_{\mathrm{AT},t}\bigr)^2 + \bigl(\tfrac{1}{2 \cdot TP_t} T_{\mathrm{AT},t}\bigr)^{6.754}},
+\Omega^W(T_{\mathrm{AT}}) \;=\; 1 - \frac{1}{1 + \bigl(\tfrac{1}{\psi_1} T_{\mathrm{AT}}\bigr)^2 + \bigl(\tfrac{1}{2\, TP} T_{\mathrm{AT}}\bigr)^{6.754}},
 \label{eq:damage_weitzman}
 \end{equation}
-where $TP_t$ is a stochastic tipping-point threshold.  The degree of convexity of the damage function is one of the most important determinants of the optimal carbon tax.
+where $TP$ is a stochastic tipping-point threshold.  The degree of convexity of the damage function is one of the most important determinants of the optimal carbon tax.
 
 \subsection{CDICE: Recalibration}
 
@@ -7744,6 +7758,21 @@ This calibration ensures that the reduced-form climate module is consistent with
 \label{sec:dice_deqn}
 
 The DEQN framework from Chapters~\ref{ch:deqn}--\ref{ch:irbc} extends naturally to the stochastic IAM.  We follow \citet{friedlDeep2023} and \citet{Folini_2021} for the full model formulation.
+
+\paragraph{How this section is organized (and why in this order).}
+A reader new to DICE-style integrated assessment may find this section heavy.  It is layered deliberately so that each piece can be verified before the next one is added on top.  The spine of the section is the \emph{deterministic} CDICE benchmark: a single carbon-cycle calibration, a single deterministic productivity path, and an eight-residual DEQN loss derived from the Lagrangian.  Stochasticity, learning, and policy design are introduced afterward as small structural deltas on top of this spine.  Concretely:
+
+\begin{enumerate}
+  \item \textbf{Preferences.}  We replace CRRA with Epstein--Zin so that risk aversion ($\gamma$) and the intertemporal elasticity of substitution ($\psi$) can be set independently.  This is mandatory for credible long-horizon climate risk.
+  \item \textbf{Nonstationarity.}  Trends are absorbed by detrending capital and consumption to per-effective-capita units, then time itself enters the network as a bounded state variable $\tau \in [0,1)$.  At this point the model is written in a form that the DEQN can train on.
+  \item \textbf{State space.}  We list the inputs that the network actually sees, including a slot for pseudo-state parameters used later in deep uncertainty quantification.
+  \item \textbf{Euler-equation derivation.}  The Lagrangian, the envelope conditions, and the Fischer--Burmeister complementarity slack are derived once, in the deterministic case.  Eight residuals fall out: capital Euler, budget, three carbon-stock envelopes, two temperature-layer envelopes, and one abatement bound.  These eight equations are the core of CDICE and follow Appendix~D.2 of \citet{Folini_2021}.
+  \item \textbf{Bayesian learning over the climate-feedback parameter.}  A short extension that treats the posterior mean and variance of climate sensitivity as additional states.
+  \item \textbf{DEQN implementation.}  The eight deterministic residuals are now wired into a single training loss.  The network is trained against the Nordhaus 2016 deterministic baseline (which has a known GAMS solution), and only \emph{then} is the deterministic CDICE-DEQN solver declared verified.  This deterministic anchor is what every later experiment sits on top of.
+  \item \textbf{Stochastic extension.}  AR(1) productivity shocks and a Cai--Lontzek-style tipping risk are added.  Because the underlying loss kernel is the same eight residuals, the only structural changes are (a) the next-period state acquires an extra component $z_{t+1}$, (b) the capital and atmospheric-carbon residuals pick up an $\mathbb{E}_t[\cdot]$ via Gauss--Hermite quadrature, and (c) the discount factor becomes the Kreps--Porteus aggregator implied by Epstein--Zin.  No new equations need to be invented.
+\end{enumerate}
+
+The two later sections of the chapter then build on the verified stochastic CDICE solver: Section~\ref{sec:deep_uq} runs deep uncertainty quantification by treating uncertain calibration parameters as pseudo-states, and Section~\ref{sec:pareto_carbon_tax} designs Pareto-improving carbon-tax rules on top of an OLG variant.  A reader who only has time for the deterministic core can stop at the end of the DEQN-implementation subsection and still come away with a complete, working CDICE solver.
 
 \subsection{Epstein--Zin Preferences}
 
@@ -7843,16 +7872,18 @@ After normalization, the most important first-order conditions become (see Onlin
 c_t^{-1/\psi}\,A_t^{1-1/\psi}\,L_t - \hat{\lambda}_t = 0,
 \label{eq:iam_foc_c}\\[4pt]
 \frac{\partial \mathcal{L}}{\partial k_{t+1}} = 0 \;&\Leftrightarrow\;
-\exp\!\bigl(g^A_t + g^L_t\bigr)\,\hat{\lambda}_t - \hat{\beta}_t\,\hat{\lambda}_{t+1}\bigl[\Omega(T_{\mathrm{AT},t+1})\bigl(1-\Theta(\mu_{t+1})\bigr)\alpha k_{t+1}^{\alpha-1} + (1-\delta)\bigr] \nonumber\\
-&\quad - \hat{\nu}^{\mathrm{AT}}_{t+1}\,\sigma_{t+1}(1-\mu_{t+1})A_{t+1}L_{t+1}\alpha k_{t+1}^{\alpha-1} = 0,
+\exp\!\bigl(g^A_t + g^L_t\bigr)\,\hat{\lambda}_t - \hat{\beta}_t\Bigl\{\hat{\lambda}_{t+1}\bigl[\bigl(1-\Omega(T_{\mathrm{AT},t+1}) - \Theta(\mu_{t+1})\bigr)\alpha k_{t+1}^{\alpha-1} + (1-\delta)\bigr] \nonumber\\
+&\quad + \hat{\nu}^{\mathrm{AT}}_{t+1}\,\sigma_{t+1}(1-\mu_{t+1})A_{t+1}L_{t+1}\alpha k_{t+1}^{\alpha-1}\Bigr\} = 0,
 \label{eq:iam_foc_k}\\[4pt]
 \frac{\partial \mathcal{L}}{\partial \mu_t} = 0 \;&\Leftrightarrow\;
-\hat{\lambda}_t\,\Omega(T_{\mathrm{AT},t})\Theta'(\mu_t)\,k_t^\alpha + \hat{\lambda}^\mu_t + \hat{\nu}^{\mathrm{AT}}_t\,\sigma_t\,A_t\,L_t\,k_t^\alpha = 0.
+\hat{\lambda}_t\,\Theta'(\mu_t)\,k_t^\alpha + \hat{\lambda}^\mu_t + \hat{\nu}^{\mathrm{AT}}_t\,\sigma_t\,A_t\,L_t\,k_t^\alpha = 0.
 \label{eq:iam_foc_mu}
 \end{align}
 Equation~\eqref{eq:iam_foc_k} is the capital Euler equation: it equates the marginal cost of saving one additional unit today (left) to the discounted marginal benefit tomorrow (right), which now includes a term from the atmospheric carbon envelope ($\hat{\nu}^{\mathrm{AT}}_{t+1}$) because higher capital increases output and hence emissions.
 
 \paragraph{Envelope conditions.}
+\textit{Convention.} The coefficients $b_{12}, b_{23}, c_1, c_3, c_4$ that appear below (and in the loss list further down) are \emph{per-period} coefficients of the calibrated CDICE tables, i.e.\ they already absorb the time step $\Delta_t$ that was visible in the raw carbon-cycle and temperature dynamics; they are \emph{not} continuous-time rates.  This is why no further $\Delta_t$ multipliers appear in the FOC residuals.
+
 Differentiating the Lagrangian with respect to \emph{state} variables and shifting forward one period yields the shadow prices of the climate stocks.  For example, the atmospheric carbon envelope is:
 \begin{equation}
 \frac{\partial \mathcal{L}}{\partial M_{\mathrm{AT},t+1}} = 0 \;\Leftrightarrow\;
@@ -7909,10 +7940,10 @@ The network architecture uses 2 hidden layers with 1024 units each, SELU activat
 Each equilibrium condition from the previous subsection becomes a residual $l_m = 0$.  The eight components are:
 {\small
 \begin{align}
-l_1 &:= \exp\!\bigl(g^A_t + g^L_t\bigr)\,\hat{\lambda}_t - \hat{\beta}_t\,\hat{\lambda}_{t+1}\bigl[\Omega(T_{\mathrm{AT},t+1})\bigl(1-\Theta(\mu_{t+1})\bigr)\alpha k_{t+1}^{\alpha-1} + (1-\delta)\bigr] \nonumber\\
-    &\quad - \hat{\nu}^{\mathrm{AT}}_{t+1}\,\sigma_{t+1}(1-\mu_{t+1})A_{t+1}L_{t+1}\alpha k_{t+1}^{\alpha-1}
+l_1 &:= \exp\!\bigl(g^A_t + g^L_t\bigr)\,\hat{\lambda}_t - \hat{\beta}_t\Bigl\{\hat{\lambda}_{t+1}\bigl[\bigl(1-\Omega(T_{\mathrm{AT},t+1}) - \Theta(\mu_{t+1})\bigr)\alpha k_{t+1}^{\alpha-1} + (1-\delta)\bigr] \nonumber\\
+    &\quad + \hat{\nu}^{\mathrm{AT}}_{t+1}\,\sigma_{t+1}(1-\mu_{t+1})A_{t+1}L_{t+1}\alpha k_{t+1}^{\alpha-1}\Bigr\}
     \tag*{\text{(capital Euler)}}\label{eq:iam_l1}\\[3pt]
-l_2 &:= \Omega(T_{\mathrm{AT},t})\bigl(1-\Theta(\mu_t)\bigr)\,k_t^\alpha + (1-\delta)\,k_t - c_t - \exp\!\bigl(g^A_t + g^L_t\bigr)\,k_{t+1}
+l_2 &:= \bigl(1-\Omega(T_{\mathrm{AT},t}) - \Theta(\mu_t)\bigr)\,k_t^\alpha + (1-\delta)\,k_t - c_t - \exp\!\bigl(g^A_t + g^L_t\bigr)\,k_{t+1}
     \tag*{\text{(budget)}}\label{eq:iam_l2}\\[3pt]
 l_3 &:= \hat{\nu}^{\mathrm{AT}}_t - \hat{\beta}_t\!\left[\hat{\nu}^{\mathrm{AT}}_{t+1}(1-b_{12}) + \hat{\nu}^{\mathrm{UO}}_{t+1}\,b_{12} + \hat{\eta}^{\mathrm{AT}}_{t+1}\,c_1\,F_{\mathrm{2\times CO_2}}\,\tfrac{1}{\ln 2\,M_{\mathrm{AT},t+1}}\right]
     \tag*{\text{(atm.\ carbon)}}\label{eq:iam_l3}\\[3pt]
@@ -7920,7 +7951,7 @@ l_4 &:= \hat{\nu}^{\mathrm{UO}}_t - \hat{\beta}_t\!\Bigl[\hat{\nu}^{\mathrm{AT}}
     \tag*{\text{(upper ocean C)}}\label{eq:iam_l4}\\[3pt]
 l_5 &:= \hat{\nu}^{\mathrm{LO}}_t - \hat{\beta}_t\!\Bigl[\hat{\nu}^{\mathrm{UO}}_{t+1}\,b_{23}\,\tfrac{M^{\mathrm{UO}}_{\mathrm{EQ}}}{M^{\mathrm{LO}}_{\mathrm{EQ}}} + \hat{\nu}^{\mathrm{LO}}_{t+1}\!\Bigl(1-b_{23}\,\tfrac{M^{\mathrm{UO}}_{\mathrm{EQ}}}{M^{\mathrm{LO}}_{\mathrm{EQ}}}\Bigr)\Bigr]
     \tag*{\text{(lower ocean C)}}\label{eq:iam_l5}\\[3pt]
-l_6 &:= \hat{\eta}^{\mathrm{AT}}_t - \hat{\beta}_t\!\Bigl[-\hat{\lambda}_{t+1}\,\Omega'(T_{\mathrm{AT},t+1})\bigl(1-\Theta(\mu_{t+1})\bigr)\,k_{t+1}^\alpha + \hat{\eta}^{\mathrm{AT}}_{t+1}\!\Bigl(1-c_1\,\tfrac{F_{\mathrm{2\times CO_2}}}{\Delta T_{\mathrm{AT},\times 2}}-c_1 c_3\Bigr) + \hat{\eta}^{\mathrm{OC}}_{t+1}\,c_4\Bigr]
+l_6 &:= \hat{\eta}^{\mathrm{AT}}_t - \hat{\beta}_t\!\Bigl[-\hat{\lambda}_{t+1}\,\Omega'(T_{\mathrm{AT},t+1})\,k_{t+1}^\alpha + \hat{\eta}^{\mathrm{AT}}_{t+1}\!\Bigl(1-c_1\,\tfrac{F_{\mathrm{2\times CO_2}}}{\Delta T_{\mathrm{AT},\times 2}}-c_1 c_3\Bigr) + \hat{\eta}^{\mathrm{OC}}_{t+1}\,c_4\Bigr]
     \tag*{\text{(atm.\ temp.)}}\label{eq:iam_l6}\\[3pt]
 l_7 &:= \hat{\eta}^{\mathrm{OC}}_t - \hat{\beta}_t\!\left[\hat{\eta}^{\mathrm{AT}}_{t+1}\,c_1 c_3 + \hat{\eta}^{\mathrm{OC}}_{t+1}(1-c_4)\right]
     \tag*{\text{(ocean temp.)}}\label{eq:iam_l7}\\[3pt]
@@ -7988,8 +8019,8 @@ and the policy network now reads $u_t = \mathcal{N}_\rho(\tilde{\bm{x}}_t)$.
 Each forward-looking FOC derived in Section~\ref{sec:dice_deqn} now carries a conditional expectation $\mathbb{E}_t[\cdot]$ over the next-period innovation $\varepsilon_{t+1}$.  Schematically the capital Euler~\eqref{eq:iam_foc_k} becomes
 \begin{equation}
 \begin{aligned}
-e^{g^A_t + g^L_t}\,\hat{\lambda}_t \;=\; \mathbb{E}_t\Bigl[\;
-&\hat{\beta}_t\,\hat{\lambda}_{t+1}\bigl(\Omega(T^{\mathrm{AT}}_{t+1})(1-\Theta(\mu_{t+1}))\,\alpha\,k_{t+1}^{\alpha-1} + (1-\delta)\bigr) \\
+e^{g^A_t + g^L_t}\,\hat{\lambda}_t \;=\; \hat{\beta}_t\,\mathbb{E}_t\Bigl[\;
+&\hat{\lambda}_{t+1}\bigl(\bigl(1-\Omega(T^{\mathrm{AT}}_{t+1}) - \Theta(\mu_{t+1})\bigr)\alpha\,k_{t+1}^{\alpha-1} + (1-\delta)\bigr) \\
 &\;+\; \hat{\nu}^{\mathrm{AT}}_{t+1}\,\sigma_{t+1}(1-\mu_{t+1})\,A_{t+1}L_{t+1}\,\alpha\,k_{t+1}^{\alpha-1}\,\Bigr],
 \end{aligned}
 \label{eq:iam_euler_stoch}
@@ -8088,6 +8119,7 @@ For a clean additive variance decomposition under interactions, \citet{owen2014s
 \citet{friedlDeep2023} find that ECS uncertainty and the damage function specification dominate SCC variability, with the pure rate of time preference playing a secondary but nontrivial role.  The SCC distribution is wide and right-skewed, and Bayesian learning shifts mass away from extreme tails over time as the planner accumulates temperature observations.  These findings underscore that climate policy design should target tail insurance, not only mean outcomes.
 
 \section{Constrained Pareto-Improving Carbon Tax Rules}
+\label{sec:pareto_carbon_tax}
 \label{sec:carbon_tax}
 
 The representative-agent IAM of Sections~\ref{sec:dice}--\ref{sec:deep_uq} assumes a benevolent planner who aggregates welfare across time.  In reality, climate policy creates winners and losers: current generations bear abatement costs while future generations enjoy a cleaner climate.  This section extends the analysis to an OLG setting, following \citet{kotlikoff2021making} and \citet{kubler2025using}; the Pareto-improvement criterion is closely related to the social-security reform literature \citep{krueger2006pareto} and to recent work on intergenerational climate policy \citep{Karp_Peri_Rezai_2024}.
@@ -8128,7 +8160,7 @@ Finding an optimal carbon tax rule in this OLG economy is a bilevel optimization
 The tax rule parameters $\vartheta = (\vartheta_0, \vartheta_E, \vartheta_\kappa, \vartheta_{TP})$ and the 11 transfer shares enter the neural network as pseudo-states alongside the economic and climate states.  The DEQN learns the equilibrium for \emph{all} tax rules at once, so that simulating any tax configuration requires only a forward pass.
 
 \paragraph{Step 2: GP surrogate.}
-For each of 500 design points (450 Latin hypercube + 50 Bayesian active learning), the DEQN is simulated to compute welfare for each of the 40 cohorts (11 current, 29 future).  A GP surrogate maps $\vartheta \mapsto \mathbb{E}[\mathcal{W}(\vartheta)]$ and $\vartheta \mapsto \tilde{U}_t(\vartheta)$ for each cohort.
+For each of 500 design points (450 Latin hypercube + 50 Bayesian active learning), the DEQN is simulated to compute welfare for each of the 40 tracked cohorts (12 alive at $t=0$ plus 28 future cohorts born during the policy horizon).  A GP surrogate maps $\vartheta \mapsto \mathbb{E}[\mathcal{W}(\vartheta)]$ and $\vartheta \mapsto \tilde{U}_t(\vartheta)$ for each cohort.
 
 \paragraph{Step 3: Constrained optimization.}
 The planner solves
@@ -8188,7 +8220,7 @@ Active research frontiers include: multi-region IAMs with trade and carbon leaka
 \section*{Exercises}
 \addcontentsline{toc}{section}{Exercises}
 \begin{enumerate}[itemsep=4pt, leftmargin=*]
-\item\label{ex:ch11:1} \textbf{ECS sensitivity.}  Holding all other DICE parameters at calibration, vary the equilibrium climate sensitivity over the Sherwood et al.\ likely range (2.6--3.9\textdegree C) and report the implied SCC at $t=0$.  Then repeat over the broader IPCC AR6 very-likely range (2--5\textdegree C).  How much of the SCC variation is driven by the high-ECS tail?
+\item\label{ex:ch11:1} \textbf{ECS sensitivity.}  Holding all other DICE parameters at calibration, vary the equilibrium climate sensitivity over the \citet{sherwood2020assessment} likely range (2.6--3.9\textdegree C) and report the implied SCC at $t=0$.  Then repeat over the broader IPCC AR6 very-likely range (2--5\textdegree C).  How much of the SCC variation is driven by the high-ECS tail?
 \item\label{ex:ch11:2} \textbf{Sobol decomposition.}  For a function $q(\theta_1, \theta_2, \theta_3) = \theta_1\theta_2 + \theta_3^2$ with i.i.d.\ uniform inputs $\theta_i \sim \mathcal{U}[0,1]$, compute the Sobol first- and total-effect indices analytically.  Verify with a $10\,000$-sample SALib estimate.
 \item\label{ex:ch11:3} \textbf{ACE benchmark.}  Using the closed-form ACE expression for the optimal carbon tax, compute the SCC at calibration and compare with the DEQN-trained DICE solution.  Quantify the discrepancy in \% terms.
 \item\label{ex:ch11:4} \textbf{Pareto-improving tax design.}  Building on the OLG-IAM of Section~\ref{sec:olg_iam}, search over linear tax rules $\vartheta = (a_0, a_T)$ such that $\tilde U_t(\vartheta) \ge U_t$ for all cohorts.  How tight is the Pareto frontier?
@@ -8259,7 +8291,7 @@ Typical use   & DSGE, OLG, IRBC & HJB, option pricing & Estimation, UQ, policy &
 \label{tab:method_decision_guide}
 \end{table}
 
-\noindent A few practical takeaways from the table.  \textbf{DEQNs} are the workhorse for \emph{discrete-time} general-equilibrium models with high-dimensional state spaces, where Euler equations and market-clearing residuals admit a clean residual-loss formulation.  \textbf{PINNs} are the natural analogue in \emph{continuous time}, replacing finite-difference HJB or BSDE solvers when one needs exact derivatives of the solution by automatic differentiation rather than by interpolation.  \textbf{Deep surrogates} differ in kind: they do not solve the model; they learn a fast emulator of the already-solved mapping from parameters to economic quantities, which is what makes structural estimation, sensitivity analysis, and policy design tractable at scale.  \textbf{Gaussian processes with Bayesian active learning} occupy the small-data, high-uncertainty corner: the right tool when each evaluation is expensive, the input dimension is moderate ($d \lesssim 50$ with active subspaces), and posterior uncertainty is itself part of the answer.  \textbf{EMINNs} (Chapter~\ref{ch:ct_theory}) are a specialization of the PINN paradigm to continuous-time heterogeneous-agent master equations: they keep the PDE-residual training logic but encode the cross-sectional distribution itself as part of the network input, which is currently the only feasible route to global solutions of Krusell--Smith-style models with aggregate shocks.
+\noindent A few practical takeaways from the table.  \textbf{DEQNs} are the workhorse for \emph{discrete-time} general-equilibrium models with high-dimensional state spaces, where Euler equations and market-clearing residuals admit a clean residual-loss formulation.  \textbf{PINNs} are the natural analogue in \emph{continuous time}, replacing finite-difference HJB or BSDE solvers when one needs exact derivatives of the solution by automatic differentiation rather than by interpolation.  \textbf{Deep surrogates} differ in kind: they do not solve the model; they learn a fast emulator of the already-solved mapping from parameters to economic quantities, which is what makes structural estimation, sensitivity analysis, and policy design tractable at scale.  \textbf{Gaussian processes with Bayesian active learning} occupy the small-data, high-uncertainty corner: the right tool when each evaluation is expensive, the input dimension is moderate ($d \lesssim 10$ for na\"ive GPs, extending to $d \lesssim 500$ with active subspaces), and posterior uncertainty is itself part of the answer.  \textbf{EMINNs} (Chapter~\ref{ch:ct_theory}) are a specialization of the PINN paradigm to continuous-time heterogeneous-agent master equations: they keep the PDE-residual training logic but encode the cross-sectional distribution itself as part of the network input, which is currently the only feasible route to global solutions of Krusell--Smith-style models with aggregate shocks.
 
 The categories are not mutually exclusive.  Many production pipelines combine them, e.g., a DEQN to solve the equilibrium and a deep surrogate or GP that treats parameters as pseudo-states for estimation (Chapter~\ref{ch:estimation}), or a PINN with a surrogate wrapper for policy counterfactuals.  The right question is rarely ``which of the four?'' but ``which combination?''.
 
@@ -8464,8 +8496,8 @@ For further reading, we refer to the comprehensive survey by \citet{fernandezvil
 Report the wall-clock time of each step, total pipeline time, estimation errors, and a comparison to a naive SMM that re-solves the DEQN at each candidate $(\beta,\alpha)$.  Evaluate whether the surrogate-based optimization is faster after accounting for the one-time GP fitting overhead and whether its accuracy is comparable.  Bonus: bootstrap confidence intervals for $(\hat\beta,\hat\alpha)$ using the parametric bootstrap of Exercise~\ref{ex:ch10:6}.
 \item\label{ex:ch12:6} \textbf{DeepONet for a parameterized HJB.}  Consider the cake-eating HJB
 \[
-\rho V(a; \gamma) = \max_c \left[\frac{c^{1-\gamma}}{1-\gamma} - V'(a; \gamma)c\right],
-\qquad \gamma \in [1.5,5].
+\rho V(a; \gamma) = \max_c \left[\frac{c^{1-\gamma}}{1-\gamma} + V'(a; \gamma)(ra - c)\right],
+\qquad \gamma \in [1.5,5],
 \]
 \begin{enumerate}[label=(\roman*), itemsep=2pt]
 \item Sketch the DeepONet architecture for learning the operator $\mathcal{G}: \gamma \mapsto V(\cdot;\gamma)$: identify the branch-net input and the trunk-net input, and write the predicted output as the inner product of branch and trunk outputs.
@@ -8585,7 +8617,7 @@ $\tfrac{1}{T}\int_0^T \varphi(X_t)\,dt \xrightarrow{T\to\infty} \int \varphi\,d\
 \chapter{Fixed Points, Contraction Mappings, and the Bellman Operator}
 \label{app:fixed_points}
 
-The classical numerical-economics toolkit rests on Banach's contraction-mapping theorem; this appendix recalls the statement and one short proof sketch for completeness.  A reference is \citet{stokey1989recursive}.
+The classical numerical-economics toolkit rests on Banach's contraction-mapping theorem; this appendix recalls the statement and one short proof sketch for completeness.  A reference is \citet{stokeylucas1989}.
 
 \section{Banach's theorem}
 Let $(X, d)$ be a complete metric space and let $T: X \to X$ be a contraction with modulus $\beta < 1$, i.e.\ $d(T x, T y) \le \beta\, d(x, y)$ for all $x, y$.  Then $T$ has a unique fixed point $x^\star$, and for every starting point $x_0$ the iterates $x_{n+1} = Tx_n$ satisfy $d(x_n, x^\star) \le \beta^n\, d(x_0, x^\star)$.
@@ -9428,7 +9460,7 @@ then the Gaussian AR(1) likelihood gives a direct MLE for $\varrho$ (OLS of $\lo
 \label{sol:ch11}
 
 \paragraph{Exercise~\ref{ex:ch11:1} --- ECS sensitivity.}
-Coding exercise.  Report the SCC at the central calibration and at each ECS value in the likely and very-likely ranges.  The expected qualitative pattern is monotone and often convex in ECS: higher equilibrium climate sensitivity raises temperature damages and therefore the emissions shadow price.  The quantitative range is calibration-dependent and should be reported from the notebook rather than fixed in the solution text.  The interpretation should connect the dispersion to the climate-science finding of Sherwood et al.\ (2020) that ECS uncertainty is a major driver of SCC uncertainty.
+Coding exercise.  Report the SCC at the central calibration and at each ECS value in the likely and very-likely ranges.  The expected qualitative pattern is monotone and often convex in ECS: higher equilibrium climate sensitivity raises temperature damages and therefore the emissions shadow price.  The quantitative range is calibration-dependent and should be reported from the notebook rather than fixed in the solution text.  The interpretation should connect the dispersion to the climate-science finding of \citet{sherwood2020assessment} that ECS uncertainty is a major driver of SCC uncertainty.
 
 \paragraph{Exercise~\ref{ex:ch11:2} --- Sobol decomposition.}
 For $q(\theta_1, \theta_2, \theta_3) = \theta_1\theta_2 + \theta_3^2$ with $\theta_i \sim \mathcal{U}[0,1]$ i.i.d.:
@@ -9527,7 +9559,7 @@ The threshold occurs at
 \]
 where the value of information just balances the irreversibility cost.
 
-\emph{Connection to climate policy.}  This stylized model captures the central tension in climate policy: information arrives over time about ECS, damage functions, and tipping thresholds, but emissions are largely irreversible (atmospheric CO$_2$ persists for centuries).  The chapter's Bayesian-learning treatment makes the trade-off quantitative: under fast learning and slow climate dynamics, waiting can be optimal; under slow learning and fast tipping risks, an early-action premium emerges.  The empirical literature (Pindyck 2007; Cai et al.\ 2019) finds that for realistic climate calibrations, the irreversibility channel typically dominates, supporting near-term carbon tax implementation rather than ``wait and see'' policies.
+\emph{Connection to climate policy.}  This stylized model captures the central tension in climate policy: information arrives over time about ECS, damage functions, and tipping thresholds, but emissions are largely irreversible (atmospheric CO$_2$ persists for centuries).  The chapter's Bayesian-learning treatment makes the trade-off quantitative: under fast learning and slow climate dynamics, waiting can be optimal; under slow learning and fast tipping risks, an early-action premium emerges.  The empirical literature \citep{pindyck2007uncertainty, caiSocialCostCarbon2019} finds that for realistic climate calibrations, the irreversibility channel typically dominates, supporting near-term carbon tax implementation rather than ``wait and see'' policies.
 
 \section{Chapter \ref{ch:outlook} --- Synthesis and Outlook}
 \label{sol:ch12}
@@ -9593,7 +9625,7 @@ At $N=50$, the break-even ratio is therefore $50$: a DeepONet can cost up to fif
 % ============================================================================
 % BIBLIOGRAPHY
 % ============================================================================
-\bibliography{../bib/bib_econ}
+\bibliography{../readings/bibliography}
 
 
 \end{document}

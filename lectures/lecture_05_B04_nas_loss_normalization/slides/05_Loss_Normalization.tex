@@ -1,7 +1,5 @@
 % ============================================================================
 % Multi-Component Loss Balancing for Deep Learning
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 45 minutes
 % ============================================================================
 
@@ -77,12 +75,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{ReLoBRaLo and gradient-conflict mitigation in multi-equation residual losses}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -142,6 +140,19 @@
 {\scriptsize Hands-on: \texttt{04\_Loss\_Normalization.ipynb}}
 \end{center}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Identify scale problems in multi-component losses (PINNs, DEQNs, multi-task) and diagnose gradient dominance
+  \item Implement adaptive loss-balancing strategies: inverse-loss weighting, SoftAdapt, and ReLoBRaLo
+  \item Derive and apply the ReLoBRaLo relative-ratio update rule with baseline mixing and exponential smoothing
+  \item Compare GradNorm (gradient-norm balancing) with ReLoBRaLo and select appropriate methods for constrained optimization
+  \item Tune temperature parameters and validate on multi-scale function approximation; apply to DEQN training with PINN-style residual losses
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART 1: MOTIVATION
@@ -474,7 +485,7 @@ Typical choices: $\beta_{\mathrm{ema}} = 0.99$, $\epsilon = 10^{-8}$.
 \end{frame}
 
 % --- Slide 12: SoftAdapt Formula ---
-\begin{frame}{SoftAdapt --- Formula}
+\begin{frame}[shrink=15]{SoftAdapt --- Formula}
 \begin{block}{Weight update (Heydari et al., 2019)}
 \[
     \hat{w}_i^{(t)} = \frac{\exp\!\bigl(\Delta_i^{(t)} / T\bigr)}{\sum_{j=1}^K \exp\!\bigl(\Delta_j^{(t)} / T\bigr)} \cdot K
@@ -490,6 +501,12 @@ where $\Delta_i^{(t)} = \mathcal{L}_i^{(t)} - \mathcal{L}_i^{(t-1)}$ and $T > 0$
     \item Components with \emphc{increasing loss} (poor progress) receive more weight
     \item Components with decreasing loss receive less weight
 \end{itemize}
+
+\vspace{0.2cm}
+\begin{alertblock}{Scale caveat}
+\footnotesize
+Raw $\Delta_i^{(t)}$ is dimensional: a component with loss $\sim 10^3$ produces fluctuations that swamp one with loss $\sim 10^{-3}$. In practice rescale before the softmax, e.g.\ $\tilde\Delta_i^{(t)} = \Delta_i^{(t)} / (\mathcal{L}_i^{(t)} + \varepsilon)$, so the mechanism reacts to \emph{relative} progress rather than absolute magnitudes.
+\end{alertblock}
 \end{frame}
 
 % --- Slide 13: ReLoBRaLo Idea ---

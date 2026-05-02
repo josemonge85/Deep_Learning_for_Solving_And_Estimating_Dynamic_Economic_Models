@@ -5,7 +5,7 @@ The automatic-differentiation machinery that DEQN training depends on, made expl
 `cpu-standard` · `standard` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
 > 📑 **Slides:** [05b_AutoDiff_for_DEQN.pdf](slides/05b_AutoDiff_for_DEQN.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb) (4 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_07_B05_01_AutoDiff_Analytical_Examples.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_07_B05.md)  
 > 📖 **Script:** §2.7 (Automatic differentiation), §Appendix B (Matrix calculus)
 
@@ -33,10 +33,10 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb`](code/lecture_06_B05_01_AutoDiff_Analytical_Examples.ipynb)
-- [`code/lecture_06_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb`](code/lecture_06_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb)
-- [`code/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb`](code/lecture_06_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb)
-- [`code/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb`](code/lecture_06_B05_04_IRBC_AutoDiff_DEQN.ipynb)
+- [`code/lecture_07_B05_01_AutoDiff_Analytical_Examples.ipynb`](code/lecture_07_B05_01_AutoDiff_Analytical_Examples.ipynb)
+- [`code/lecture_07_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb`](code/lecture_07_B05_02_Brock_Mirman_AutoDiff_DEQN.ipynb)
+- [`code/lecture_07_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb`](code/lecture_07_B05_03_Brock_Mirman_Uncertainty_AutoDiff_DEQN.ipynb)
+- [`code/lecture_07_B05_04_IRBC_AutoDiff_DEQN.ipynb`](code/lecture_07_B05_04_IRBC_AutoDiff_DEQN.ipynb)
 
 ## In the lecture script
 

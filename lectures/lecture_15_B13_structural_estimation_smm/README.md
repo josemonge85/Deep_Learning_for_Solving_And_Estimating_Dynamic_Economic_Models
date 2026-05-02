@@ -5,7 +5,7 @@ Structural estimation by simulated method of moments (SMM), made tractable by re
 `cpu-standard` · `long` · builds on [Lecture 14 (B12)](../lecture_14_B12_surrogates_and_gps/README.md)
 
 > 📑 **Slides:** [08_Exercise_Structural_Estimation.pdf](slides/08_Exercise_Structural_Estimation.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_14_B13_03_Structural_Estimation_BM.ipynb) (2 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_15_B13_03_Structural_Estimation_BM.ipynb) (2 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_15_B13.md)  
 > 📖 **Script:** §Chapter 10 (Structural estimation via SMM)
 
@@ -33,8 +33,8 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_14_B13_03_Structural_Estimation_BM.ipynb`](code/lecture_14_B13_03_Structural_Estimation_BM.ipynb)
-- [`code/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb`](code/lecture_14_B13_03b_Structural_Estimation_BM_Joint.ipynb)
+- [`code/lecture_15_B13_03_Structural_Estimation_BM.ipynb`](code/lecture_15_B13_03_Structural_Estimation_BM.ipynb)
+- [`code/lecture_15_B13_03b_Structural_Estimation_BM_Joint.ipynb`](code/lecture_15_B13_03b_Structural_Estimation_BM_Joint.ipynb)
 
 ## In the lecture script
 

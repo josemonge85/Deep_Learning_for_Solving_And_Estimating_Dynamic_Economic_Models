@@ -1,7 +1,5 @@
 % ============================================================================
 % Physics (Economics)-Informed Neural Networks (PINNs)
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 75 minutes
 % ============================================================================
 
@@ -96,12 +94,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{Foundations, boundary conditions, applications to ODEs and economic PDEs}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 % --- Exercise pause badge ---
@@ -130,31 +128,7 @@
 \end{frame}
 }
 
-% --- Slide 2: Outline ---
-\begin{frame}{Outline}
-\begin{enumerate}
-    \item \textbf{From DEQNs to PINNs}\\
-    {\small Bridging discrete and continuous time; the PINN loss.}
-
-    \vspace{0.4em}
-    \item \textbf{PINN Fundamentals}\\
-    {\small Automatic differentiation for PDEs, collocation, training loop.}
-
-    \vspace{0.4em}
-    \item \textbf{Soft vs.\ Hard Boundary Conditions}\\
-    {\small Trial solutions, 2D Poisson, practical guidance.}
-
-    \vspace{0.4em}
-    \item \textbf{Economic Applications: HJB Equation}\\
-    {\small Cake-eating problem, scaled trial solution + hard BCs, Adam $\to$ L-BFGS, analytical benchmark; DGM as optional high-D architecture.}
-
-    \vspace{0.4em}
-    \item \textbf{Financial Applications: Black--Scholes}\\
-    {\small Option pricing via PINNs, comparison with analytical formula.}
-\end{enumerate}
-\end{frame}
-
-% --- Slide 3: Roadmap ---
+% --- Slide 2: Roadmap ---
 \begin{frame}{Roadmap of This Lecture}
 \begin{columns}[T]
 \column{0.48\textwidth}
@@ -191,6 +165,20 @@
 \end{columns}
 \end{frame}
 
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Build a PINN loss function combining PDE residuals and boundary conditions
+  \item Implement automatic differentiation to compute derivatives of neural-network outputs with respect to spatial and temporal variables
+  \item Construct trial solutions with hard boundary-condition enforcement for economic problems (HJB, cake-eating)
+  \item Compare discrete-time (DEQN) and continuous-time (PINN) formulations and recognize when each is appropriate
+  \item Diagnose training instabilities in PINNs and apply remedies (warm-start with Adam, L-BFGS polishing, double precision)
+  \item Solve economic and finance PDEs (HJB, Black--Scholes) to high accuracy using PINNs with appropriate boundary conditions
+\end{itemize}
+\end{frame}
+
+
 % ============================================================================
 % PART I: FROM DEQNs TO PINNs
 % ============================================================================
@@ -206,7 +194,7 @@
 \end{frame}
 
 % --- Slide 5: Recall the DEQN Loss ---
-\begin{frame}{Recall: The DEQN Loss from Day 1}
+\begin{frame}{Recall: The DEQN Loss}
 \textbf{Yesterday:} we trained a neural network $\mathcal{N}_\theta$ to satisfy
 economic equilibrium conditions in \emphc{discrete time}:
 \[
@@ -691,7 +679,7 @@ $\ell = \frac{1}{N}\!\sum_i r(x_i)^2 + \mathcal{N}_\theta(0)^2 + \mathcal{N}_\th
 
 \column{0.53\textwidth}
 \begin{center}
-\includegraphics[width=\linewidth]{fig/day6_ext/pinn_ode_warmup.png}\\
+\includegraphics[width=\linewidth]{fig/ext/pinn_ode_warmup.png}\\
 {\scriptsize Trained PINN matches analytical solution; pointwise error $\sim 10^{-3}$.}
 \end{center}
 \end{columns}
@@ -1085,7 +1073,7 @@ def residual(model, x):
 % --- Slide 22: Soft vs Hard Comparison ---
 \begin{frame}{Soft vs.\ Hard BCs: Comparison}
 \begin{center}
-\includegraphics[width=0.90\linewidth]{fig/day6_ext/pinn_softvshard.png}
+\includegraphics[width=0.90\linewidth]{fig/ext/pinn_softvshard.png}
 \end{center}
 
 \vspace{0.05em}
@@ -1148,7 +1136,7 @@ A = (1\!-\!x)\,g_L(y) + x\,g_R(y) + (1\!-\!y)\,g_B(x) + y\,g_T(x) - \text{corner
 % --- Slide 24: 2D Results ---
 \begin{frame}{2D Poisson: Results}
 \begin{center}
-\includegraphics[width=0.96\linewidth]{fig/day6_ext/pinn_poisson2d_hard.png}
+\includegraphics[width=0.96\linewidth]{fig/ext/pinn_poisson2d_hard.png}
 \end{center}
 
 \vspace{0.1em}
@@ -1253,7 +1241,7 @@ V^\star(a) = \frac{\kappa^{-\gamma}}{1-\gamma}\,a^{1-\gamma}, \qquad c^\star(a) 
 Endpoints are exact \emph{by construction}, so the boundary loss is identically zero and the optimizer focuses on the HJB residual only.
 
 \vspace{0.3em}
-\textbf{Consumption} via FOC, $\hat c(a) = (\hat V'(a))^{-1/\gamma}$, with softplus safeguard on $\hat V'$.
+\textbf{Consumption} via FOC, $\hat c(a) = (\widetilde V_a)^{-1/\gamma}$ with $\widetilde V_a := \operatorname{softplus}(\hat V'(a)) + \varepsilon$ (positivity safeguard).  The same $\widetilde V_a$ enters the HJB residual below; the printed $\hat V'$ is schematic.
 
 \vspace{0.3em}
 \textbf{Loss}: only the interior HJB residual remains,
@@ -1265,6 +1253,9 @@ Endpoints are exact \emph{by construction}, so the boundary loss is identically 
 
 \vspace{0.2em}
 {\small \emphc{Pedagogical point:} a small MLP plus hard BCs beats a large gated net with a soft-BC penalty, because the boundary term no longer dominates the objective.}
+
+\vspace{0.2em}
+{\scriptsize \emphc{Well-posedness note:} the closed-form solution $V^\star(a) = \kappa^{-\gamma}\,a^{1-\gamma}/(1-\gamma)$ requires $\kappa = (\rho - (1-\gamma) r)/\gamma > 0$, i.e.\ $\rho > (1-\gamma) r$ (for $\gamma < 1$ a non-trivial parameter restriction; for $\gamma > 1$ automatic when $\rho, r > 0$). Absent this transversality, the value is unbounded.}
 \end{frame}
 
 % --- Slide 30: DGM Architecture (optional / high-D) ---

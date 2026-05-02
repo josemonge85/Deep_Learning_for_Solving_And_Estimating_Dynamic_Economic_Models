@@ -1,7 +1,5 @@
 % ============================================================================
 % Automatic Differentiation for Deep Equilibrium Nets
-% University of Geneva -- Day 4 morning primer
-% April 20-23 & May 4-7, 2026
 % Duration: ~50 minutes
 % ============================================================================
 
@@ -100,7 +98,7 @@
 \subtitle{From the Lagrangian primitive to two-tape Euler residuals}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -113,8 +111,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize A Day~4 morning primer, to be used alongside the Day~4 autodiff notebooks (\texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}, \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN})\\
-\texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN} and \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN}.}\\[4pt]
+{\footnotesize A primer for the autodiff notebooks (\texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}, \texttt{03\_Brock\_Mirman\_Uncertainty\_AutoDiff\_DEQN}).}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -137,6 +134,19 @@
 A little calculus, a little Python. \emph{No prior exposure to autodiff assumed.}
 \end{block}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Implement automatic differentiation to compute exact first and second derivatives of arbitrary code for economic models
+  \item Compare symbolic, finite-difference, and autodiff approaches and diagnose failure modes in each
+  \item Derive first-order conditions and envelope-theorem expressions using autodiff instead of hand algebra
+  \item Build a two-tape computation graph to compute Euler residuals directly from the Lagrangian
+  \item Deploy gradient-descent optimization on neural-network policies using exact gradients computed via reverse-mode autodiff
+\end{itemize}
+\end{frame}
+
 
 % ============================================================================
 % PART 1: MOTIVATION
@@ -193,7 +203,7 @@ One typo $\Rightarrow$ wrong solver, silently.
 \end{frame}
 
 \begin{frame}{Preview: the pen-and-paper tax, visualised}
-\footnotesize Notebook~01 (Brock--Mirman, Day~2; the autodiff version is Day~4 nb~02) needed \emph{two pages} of algebra before we could code the loss:
+\footnotesize The original Brock--Mirman notebook (\texttt{01\_Brock\_Mirman\_DEQN}; the autodiff version is \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}) needed \emph{two pages} of algebra before we could code the loss:
 \begin{center}
 \begin{tikzpicture}[node distance=4mm]
 \node[draw, fill=red!10, rounded corners, minimum width=3.8cm, minimum height=0.9cm, font=\scriptsize, align=center] (a) {Write the Lagrangian};
@@ -378,7 +388,7 @@ Three statements, in order. None of them is technical.
 \end{block}
 \end{frame}
 
-\begin{frame}{Where do the local derivatives come from? A tiny built-in table}
+\begin{frame}[shrink=20]{Where do the local derivatives come from? A tiny built-in table}
 \footnotesize
 \textbf{Punchline.} The computer doesn't ``know calculus''. It knows a short \emphc{hardcoded table} of derivatives for \emph{elementary} operations. Every program is built from these; the chain rule composes the pieces.
 \vspace{4pt}
@@ -986,8 +996,8 @@ Trained policy vs $\alpha\beta z K^\alpha$ ($\delta\!=\!1$, $25^2$ grid) & max r
 \item \textbf{Multiple states.} $\Pi(K_t, z_t, K_{t+1})$. Same code: \texttt{tape.gradient(pi, K\_out)}.
 \item \textbf{Multiple controls.} Let $a = (K', L)$. AD returns gradient w.r.t.\ each in one call.
 \item \textbf{Heterogeneous agents.} $\Pi$ becomes a sum over $i$; gradient of a sum is a sum of gradients.
-\item \textbf{OLG} (Day~4 main lecture). A separate $\Pi$ per age cohort; gradients stack.
-\item \textbf{Irreversibility constraints} (Day~3 IRBC). Fischer--Burmeister residuals sit alongside; the core Euler part still autodiffs.
+\item \textbf{OLG.} A separate $\Pi$ per age cohort; gradients stack.
+\item \textbf{Irreversibility constraints} (IRBC). Fischer--Burmeister residuals sit alongside; the core Euler part still autodiffs.
 \end{itemize}
 \vspace{6pt}
 \begin{exampleblock}{Think of it this way}
@@ -1191,7 +1201,7 @@ Envelope vs total grad & wrong loss off the optimum & differentiate w.r.t.\ the 
 
 \begin{frame}[fragile]{Where to go next}
 \footnotesize
-\begin{block}{Run the notebooks (Day 4)}
+\begin{block}{Run the notebooks}
 \begin{itemize}\itemsep1pt
 \item \texttt{01\_AutoDiff\_Analytical\_Examples}: warm-ups + 2-D gradient fields from \S 4.
 \item \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}: deterministic Brock--Mirman.

@@ -1,7 +1,5 @@
 % ============================================================================
 % Introduction to Machine Learning and Deep Learning
-% University of Geneva
-% April 20--23 & May 4--7, 2026
 % Duration: 90 minutes
 % ============================================================================
 
@@ -77,12 +75,12 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 % ---------- Title ----------
-\title[Deep Learning -- Geneva 2026]%
+\title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
 \subtitle{From basic ML through DNNs to sequence models for economic time series}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
-\date{University of Geneva\\April 20--23 \& May 4--7, 2026}
+\date{}
 
 \begin{document}
 
@@ -102,21 +100,21 @@
 \footnotesize
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{Session 1: April 20--23 (Discrete Time)}
+\textbf{Block 1: Discrete-time methods}
 \begin{itemize}
-    \item Day 1~~Intro to ML \& Deep Learning
-    \item Day 2~~Deep Equilibrium Nets (DEQNs)
-    \item Day 3~~IRBC, NAS \& Loss Normalization
-    \item Day 4~~OLG, Young's Method \& Sequence Space
+    \item Intro to ML \& Deep Learning
+    \item Deep Equilibrium Nets (DEQNs)
+    \item IRBC, NAS \& Loss Normalization
+    \item OLG, Young's Method \& Sequence Space
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Session 2: May 4--7 (Agentic AI, CT \& Apps)}
+\textbf{Block 2: Agentic AI, continuous-time methods, applications}
 \begin{itemize}
-    \item Day 5~~Agentic Programming (AI for Research)
-    \item Day 6~~PINNs \& CT Heterogeneous Agents (HJB+KFE)
-    \item Day 7~~Surrogates, GPs \& Deep Kernels
-    \item Day 8~~Climate Economics, IAMs \& Deep UQ
+    \item Agentic Programming (AI for Research)
+    \item PINNs \& CT Heterogeneous Agents (HJB+KFE)
+    \item Surrogates, GPs \& Deep Kernels
+    \item Climate Economics, IAMs \& Deep UQ
 \end{itemize}
 \end{columns}
 \normalsize
@@ -159,6 +157,19 @@
 \end{itemize}
 \end{columns}
 \end{frame}
+
+% --- Learning objectives ---
+\begin{frame}{Learning objectives}
+\textbf{By the end of this lecture you should be able to:}
+\begin{itemize}
+  \item Classify supervised, unsupervised, and reinforcement learning problems and select appropriate methods for economic applications
+  \item Build neural networks with multiple layers and nonlinear activations, and explain why nonlinearity is essential
+  \item Implement the three-step ML recipe (model, loss, optimizer) and apply gradient descent with backpropagation
+  \item Diagnose overfitting versus underfitting and apply regularization techniques to improve generalization
+  \item Construct sequence models (RNNs, LSTMs, Transformers) to handle economic time series data
+\end{itemize}
+\end{frame}
+
 
 % --- Slide 4: The Rise of Neural Networks ---
 \begin{frame}{The Rise of Neural Networks}
@@ -346,7 +357,7 @@ Deep learning enables machines to:
 \end{frame}
 
 % --- Slide 12: Why Deep Learning Now? ---
-\begin{frame}{Why Deep Learning Now?}
+\begin{frame}[shrink=15]{Why Deep Learning Now?}
 Neural networks date back to the 1940s.  Three developments made them practical:
 
 \vspace{0.4cm}
@@ -1088,7 +1099,7 @@ The discriminant line $1+3x_1-2x_2=0$ separates the two classes.
 \end{frame}
 
 % --- Slide 22: Multi-Output Perceptron ---
-\begin{frame}{Multi-Output Perceptron}
+\begin{frame}[shrink=15]{Multi-Output Perceptron}
 \begin{columns}[T]
 \column{0.50\textwidth}
 \begin{center}
@@ -2921,7 +2932,7 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
 \end{exampleblock}
 
 \vspace{1pt}
-{\scriptsize Day 1 notebooks: \texttt{08\_MLP\_LSTM\_Transformer\_Edgeworth\_Cycles} (the three-way comparison on the same task) and \texttt{09\_Transformer\_InContext\_AR1} (advanced / optional).}
+{\scriptsize Earlier-lecture notebooks: \texttt{08\_MLP\_LSTM\_Transformer\_Edgeworth\_Cycles} (the three-way comparison on the same task) and \texttt{09\_Transformer\_InContext\_AR1} (advanced / optional).}
 \end{frame}
 
 % ============================================================================
@@ -2965,7 +2976,7 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
 
 % --- Slide 50: Hands-on Notebooks ---
 \begin{frame}{Hands-On Notebooks}
-The following Jupyter notebooks are available on Nuvolos:
+The companion Jupyter notebooks are available in the course repository:
 
 \vspace{0.3cm}
 \begin{center}
