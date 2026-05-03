@@ -18,6 +18,11 @@ runnable, and self-contained.*
   <a href="LICENSE"><img alt="Free, self-paced, no enrollment" src="https://img.shields.io/badge/free-self--paced-1f4e79?style=for-the-badge"></a>
 </p>
 
+<h3 align="center">
+  Course author: <a href="https://sischei.github.io/">Simon Scheidegger</a>
+</h3>
+<p align="center"><em>University of Lausanne</em></p>
+
 <br/>
 
 ## About this course
@@ -265,7 +270,7 @@ live under
 the full bibliography is in
 [`readings/bibliography.bib`](readings/bibliography.bib).
 
-Course author: **Simon Scheidegger** (University of Lausanne).
+Course author: **[Simon Scheidegger](https://sischei.github.io/)** (University of Lausanne).
 Code is MIT-licensed; text, slides, script, and figures are CC0
 (see [`LICENSE`](LICENSE) for both).
 To cite: [`CITATION.cff`](CITATION.cff).
