@@ -9,7 +9,13 @@ runnable, and self-contained.*
 </p>
 
 <p align="center">
-  <strong>18 lectures</strong> · <strong>runnable notebooks</strong> · <strong>275-page companion script</strong> · <strong>AI-coding workshop</strong> · <strong>exercises with solutions</strong> · <strong>free, self-paced, no enrollment</strong>
+  <img alt="18 lectures" src="https://img.shields.io/badge/lectures-18-1f4e79?style=for-the-badge">
+  <img alt="Runnable notebooks" src="https://img.shields.io/badge/notebooks-runnable-1f4e79?style=for-the-badge">
+  <img alt="Companion script" src="https://img.shields.io/badge/script-284%20pages-1f4e79?style=for-the-badge">
+  <br/>
+  <img alt="AI-coding workshop" src="https://img.shields.io/badge/AI%20coding-workshop-1f4e79?style=for-the-badge">
+  <img alt="Exercises with solutions" src="https://img.shields.io/badge/exercises-with%20solutions-1f4e79?style=for-the-badge">
+  <img alt="Free, self-paced, no enrollment" src="https://img.shields.io/badge/free-self--paced-1f4e79?style=for-the-badge">
 </p>
 
 <br/>
