@@ -2,7 +2,7 @@
 
 A walk-through of the 18-lecture sequence.
 
-> For the public README portal, see [`README.md`](README.md). For the chapter-based companion text, see [`lecture_script/lecture_script.pdf`](lecture_script/lecture_script.pdf).
+> For the public README portal, see [`README.md`](README.md). For the chapter-based companion text, see [`lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf`](lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf).
 
 ## Conventions
 

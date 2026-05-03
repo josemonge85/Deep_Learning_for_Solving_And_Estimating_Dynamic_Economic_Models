@@ -1,55 +1,68 @@
 # Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
 
+*Deep learning for the recursive, stochastic, high-dimensional dynamic
+models that economists actually solve, with all materials free,
+runnable, and self-contained.*
+
 <p align="center">
   <img src="assets/hero/deep_learning_dynamic_models_hero.png" width="95%" alt="Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance">
+</p>
+
+<p align="center">
+  <strong>18 lectures</strong> · <strong>runnable notebooks</strong> · <strong>275-page companion script</strong> · <strong>AI-coding workshop</strong> · <strong>exercises with solutions</strong> · <strong>free, self-paced, no enrollment</strong>
 </p>
 
 <br/>
 
 ## About this course
 
-Modern macroeconomics, finance, and climate economics have outgrown the
-grid-based numerical methods that dominated a generation ago. Once you
-add heterogeneous agents, overlapping generations, occasionally binding
-constraints, continuous-time dynamics, or coupled climate-economic
-interactions, the state space becomes too large for tensor-product
-grids and classical methods (projection, value-function iteration,
-perturbation) hit a wall. If you are trying to solve models with ten or
-more state dimensions, estimate them, or design policy under deep
-uncertainty, you need a different toolbox.
+**Classical grid methods hit a wall.** Modern macroeconomics, finance,
+and climate economics have outgrown the grid-based numerical methods
+that dominated a generation ago. Once you add heterogeneous agents,
+overlapping generations, occasionally binding constraints,
+continuous-time dynamics, or coupled climate-economic interactions,
+the state space becomes too large for tensor-product grids and
+classical methods (projection, value-function iteration, perturbation)
+break down. If you are trying to solve models with ten or more state
+dimensions, estimate them, or design policy under deep uncertainty,
+you need a different toolbox.
 
-This course teaches a coherent set of deep-learning methods built *for*
-the recursive, stochastic, often high-dimensional models that
-economists actually solve. The methods work by letting economic
+**This course teaches that toolbox.** A coherent set of deep-learning
+methods built *for* the recursive, stochastic, often high-dimensional
+models economists actually solve. The methods work by letting economic
 structure drive the learning problem: equilibrium conditions, Bellman
 equations, and PDEs become the residual loss, e.g., in Deep
 Equilibrium Nets or Physics-Informed Neural Networks (an unsupervised
 setup), or they shape the simulator that generates the (input, output)
 pairs a deep surrogate or Gaussian process then learns in the standard
-supervised way. You will build
-each method from scratch on benchmarks where the answer is known
-(Brock-Mirman, cake-eating, Black-Scholes) before applying them to
-models where it is not (IRBC, OLG with 56 cohorts, Krusell-Smith with
-a continuum, continuous-time heterogeneous agents, climate-economic
-coupling). By the end you will be able to solve models that were out
-of reach with classical tools, estimate them when re-solving is too
-expensive, and design policies that take deep uncertainty seriously.
+supervised way. You will build each method from scratch on benchmarks
+where the answer is known (Brock-Mirman, cake-eating, Black-Scholes)
+before applying them to models where it is not (IRBC, OLG with 56
+cohorts, Krusell-Smith with a continuum, continuous-time heterogeneous
+agents, climate-economic coupling). The course is hands-on by design:
+every method is paired with runnable Jupyter notebooks that put the
+principles in plain sight, so you see exactly how each loss is
+assembled, each gradient is taken, and each equilibrium is solved
+rather than reading about it. By the end you will be able to
+solve models that were out of reach with classical tools, estimate
+them when re-solving is too expensive, and design policies that take
+deep uncertainty seriously.
 
-Everything is self-contained and free: a textbook-length
-[companion script](lecture_script/lecture_script.pdf), **18 paired
-lectures** with slides and runnable Jupyter notebooks, exercises with
-solutions, a hands-on workshop on AI coding agents as research
-partners (Lecture 06), and a curated bibliography linking out to the
-underlying papers. There is no enrollment, no cohort, no deadline,
-just pick the method you need and dig in.
+**Everything is self-contained and free.** A textbook-length
+[companion script](lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf),
+**18 paired lectures** with slides and runnable Jupyter notebooks,
+exercises with full solutions, a hands-on workshop on AI coding agents
+as research partners (Lecture 06), and a curated bibliography linking
+out to the underlying papers. There is no enrollment, no cohort, no
+deadline, just pick the method you need and dig in.
 
-This is a curated, working snapshot of a fast-moving field. The
-selection of methods, papers, and implementation choices reflects what
-I currently find to be some of the most useful entry points for
-economists and finance researchers starting to work with deep learning
-in dynamic models, not a definitive
-survey, and the bibliography is necessarily incomplete. Treat the
-material as a practical entry point to study, run, adapt, and question.
+> **A working snapshot, not a definitive survey.** The selection of
+> methods, papers, and implementation choices reflects what I
+> currently find to be some of the most useful entry points for
+> economists and finance researchers starting to work with deep
+> learning in dynamic models, and the bibliography is necessarily
+> incomplete. Treat the material as a practical entry point to study,
+> run, adapt, and question.
 
 > ### 🚀 Start here
 >
@@ -151,12 +164,12 @@ that fits yours:
   [`COURSE_MAP.md`](COURSE_MAP.md). It walks through all 18 lectures
   in their natural order.
 - 🎯 **I have a specific topic in mind.** Jump straight to the
-  **topic index** below.
+  **syllabus** below.
 - 🧪 **I want the research-workflow training first.** Jump to
   [Lecture 06, agentic programming](lectures/lecture_06_B17_agentic_programming/README.md),
   then come back to the rest of the sequence.
 - 📖 **I want a textbook.** Read the chapter-based
-  [companion script](lecture_script/lecture_script.pdf); each chapter
+  [companion script](lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf); each chapter
   links to one or more lectures via
   [`script_to_lectures.md`](lecture_script/script_to_lectures.md).
 
@@ -174,7 +187,7 @@ or CI), `"teaching"` (laptop figures, intermediate fidelity), and
 `"production"` (full reproduction, published-figure quality). Each
 notebook also fixes a `SEED` for reproducibility.
 
-## Topic index, find what you want
+## Syllabus
 
 | If you want to learn… | Read | Notebooks |
 |---|---|---|

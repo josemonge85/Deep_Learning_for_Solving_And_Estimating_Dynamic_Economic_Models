@@ -1,13 +1,13 @@
 # Glossary
 
-> Mirror of **Appendix A** of [`lecture_script.pdf`](lecture_script.pdf).
+> Mirror of **Appendix A** of [`Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf`](Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf).
 > Each entry is one or two sentences; for the full treatment, follow
 > the cross-references in parentheses (chapter / section pointers refer
 > to the script).
 
 ## Quick links
 
-- [Lecture script PDF](lecture_script.pdf)
+- [Lecture script PDF](Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf)
 - [Script-to-lecture map](script_to_lectures.md)
 - [Course map](../COURSE_MAP.md)
 - [Top-level README](../README.md)
