@@ -48,4 +48,8 @@ Curated bibliography for this lecture: [`lecture_08_B06.md`](../../readings/link
 
 ---
 
-← [Previous: Automatic differentiation for DEQNs](../lecture_07_B05_autodiff_for_deqns/README.md) · → [Next: OLG models with DEQNs](../lecture_09_B07_olg_models_deqns/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 07: Automatic differentiation for DEQNs**](../lecture_07_B05_autodiff_for_deqns/README.md)<br><sub>Lagrangian primitives, two-tape gradients, IRBC autodiff</sub> | [**Lecture 09: OLG models with DEQNs**](../lecture_09_B07_olg_models_deqns/README.md)<br><sub>Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

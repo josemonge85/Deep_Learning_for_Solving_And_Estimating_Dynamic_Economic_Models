@@ -48,4 +48,8 @@ Curated bibliography for this lecture: [`lecture_13_B11.md`](../../readings/link
 
 ---
 
-← [Previous: Continuous-time heterogeneous agents, theory](../lecture_12_B10_continuous_time_ha_theory/README.md) · → [Next: Surrogates and Gaussian processes](../lecture_14_B12_surrogates_and_gps/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 12: Continuous-time HA, theory**](../lecture_12_B10_continuous_time_ha_theory/README.md)<br><sub>HJB, Kolmogorov-forward, master equation, Ito calculus</sub> | [**Lecture 14: Surrogates and Gaussian processes**](../lecture_14_B12_surrogates_and_gps/README.md)<br><sub>Surrogate primer, GP regression, Bayesian active learning, active subspaces, deep kernel learning, GP-VFI</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

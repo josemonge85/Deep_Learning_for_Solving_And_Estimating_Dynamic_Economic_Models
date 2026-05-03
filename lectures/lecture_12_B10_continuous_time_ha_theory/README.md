@@ -43,4 +43,8 @@ Curated bibliography for this lecture: [`lecture_12_B10.md`](../../readings/link
 
 ---
 
-← [Previous: Physics-informed neural networks](../lecture_11_B09_pinns/README.md) · → [Next: Continuous-time heterogeneous agents, numerics](../lecture_13_B11_continuous_time_ha_numerics/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 11: Physics-informed neural networks (PINNs)**](../lecture_11_B09_pinns/README.md)<br><sub>ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes</sub> | [**Lecture 13: Continuous-time HA, numerics**](../lecture_13_B11_continuous_time_ha_numerics/README.md)<br><sub>Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

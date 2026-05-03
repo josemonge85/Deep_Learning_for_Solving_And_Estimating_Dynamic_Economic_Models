@@ -72,4 +72,8 @@ Curated bibliography for this lecture: [`lecture_05_B04.md`](../../readings/link
 
 ---
 
-← [Previous: IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md) · → [Next: Agentic programming](../lecture_06_B17_agentic_programming/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 04: IRBC with DEQNs**](../lecture_04_B03_irbc_with_deqns/README.md)<br><sub>International real business cycle with DEQNs at scale</sub> | [**Lecture 06: Agentic programming**](../lecture_06_B17_agentic_programming/README.md)<br><sub>Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, 12-exercise workshop</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

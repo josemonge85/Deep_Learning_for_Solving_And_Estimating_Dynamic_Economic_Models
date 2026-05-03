@@ -48,4 +48,8 @@ Curated bibliography for this lecture: [`lecture_07_B05.md`](../../readings/link
 
 ---
 
-← [Previous: Agentic programming](../lecture_06_B17_agentic_programming/README.md) · → [Next: Sequence-space DEQNs](../lecture_08_B06_sequence_space_deqns/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 06: Agentic programming**](../lecture_06_B17_agentic_programming/README.md)<br><sub>Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, 12-exercise workshop</sub> | [**Lecture 08: Sequence-space DEQNs**](../lecture_08_B06_sequence_space_deqns/README.md)<br><sub>Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

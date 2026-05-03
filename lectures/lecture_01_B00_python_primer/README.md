@@ -56,4 +56,8 @@ Curated bibliography for this lecture: [`lecture_01_B00.md`](../../readings/link
 
 ---
 
-→ [Next: Introduction to deep learning](../lecture_02_B01_intro_deep_learning/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| &nbsp; | [**Lecture 02: Introduction to deep learning**](../lecture_02_B01_intro_deep_learning/README.md)<br><sub>MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

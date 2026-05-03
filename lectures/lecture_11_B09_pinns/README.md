@@ -50,4 +50,8 @@ Curated bibliography for this lecture: [`lecture_11_B09.md`](../../readings/link
 
 ---
 
-← [Previous: Heterogeneous agents and Young's method](../lecture_10_B08_heterogeneous_agents_youngs_method/README.md) · → [Next: Continuous-time heterogeneous agents, theory](../lecture_12_B10_continuous_time_ha_theory/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 10: Heterogeneous agents and Young's method**](../lecture_10_B08_heterogeneous_agents_youngs_method/README.md)<br><sub>Young's histogram, Krusell-Smith, continuum-of-agents DEQN</sub> | [**Lecture 12: Continuous-time HA, theory**](../lecture_12_B10_continuous_time_ha_theory/README.md)<br><sub>HJB, Kolmogorov-forward, master equation, Ito calculus</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

@@ -55,4 +55,8 @@ Curated bibliography for this lecture: [`lecture_02_B01.md`](../../readings/link
 
 ---
 
-← [Previous: Python primer](../lecture_01_B00_python_primer/README.md) · → [Next: Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 01: Python primer**](../lecture_01_B00_python_primer/README.md)<br><sub>Jupyter, basic data structures, NumPy, plotting, classes</sub> | [**Lecture 03: Deep Equilibrium Nets**](../lecture_03_B02_deep_equilibrium_nets/README.md)<br><sub>Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

@@ -47,4 +47,8 @@ Curated bibliography for this lecture: [`lecture_16_B14.md`](../../readings/link
 
 ---
 
-← [Previous: Structural estimation via SMM](../lecture_15_B13_structural_estimation_smm/README.md) · → [Next: Deep uncertainty quantification and Pareto-improving climate policy](../lecture_17_B15_deep_uq_pareto_improving_policy/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 15: Structural estimation via SMM**](../lecture_15_B13_structural_estimation_smm/README.md)<br><sub>Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate</sub> | [**Lecture 17: Deep UQ and Pareto-improving carbon-tax design**](../lecture_17_B15_deep_uq_pareto_improving_policy/README.md)<br><sub>GP surrogates, Bayesian active learning, Sobol / Shapley, constrained Pareto-improving rules</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

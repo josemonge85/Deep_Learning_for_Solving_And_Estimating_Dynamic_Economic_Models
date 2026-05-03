@@ -46,4 +46,8 @@ Curated bibliography for this lecture: [`lecture_17_B15.md`](../../readings/link
 
 ---
 
-← [Previous: Climate economics and integrated assessment models](../lecture_16_B14_climate_economics_iams/README.md) · → [Next: Course wrap-up](../lecture_18_B16_course_wrap_up/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 16: Climate economics and IAMs**](../lecture_16_B14_climate_economics_iams/README.md)<br><sub>DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN</sub> | [**Lecture 18: Course wrap-up**](../lecture_18_B16_course_wrap_up/README.md)<br><sub>Synthesis, decision guide, when to use which method</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

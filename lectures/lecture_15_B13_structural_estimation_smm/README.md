@@ -46,4 +46,8 @@ Curated bibliography for this lecture: [`lecture_15_B13.md`](../../readings/link
 
 ---
 
-← [Previous: Surrogates and Gaussian processes](../lecture_14_B12_surrogates_and_gps/README.md) · → [Next: Climate economics and integrated assessment models](../lecture_16_B14_climate_economics_iams/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 14: Surrogates and Gaussian processes**](../lecture_14_B12_surrogates_and_gps/README.md)<br><sub>Surrogate primer, GP regression, Bayesian active learning, active subspaces, deep kernel learning, GP-VFI</sub> | [**Lecture 16: Climate economics and IAMs**](../lecture_16_B14_climate_economics_iams/README.md)<br><sub>DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

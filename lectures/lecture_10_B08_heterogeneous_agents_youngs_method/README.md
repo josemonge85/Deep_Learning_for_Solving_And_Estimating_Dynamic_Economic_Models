@@ -51,4 +51,8 @@ Curated bibliography for this lecture: [`lecture_10_B08.md`](../../readings/link
 
 ---
 
-← [Previous: OLG models with DEQNs](../lecture_09_B07_olg_models_deqns/README.md) · → [Next: Physics-informed neural networks](../lecture_11_B09_pinns/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 09: OLG models with DEQNs**](../lecture_09_B07_olg_models_deqns/README.md)<br><sub>Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints</sub> | [**Lecture 11: Physics-informed neural networks (PINNs)**](../lecture_11_B09_pinns/README.md)<br><sub>ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

@@ -49,4 +49,8 @@ Curated bibliography for this lecture: [`lecture_04_B03.md`](../../readings/link
 
 ---
 
-← [Previous: Deep Equilibrium Nets](../lecture_03_B02_deep_equilibrium_nets/README.md) · → [Next: Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 03: Deep Equilibrium Nets**](../lecture_03_B02_deep_equilibrium_nets/README.md)<br><sub>Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels</sub> | [**Lecture 05: Architecture search and loss balancing**](../lecture_05_B04_nas_loss_normalization/README.md)<br><sub>Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

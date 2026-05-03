@@ -50,4 +50,8 @@ Curated bibliography for this lecture: [`lecture_03_B02.md`](../../readings/link
 
 ---
 
-← [Previous: Introduction to deep learning](../lecture_02_B01_intro_deep_learning/README.md) · → [Next: IRBC with DEQNs](../lecture_04_B03_irbc_with_deqns/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 02: Introduction to deep learning**](../lecture_02_B01_intro_deep_learning/README.md)<br><sub>MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations</sub> | [**Lecture 04: IRBC with DEQNs**](../lecture_04_B03_irbc_with_deqns/README.md)<br><sub>International real business cycle with DEQNs at scale</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

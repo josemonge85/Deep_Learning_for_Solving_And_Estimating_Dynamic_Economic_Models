@@ -56,4 +56,8 @@ Curated bibliography for this lecture: [`lecture_14_B12.md`](../../readings/link
 
 ---
 
-← [Previous: Continuous-time heterogeneous agents, numerics](../lecture_13_B11_continuous_time_ha_numerics/README.md) · → [Next: Structural estimation via SMM](../lecture_15_B13_structural_estimation_smm/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 13: Continuous-time HA, numerics**](../lecture_13_B11_continuous_time_ha_numerics/README.md)<br><sub>Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari</sub> | [**Lecture 15: Structural estimation via SMM**](../lecture_15_B13_structural_estimation_smm/README.md)<br><sub>Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

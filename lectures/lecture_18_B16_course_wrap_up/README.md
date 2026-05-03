@@ -42,4 +42,8 @@ Curated bibliography for this lecture: [`lecture_18_B16.md`](../../readings/link
 
 ---
 
-← [Previous: Deep uncertainty quantification and Pareto-improving climate policy](../lecture_17_B15_deep_uq_pareto_improving_policy/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 17: Deep UQ and Pareto-improving carbon-tax design**](../lecture_17_B15_deep_uq_pareto_improving_policy/README.md)<br><sub>GP surrogates, Bayesian active learning, Sobol / Shapley, constrained Pareto-improving rules</sub> | &nbsp; |
+
+[↑ Course map](../../COURSE_MAP.md)

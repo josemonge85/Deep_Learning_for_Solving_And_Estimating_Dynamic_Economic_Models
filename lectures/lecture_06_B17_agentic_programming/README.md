@@ -65,4 +65,8 @@ Curated bibliography for this lecture: [`lecture_06_B17.md`](../../readings/link
 
 ---
 
-← [Previous: Architecture search and loss balancing](../lecture_05_B04_nas_loss_normalization/README.md) · → [Next: Automatic differentiation for DEQNs](../lecture_07_B05_autodiff_for_deqns/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 05: Architecture search and loss balancing**](../lecture_05_B04_nas_loss_normalization/README.md)<br><sub>Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm</sub> | [**Lecture 07: Automatic differentiation for DEQNs**](../lecture_07_B05_autodiff_for_deqns/README.md)<br><sub>Lagrangian primitives, two-tape gradients, IRBC autodiff</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)

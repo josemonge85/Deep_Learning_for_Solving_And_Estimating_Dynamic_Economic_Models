@@ -1,7 +1,7 @@
 # Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance
 
 *Deep learning for the recursive, stochastic, high-dimensional dynamic
-models that economists actually solve, with all materials free,
+models that economists actually solve, with all materials open source,
 runnable, and self-contained.*
 
 <p align="center">
@@ -15,7 +15,7 @@ runnable, and self-contained.*
   <br/>
   <a href="lectures/lecture_06_B17_agentic_programming/"><img alt="AI-coding workshop" src="https://img.shields.io/badge/AI%20coding-workshop-1f4e79?style=for-the-badge"></a>
   <a href="#syllabus"><img alt="Exercises with solutions" src="https://img.shields.io/badge/exercises-with%20solutions-1f4e79?style=for-the-badge"></a>
-  <a href="LICENSE"><img alt="Free, self-paced, no enrollment" src="https://img.shields.io/badge/free-self--paced-1f4e79?style=for-the-badge"></a>
+  <a href="LICENSE"><img alt="Open source, self-paced, no enrollment" src="https://img.shields.io/badge/open%20source-self--paced-1f4e79?style=for-the-badge"></a>
 </p>
 
 <h3 align="center">
@@ -35,7 +35,7 @@ continuous-time dynamics, or coupled climate-economic interactions,
 the state space becomes too large for tensor-product grids and
 classical methods (projection, value-function iteration, perturbation)
 break down. If you are trying to solve models with ten or more state
-dimensions, estimate them, or design policy under deep uncertainty,
+dimensions, estimate them, or design policy under parameter uncertainty,
 you need a different toolbox.
 
 **This course teaches that toolbox.** A coherent set of deep-learning
@@ -57,9 +57,9 @@ assembled, each gradient is taken, and each equilibrium is solved
 rather than reading about it. By the end you will be able to
 solve models that were out of reach with classical tools, estimate
 them when re-solving is too expensive, and design policies that take
-deep uncertainty seriously.
+parameter uncertainty seriously.
 
-**Everything is self-contained and free.** A textbook-length
+**Everything is self-contained and open source.** A textbook-length
 [companion script](lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf),
 **18 paired lectures** with slides and runnable Jupyter notebooks,
 exercises with full solutions, a hands-on workshop on AI coding agents
@@ -145,13 +145,12 @@ active learning, and run global sensitivity analysis (Sobol, Shapley
 effects) to localize where the policy is actually sensitive to which
 parameters. On top of that surrogate we then **design constrained
 Pareto-improving carbon-tax policies**: tax paths that, for every
-realization of the deep uncertainty (or every cohort, or every
-generation), leave no agent worse off than the business-as-usual
-baseline while strictly improving welfare for at least one. This turns
-"what should the carbon tax be?" from a single number computed under a
-single calibration into a defensible policy menu that respects who
-bears the risk and who benefits, *without* averaging the uncertainty
-away.
+plausible parameter draw (or every cohort, or every generation), leave
+no agent worse off than the business-as-usual baseline while strictly
+improving welfare for at least one. This turns "what should the
+carbon tax be?" from a single number computed under a single
+calibration into a defensible policy menu that respects who bears the
+risk and who benefits, *without* averaging the uncertainty away.
 
 ### 5. An AI-assisted research-coding workflow
 

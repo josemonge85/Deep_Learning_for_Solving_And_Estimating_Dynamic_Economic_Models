@@ -47,4 +47,8 @@ Curated bibliography for this lecture: [`lecture_09_B07.md`](../../readings/link
 
 ---
 
-← [Previous: Sequence-space DEQNs](../lecture_08_B06_sequence_space_deqns/README.md) · → [Next: Heterogeneous agents and Young's method](../lecture_10_B08_heterogeneous_agents_youngs_method/README.md) · [Course map](../../COURSE_MAP.md)
+| ← Previous | Next → |
+|---|---|
+| [**Lecture 08: Sequence-space DEQNs**](../lecture_08_B06_sequence_space_deqns/README.md)<br><sub>Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs</sub> | [**Lecture 10: Heterogeneous agents and Young's method**](../lecture_10_B08_heterogeneous_agents_youngs_method/README.md)<br><sub>Young's histogram, Krusell-Smith, continuum-of-agents DEQN</sub> |
+
+[↑ Course map](../../COURSE_MAP.md)
