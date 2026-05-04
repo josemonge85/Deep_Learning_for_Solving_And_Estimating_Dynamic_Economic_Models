@@ -5368,7 +5368,59 @@ Figure~\ref{fig:pinn_1d_ode} shows the same calculation graphically.  This simpl
 
 The treatment of boundary conditions is a critical design choice in PINNs.
 
-\paragraph{Soft enforcement.}  Boundary conditions are penalized as an additional loss term, weighted by $\lambda$.  The difficulty is that $\lambda$ must be tuned: too small and the BCs are violated; too large and the optimizer ignores the PDE interior.
+\paragraph{Soft enforcement.}  Boundary conditions are penalized as an additional loss term, weighted by $\lambda$.  The difficulty is that $\lambda$ must be tuned: too small and the BCs are violated; too large and the optimizer ignores the PDE interior.  Figure~\ref{fig:soft_bc_failure_modes} sketches the two failure modes and the compromise regime in between.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    % Left scenario: lambda too small -- PDE OK, BCs violated
+    \begin{scope}[shift={(-5,0)}]
+        \node[font=\small\bfseries, softorange] at (1.8,3.1) {$\lambda$ too small};
+        \draw[thick, uzhblue] (0,0) -- (3.6,0);
+        \fill[darkred] (0,0) circle (4pt);
+        \fill[darkred] (3.6,0) circle (4pt);
+        \node[above right=-1pt and 2pt, font=\tiny, darkred] at (0,0.05) {$y=1$};
+        \node[above, font=\tiny, darkred] at (3.6,0.1) {$y=2$};
+        \draw[thick, softorange, domain=0:3.6, samples=60]
+            plot (\x, {-0.14*\x*\x + 0.62*\x + 0.7});
+        \node[font=\tiny, softorange] at (1.8,-0.5) {PDE OK, BCs violated};
+        \draw[thick, darkred, <->] (0,0) -- (0,0.7) node[pos=0.65, left=1pt, font=\tiny] {gap};
+    \end{scope}
+
+    % Middle scenario: lambda balanced -- compromise
+    \begin{scope}[shift={(-0.5,0)}]
+        \node[font=\small\bfseries, softgreen] at (1.8,3.1) {$\lambda$ balanced};
+        \draw[thick, uzhblue] (0,0) -- (3.6,0);
+        \fill[darkred] (0,0) circle (4pt);
+        \fill[darkred] (3.6,0) circle (4pt);
+        \node[above, font=\tiny, darkred] at (0,0.1) {$y=1$};
+        \node[above, font=\tiny, darkred] at (3.6,0.1) {$y=2$};
+        \draw[thick, softgreen, domain=0:3.6, samples=60]
+            plot (\x, {-0.04*\x*\x + 0.42*\x + 1.0});
+        \draw[thick, dashed, gray, domain=0:3.6, samples=60]
+            plot (\x, {-0.04*\x*\x + 0.42*\x + 1.0 + 0.03*sin(deg(3.14*\x/3.6))});
+        \node[font=\tiny, softgreen] at (1.8,-0.5) {Compromise (hard to find)};
+    \end{scope}
+
+    % Right scenario: lambda too large -- BCs OK, PDE violated
+    \begin{scope}[shift={(4,0)}]
+        \node[font=\small\bfseries, darkred] at (1.8,3.1) {$\lambda$ too large};
+        \draw[thick, uzhblue] (0,0) -- (3.6,0);
+        \fill[darkred] (0,0) circle (4pt);
+        \fill[darkred] (3.6,0) circle (4pt);
+        \node[above, font=\tiny, darkred] at (0,0.1) {$y=1$};
+        \node[above, font=\tiny, darkred] at (3.6,0.1) {$y=2$};
+        \draw[thick, dashed, gray!60] (0,1.0) -- (3.6,2.0);
+        \draw[thick, darkred, domain=0:3.6, samples=60]
+            plot (\x, {1.0 + \x/3.6 + 0.15*sin(deg(2*3.14*\x/3.6))});
+        \node[font=\tiny, darkred] at (1.8,-0.5) {BCs OK, PDE violated};
+        \draw[thick, gray, <->] (2.7,1.6) -- (2.7,1.75);
+        \node[font=\tiny, gray, anchor=south west] at (2.78,1.95) {PDE err};
+    \end{scope}
+\end{tikzpicture}
+\caption{Failure modes of soft boundary-condition enforcement on a Dirichlet problem with $y(0)=1$, $y(1)=2$.  \emph{Left:} the BC penalty weight $\lambda$ is too small, so the optimizer minimizes the interior PDE residual but lets the candidate solution miss both endpoints (visible as the ``gap'' at $x=0$).  \emph{Right:} $\lambda$ is too large, so the network nails the boundary values but distorts the interior, producing a wiggly profile with PDE residual error against the affine reference (dashed grey).  \emph{Centre:} a balanced $\lambda$ approximately satisfies both objectives, but the right-shaped value depends on the network, the PDE, and the geometry, and is not known a priori.  This trade-off motivates the hard-enforcement construction below, which removes the boundary loss term entirely.}
+\label{fig:soft_bc_failure_modes}
+\end{figure}
 
 \paragraph{Hard enforcement.}  A \emph{trial solution} is constructed that satisfies the boundary conditions \emph{by construction}:
 \begin{equation}
@@ -5421,12 +5473,13 @@ where $A(x)$ is an anchor function satisfying the BCs exactly, and $B(x)$ is a m
         xmin=0, xmax=1, ymin=0.6, ymax=2.6,
         grid=major, grid style={gray!15}, axis lines=left,
     ]
+        \addplot[thick, dashed, darkred, domain=0:1, samples=2]{1+x};
         \addplot[ultra thick, softgreen, domain=0:1, samples=80]
             {1 + x + x*(1-x)*(0.8*sin(deg(3.14*x)) - 0.3*cos(deg(2*3.14*x)) + 0.5)};
         \addplot[only marks, mark=*, mark size=2.5pt, softgreen] coordinates {(0,1) (1,2)};
     \end{axis}
 \end{tikzpicture}
-\caption{Hard boundary-condition decomposition for the trial solution $\hat y(x) = A(x) + B(x)\cdot\mathcal{N}_\rho(x)$ with Dirichlet data $\hat y(0)=1$, $\hat y(1)=2$. \emph{Left:} anchor $A(x)=1+x$ matches the boundary values exactly. \emph{Centre:} mask times network, $B(x)\cdot\mathcal{N}_\rho(x)$ with mask $B(x)=x(1-x)$, which vanishes at $x\in\{0,1\}$ regardless of $\mathcal{N}_\rho$. \emph{Right:} their sum $\hat y(x) = A(x) + B(x)\cdot\mathcal{N}_\rho(x)$ is a candidate solution that satisfies both BCs by construction, so the training loss reduces to the interior PDE residual alone.}
+\caption{Hard boundary-condition decomposition for the trial solution $\hat y(x) = A(x) + B(x)\cdot\mathcal{N}_\rho(x)$ with Dirichlet data $\hat y(0)=1$, $\hat y(1)=2$. \emph{Left:} anchor $A(x)=1+x$ matches the boundary values exactly. \emph{Centre:} mask times network, $B(x)\cdot\mathcal{N}_\rho(x)$ with mask $B(x)=x(1-x)$, which vanishes at $x\in\{0,1\}$ regardless of $\mathcal{N}_\rho$. \emph{Right:} their sum $\hat y(x) = A(x) + B(x)\cdot\mathcal{N}_\rho(x)$ (solid green) is a candidate solution that satisfies both BCs by construction; the dashed red line is the affine anchor $A(x)=1+x$ for visual reference. Training loss reduces to the interior PDE residual alone.}
 \label{fig:trial_solution_decomposition}
 \end{figure}
 
@@ -6143,6 +6196,76 @@ Wealth distribution & Centered around $0$, mass at $\underline{b}$ & Right-skewe
 \caption{Huggett and Aiyagari as two continuous-time incomplete-markets benchmarks.  Huggett clears a zero-net-supply bond market by adjusting the bond return; Aiyagari clears a positive capital market with prices pinned down by firm first-order conditions.}
 \label{tab:huggett_aiyagari_ct}
 \end{table}
+
+Figure~\ref{fig:huggett_aiyagari_densities} contrasts the two stationary densities visually.  In Huggett (left), bonds are in zero net supply, so the cross-sectional density is centred near $b\!=\!0$, with a Dirac atom at the borrowing limit $\underline{b}$ carried entirely by constrained low-productivity households; high-productivity households are smoothly distributed and never bind.  In Aiyagari (right), agents hold positive capital in equilibrium, so the same atom now sits at $\underline{a}\!=\!0$ but the bulk of the mass is shifted right with a long upper tail.
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.48\textwidth}
+\centering
+\textbf{Huggett (1993)}\\[2pt]
+\begin{tikzpicture}
+\begin{axis}[
+    width=6.5cm, height=3.6cm,
+    xlabel={bond $b$}, ylabel={$g^*(b)$},
+    xmin=-2, xmax=6, ymin=0, ymax=0.5,
+    axis lines=left,
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    legend style={at={(0.98,0.98)}, anchor=north east, font=\scriptsize,
+                  fill=white, fill opacity=0.9, draw=gray!40, text opacity=1},
+]
+\addplot[softblue, very thick, domain=-1.9:6, samples=80]
+    {0.35*exp(-(x+1)^2/0.8) + 0.08*exp(-(x-1)^2/2)};
+\addlegendentry{$g^*(b, n_1)$}
+\addplot[softorange, very thick, domain=-1.9:6, samples=80]
+    {0.15*exp(-(x-0.5)^2/2) + 0.1*exp(-(x-2.5)^2/3)};
+\addlegendentry{$g^*(b, n_2)$}
+\draw[softblue, line width=2.2pt] (axis cs:-2,0) -- (axis cs:-2,0.40);
+\fill[softblue] (axis cs:-2,0.40) circle (1.6pt);
+\node[softblue, font=\tiny\bfseries, anchor=west]
+    at (axis cs:-1.85,0.40) {atom in $n_1$};
+\draw[dashed, gray] (axis cs:0,0) -- (axis cs:0,0.3);
+\node[font=\scriptsize] at (axis cs:0.52,0.32) {$b=0$};
+\end{axis}
+\end{tikzpicture}\\[2pt]
+{\scriptsize Net supply $=0$: mean wealth $\approx 0$.}
+\end{minipage}%
+\hfill
+\begin{minipage}[b]{0.48\textwidth}
+\centering
+\textbf{Aiyagari (1994)}\\[2pt]
+\begin{tikzpicture}
+\begin{axis}[
+    width=6.5cm, height=3.6cm,
+    xlabel={capital $a$}, ylabel={$g^*(a)$},
+    xmin=0, xmax=15, ymin=0, ymax=0.12,
+    axis lines=left,
+    scaled y ticks=false,
+    ytick={0,0.05,0.10},
+    yticklabels={0,0.05,0.10},
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    legend style={at={(0.98,0.98)}, anchor=north east, font=\scriptsize,
+                  fill=white, fill opacity=0.9, draw=gray!40, text opacity=1},
+]
+\addplot[softblue, very thick, domain=0.1:15, samples=80]
+    {0.09*exp(-0.25*(x-0.5)) * (1 - exp(-3*x))};
+\addlegendentry{$g^*(a, n_1)$}
+\addplot[softorange, very thick, domain=0.1:15, samples=80]
+    {0.06*exp(-(x-5)^2/10) + 0.01*exp(-(x-8)^2/6)};
+\addlegendentry{$g^*(a, n_2)$}
+\draw[softblue, line width=2.2pt] (axis cs:0,0) -- (axis cs:0,0.095);
+\fill[softblue] (axis cs:0,0.095) circle (1.6pt);
+\node[softblue, font=\tiny\bfseries, anchor=west]
+    at (axis cs:0.3,0.095) {atom in $n_1$};
+\end{axis}
+\end{tikzpicture}\\[2pt]
+{\scriptsize $K>0$: mean wealth is positive with a right upper tail.}
+\end{minipage}
+\caption{Stationary cross-sectional densities $g^*$ in the two benchmarks, by productivity type $n\in\{n_1,n_2\}$ (low and high).  In both economies, only the constrained low-productivity type $n_1$ supports a Dirac atom at the borrowing constraint (blue spike): high-productivity households are not bound.  \emph{Left:} Huggett, bonds with limit $\underline{b}=-2$ and zero net supply, so the bulk of mass sits around $b=0$.  \emph{Right:} Aiyagari, capital with limit $\underline{a}=0$ and positive aggregate $K$, shifting the unconstrained mass to the right with a long upper tail.}
+\label{fig:huggett_aiyagari_densities}
+\end{figure}
 
 \paragraph{Connection to HANK.}  These models are the building blocks of Heterogeneous Agent New Keynesian (HANK) models \citep{kaplan2018monetary}, which replace the representative agent in New Keynesian frameworks with an Aiyagari economy.  Adding nominal rigidities allows monetary policy to affect consumption \emph{heterogeneously}: agents near the borrowing constraint have high marginal propensities to consume and respond strongly to fiscal stimulus, while wealthy agents absorb shocks through savings.
 
