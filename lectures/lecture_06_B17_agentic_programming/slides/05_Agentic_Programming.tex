@@ -291,7 +291,7 @@ Agentic programming means working with an AI system that can:
 \end{frame}
 
 % --- Concrete use case ---
-\begin{frame}{A Concrete Economics Workflow}
+\begin{frame}{A Concrete Economics and Finance Workflow}
 \small
 \begin{columns}[T]
 \column{0.58\textwidth}
@@ -439,7 +439,7 @@ The bottleneck in computational research has \emphc{shifted}:
 \end{itemize}
 
 \vspace{0.3em}
-This rewards \emphc{domain expertise}. Economists have a natural advantage over pure software engineers, because what is hard is knowing \emph{what question to ask}.
+This rewards \emphc{domain expertise}. Researchers in economics and finance have a natural advantage over pure software engineers, because what is hard is knowing \emph{what question to ask}.
 
 \vspace{0.4em}
 \textbf{Two traps to avoid:}
@@ -461,7 +461,7 @@ This rewards \emphc{domain expertise}. Economists have a natural advantage over 
           minimum height=1.3cm, align=center] (new) at (0,1.5)
           {\textbf{After 2023}\\Expertise + \emphc{specification skill}\\{\scriptsize (AI handles implementation)}};
     \node[font=\tiny, text=uzhgreydark, align=center] at (0,0.1)
-          {Your economics training\\is the competitive advantage};
+          {Your economics and finance training\\is the competitive advantage};
 \end{tikzpicture}
 \end{center}
 
@@ -512,12 +512,12 @@ slide as a working opinion, not a benchmark.
 \renewcommand{\arraystretch}{1.0}
 \begin{tabular}{l c c c}
 \toprule
-\textbf{Task} & \textbf{ChatGPT} & \textbf{Claude} & \textbf{Gemini} \\
+\textbf{Task} & \textbf{ChatGPT / Codex} & \textbf{Claude} & \textbf{Gemini} \\
 \midrule
-Math \& analytical reasoning & \textcolor{darkgreen}{\checkmark\checkmark} & \checkmark & \checkmark \\
+Math \& analytical reasoning & \textcolor{darkgreen}{\checkmark\checkmark} & \textcolor{softorange}{\checkmark\checkmark} & \checkmark \\
 Writing \& editing & \checkmark & \textcolor{softorange}{\checkmark\checkmark} & \checkmark \\
 Coding \& repo-level work & \checkmark & \textcolor{softorange}{\checkmark\checkmark} & \checkmark \\
-Long files / large context & \checkmark & \checkmark & \textcolor{softblue}{\checkmark\checkmark} \\
+Long files / large context & \checkmark & \textcolor{softorange}{\checkmark\checkmark} & \textcolor{softblue}{\checkmark\checkmark} \\
 Google ecosystem tasks & --- & --- & \textcolor{softblue}{\checkmark\checkmark} \\
 \bottomrule
 \end{tabular}
@@ -629,7 +629,7 @@ from L2 to L3 is the largest productivity gain: L2 suggests edits, L3
 \small
 \begin{columns}[T]
 \column{0.48\textwidth}
-An LLM has \emphc{no persistent memory}. Every message bundles the \textbf{entire conversation history}---your prompts, Claude's responses, every file read, every code output---into one large document sent to the model.
+An LLM (large language model) has \emphc{no persistent memory}. Every message bundles the \textbf{entire conversation history}---your prompts, Claude's responses, every file read, every code output---into one large document sent to the model.
 
 \vspace{0.3em}
 This is the \emphc{context window}:
@@ -692,7 +692,7 @@ This is the \emphc{context window}:
 \end{enumerate}
 
 \vspace{0.1em}
-{\tiny \boristip{1}~Boris Cherny: ``Context management is the single most critical resource.''}
+{\tiny Boris Cherny: ``Context management is the single most critical resource.''}
 \end{columns}
 \end{frame}
 
@@ -803,7 +803,7 @@ You need four things: a good terminal, Claude Code, version-control discipline, 
     \node[cbox=softorange!80!black] (python) at (12,0) {\textbf{Python}\\{\scriptsize uv + venv}};
     \draw[arr] (term) -- (claude);
     \draw[arr] (claude) -- (git);
-    \draw[arr] (claude) -- (python);
+    \draw[arr] (git) -- (python);
 \end{tikzpicture}
 \end{center}
 
@@ -1175,14 +1175,14 @@ What a healthy first run looks like, end to end. Blue = you; green = Claude.
 \vspace{0.2em}
 \begin{columns}[T]
 \column{0.49\textwidth}
-\begin{exampleblock}{\color{level4}\bfseries Turn 1 -- you}
+\begin{block}{\color{white}\bfseries Turn 1 -- you}
 \begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
 > What files are in this directory?
   Summarize the structure.
 \end{lstlisting}
-\end{exampleblock}
+\end{block}
 
-\begin{exampleblock}{\color{softgreen!80!black}\bfseries Turn 2 -- Claude}
+\begin{exampleblock}{\color{white}\bfseries Turn 2 -- Claude}
 \begin{lstlisting}[style=bash, basicstyle=\tiny\ttfamily]
 [Listed: data/synthetic_panel.csv
  (5000 x 6: firm_id, year, revenue,
@@ -1194,7 +1194,7 @@ No code yet.
 \end{exampleblock}
 
 \column{0.49\textwidth}
-\begin{exampleblock}{\color{level4}\bfseries Turn 3 -- you}
+\begin{block}{\color{white}\bfseries Turn 3 -- you}
 \begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
 > Create explore_data.py: takes a
   CSV path on the CLI; prints shape,
@@ -1202,9 +1202,9 @@ No code yet.
   stats, % missing. Use pathlib.
   Add __main__ guard.
 \end{lstlisting}
-\end{exampleblock}
+\end{block}
 
-\begin{exampleblock}{\color{softgreen!80!black}\bfseries Turn 4 -- Claude}
+\begin{exampleblock}{\color{white}\bfseries Turn 4 -- Claude}
 \begin{lstlisting}[style=bash, basicstyle=\tiny\ttfamily]
 [Wrote explore_data.py]
 [Ran python3 explore_data.py
@@ -1285,14 +1285,14 @@ Do \emphc{not} let Claude finish a bad path and then course-correct. Interrupt e
 One iteration condensed. Blue = you; green = Claude; orange = you steering.
 
 \vspace{0.3em}
-\begin{exampleblock}{\color{level4}\bfseries 1. You describe the task}
+\begin{block}{\color{white}\bfseries 1. You describe the task}
 \begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
 > data/synthetic_panel.csv has firm-year revenue.
   Print the sample mean per year. Use pandas. No plot yet.
 \end{lstlisting}
-\end{exampleblock}
+\end{block}
 
-\begin{exampleblock}{\color{softgreen!80!black}\bfseries 2. Claude reads, writes, runs}
+\begin{exampleblock}{\color{white}\bfseries 2. Claude reads, writes, runs}
 \begin{lstlisting}[style=bash, basicstyle=\tiny\ttfamily]
 [Reads synthetic_panel.csv -- 5000x6]  [Writes scripts/year_means.py]
 [Runs python3 scripts/year_means.py]
@@ -1301,12 +1301,12 @@ One iteration condensed. Blue = you; green = Claude; orange = you steering.
 \end{lstlisting}
 \end{exampleblock}
 
-\begin{exampleblock}{\color{softorange!80!black}\bfseries 3. You inspect, catch a bug, steer}
+\begin{alertblock}{\color{white}\bfseries 3. You inspect, catch a bug, steer}
 \begin{lstlisting}[style=prompt, basicstyle=\tiny\ttfamily]
 > The 2015 jump looks suspicious -- is revenue already in logs?
   Print the column dtype and first 3 rows before the means.
 \end{lstlisting}
-\end{exampleblock}
+\end{alertblock}
 
 \vspace{0.1em}
 {\tiny \textbf{Lesson:} steer between turns, not after a long bad path. Had turn~3 been ``great, now make a 4-panel figure,'' the bug from turn~2 would have silently propagated.}
@@ -1924,7 +1924,7 @@ paper/main.tex
 % --- Three-Layer Architecture ---
 \begin{frame}[fragile]{Three-Layer Architecture for AI-Assisted Projects}
 \scriptsize
-From the course's \texttt{utils-agentic-support} framework (Scheidegger, 2026):
+From the course's \texttt{utils-agentic-support} framework:
 
 \vspace{0.3em}
 \begin{center}
@@ -2002,7 +2002,7 @@ Four extension mechanisms; each does one thing the others can't.
 
 \vspace{0.3em}
 \renewcommand{\arraystretch}{1.15}
-\begin{tabular}{p{1.6cm} p{3.7cm} p{2.9cm} p{3.4cm}}
+\begin{tabular}{p{1.8cm} p{3.4cm} p{3.8cm} p{3.4cm}}
 \toprule
 \textbf{Mechanism} & \textbf{What it is} & \textbf{Lives at} & \textbf{Use when} \\
 \midrule
@@ -2355,7 +2355,7 @@ invalidate the paper. Pay Opus prices here.
 % --- Hooks ---
 \begin{frame}[fragile]{Hooks: Automating Repetitive Actions}
 \scriptsize
-\boristip{11} \textbf{Hooks} are shell commands that run automatically before
+\textbf{Hooks} are shell commands that run automatically before
 or after Claude's tool calls. Configured in \texttt{.claude/settings.json}.
 
 \vspace{0.2em}
@@ -2633,7 +2633,7 @@ Watch \texttt{/cost}.
 \end{alertblock}
 
 \vspace{0.2em}
-\boristip{10}~\textbf{Closed loops change the question.} You stop asking
+\textbf{Closed loops change the question.} You stop asking
 ``how do I get Claude to do this?'' and start asking ``what is the smallest
 machine-checkable spec that makes this loop terminate?''
 \end{columns}
@@ -2662,6 +2662,12 @@ machine-checkable spec that makes this loop terminate?''
 \scriptsize
 A 30-second demo: one prompt, one publication-ready table, one figure.
 Level 3 applied to the simplest regression in labor economics.
+
+\vspace{0.2em}
+\textbf{The Mincer equation} (Mincer, 1974):
+$\log(\text{wage}) = \beta_0 + \beta_1\,\text{educ} + \beta_2\,\text{exper} + \beta_3\,\text{exper}^2 + \beta_4\,\text{female} + \varepsilon$
+
+{\scriptsize $\beta_1 \approx 0.08$: each extra year of schooling raises wages by $\sim$8\%. The $\text{exper}^2$ term captures the concavity of lifecycle earnings. Every labor economist knows the expected answer, making this a perfect verifiable demo.}
 
 \vspace{0.2em}
 \begin{columns}[T]
@@ -3257,7 +3263,7 @@ Ctrl+C, ESC, Shift+Tab (plan)}
 
 \textbf{Empirical evidence on AI productivity:}
 \begin{itemize}\itemsep0pt
-    \item METR (2025). Early-2025 AI \& experienced OSS developer productivity --- found a 19\% \emph{slow-down}.
+    \item METR (Model Evaluation \& Threat Research, 2025). Early-2025 AI \& experienced OSS (open-source software) developer productivity --- found a 19\% \emph{slow-down}.
     \item Cui, Demirer, Jaffe, et al.\ (2024). Generative AI in high-skilled work (Microsoft/MIT field experiment).
     \item Brynjolfsson, Li, Raymond (2025). ``Generative AI at Work.'' \emph{QJE} (call-center RCT).
     \item Peng, Kalliamvakou, et al.\ (2023). Copilot RCT on developer productivity.
