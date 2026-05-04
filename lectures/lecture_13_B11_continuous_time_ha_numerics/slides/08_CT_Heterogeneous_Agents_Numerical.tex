@@ -218,29 +218,29 @@
 \end{frame}
 
 % --- Slide: FD Results ---
-\begin{frame}[shrink=2]{Finite Differences: What They Produce}
-\small
+\begin{frame}{Finite Differences: What They Produce}
+\footnotesize
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Finite-Difference Example: Aiyagari GE}\\[1pt]
 The classical FD approach solves:
-\begin{itemize}\itemsep1pt
+\begin{itemize}\itemsep0pt
     \item HJB block: upwind discretization + implicit updates
     \item KFE block: transition operator + stationary distribution
     \item Price block: root-finding for market-clearing $r$
 \end{itemize}
 
-\vspace{0.2em}
+\vspace{0.15em}
 \textbf{Produces:}
-\begin{itemize}\itemsep1pt
+\begin{itemize}\itemsep0pt
     \item Value function $V(a, n)$
     \item Consumption/savings policy $c^*(a, n)$
     \item Stationary density $g^*(a, n)$
     \item Equilibrium prices $r^*, w^*$
 \end{itemize}
 
-\vspace{0.2em}
-{\small \emphc{This is our ground truth} for validating deep learning methods.}
+\vspace{0.15em}
+\emphc{This is our ground truth} for validating deep learning methods.
 
 \column{0.48\textwidth}
 \begin{center}
@@ -1121,47 +1121,45 @@ Integrals are evaluated via Monte Carlo or quadrature.
 \end{frame}
 
 % --- Slide: Training the PINN ---
-\begin{frame}[shrink=2]{Training Algorithm: Jointly Solving HJB + KFE}
+\begin{frame}{Training Algorithm: Jointly Solving HJB + KFE}
 \begin{columns}[T]
 \column{0.52\textwidth}
 \begin{block}{PINN Training (Stationary Equilibrium)}
-\small
+\footnotesize
+\setlength{\itemsep}{0pt}
 \begin{algorithmic}[1]
-\STATE Initialize $V_\theta$, $g_\phi$, guess $r^{(0)}$
-\STATE Optional functional-form initialization for $V_\theta$ and $g_\phi$; FD is reserved for validation
+\STATE Initialize $V_\theta$, $g_\phi$, guess $r^{(0)}$ \;\;\textit{(FD reserved for validation)}
 \FOR{$k = 1, \ldots, N_{\text{epochs}}$}
     \STATE Sample $M$ collocation points $\{(a_m, n_m)\}$
     \STATE Compute $c_m^* = (V'_\theta(a_m))^{-1/\gamma}$
     \STATE Compute $R_{\text{HJB}}^m$, $R_{\text{KFE}}^m$ via auto-diff
-    \STATE Compute integrated KFE on a fixed asset grid
-    \STATE Compute $\mathcal{L}_{\text{SC}}$, $\mathcal{L}_{\text{flux}}$, $\mathcal{L}_{\text{mass}}$, $\mathcal{L}_{\text{MC}}$
-    \STATE Total loss: $\mathcal{L} = \sum \kappa_i \mathcal{L}_i$
-    \STATE Update $\theta, \phi$ via Adam
+    \STATE Integrate KFE on a fixed asset grid
+    \STATE Compute $\mathcal{L}_{\text{SC}}, \mathcal{L}_{\text{flux}}, \mathcal{L}_{\text{mass}}, \mathcal{L}_{\text{MC}}$
+    \STATE Total loss: $\mathcal{L} = \sum \kappa_i \mathcal{L}_i$;\; update $\theta,\phi$ (Adam)
     \IF{$k \mod N_r = 0$}
-        \STATE Update $r$: $r \leftarrow r + \eta(K^s - K^d)$
-	    \ENDIF
+        \STATE $r \leftarrow r + \eta(K^s - K^d)$
+    \ENDIF
 \ENDFOR
-\STATE Freeze collocation grid and run FP64 L-BFGS polish
+\STATE Freeze collocation grid; run FP64 L-BFGS polish
 \end{algorithmic}
 \end{block}
 
 \column{0.45\textwidth}
-\small
+\footnotesize
 \textbf{Key choices:}
-\begin{itemize}\itemsep1pt
+\begin{itemize}\itemsep0pt
     \item \textbf{Collocation}: sample $(a,n)$ uniformly on $[\ubar{a}, \bar{a}] \times \{n_1, n_2\}$
-    \item \textbf{Price update}: update $r$ slowly (every $N_r$ steps) to allow NN to adapt
+    \item \textbf{Price update}: update $r$ slowly (every $N_r$ steps) to let NN adapt
     \item \textbf{Loss weights}: start with $\kappa_{\text{HJB}}=\kappa_{\text{KFE}}=1$, larger $\kappa_{\text{SC}},\kappa_{\text{flux}},\kappa_{\text{MC}}$
-    \item \textbf{Optimizer}: Adam with lr $\sim 10^{-3}$, then deterministic FP64 L-BFGS
+    \item \textbf{Optimizer}: Adam, lr $\sim 10^{-3}$, then FP64 L-BFGS
     \item \textbf{Validation}: compare against FD only after training
 \end{itemize}
 
-\vspace{0.2em}
+\vspace{0.15em}
 \begin{center}
-\colorbox{uzhgreylight}{\parbox{0.9\columnwidth}{\centering\small
-Same philosophy as Day~5:\\
-\emphc{economic equations = loss function}\\
-\emphc{auto-diff = all derivatives}}}
+\colorbox{uzhgreylight}{\parbox{0.95\columnwidth}{\centering\scriptsize
+Same philosophy as the PINN lecture: \emphc{economic equations = loss function};
+\emphc{auto-diff = all derivatives}.}}
 \end{center}
 \end{columns}
 \end{frame}
@@ -1615,19 +1613,24 @@ Conceptual difficulty & Low & Medium & High \\
 \vspace{0.2em}
 \begin{center}
 \begin{tikzpicture}[
-    layer/.style={rectangle, rounded corners=3pt, draw=uzhblue, thick, minimum width=4cm, minimum height=0.45cm, align=center, font=\small},
-    arrow/.style={-Stealth, thick, uzhblue}
+    layer/.style={rectangle, rounded corners=3pt, draw=uzhblue, thick,
+                  minimum width=8cm, minimum height=0.45cm, align=center,
+                  font=\scriptsize, inner sep=2pt},
+    arrow/.style={-{Latex[length=2.5mm,width=2mm]}, line width=0.8pt, uzhblue},
+    node distance=0.28cm
 ]
-\node[layer, fill=softblue!15] (input) at (0,4.2) {Input: $\omega = (a, n, z, \hat{\varphi}) \in \R^{d}$};
-\node[layer, fill=uzhgreylight] (h1) at (0,3.5) {Hidden 1: $\bm{h}^{(1)} = \phi^{(1)}(W^{(1)}\omega + b^{(1)})$, \; 64, $\tanh$};
-\node[layer, fill=uzhgreylight] (h2) at (0,2.8) {Hidden 2: $\bm{h}^{(2)} = \phi^{(2)}(W^{(2)}\bm{h}^{(1)} + b^{(2)})$, \; 64, $\tanh$};
-\node at (0,2.3) {$\vdots$};
-\node[layer, fill=uzhgreylight] (h5) at (0,1.8) {Hidden 5: $\bm{h}^{(5)} = \phi^{(5)}(W^{(5)}\bm{h}^{(4)} + b^{(5)})$, \; 64, $\tanh$};
-\node[layer, fill=softorange!15] (output) at (0,1.1) {Output: $\hat{W} = \sigma(W^{(6)}\bm{h}^{(5)} + b^{(6)})$, \; softplus};
+\node[layer, fill=softblue!15]  (input)  {Input: $\omega = (a, n, z, \hat{\varphi}) \in \R^{d}$};
+\node[layer, fill=uzhgreylight, below=of input]  (h1) {Hidden 1: $\bm{h}^{(1)} = \phi^{(1)}(W^{(1)}\omega + b^{(1)})$, \; 64, $\tanh$};
+\node[layer, fill=uzhgreylight, below=of h1]     (h2) {Hidden 2: $\bm{h}^{(2)} = \phi^{(2)}(W^{(2)}\bm{h}^{(1)} + b^{(2)})$, \; 64, $\tanh$};
+\node[font=\normalsize, below=0.02cm of h2]      (vd) {$\vdots$};
+\node[layer, fill=uzhgreylight, below=0.05cm of vd] (h5) {Hidden 5: $\bm{h}^{(5)} = \phi^{(5)}(W^{(5)}\bm{h}^{(4)} + b^{(5)})$, \; 64, $\tanh$};
+\node[layer, fill=softorange!15, below=of h5]    (output) {Output: $\hat{W} = \sigma(W^{(6)}\bm{h}^{(5)} + b^{(6)})$, \; softplus};
 
-\draw[arrow] (input) -- (h1);
-\draw[arrow] (h1) -- (h2);
-\draw[arrow] (h5) -- (output);
+\draw[arrow] (input.south) -- (h1.north);
+\draw[arrow] (h1.south)    -- (h2.north);
+\draw[arrow] (h2.south)    -- (vd.north);
+\draw[arrow] (vd.south)    -- (h5.north);
+\draw[arrow] (h5.south)    -- (output.north);
 \end{tikzpicture}
 \end{center}
 
@@ -1839,7 +1842,8 @@ Discrete State NN & $9.3 \times 10^{-6}$ & $6.6 \times 10^{-5}$ \\
     xlabel={$a$}, ylabel={consumption $c$},
     xmin=0, xmax=15, ymin=0, ymax=2,
     axis lines=left,
-    legend style={at={(0.02,0.98)}, anchor=north west, font=\tiny},
+    legend style={at={(0.98,0.02)}, anchor=south east, font=\tiny,
+                  fill=white, fill opacity=0.85, draw=gray!40, text opacity=1},
     title={\small Consumption: NN vs.\ FD},
     title style={at={(0.5,1.05)}, font=\small},
 ]
@@ -2012,7 +2016,9 @@ All three approaches achieve reported training losses around $10^{-5}$.
     xmin=0, xmax=10, ymin=-0.5, ymax=2,
     axis lines=left, font=\scriptsize,
     title={\scriptsize Capital},
-    legend style={at={(0.02,0.98)}, anchor=north west, font=\tiny},
+    legend columns=3,
+    legend style={at={(0.5,-0.45)}, anchor=north, font=\tiny,
+                  draw=gray!40, /tikz/every even column/.append style={column sep=0.3cm}},
 ]
 \addplot[softblue, thick, domain=0:10, samples=100]
     {0.7 + 0.5*sin(deg(0.7*x)) + 0.3*(1-exp(-0.5*x))};
