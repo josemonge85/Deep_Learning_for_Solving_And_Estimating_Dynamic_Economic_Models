@@ -772,7 +772,8 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \begin{axis}[
     width=7.5cm, height=4cm,
     xlabel={$x$}, ylabel={$g(x,t)$},
-    xmin=-5, xmax=5, ymin=0, ymax=1.2,
+    xmin=-5, xmax=5, ymin=0, ymax=1.4,
+    ytick={0,0.5,1.0},
     axis lines=left,
     legend style={at={(0.98,0.98)}, anchor=north east, font=\tiny},
 ]
@@ -822,11 +823,12 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[
-    width=7.5cm, height=3.5cm,
+    width=7.5cm, height=3.8cm,
     xlabel={$x$}, ylabel={$g(x,t)$},
-    xmin=-3, xmax=5, ymin=0, ymax=0.7,
+    xmin=-3, xmax=5, ymin=0, ymax=0.85,
     axis lines=left,
-    legend style={at={(0.02,0.98)}, anchor=north west, font=\tiny},
+    legend style={at={(0.98,0.98)}, anchor=north east, font=\tiny,
+                  fill=white, fill opacity=0.85, draw=gray!40, text opacity=1},
 ]
 % Initial (spread)
 \addplot[softorange, thick, domain=-3:5, samples=80]
@@ -840,8 +842,8 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \addplot[harvardcrimson, very thick, domain=-3:5, samples=80]
     {exp(-(x-1)^2/2) / sqrt(2*3.14159)};
 \addlegendentry{$g^*(x)$ (stationary)}
-\draw[dashed] (axis cs:1,0) -- (axis cs:1,0.35);
-\node[font=\tiny] at (axis cs:1.5,0.35) {$\bar{x}=1$};
+\draw[dashed] (axis cs:1,0) -- (axis cs:1,0.42);
+\node[font=\tiny] at (axis cs:1.5,0.42) {$\bar{x}=1$};
 \end{axis}
 \end{tikzpicture}
 \end{center}
@@ -1845,18 +1847,19 @@ Clearing & $\int b\,g\ud b = 0$ & $\int a\,g\ud a = K(r)$ \\
     label style={font=\normalsize},
     legend style={at={(0.98,0.98)}, anchor=north east, font=\scriptsize},
 ]
-% Low income - concentrated near constraint
+% Low income (n_1) -- smooth density on (b_lower, infty)
 \addplot[softblue, very thick, domain=-1.9:6, samples=80]
     {0.35*exp(-(x+1)^2/0.8) + 0.08*exp(-(x-1)^2/2)};
 \addlegendentry{$g^*(b, n_1)$}
-% High income - shifted right
+% High income (n_2) -- no atom at the constraint
 \addplot[softorange, very thick, domain=-1.9:6, samples=80]
     {0.15*exp(-(x-0.5)^2/2) + 0.1*exp(-(x-2.5)^2/3)};
 \addlegendentry{$g^*(b, n_2)$}
-\draw[harvardcrimson, very thick, ->] (axis cs:-1.98,0) -- (axis cs:-1.98,0.45);
-\node[font=\scriptsize\bfseries, harvardcrimson, fill=white, inner sep=1pt, anchor=west]
-    at (axis cs:-0.95,0.46) {mass at $\ubar{b}$};
-\draw[harvardcrimson, thick, -Stealth] (axis cs:-0.98,0.44) -- (axis cs:-1.96,0.44);
+% Dirac atom at borrowing constraint -- carried by the constrained (low-income) type only
+\draw[softblue, line width=2.2pt] (axis cs:-2,0) -- (axis cs:-2,0.40);
+\fill[softblue] (axis cs:-2,0.40) circle (1.6pt);
+\node[softblue, font=\tiny\bfseries, anchor=west]
+    at (axis cs:-1.85,0.40) {atom in $n_1$};
 \draw[dashed, gray] (axis cs:0,0) -- (axis cs:0,0.3);
 \node[font=\scriptsize] at (axis cs:0.52,0.32) {$b=0$};
 \end{axis}
@@ -1880,18 +1883,19 @@ Clearing & $\int b\,g\ud b = 0$ & $\int a\,g\ud a = K(r)$ \\
     label style={font=\normalsize},
     legend style={at={(0.98,0.98)}, anchor=north east, font=\scriptsize},
 ]
-% Low income
+% Low income (n_1) -- smooth density on (0, infty)
 \addplot[softblue, very thick, domain=0.1:15, samples=80]
     {0.09*exp(-0.25*(x-0.5)) * (1 - exp(-3*x))};
 \addlegendentry{$g^*(a, n_1)$}
-% High income
+% High income (n_2) -- no atom at the constraint
 \addplot[softorange, very thick, domain=0.1:15, samples=80]
     {0.06*exp(-(x-5)^2/10) + 0.01*exp(-(x-8)^2/6)};
 \addlegendentry{$g^*(a, n_2)$}
-\draw[harvardcrimson, very thick, ->] (axis cs:0.1,0) -- (axis cs:0.1,0.1);
-\node[font=\scriptsize\bfseries, harvardcrimson, fill=white, inner sep=1pt, anchor=west]
-    at (axis cs:1.0,0.105) {mass at $\ubar{a}$};
-\draw[harvardcrimson, thick, -Stealth] (axis cs:0.9,0.102) -- (axis cs:0.12,0.1);
+% Dirac atom at borrowing constraint -- carried by the constrained (low-income) type only
+\draw[softblue, line width=2.2pt] (axis cs:0,0) -- (axis cs:0,0.095);
+\fill[softblue] (axis cs:0,0.095) circle (1.6pt);
+\node[softblue, font=\tiny\bfseries, anchor=west]
+    at (axis cs:0.3,0.095) {atom in $n_1$};
 \end{axis}
 \end{tikzpicture}
 \end{center}
@@ -2103,11 +2107,11 @@ Optimal control $\Rightarrow$ HJB. Coupled with KFE via savings policy. Master e
 \end{columns}
 
 \vspace{0.3em}
-\textbf{The road ahead:}
+\textbf{Next (numerical methods):}
 \begin{enumerate}\itemsep1pt
-    \item \textbf{Deck 2, Part I}: Solve coupled HJB+KFE by \emphc{finite differences} (benchmark)
-    \item \textbf{Deck 2, Part II}: Solve with \emphc{PINNs} (mesh-free, auto-diff)
-    \item \textbf{Deck 2, Part III}: Solve the \emphc{master equation} with EMINNs (deep learning)
+    \item Solve the coupled HJB+KFE by \emphc{finite differences} (benchmark)
+    \item Solve the same system with \emphc{PINNs} (mesh-free, auto-diff)
+    \item Solve the \emphc{master equation} with EMINNs (deep learning)
 \end{enumerate}
 
 \vspace{0.2em}
@@ -2121,18 +2125,17 @@ The numerical methods deck picks up here.}}
 % --- Slide: Theory-to-Code Bridge ---
 \begin{frame}{From Theory to Code (Companion Notebook)}
 \footnotesize
-\textbf{After this theory deck, implement directly in:}
+\textbf{Companion notebook:}
 \begin{itemize}\itemsep2pt
     \item \texttt{lecture\_13\_B11\_continuous\_time\_ha\_numerics/code/\allowbreak lecture\_13\_B11\_08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb}
 \end{itemize}
 
-\vspace{0.2em}
-\textbf{Mapping from this deck to notebook sections:}
+\vspace{0.3em}
+\textbf{Covers:}
 \begin{itemize}\itemsep2pt
-    \item HJB + KFE PDE system (Huggett/Aiyagari) $\rightarrow$ FD block (Section 1)
-    \item Stationary distribution and boundary conditions $\rightarrow$ FD diagnostics + boundary plots
-    \item PINN loss (HJB residual, KFE residual, BC terms) $\rightarrow$ PINN block (Section 2)
-    \item Equilibrium moments and market clearing $\rightarrow$ FD/PINN comparison metrics
+    \item Finite-difference solver for the Aiyagari HJB+KFE system
+    \item PINN solver for the same equilibrium
+    \item Comparison of stationary distributions, savings policies, and the equilibrium interest rate
 \end{itemize}
 \end{frame}
 
@@ -2197,7 +2200,7 @@ The numerical methods deck picks up here.}}
 
 \column{0.45\textwidth}
 \begin{center}
-\textbf{Covered today (Deck 1):}\\[8pt]
+\textbf{Covered in this deck:}\\[8pt]
 {\small
 \begin{tabular}{rl}
 I & Stochastic Calculus \\
@@ -2209,7 +2212,7 @@ V & The Master Equation \\
 }
 
 \vspace{0.8cm}
-\textbf{Next up (Deck 2):}\\[6pt]
+\textbf{Next:}\\[6pt]
 {\large Numerical Methods}\\
 {\large FD $\to$ PINNs $\to$ EMINNs}\\[8pt]
 \end{center}
