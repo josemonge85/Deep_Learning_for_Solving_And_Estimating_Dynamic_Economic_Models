@@ -105,7 +105,7 @@
 % --- Exercise pause badge ---
 \newcommand{\exercisepause}{%
   \tikz[baseline=(X.base)]{\node[fill=darkgreen!80!black, text=white,
-  rounded corners=2pt, inner sep=3pt, font=\scriptsize\bfseries](X){PAUSE --- 5 min};}}
+  rounded corners=2pt, inner sep=3pt, font=\scriptsize\bfseries](X){PAUSE, 5 min};}}
 
 
 % ============================================================================
@@ -195,7 +195,7 @@
 
 % --- Slide 5: Recall the DEQN Loss ---
 \begin{frame}{Recall: The DEQN Loss}
-\textbf{Yesterday:} we trained a neural network $\mathcal{N}_\theta$ to satisfy
+\textbf{In an earlier lecture, we trained} a neural network $\mathcal{N}_\theta$ to satisfy
 economic equilibrium conditions in \emphc{discrete time}:
 \[
 \boxed{
@@ -208,7 +208,7 @@ economic equilibrium conditions in \emphc{discrete time}:
 \begin{itemize}
     \item $G(\cdot) = 0$: Euler equations, budget constraints, market clearing
     \item Training points $\x_i$: simulated from the model's own dynamics
-    \item \emphc{No labeled data needed}---structural equations \emph{are} the loss
+    \item \emphc{No labeled data needed}, structural equations \emph{are} the loss
 \end{itemize}
 
 \vspace{0.5em}
@@ -246,7 +246,7 @@ Loss: PDE residual $\mathcal{R}(\cdot) = 0$
 
 \vspace{0.6em}
 \begin{center}
-{\small \emphc{Key shift:} from algebraic residuals to \textbf{differential} residuals---we need \emphc{derivatives} of the neural network.}
+{\small \emphc{Key shift:} from algebraic residuals to \textbf{differential} residuals, we need \emphc{derivatives} of the neural network.}
 \end{center}
 \end{frame}
 
@@ -256,7 +256,7 @@ Loss: PDE residual $\mathcal{R}(\cdot) = 0$
 
 \vspace{0.3em}
 \begin{itemize}
-    \item \emphc{Heterogeneous-agent models:} Achdou, Han, Lasry, Lions \& Moll (2022)---income and wealth distribution dynamics via HJB--KFE systems
+    \item \emphc{Heterogeneous-agent models:} Achdou, Han, Lasry, Lions \& Moll (2022), income and wealth distribution dynamics via HJB--KFE systems
 
     \vspace{0.2em}
     \item \emphc{Mean-field games:} optimal policy with a continuum of interacting agents
@@ -370,7 +370,7 @@ Consider the ODE $u''(x) = -1$ on $[0,1]$ with boundary conditions $u(0) = u(1) 
 
 \vspace{0.3em}
 {\small Both approaches are \emphc{unsupervised}: the physics (economics) \emph{is} the loss function.
-The key addition for PINNs: we differentiate the network via \texttt{torch.autograd.grad}.}
+The key addition for PINNs: we differentiate the network via any auto-diff tool (e.g.\ \texttt{torch.autograd.grad}).}
 \end{frame}
 
 % ============================================================================
@@ -404,7 +404,7 @@ dydx = torch.autograd.grad(
 \vspace{0.3em}
 \begin{itemize}
     \item \texttt{create\_graph=True}: retains the computational graph so we can differentiate \emphc{again}
-    \item This gives us \emphc{algorithmic} derivatives (up to floating-point precision)---no finite differences!
+    \item This gives us \emphc{algorithmic} derivatives (up to floating-point precision), no finite differences!
     \item Works for \emphc{any order}: $\frac{\partial^n}{\partial x^n}$ by chaining $n$ calls
 \end{itemize}
 \end{frame}
@@ -450,7 +450,7 @@ d2ydx2 = torch.autograd.grad(
 
 % --- Slide 13: Collocation Points ---
 \begin{frame}[fragile]{Collocation Points}
-PINNs evaluate the PDE residual at \emphc{randomly sampled} points---no grid required.
+PINNs evaluate the PDE residual at \emphc{randomly sampled} points, no grid required.
 
 \vspace{0.3em}
 \begin{center}
@@ -522,7 +522,7 @@ PINNs evaluate the PDE residual at \emphc{randomly sampled} points---no grid req
 \end{block}
 
 \vspace{0.2em}
-{\small \textbf{Note:} Unlike DEQNs, training points are \emphc{not} simulated from model dynamics---they are drawn uniformly (or adaptively) from the domain.}
+{\small \textbf{Note:} Unlike DEQNs, training points are \emphc{not} simulated from model dynamics, they are drawn uniformly (or adaptively) from the domain.}
 \end{frame}
 
 % --- Slide 14b: Optimizer pipeline and FP64 ---
@@ -587,8 +587,8 @@ PINNs evaluate the PDE residual at \emphc{randomly sampled} points---no grid req
     \node[deriv, below=1.2cm of du] (d2u) {$\frac{\partial^2 \hat{u}}{\partial x^2}$};
 
     \draw[darr] (out.south) -- ++(0,-0.35) -| (du.north)
-        node[pos=0.25, right=2pt, font=\tiny] {autograd};
-    \draw[darr] (du) -- (d2u) node[midway, right=2pt, font=\tiny] {autograd};
+        node[pos=0.5, above=1pt, font=\tiny] {autograd};
+    \draw[darr] (du) -- (d2u) node[midway, left=2pt, font=\tiny] {autograd};
 
     % PDE residual and loss
     \node[deriv, left=2.0cm of d2u] (res) {$\mathcal{D}[\hat{u}]$};
@@ -608,7 +608,7 @@ PINNs evaluate the PDE residual at \emphc{randomly sampled} points---no grid req
 \end{center}
 
 \vspace{0.2em}
-{\small The entire pipeline---forward pass \emph{and} derivative computation---is \emphc{differentiable}, enabling end-to-end gradient-based training.}
+{\small The entire pipeline, forward pass \emph{and} derivative computation, is \emphc{differentiable}, enabling end-to-end gradient-based training.}
 \end{frame}
 
 % --- Slide 16: Why Tanh? ---
@@ -619,8 +619,8 @@ PINNs evaluate the PDE residual at \emphc{randomly sampled} points---no grid req
 
 \vspace{0.3em}
 \begin{itemize}
-    \item \emphc{ReLU}: $C^0$ only---second derivative is zero everywhere (useless for $u''$)
-    \item \emphc{Tanh}: $C^\infty$---all derivatives are well-defined and informative
+    \item \emphc{ReLU}: $C^0$ only, second derivative is zero everywhere (useless for $u''$)
+    \item \emphc{Tanh}: $C^\infty$, all derivatives are well-defined and informative
     \item \emphc{Softplus}: $C^\infty$, useful for positivity constraints (e.g.\ consumption)
 \end{itemize}
 
@@ -820,14 +820,14 @@ $\Rightarrow$ \textbf{Motivates hard boundary enforcement} (Part III).
         \draw[thick, uzhblue] (0,0) -- (3.6,0);
         \fill[darkred] (0,0) circle (4pt);
         \fill[darkred] (3.6,0) circle (4pt);
-        \node[above, font=\tiny, darkred] at (0,0.1) {$y=1$};
+        \node[above right=-1pt and 2pt, font=\tiny, darkred] at (0,0.05) {$y=1$};
         \node[above, font=\tiny, darkred] at (3.6,0.1) {$y=2$};
         % Solution that misses BCs
         \draw[thick, softorange, domain=0:3.6, samples=60]
             plot (\x, {-0.14*\x*\x + 0.62*\x + 0.7});
         \node[font=\tiny, softorange] at (1.8,-0.5) {PDE OK, BCs violated};
         % Show BC mismatch
-        \draw[thick, darkred, <->] (0,0) -- (0,0.7) node[midway, left, font=\tiny] {gap};
+        \draw[thick, darkred, <->] (0,0) -- (0,0.7) node[pos=0.65, left=1pt, font=\tiny] {gap};
     \end{scope}
 
     % Lambda balanced
@@ -855,12 +855,15 @@ $\Rightarrow$ \textbf{Motivates hard boundary enforcement} (Part III).
         \fill[darkred] (3.6,0) circle (4pt);
         \node[above, font=\tiny, darkred] at (0,0.1) {$y=1$};
         \node[above, font=\tiny, darkred] at (3.6,0.1) {$y=2$};
+        % Reference straight interpolation (BC-consistent, PDE-consistent target)
+        \draw[thick, dashed, gray!60] (0,1.0) -- (3.6,2.0);
         % Solution that nails BCs but bad interior
         \draw[thick, darkred, domain=0:3.6, samples=60]
             plot (\x, {1.0 + \x/3.6 + 0.15*sin(deg(2*3.14*\x/3.6))});
         \node[font=\tiny, darkred] at (1.8,-0.5) {BCs OK, PDE violated};
-        % Show interior wiggle
-        \draw[thick, gray, <->] (1.8,1.3) -- (1.8,1.65) node[midway, right, font=\tiny] {PDE err};
+        % Show interior wiggle (deviation from reference at x=2.7, the trough)
+        \draw[thick, gray, <->] (2.7,1.6) -- (2.7,1.75);
+        \node[font=\tiny, gray, anchor=south west] at (2.78,1.95) {PDE err};
     \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -896,7 +899,7 @@ where:
 \hat{y}(1) &= A(1) + B(1)\cdot\mathcal{N}_\theta(1) = 2 + 0 = 2 \quad\checkmark
 \end{align*}
 
-$\Rightarrow$ BCs hold \emphc{identically}---only the PDE residual loss remains.
+$\Rightarrow$ BCs hold \emphc{identically}, only the PDE residual loss remains.
 \end{frame}
 
 % --- Slide 20b: Trial Solution Visual Decomposition ---
@@ -935,16 +938,17 @@ $\Rightarrow$ BCs hold \emphc{identically}---only the PDE residual loss remains.
         xlabel={$x$}, xlabel style={font=\tiny},
         ylabel style={font=\tiny},
         tick label style={font=\tiny},
-        xmin=0, xmax=1, ymin=-0.3, ymax=0.3,
+        xmin=0, xmax=1, ymin=-0.4, ymax=0.4,
+        ytick={-0.3,0,0.3},
         grid=major, grid style={gray!15},
         axis lines=left,
     ]
         \addplot[ultra thick, softblue, domain=0:1, samples=80]
-            {x*(1-x)*(0.8*sin(deg(3.14*x)) - 0.3*cos(deg(2*3.14*x)) + 0.5)};
+            {0.6*x*(1-x)*(0.8*sin(deg(3.14*x)) - 0.3*cos(deg(2*3.14*x)) + 0.5)};
         \addplot[only marks, mark=*, mark size=2.5pt, softblue]
             coordinates {(0,0) (1,0)};
-        \draw[ultra thick, softgreen, dotted] (axis cs:0,-0.3) -- (axis cs:0,0.3);
-        \draw[ultra thick, softgreen, dotted] (axis cs:1,-0.3) -- (axis cs:1,0.3);
+        \draw[thick, softgreen, dotted] (axis cs:0,-0.4) -- (axis cs:0,0.4);
+        \draw[thick, softgreen, dotted] (axis cs:1,-0.4) -- (axis cs:1,0.4);
     \end{axis}
 
     % Equals sign
@@ -964,21 +968,24 @@ $\Rightarrow$ BCs hold \emphc{identically}---only the PDE residual loss remains.
         grid=major, grid style={gray!15},
         axis lines=left,
     ]
+        \addplot[thick, dashed, darkred, domain=0:1, samples=2]{1+x};
         \addplot[ultra thick, softgreen, domain=0:1, samples=80]
-            {1 + x + x*(1-x)*(0.8*sin(deg(3.14*x)) - 0.3*cos(deg(2*3.14*x)) + 0.5)};
-        \addplot[thick, dashed, gray, domain=0:1, samples=80]
-            {-0.5*x^2 + 1.5*x + 1};
+            {1 + x + 0.6*x*(1-x)*(0.8*sin(deg(3.14*x)) - 0.3*cos(deg(2*3.14*x)) + 0.5)};
         \addplot[only marks, mark=*, mark size=2.5pt, softgreen]
             coordinates {(0,1) (1,2)};
     \end{axis}
 
-    % Annotations below -- use scriptsize to avoid overlap
-    \node[font=\scriptsize, darkred, align=center] at ($(plotA.south)-(0,0.45)$)
+    % Annotations below the x-axis labels, constrained to plot width so they
+    % don't bleed into neighboring plots
+    \node[font=\scriptsize, darkred, align=center, anchor=north,
+          text width=3.2cm] at ($(plotA.south)-(0,0.95)$)
         {Satisfies BCs\\(fixed, not learned)};
-    \node[font=\scriptsize, softblue, align=center] at ($(plotBN.south)-(0,0.45)$)
+    \node[font=\scriptsize, softblue, align=center, anchor=north,
+          text width=3.2cm] at ($(plotBN.south)-(0,0.95)$)
         {Zero at boundaries\\(free to learn interior)};
-    \node[font=\scriptsize, softgreen, align=center] at ($(plotY.south)-(0,0.45)$)
-        {BCs exact by construction\\(only PDE loss needed)};
+    \node[font=\scriptsize, softgreen, align=center, anchor=north,
+          text width=3.2cm] at ($(plotY.south)-(0,0.95)$)
+        {BCs exact\\by construction};
 \end{tikzpicture}
 \end{center}
 \end{frame}
@@ -1003,7 +1010,7 @@ def residual(model, x):
 \end{lstlisting}
 
 \vspace{0.2em}
-{\small \textbf{Advantage:} the loss has \emphc{only one term} (PDE residual)---no $\lambda$ to tune!}
+{\small \textbf{Advantage:} the loss has \emphc{only one term} (PDE residual), no $\lambda$ to tune!}
 \end{frame}
 
 % --- Slide 21b: Visual: 2D Hard BC Construction ---
@@ -1102,7 +1109,7 @@ Consider the same ODE $u''(x) = -1$ on $[0,1]$ with $u(0)=u(1)=0$.
     \item $\hat{u}(x) = x(1-x)\cdot\mathcal{N}(x; \theta)$.  Since $B(x)=x(1-x)$ vanishes at both endpoints, the BCs are satisfied exactly.
     \item $\hat{u}(0)=0\cdot\mathcal{N}(0;\theta)=0$. \quad $\hat{u}(1)=0\cdot\mathcal{N}(1;\theta)=0$. \checkmark\\
     This holds regardless of what $\mathcal{N}$ outputs.
-    \item Hard BCs \emphc{eliminate the boundary loss term} entirely---the optimizer only needs to minimize the PDE residual. This reduces the number of hyperparameters ($\lambda$ is gone) and often speeds up convergence.
+    \item Hard BCs \emphc{eliminate the boundary loss term} entirely, the optimizer only needs to minimize the PDE residual. This reduces the number of hyperparameters ($\lambda$ is gone) and often speeds up convergence.
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -1115,7 +1122,7 @@ Consider the same ODE $u''(x) = -1$ on $[0,1]$ with $u(0)=u(1)=0$.
 \textbf{Manufactured solution:} $u^\star(x,y) = x^2 + y + \sin(\pi x)\sin(\pi y)$.
 
 \vspace{0.4em}
-\textbf{Hard BCs via transfinite (Coons-patch) interpolation} --- the standard 4-side construction that matches each boundary function exactly along its edge:
+\textbf{Hard BCs via transfinite (Coons-patch) interpolation}, the standard 4-side construction that matches each boundary function exactly along its edge:
 \[
 \hat{u}(x,y) = A(x,y) + \underbrace{x(1\!-\!x)\,y(1\!-\!y)}_{B(x,y)}\cdot\mathcal{N}_\theta(x,y)
 \]
@@ -1211,7 +1218,7 @@ $\Rightarrow$ \emphc{Perfect fit for PINNs:} the network approximates $V$, autog
 
 % --- Slide 28: Cake-Eating Setup ---
 \begin{frame}{Cake-Eating Problem: Setup}
-\textbf{A household} chooses consumption $c(t)$ to maximize lifetime utility:
+\textbf{A household} with wealth $a(t)$ chooses consumption $c(t)$ to maximize lifetime utility:
 \[
 \max_{\{c(t)\}} \int_0^\infty e^{-\rho t}\,\frac{c(t)^{1-\gamma}}{1-\gamma}\,\mathrm{d}t
 \qquad\text{s.t.}\quad \dot{a} = r\,a - c
@@ -1262,16 +1269,16 @@ Endpoints are exact \emph{by construction}, so the boundary loss is identically 
 \begin{frame}[shrink=15]{Optional Architecture for High-D PDEs: DGM}
 \begin{columns}[T]
 \column{0.40\textwidth}
-{\small\textbf{Deep Galerkin Method} (Sirignano \& Spiliopoulos, 2018) --- a heavier architecture that becomes worth its weight only in higher dimensions or with sharp PDE features.  For the 1D cake problem, the trial-solution MLP on the previous slide is preferred.}
+{\footnotesize\textbf{Deep Galerkin Method} (Sirignano \& Spiliopoulos, 2018), a heavier architecture that pays off only in higher dimensions or with sharp PDE features.  For the 1D cake problem, the trial-solution MLP on the previous slide is preferred.}
 
-\vspace{0.3em}
+\vspace{0.2em}
 \begin{center}
 \begin{tikzpicture}[
     block/.style={rectangle, draw=uzhblue, thick, fill=uzhgreylight,
-        minimum width=2.4cm, minimum height=0.55cm, font=\small,
+        minimum width=2.4cm, minimum height=0.45cm, font=\footnotesize,
         rounded corners=3pt},
     layer/.style={rectangle, draw=darkred, thick, fill=red!5,
-        minimum width=2.4cm, minimum height=0.55cm, font=\small,
+        minimum width=2.4cm, minimum height=0.45cm, font=\footnotesize,
         rounded corners=3pt},
     arr/.style={-{Stealth[length=2mm]}, thick, uzhblue},
     skip/.style={-{Stealth[length=2mm]}, thick, darkred, dashed}
@@ -1280,16 +1287,16 @@ Endpoints are exact \emph{by construction}, so the boundary loss is identically 
     \node[block] (inp) {$x$};
 
     % Initial transform
-    \node[block, below=0.45cm of inp] (S0) {$S_0 = \tanh(Wx\!+\!b)$};
+    \node[block, below=0.25cm of inp] (S0) {$S_0 = \tanh(Wx\!+\!b)$};
 
     % DGM Layers — stacked to show repetition
-    \node[layer, below=0.45cm of S0] (L1) {DGM Layer 1};
-    \node[layer, below=0.3cm of L1] (L2) {DGM Layer 2};
-    \node[font=\large, text=gray] at ($(L2.south)+(0,-0.25)$) {$\vdots$};
-    \node[layer, below=0.5cm of L2] (LL) {DGM Layer $L$};
+    \node[layer, below=0.25cm of S0] (L1) {DGM Layer 1};
+    \node[layer, below=0.2cm of L1] (L2) {DGM Layer 2};
+    \node[font=\small, text=gray] at ($(L2.south)+(0,-0.18)$) {$\vdots$};
+    \node[layer, below=0.35cm of L2] (LL) {DGM Layer $L$};
 
     % Output
-    \node[block, below=0.45cm of LL] (out) {$\hat{V} = W_{\text{out}} S_L$};
+    \node[block, below=0.25cm of LL] (out) {$\hat{V} = W_{\text{out}} S_L$};
 
     % Vertical arrows
     \draw[arr] (inp) -- (S0);
