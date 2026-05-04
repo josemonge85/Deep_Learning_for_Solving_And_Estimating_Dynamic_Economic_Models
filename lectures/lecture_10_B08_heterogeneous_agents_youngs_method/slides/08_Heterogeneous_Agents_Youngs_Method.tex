@@ -241,9 +241,9 @@ $\Rightarrow$ All agents are ``representative.''
 \column{0.48\textwidth}
 \textbf{Mathematical challenge:}
 \begin{itemize}
-    \item The \emphc{entire distribution} $\mu_t$ is a state variable
-    \item $\mu_t$ is a \emphc{measure} over individual states
-    \item Infinite-dimensional object!
+    \item With aggregate risk (Krusell--Smith), the \emphc{entire distribution} $\mu_t$ is part of the aggregate state
+    \item Without aggregate risk (Aiyagari), $\mu_t$ is fixed in stationary equilibrium
+    \item $\mu_t$ is a \emphc{measure} over individual states; infinite-dimensional
     \item Cannot put it on a grid without the curse of dimensionality
 \end{itemize}
 
@@ -2093,29 +2093,29 @@ The DEQN does not replace the distributional law of motion.  Young's method rema
 % --- Slide: Three DL Recipes ---
 \begin{frame}{Three Deep-Learning Recipes for KS}
 \small
-All three recipes minimize residuals of the \emph{same} structural equations via SGD.  They differ in how the aggregate distribution is fed to the network.
+The three recipes differ on two axes: how the cross-section is fed to the network, and what objective is optimized.
 
-\vspace{0.4em}
+\vspace{0.3em}
 \begin{center}
 \scriptsize
-\begin{tabular}{p{2.8cm} p{3.2cm} p{2.8cm} p{3.0cm}}
+\begin{tabular}{p{2.2cm} p{2.7cm} p{2.5cm} p{3.4cm}}
 \toprule
  & \textbf{Histogram DEQN} & \textbf{All-in-one DL} & \textbf{DeepHAM} \\
- & (this lecture so far) & Maliar--Maliar--Winant & Han--Yang--E \\
+ & Azinovic et al.\ (2022) & Maliar et al.\ (2021) & Han, Yang \& E (2024) \\
 \midrule
-Distribution input & fixed-grid histogram vector & explicit $N$-agent panel & learned generalized moments \\
+Distribution input & fixed-grid histogram & explicit $N$-agent panel & learned generalized moments \\
 \addlinespace
-Input dimension & $\mathcal{O}(N_b)$ & $\mathcal{O}(N)$ & $M \ll N_b$ (learned) \\
+Input dim & $\mathcal{O}(N_b)$ & $\mathcal{O}(N)$ & $M \ll N_b$ (learned) \\
 \addlinespace
-Permutation invariance & automatic & approximate (LLN) & \emphc{architectural} (DeepSets) \\
+Perm.\ invariance & automatic & approximate (LLN) & \emphc{architectural} (DeepSets) \\
 \addlinespace
-Main reference & Azinovic et al.\ (2022) & Maliar, Maliar \& Winant (2021) & Han, Yang \& E (2023) \\
+Objective & squared residuals & squared residuals & \emphc{cumulative utility} on paths \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\vspace{0.3em}
-{\footnotesize The accompanying notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} implements the middle column at classroom scale.}
+\vspace{0.2em}
+{\scriptsize Notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} implements the middle column at classroom scale.}
 \end{frame}
 
 % --- Slide: All-in-One DL (Part 1 of 2) ---
@@ -2153,10 +2153,10 @@ Main reference & Azinovic et al.\ (2022) & Maliar, Maliar \& Winant (2021) & Han
 \texttt{github.com/marcmaliar/deep-learning-euler-method-krusell-smith}
 
 \vspace{0.4em}
-\textbf{In this course.}  Notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} is a classroom-scale caricature of this approach: single policy network, panel of $N \sim 100$ agents, CPU-friendly,  to convergence.
+\textbf{In this course.}  Notebook \texttt{12\_KrusellSmith\_DeepLearning.ipynb} is a classroom-scale caricature of this approach: single policy network, panel of $N \sim 100$ agents, CPU-friendly, fast to convergence.
 \end{frame}
 
-% --- Slide: DeepHAM (Part 1 of 2) ---
+% --- Slide: DeepHAM (Part 1 of 3) ---
 \begin{frame}{DeepHAM --- Learned Moments (Han, Yang \& E)}
 \small
 \textbf{Idea.}  Instead of tracking the histogram or committing to the first moment \emph{a priori}, \emphc{learn} which summary statistics agents actually need.
@@ -2165,34 +2165,85 @@ Main reference & Azinovic et al.\ (2022) & Maliar, Maliar \& Winant (2021) & Han
 \begin{block}{Generalized moments via DeepSets}
 \footnotesize
 \begin{equation*}
-\bm{m}_t = \Bigl(\textstyle\sum_i g_\theta^1(s_t^i),\; \ldots,\; \sum_i g_\theta^M(s_t^i)\Bigr), \qquad M \ll N_b
+m_t^\ell \;=\; \frac{1}{N}\sum_{i=1}^{N} \phi_\theta^{\,\ell}(s_t^i) \;\xrightarrow{N\to\infty}\; \int \phi_\theta^{\,\ell}(s)\, d\mu_t(s), \qquad \ell = 1,\ldots,M, \;\; M \ll N_b
 \end{equation*}
-Each $g_\theta^m:\R^d\!\to\!\R$ is a neural encoder trained \emph{jointly} with the value and policy networks.  Sum-pooling $\Rightarrow$ permutation invariance.
+Each $\phi_\theta^{\,\ell}:\R^d\!\to\!\R$ is a neural encoder trained \emph{jointly} with the value and policy networks.  Averaging (continuum: integration against $\mu_t$) $\Rightarrow$ permutation invariance.
 \end{block}
 
 \vspace{0.4em}
 {\scriptsize Reference: Han, Yang \& E (2024), \emph{Quantitative Economics} (forthcoming); preprint arXiv:2112.14377.}
 \end{frame}
 
-% --- Slide: DeepHAM (Part 2 of 2) ---
+% --- Slide: DeepHAM (Part 2 of 3): training objective ---
+\begin{frame}{DeepHAM --- Training Objective}
+\small
+\textbf{What is optimized.}  Not a Bellman residual: DeepHAM \emphc{maximizes cumulative utility} along simulated paths, with the individual law of motion embedded in the computational graph.
+
+\vspace{0.4em}
+\begin{block}{Policy-improvement objective}
+\footnotesize
+\begin{equation*}
+J(\theta,\rho) \;=\; \mathbb{E}\!\left[\sum_{t=0}^{T-1}\beta^{t}\,u\!\bigl(c_\rho(s_t^i;\bm{m}_t,a_t)\bigr) \;+\; \beta^{T}\,V_\psi(s_T^i;\bm{m}_T,a_T)\right]
+\end{equation*}
+Expectation over simulated idiosyncratic and aggregate histories under the current policy.  Bellman residual is reported \emphc{only as a validation diagnostic}.
+\end{block}
+
+\vspace{0.3em}
+\textbf{Why this matters.}
+\begin{itemize}\itemsep1pt
+    \item Close to model-based RL, but not generic RL: gradients flow through the structural individual dynamics.
+    \item Suited to constrained-efficiency, optimal policy, behavioral macro --- problems where FOCs are awkward.
+\end{itemize}
+\end{frame}
+
+% --- Slide: DeepHAM (Part 3 of 3): accuracy and extensions ---
 \begin{frame}{DeepHAM: Reported Accuracy and Extensions}
 \small
-\textbf{Results on baseline KS:}
+\textbf{Results on baseline KS} (validation diagnostics, not the loss):
 \begin{itemize}\itemsep2pt
-    \item First moment only: Bellman error reduced by $37.5\%$ vs.\ classical KS.
-    \item With one \emph{learned} moment: Bellman error reduced by $54.2\%$.
+    \item First moment only: Bellman residual reduced by $61.6\%$ vs.\ classical KS.
+    \item With one \emph{learned} generalized moment: Bellman residual reduced by $68.9\%$.
 \end{itemize}
 
-\vspace{0.6em}
+\vspace{0.4em}
+\textbf{Interpretability of learned moments.}  In KS, the learned basis is concave in assets: a poor agent's marginal asset weighs more than a rich agent's.  Direct link to MPCs and redistribution.
+
+\vspace{0.4em}
 \textbf{Extensions where DeepHAM shines.}
-\begin{itemize}\itemsep2pt
+\begin{itemize}\itemsep1pt
     \item Multiple endogenous states (capital + bonds).
     \item Large aggregate shocks (risky steady state).
     \item Zero lower bound; occasionally binding constraints that bite on a non-trivial mass.
 \end{itemize}
 
-\vspace{0.6em}
-{\scriptsize These are settings where both classical KS and the local perturbation method of Reiter (2009) break down.}
+\vspace{0.3em}
+{\scriptsize Settings where both classical KS and the local perturbation method of Reiter (2009) break down.}
+\end{frame}
+
+% --- Slide: Beyond Walrasian: DeepSAM and SRL ---
+\begin{frame}{Beyond Walrasian: DeepSAM and SRL}
+\footnotesize
+\textbf{The same set-encoder idea travels in two directions.}
+
+\vspace{0.3em}
+\textbf{DeepSAM} \emph{(Payne, Rebei \& Yang, 2025)} --- search-and-matching with two-sided heterogeneity and aggregate shocks.  The distribution affects decisions \emphc{not} through aggregate prices but through matching, outside options, and bargaining.
+
+\vspace{0.2em}
+\begin{center}\scriptsize
+\begin{tabular}{p{1.4cm} p{3.0cm} p{5.0cm}}
+\toprule
+ & Distribution & How it acts on decisions \\
+\midrule
+HAM & Wealth, income & Indirectly, via aggregate prices \\
+SAM & Types on each side of matching & Directly, via matching, outside options, bargaining \\
+\bottomrule
+\end{tabular}\end{center}
+
+\vspace{0.3em}
+\textbf{SRL} \emph{(Yang, Wang, Schaab \& Moll, 2025)} --- in Walrasian HAM, agents only see $\mu_t$ through prices.  Use \emphc{prices or short price histories as the aggregate state}; keep $\mu_t$ in the simulated environment.  Sidesteps the master equation.
+
+\vspace{0.2em}
+{\scriptsize Conceptual arc: KS-style moments $\to$ DeepHAM \emph{learned} moments $\to$ SRL prices.}
 \end{frame}
 
 % --- Slide: Comparison head-to-head ---
@@ -2207,16 +2258,13 @@ Each $g_\theta^m:\R^d\!\to\!\R$ is a neural encoder trained \emph{jointly} with 
 \addlinespace
 \textbf{All-in-one DL} (Maliar, Maliar \& Winant, 2021) & No grid design; large-$N$ panels; single optimizer for all residuals & Large-$N$ research problems; OLG-many-cohort extensions \\
 \addlinespace
-\textbf{DeepHAM} (Han, Yang \& E, 2023) & Learned moments; risky steady state; ZLB; multiple endogenous states & Rich HA macro-finance with nonlinear aggregate effects \\
+\textbf{DeepHAM} (Han, Yang \& E, 2024) & Learned moments; cumulative-utility objective; risky steady state; ZLB & Rich HA macro-finance; constrained efficiency \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\vspace{0.3em}
-\begin{block}{Classical baseline}
-\scriptsize
-The canonical \emphc{traditional} KS implementation (\texttt{econ-ark/KrusellSmith} REMARK) achieves $R^2 > 0.9999$ in $\sim 20$ outer iterations on the baseline model.  All deep-learning methods aim to match or beat this, and to extend beyond the benchmark where KS can't.
-\end{block}
+\vspace{0.2em}
+{\scriptsize \textbf{Classical baseline.} The traditional KS implementation (\texttt{econ-ark/KrusellSmith}) achieves $R^2 > 0.9999$ in $\sim 20$ outer iterations on the baseline model; deep-learning methods aim to match or beat this and to extend beyond the benchmark.}
 \end{frame}
 
 % --- Slide: Replication Codes ---
@@ -2237,7 +2285,7 @@ Histogram DEQN & \texttt{sischei/DeepEquilibriumNets} \\
 & \quad\emph{Azinovic, Gaegauf \& Scheidegger (2022) code.} \\
 \addlinespace
 Classroom MMW-style (this course) & \texttt{lecture\_10\_B08/\allowbreak code/\allowbreak 12\_KrusellSmith\_\allowbreak DeepLearning.ipynb} \\
-& \quad\emph{Self-contained, CPU-friendly,  training.} \\
+& \quad\emph{Self-contained, CPU-friendly, fast training.} \\
 \addlinespace
 DeepHAM & Authors' page; contact the authors for code. \\
 \bottomrule
@@ -2254,7 +2302,7 @@ DeepHAM & Authors' page; contact the authors for code. \\
 \scriptsize
 \begin{block}{Key Messages}
 \begin{enumerate}
-    \item \textbf{HA models} require tracking the wealth distribution, an infinite-dimensional state variable.
+    \item \textbf{HA models with aggregate risk} (Krusell--Smith) carry the wealth distribution as part of the aggregate state, an infinite-dimensional object; pure Aiyagari has $\mu_t$ fixed in stationary equilibrium.
     \item \textbf{Young (2010)} gives a deterministic histogram update: no Monte Carlo noise, exact mean preservation.
     \item \textbf{Krusell--Smith} is the benchmark layer: it explains approximate aggregation and the forecasting-rule loop.
     \item \textbf{Notebook 11} is the teaching-code layer: Appendix A.5 reuses Young's method inside a DEQN with policy and price networks.
@@ -2268,17 +2316,17 @@ DeepHAM & Authors' page; contact the authors for code. \\
 {\scriptsize
 \begin{itemize}\itemsep0pt
     \item Azinovic, M., Gaegauf, L., \& Scheidegger, S.\ (2022). Deep equilibrium nets. \emph{Int.\ Econ.\ Rev.}\ 63(4), 1471--1525.
-    \item Den Haan, W.\ (2010). Assessing the accuracy of the aggregate law of motion in models with heterogeneous agents. \emph{J.\ Econ.\ Dyn.\ Control} 34(1), 79--99.
-    \item \emphc{Han, J., Yang, Y., \& E, W.\ (2024). DeepHAM: A global solution method for HA models with aggregate shocks.} \emph{Quant.\ Econ.}\ (forthcoming); arXiv:2112.14377.
-    \item Krusell, P., \& Smith, A.A.\ (1998). Income and wealth heterogeneity in the macroeconomy. \emph{J.\ Polit.\ Econ.}\ 106(5), 867--896.
-    \item \emphc{Maliar, L., Maliar, S., \& Winant, P.\ (2021). Deep learning for solving dynamic economic models.} \emph{J.\ Monet.\ Econ.}\ 122, 76--101.
+    \item Den Haan, W.\ (2010). Assessing the accuracy of the aggregate law of motion in HA models. \emph{J.\ Econ.\ Dyn.\ Control} 34(1), 79--99.
+    \item \emphc{Han, J., Yang, Y., \& E, W.\ (2024). DeepHAM.}\ \emph{Quant.\ Econ.}\ (forthcoming); arXiv:2112.14377.
+    \item Krusell, P., \& Smith, A.A.\ (1998). Income and wealth heterogeneity. \emph{J.\ Polit.\ Econ.}\ 106(5), 867--896.
+    \item \emphc{Maliar, L., Maliar, S., \& Winant, P.\ (2021). Deep learning for dynamic economic models.}\ \emph{J.\ Monet.\ Econ.}\ 122, 76--101.
     \item Maliar, L., Maliar, S., \& Valli, F.\ (2010). \emph{J.\ Econ.\ Dyn.\ Control} 34(1), 42--49.
-    \item Reiter, M.\ (2009). Solving heterogeneous-agent models by projection and perturbation. \emph{J.\ Econ.\ Dyn.\ Control} 33(3), 649--665.
-    \item Young, E.R.\ (2010). Solving the incomplete markets model with aggregate uncertainty \ldots \ \emph{J.\ Econ.\ Dyn.\ Control} 34(1), 36--41.
+    \item Payne, J., Rebei, A., \& Yang, Y.\ (2025). Deep learning for search and matching. \emph{SFI WP}\ 25--05.
+    \item Reiter, M.\ (2009). Projection and perturbation. \emph{J.\ Econ.\ Dyn.\ Control} 33(3), 649--665.
+    \item Yang, Y., Wang, C., Schaab, A., \& Moll, B.\ (2025). SRL for HA macro. arXiv:2512.18892.
+    \item Young, E.R.\ (2010). Non-stochastic simulation. \emph{J.\ Econ.\ Dyn.\ Control} 34(1), 36--41.
 \end{itemize}
 }
-
-{\scriptsize Bold-face entries are the two alternative DL methods covered in Part V and in the reading guide for this lecture.}
 \end{frame}
 
 % --- Notebook Map ---
