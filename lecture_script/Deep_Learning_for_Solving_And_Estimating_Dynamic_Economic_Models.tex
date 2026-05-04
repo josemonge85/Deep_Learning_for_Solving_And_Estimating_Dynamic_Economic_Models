@@ -187,6 +187,12 @@
   {\normalfont\large\bfseries\color{uzhblue!80}}
   {\thesubsection}{1em}{}
 
+% ---------- Auto-updating month/year stamp for the colophon ----------
+\newcommand{\manuscriptmonthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  ~\number\year}
+
 % ============================================================================
 \begin{document}
 \setcounter{tocdepth}{2}
@@ -218,15 +224,16 @@
 \vspace*{2cm}
 {\Huge\bfseries\color{uzhblue} Deep Learning for Solving and\\[0.3em] Estimating Dynamic Models in\\[0.3em] Economics and Finance\par}
 \vspace{0.9cm}
-{\Large\bfseries\color{uzhgreydark} April~2026\par}
+{\Large\bfseries\color{uzhgreydark} \manuscriptmonthyear\par}
 \vspace{1.3cm}
 {\large Simon Scheidegger\\[0.5em]
 \normalsize HEC, University of Lausanne\par}
 \vfill
-{\small Course materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}\par}
+{\small The most recent version of this manuscript, together with the companion code, is maintained at:\\[3pt]
+\url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}\par}
 \vspace{0.6cm}
-{\footnotesize Last updated: April~2026\\[3pt]
-\copyright{} 2026 Simon Scheidegger.  Code under MIT, text/figures under CC0 1.0 Universal:\\
+{\footnotesize This version: \manuscriptmonthyear.\\[3pt]
+\copyright{} \number\year{} Simon Scheidegger.  Code under MIT, text/figures under CC0 1.0 Universal:\\
 \url{https://creativecommons.org/publicdomain/zero/1.0/}\par}
 \end{titlepage}
 
@@ -4481,6 +4488,8 @@ Figure~\ref{fig:young_vs_mc} contrasts the two approaches visually: the histogra
     xmin=0, xmax=5, ymin=0, ymax=0.065,
     axis lines=left,
     grid=major, grid style={gray!12},
+    legend pos=north west,
+    legend style={font=\tiny, fill=white, fill opacity=0.9, draw=gray!40, text opacity=1, inner sep=2pt},
 ]
     % Smooth bell-shaped histogram (representative)
     \addplot[fill=softblue!50, draw=softblue!80, forget plot] coordinates {
