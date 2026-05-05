@@ -4059,7 +4059,7 @@ There are two main strategies for handling heterogeneous agents in discrete time
 State & $(k_1,\ldots,k_N)$, finite-dimensional & $\mu_t(\cdot)$, infinite-dimensional \\
 Pro & Exact, no approximation of $\mu_t$ & Law of large numbers eliminates sampling noise; no permutation problem \\
 Con & Permutation problem; scales poorly with $N$ & Must approximate $\mu_t$ \\
-Examples & OLG (Ch.~\ref{ch:olg}); \citet{maliarmaliarvalli2010} & \citet{krusell1998income}; \citet{young2010} \\
+Numerical examples & OLG (Ch.~\ref{ch:olg}); \citet{maliarmaliarvalli2010} (a finite-agent Monte-Carlo \emph{implementation} of the continuum-agent KS model) & \citet{krusell1998income}; \citet{young2010} \\
 \bottomrule
 \end{tabular}
 \caption{Two discrete-time representations of household heterogeneity.  A finite-agent representation tracks each labelled agent and must deal with permutation symmetry and growth in $N$; a continuum-agent representation tracks the law $\mu_t$ directly, eliminating sampling noise but requiring an approximation to an infinite-dimensional object.}
@@ -4556,6 +4556,16 @@ A remarkable empirical finding is that the log-linear forecasting rule~\eqref{eq
 
 The traditional Krusell--Smith algorithm provides the benchmark logic for this chapter, but the classroom DEQN notebook used in the course is the simpler Bewley endowment economy of Appendix~A.5 in \citet{azinovicDEEPEQUILIBRIUMNETS2022}.  This distinction is pedagogically useful.  Krusell--Smith explains \emph{why} distribution tracking matters and \emph{why} Young's method is valuable inside an outer forecasting-rule loop.  Appendix~A.5 then shows \emph{how} the same histogram machinery enters a neural-equilibrium implementation once one replaces the forecasting rule by a price network.  By combining Young's histogram method with neural network policies, the DEQN approach overcomes both main limitations of the traditional KS workflow: the network can condition on the \emph{full histogram}, and there is no need for a separate forecasting rule because the price network directly takes the distribution as input.
 
+\paragraph{What \S\ref{sec:young_deqn} inherits from Appendix~A.5.}
+Five features of the Appendix-A.5 teaching model anchor the rest of this section and the companion notebook \texttt{11\_Continuum\_of\_Agents\_DEQN.ipynb}; they are the distinguishing departures from the canonical Krusell--Smith calibration of \S\S\ref{sec:ks_economy}--\ref{sec:young_method}:
+\begin{itemize}[itemsep=2pt, leftmargin=*]
+\item \textbf{Endowment economy, not production.}  Aggregate output is exogenous, $Y_t = w(a_t)$, instead of $Y_t = z_t K_t^\alpha L_t^{1-\alpha}$; there is no capital and no firm problem.
+\item \textbf{Bonds in unit net supply.}  Households trade a single one-period bond at endogenous price $p_t$, and the market-clearing condition is $\int b_{t+1}\,d\mu_t = \bar B = 1$.
+\item \textbf{Epstein--Zin recursive utility.}  Risk aversion ($\sigma=8$) and inverse IES ($\rho=2$) are separated, with discount factor $\beta=0.95$.  The KS benchmark in \S\ref{sec:ks_economy} instead used log utility with $\beta=0.99$.
+\item \textbf{Six-state aggregate shock.}  $a_t \in \{0,\ldots,5\}$ encodes a $2$-state uncertainty regime crossed with a $3$-state income level, replacing the $2$-state TFP shock of canonical KS.
+\item \textbf{Two idiosyncratic productivity types.}  Labour endowment $\eta_t \in \{0.8, 1.2\}$ on a transition matrix $\Pi_\eta$, in place of the employed/unemployed two-state Markov chain of canonical KS.
+\end{itemize}
+
 \paragraph{Histogram encoding.}
 The aggregate state is encoded as a vector containing three aggregate-shock index entries plus $N_b$ histogram values for each idiosyncratic shock type.  In the Appendix~A.5 notebook these three entries are the combined six-state aggregate index, the income-level index, and the uncertainty-regime index:
 \begin{equation}
@@ -4874,8 +4884,35 @@ The three deep-learning approaches (Histogram DEQN, §\ref{sec:young_deqn}; All-
 \item For \emph{policy analysis in richer HA environments} (risky steady states, multiple endogenous states, ZLB), DeepHAM's learned-moment representation pays off both in accuracy and in interpretability, because the learned moments can be plotted and analyzed as functions of the distribution.
 \end{itemize}
 
+Table~\ref{tab:ks_dl_chooser} distils the same trade-offs into a quick decision aid: when the model fits the row's "When it shines" column, the matching method is the first one to try.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} >{\bfseries}p{3.0cm} p{4.4cm} p{6.0cm} @{}}
+\toprule
+\textbf{Method} & \textbf{Pros} & \textbf{When it shines} \\
+\midrule
+Histogram DEQN \citep{azinovicDEEPEQUILIBRIUMNETS2022}
+ & Interpretable state; exact market clearing; reuses the DEQN template
+ & Teaching; $N_b$ moderate; smooth policies \\
+\addlinespace
+All-in-One DL \citep{maliar2021deep}
+ & No grid design; large-$N$ panels; single optimizer for all residuals
+ & Large-$N$ research problems; OLG-many-cohort extensions \\
+\addlinespace
+DeepHAM \citep{han2023deepham}
+ & Learned moments; cumulative-utility objective; risky steady state; ZLB
+ & Rich HA macro-finance; constrained-efficiency / optimal-policy design \\
+\bottomrule
+\end{tabular}
+\caption{Practical chooser for the three DL approaches to Krusell--Smith.  When several rows look applicable, the recommended ordering is: start with Histogram DEQN if a clean teaching narrative is the goal; switch to All-in-One DL if grid design is awkward; switch to DeepHAM if the cumulative-utility objective or learned moments are first-order to the question.  Adapted from the L10 deck's \emph{Head-to-Head} slide.}
+\label{tab:ks_dl_chooser}
+\end{table}
+
 \paragraph{Notebook: a classroom-scale all-in-one KS solver.}
-The accompanying Jupyter notebook \tpath{day4/code/12_KrusellSmith_DeepLearning.ipynb} (introduced in §\ref{sec:young_results} and described in detail in the README) implements a classroom-scale version of the all-in-one DL approach of \citet{maliar2021deep} on the Krusell--Smith benchmark with the parameters of \citet{krusell1998income}.  It uses a single policy network $\pi_\rho(k, \varepsilon, m_1, a)$ parameterized by TensorFlow/Keras, Euler-residual + Bellman-residual + market-clearing loss terms, and an explicit panel of $N$ agents as the distributional input.  The notebook is annotated cell-by-cell with the correspondence to the equations in this chapter, and is designed to converge in under ten minutes on a standard CPU.  For the production-scale counterpart (up to $N = 10^4$ agents, GPU acceleration, richer shock structure), we refer the reader to the replication repository of \citet{marcmaliar2022dlks}.
+The accompanying Jupyter notebook \tpath{lectures/lecture\_10\_B08\_heterogeneous\_agents\_youngs\_method/code/lecture\_10\_B08\_12\_KrusellSmith\_DeepLearning.ipynb} (introduced in §\ref{sec:young_results} and described in detail in the README) implements a classroom-scale version of the all-in-one DL approach of \citet{maliar2021deep} on the Krusell--Smith benchmark with the parameters of \citet{krusell1998income}.  It uses a single policy network $\pi_\rho(k, \varepsilon, m_1, a)$ parameterized by TensorFlow/Keras, Euler-residual + Bellman-residual + market-clearing loss terms, and an explicit panel of $N$ agents as the distributional input.  The notebook is annotated cell-by-cell with the correspondence to the equations in this chapter, and is designed to converge in under ten minutes on a standard CPU.  For the production-scale counterpart (up to $N = 10^4$ agents, GPU acceleration, richer shock structure), we refer the reader to the replication repository of \citet{marcmaliar2022dlks}.
 
 \paragraph{Benchmarks and replication pointers.}  For readers who want to benchmark any of the deep-learning approaches against the traditional KS algorithm, the canonical reference implementation is \texttt{econ-ark/KrusellSmith} \citep{econark2020ks}, which implements the forecasting-rule-update algorithm of \citet{krusell1998income} and reports $R^2 > 0.9999$ within about 20 outer iterations under standard parameters ($\beta = 0.99$, $\alpha = 0.36$, log utility, two aggregate states).  Any deep-learning method must at least match that accuracy on the baseline model; the advantages are supposed to appear when the model is extended in directions KS cannot handle cleanly (more moments, many endogenous states, risky steady state).
 
@@ -5358,7 +5395,7 @@ Uniform random sampling is the simplest collocation strategy but not necessarily
 \addlegendentry{collocation points}
 \end{axis}
 \end{tikzpicture}
-\caption{PINN solution of the 1D ODE $y''+y=0$ on $[0,\pi/2]$ with hard-BC trial solution~\eqref{eq:1d_ode_trial}. The analytical solution $\sin(x)$ (solid blue) is recovered to plotting accuracy by the converged network (dotted green); the dashed red curve illustrates a typical early-training iterate. Tick marks on the $x$-axis are the uniformly drawn collocation points.}
+\caption{PINN solution of the 1D ODE $y''+y=0$ on $[0,\pi/2]$ with hard-BC trial solution~\eqref{eq:1d_ode_trial}. The analytical solution $\sin(x)$ (solid blue) is recovered to plotting accuracy by the converged network (dotted green); the dashed red curve illustrates a typical early-training iterate. Tick marks on the $x$-axis are the uniformly drawn collocation points.  The curves above are TikZ illustrations rather than direct exports; the actual numerical run and the corresponding pointwise-error diagnostic are in notebook \texttt{lecture\_11\_B09\_01\_ODE\_PINN\_ZeroBCs}.}
 \label{fig:pinn_1d_ode}
 \end{figure}
 
@@ -5483,7 +5520,7 @@ where $A(x)$ is an anchor function satisfying the BCs exactly, and $B(x)$ is a m
 \label{fig:trial_solution_decomposition}
 \end{figure}
 
-Hard enforcement eliminates the boundary loss term entirely, reducing the number of hyperparameters and improving accuracy near the boundaries.
+Hard enforcement eliminates the boundary loss term entirely, reducing the number of hyperparameters and improving accuracy near the boundaries.  The trade-off is real, however: because $\hat y = A + B\cdot\mathcal{N}_\rho$ multiplies the network output by a mask $B$ that vanishes on $\partial\Omega$, the input-gradient $\partial\hat y/\partial x$ inherits a factor of $B$ near the boundary and is thus damped by construction.  When the true solution exhibits a steep boundary layer (e.g., a Hamilton--Jacobi--Bellman equation at the borrowing constraint, see \S\ref{sec:ct_hjb}), the network must compensate by making $\mathcal{N}_\rho$ itself locally large, which can slow convergence.  In short: hard BCs trade boundary-loss tunability for vanishing input gradients at $\partial\Omega$, and the trade is favorable for smooth Dirichlet problems but less obviously so for problems with sharp boundary features.
 
 \paragraph{Transfinite interpolation for 2D domains.}
 The 1D hard-enforcement idea ($\hat{y} = A + B \cdot \mathcal{N}_\rho$) extends naturally to rectangular 2D domains, but the anchor function $A$ must now interpolate prescribed boundary data along entire \emph{edges}, not just at two endpoints.  The classical technique for this is \emphc{transfinite interpolation} (also known as Gordon--Coons blending): it constructs a function over the rectangle that exactly matches given boundary curves, in much the same way that bilinear interpolation matches four corner values, except that here we match four continuous edge functions rather than four discrete values.
@@ -5502,7 +5539,7 @@ A(x,y) &= \underbrace{(1-\xi)\,f_L(y) + \xi\,f_R(y)}_{\text{left/right interpola
        &\quad -\; \underbrace{\bigl[(1-\xi)(1-\eta)\,f_{BL} + \xi(1-\eta)\,f_{BR} + (1-\xi)\eta\,f_{TL} + \xi\,\eta\,f_{TR}\bigr]}_{\text{bilinear corner interpolant}},
 \end{split}
 \end{equation}
-where $f_{BL} = f_B(a) = f_L(c)$, etc., are the four corner values (which must be consistent).  By construction, $A$ matches all four edge functions exactly.
+where $f_{BL} = f_B(a) = f_L(c)$, etc., are the four corner values.  These values must be \emph{consistent} across the two edges that meet at each corner (e.g., the value of $f_L$ at $y=c$ must equal the value of $f_B$ at $x=a$); otherwise the corner-correction bilinear cancels imperfectly and $A$ does not match any of the four edges exactly at the offending corner.  Under consistent corner data, $A$ matches all four edge functions exactly by construction.
 
 The \emphc{mask function} must vanish on all four edges so that the network can modify the interior without disturbing the boundaries:
 \begin{equation}
@@ -5520,11 +5557,11 @@ On any boundary edge, $B=0$ and $\hat{u}$ reduces to $A$, which matches the pres
 
 \subsection{2D Poisson Benchmark}
 
-As a pedagogical 2D benchmark, the accompanying notebooks include a Poisson equation:
+As a pedagogical 2D benchmark, the accompanying notebooks include a Poisson equation on the unit square:
 \begin{equation}
--\nabla^2 u(x,y) = f(x,y), \qquad (x,y) \in [0,1]^2, \qquad u\big|_{\partial\Omega} = 0,
+-\nabla^2 u(x,y) = f(x,y), \qquad (x,y) \in [0,1]^2,
 \end{equation}
-with manufactured solution $u^\star(x,y) = \sin(\pi x)\sin(\pi y)$, yielding $f = 2\pi^2\sin(\pi x)\sin(\pi y)$.  Using hard boundary conditions via the mask $B(x,y) = x(1-x)y(1-y)$, the PINN achieves pointwise errors below $10^{-4}$ with a modest network and a few thousand collocation points.  This benchmark is the clean 2D extension of the 1D ODE example and a useful bridge before turning to economic applications.
+with manufactured solution $u^\star(x,y) = x^2 + y + \sin(\pi x)\sin(\pi y)$, yielding $f(x,y) = 2 - 2\pi^2\sin(\pi x)\sin(\pi y)$ and non-homogeneous Dirichlet data $u\big|_{y=0} = x^2$, $u\big|_{y=1} = x^2+1$, $u\big|_{x=0} = y$, $u\big|_{x=1} = 1+y$.  Because $\sin(\pi x)\sin(\pi y)$ vanishes on $\partial\Omega$, the polynomial part $A(x,y) = x^2 + y$ already matches all four edges (and their corner values) exactly, so it serves as the transfinite-interpolation anchor.  The mask $B(x,y) = x(1-x)y(1-y)$ vanishes on every edge, and the hard-enforced trial solution $\hat u(x,y) = A(x,y) + B(x,y)\,\mathcal{N}_\rho(x,y)$ satisfies all Dirichlet conditions by construction; the network is trained on the interior PDE residual alone.  The PINN achieves pointwise errors below $10^{-4}$ with a modest network and a few thousand collocation points.  This benchmark is the clean 2D extension of the 1D ODE example and a useful bridge before turning to economic applications, and it exercises the full hard-BC transfinite-interpolation machinery on non-zero edge data rather than collapsing to the trivial $u\big|_{\partial\Omega}=0$ case.
 
 \section{Common PINN Failure Modes and Remedies}
 
@@ -5550,6 +5587,8 @@ Oscillatory solution near payoff kink & Spectral bias and non-smooth target geom
 For the course applications, a robust default stack is: smooth activation ($\tanh$ or Swish), hard BCs when analytically available, adaptive loss balancing, and adaptive collocation near high-residual regions.
 
 \section{The Deep Galerkin Method (DGM) Architecture}
+
+The plain MLP used in the cake-eating example above is sufficient for low-dimensional PDEs with smooth solutions, but its expressive bottleneck shows up in two regimes: (i)~genuinely high-dimensional state spaces (where curse-of-dimensionality effects compound across layers), and (ii)~PDEs with sharp internal features such as boundary layers, wave fronts, or kinks at policy switches.  The Deep Galerkin Method addresses both by adding LSTM-style gates and skip connections from the input to every layer, so that the network can carry input information forward unchanged through depth and route it past intermediate transformations.  In the 1D problems studied so far, an MLP and a DGM block train to comparable accuracy and the MLP is preferred for transparency; the architectural complexity pays off as dimension grows or sharp features appear.
 
 For high-dimensional PDEs, \citet{sirignano2018dgm} introduced the Deep Galerkin Method (DGM), an architecture with LSTM-style gating \citep{hochreiter1997long} and skip connections from the input layer to every hidden layer reminiscent of Highway Networks \citep{srivastava2015highway} (the immediate precursor of ResNets, in which a learned gate controls how much of the previous representation is carried forward unchanged versus transformed).\footnote{Notation reuse: the gate $G^{(l)}$ in the DGM block below is unrelated to the cross-sectional density $g$ that appears in heterogeneous-agent models (Chapters~\ref{ch:young}, \ref{ch:ct_theory}); the symbols share a letter only.}  A related deep BSDE-based formulation was introduced by \citet{e2017deep} (E--Han--Jentzen) and developed in the companion paper of \citet{han2018solving} (Han--Jentzen--E).  An accessible exposition of DGM together with several PDE applications is given by \citet{al2018solving}, which also introduces the gate naming convention adopted below.  The original DGM architecture of \citet{sirignano2018dgm} uses four gates at each layer $l$:
 \begin{align}
@@ -5610,7 +5649,7 @@ Consider a household with wealth $a(t) > 0$ that chooses a consumption stream $c
 \label{eq:cake_problem}
 \end{equation}
 where $\rho > 0$ is the subjective discount rate, $\gamma > 0$ ($\gamma \neq 1$) is the coefficient of relative risk aversion (CRRA), and $r$ is the interest rate on wealth.  The budget constraint says that wealth grows at rate $r$ minus consumption; this is the ``cake-eating'' problem because the household is consuming out of a finite asset.
-The dynamic-programming perspective is classical in economics; see \citet{stokeylucas1989} for the standard textbook treatment.
+The dynamic-programming perspective is classical in economics; see \citet{stokeylucas1989} for the standard textbook treatment.  Conceptually, this is the same recursive optimization that produced the discrete-time Bellman equations of Chapters~\ref{ch:deqn}--\ref{ch:irbc}; the only difference is that the household now optimizes over a continuous time grid, so the resulting optimality condition is a partial differential equation (the HJB) rather than an algebraic Euler equation.  The derivation below makes this $\Delta t \to 0$ link precise.
 
 \paragraph{Deriving the HJB equation.}
 Define the \emph{value function} $V(a)$ as the maximum attainable lifetime utility starting from wealth $a$:
@@ -5728,7 +5767,7 @@ where $V'(a,z) \equiv \partial V / \partial a$ is the marginal value of wealth (
 c^\star(a,z) = \big(V'(a,z)\big)^{-1/\gamma}.
 \label{eq:ct_foc}
 \end{equation}
-Substituting back into~\eqref{eq:hjb_hank} eliminates the maximization, yielding a nonlinear PDE in $V(a,z)$.  At the borrowing constraint $a = a_{\min}$, the drift must be non-negative, which imposes a state-constraint boundary condition.
+Substituting back into~\eqref{eq:hjb_hank} eliminates the maximization, yielding a nonlinear PDE in $V(a,z)$.  At the borrowing constraint $a = a_{\min}$, the drift must be non-negative, which imposes a state-constraint boundary condition: economically, an agent at the constraint can do no better than to consume her flow income (so that $\dot a \ge 0$), which translates into the bound $V'(a_{\min}, z) \geq u'(wz + r a_{\min})$ on the marginal value at the constraint.  This is a Neumann-type condition on the value function, not a free boundary.
 
 \subsection{The Kolmogorov Forward Equation}
 \label{sec:ct_kfp}
@@ -5817,6 +5856,8 @@ Both approaches can incorporate aggregate shocks, multiple assets, and general e
 
 \section{Application: Black--Scholes PDE}
 \label{sec:bs_pinn}
+
+The Black--Scholes PDE has a closed-form solution, so a PINN run on it is not motivated by the absence of an analytical answer.  The pedagogical purpose is exactly the opposite: it is a known-answer benchmark.  We verify that the same PINN recipe (smooth activations, hard or soft BCs, autodiff for $V_S$ and $V_{SS}$, Adam-then-L-BFGS) reproduces a textbook formula on a clean domain before applying it to PDEs without closed forms (American options, jump diffusions, multi-asset pricing, HJBs with multiple state variables).  If the network cannot recover Black--Scholes to plotting accuracy, no further trust should be placed in its output on harder problems.
 
 The Black--Scholes PDE for a European call option with strike $K$, maturity $T$, risk-free rate $r$, and volatility $\sigma$ is the canonical option-pricing benchmark of \citet{black1973pricing}:
 \begin{equation}

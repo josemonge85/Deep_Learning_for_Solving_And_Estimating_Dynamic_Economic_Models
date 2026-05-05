@@ -359,7 +359,7 @@ Track the \emphc{distribution} $\mu_t$ directly
 \begin{itemize}
     \item Coefficients $A(a), B(a)$ depend on the aggregate shock $a$
     \item Inada conditions ensure capital remains positive and logs are well-defined
-    \item $R^2 > 0.999$ in practice---remarkably accurate!
+    \item $R^2 > 0.9999$ in practice---remarkably accurate (KS 1998 Table~5 reports $R^2 \geq 0.999998$)!
 \end{itemize}
 
 \vspace{0.3em}
@@ -513,16 +513,16 @@ When $k'$ falls between grid points, \emphc{redistribute the mass} to the two ne
     \draw[thick, gray] (0,0) -- (12,0);
 
     % Grid points
-    \foreach \x/\lab in {2/$w_{n-1}$, 4/$w_n$, 6.5/$w$, 8/$w_{n+1}$, 10/$w_{n+2}$} {
+    \foreach \x/\lab in {2/$k_{n-1}$, 4/$k_n$, 6.5/$k'$, 8/$k_{n+1}$, 10/$k_{n+2}$} {
         \draw[thick] (\x,0.15) -- (\x,-0.15);
     }
-    \node[below, font=\small] at (2,-0.2) {$w_{n-1}$};
-    \node[below, font=\small] at (4,-0.2) {$w_n$};
-    \node[below, font=\small, darkred] at (6.5,-0.2) {$w = k'$};
-    \node[below, font=\small] at (8,-0.2) {$w_{n+1}$};
-    \node[below, font=\small] at (10,-0.2) {$w_{n+2}$};
+    \node[below, font=\small] at (2,-0.2) {$k_{n-1}$};
+    \node[below, font=\small] at (4,-0.2) {$k_n$};
+    \node[below, font=\small, darkred] at (6.5,-0.2) {$k'$};
+    \node[below, font=\small] at (8,-0.2) {$k_{n+1}$};
+    \node[below, font=\small] at (10,-0.2) {$k_{n+2}$};
 
-    % Mass at w
+    % Mass at k'
     \draw[thick, darkred, fill=darkred!30] (6.2,0) rectangle (6.8,2.3);
     \node[above, font=\small, darkred] at (6.5,2.3) {mass $m$};
 
@@ -538,22 +538,25 @@ When $k'$ falls between grid points, \emphc{redistribute the mass} to the two ne
 
     % Formula
     \node[right, font=\small] at (10.5,2.0) {Weight:};
-    \node[right] at (10.5,1.0) {$\displaystyle \omega = 1 - \frac{w - w_n}{w_{n+1} - w_n}$};
+    \node[right] at (10.5,1.0) {$\displaystyle \omega = 1 - \frac{k' - k_n}{k_{n+1} - k_n}$};
 \end{tikzpicture}
 \end{center}
 
 \vspace{-0.2em}
 \begin{itemize}\footnotesize
     \setlength{\itemsep}{0pt}
-    \item Mass $m$ at $w \in [w_n, w_{n+1}]$ is split between the two bracketing grid points
-    \item Weight $\omega$: fraction to $w_n$ (closer $\Rightarrow$ more mass)
-    \item Weight $1-\omega$: fraction to $w_{n+1}$
+    \item Mass $m$ at $k' \in [k_n, k_{n+1}]$ is split between the two bracketing grid points
+    \item Weight $\omega$: fraction to $k_n$ (closer $\Rightarrow$ more mass)
+    \item Weight $1-\omega$: fraction to $k_{n+1}$
 \end{itemize}
 \end{frame}
 
 % --- Slide 14b (NEW): Lottery view ---
 \begin{frame}{Lottery View: Why ``Non-Stochastic''}
 \small
+\begin{center}\itshape\footnotesize\color{harvardcrimson}
+The lottery below is a thought experiment; Young's method computes its expectation deterministically.
+\end{center}
 \begin{block}{The redistribution \emph{is} a lottery}
 Every agent at $(k, \varepsilon)$ whose policy choice $k'$ lands between $k_n$ and $k_{n+1}$ is reassigned by a \emphc{biased coin}:
 \[
@@ -788,7 +791,7 @@ Reproducibility & \emphc{Deterministic} & Seed-dependent \\
 \end{center}
 
 \vspace{0.1em}
-{\scriptsize\textbf{What is plotted.} Deviation of the simulated mean capital $\hat{m}_1$ from its true value $m_1^\star$, as the resolution $N$ grows. \emphc{Orange dots}: realized Monte-Carlo errors of a panel of $N$ agents, scattered around the $1/\sqrt{N}$ envelope. \emphc{Blue line}: Young's deterministic update, which preserves the mean exactly at \emph{every} grid resolution.\\[2pt]
+{\scriptsize\textbf{What is plotted.} Deviation of the simulated mean capital $\hat{m}_1$ from its true value $m_1^\star$, as the resolution $N$ grows. \emphc{Orange dots}: realized Monte-Carlo errors of a panel of $N$ agents, scattered around the $1/\sqrt{N}$ envelope. \emphc{Blue line}: Young's deterministic update, which preserves the mean exactly at \emph{every} grid resolution. \emphc{This figure is illustrative}: see notebook \texttt{10\_Youngs\_Method\_Examples.ipynb} (cell 21) for the actual repeated-MC scatter on the truncated-normal target.\\[2pt]
 \textbf{Implication.} To match Young's accuracy at $\sim\!1{,}000$ grid points, a Monte-Carlo panel needs $\gtrsim 50{,}000$ agents (an order of magnitude more state), and the residual noise still contaminates the OLS step that updates the KS forecasting rule.}
 \end{frame}
 
@@ -1008,13 +1011,13 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
 \begin{frame}{Convergence and Accuracy}
 \textbf{Quality of the forecasting rule:}
 \begin{itemize}
-    \item $R^2 > 0.999$ for the log-linear rule $\hat{H}(m_1, a) = \exp(A(a) + B(a) \log m_1)$
+    \item $R^2 > 0.9999$ for the log-linear rule $\hat{H}(m_1, a) = \exp(A(a) + B(a) \log m_1)$
     \item KS (1998) also tested 2- and 3-moment rules (adding variance, skewness): $R^2$ barely changes
     \item The one-moment benchmark is an \emphc{empirical finding}, not a modeling restriction
 \end{itemize}
 
 \vspace{0.5em}
-\textbf{Accuracy tests (Den Haan, 2009):}
+\textbf{Accuracy tests (Den Haan, 2010):}
 \begin{itemize}
     \item Compare simulated $m_1$ path with the forecasting rule prediction
     \item Maximum one-step-ahead forecast error $< 0.1\%$
@@ -1032,7 +1035,7 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
 
 % --- Slide 24: Implementation: Grid Design ---
 \begin{frame}{Implementation: Grid Design}
-\textbf{Practical considerations from Young (2010):}
+\textbf{Production design (Young 2010, KS):}
 
 \vspace{0.5em}
 \begin{columns}[T]
@@ -1051,7 +1054,7 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
     \item $\sim$5000 points, \emphc{uniformly spaced}
     \item Uniform spacing essential for smooth histograms
     \item Avoids spikes in the distribution
-    \item Upper bound: $k_{\max} = 1200$ (large enough)
+    \item Upper bound: $k_{\max} \approx 1200$ (large enough)
 \end{itemize}
 \end{columns}
 
@@ -1059,6 +1062,9 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
 \begin{alertblock}{Important}
 \emphc{Two separate grids}: one for solving (irregular, fewer points), one for simulating (uniform, many points). The simulation grid must be fine and uniform to produce smooth distributions.
 \end{alertblock}
+
+\vspace{0.3em}
+{\footnotesize \textbf{Teaching notebooks ship with a single grid:} nb~11 uses $a_{\max}=20$ on $N_b=50$ points (smoke); nb~06 / nb~KS\_CPU use $K_{\max}\in\{60,100\}$ on $N+1\in\{61,101\}$ points (\texttt{quick}/\texttt{full}).  Switching to the two-grid production design is a research-time refinement.}
 \end{frame}
 
 % --- Slide 26: Boundary Cases ---
@@ -1080,10 +1086,11 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
 \end{itemize}
 
 \vspace{0.5em}
-\begin{block}{From the code (Azinovic et al.\ 2022)}
+\begin{block}{From the production code of Azinovic et al.\ 2022}
 \vspace{-0.2em}
 \texttt{anext = tf.minimum(anext, amax * tf.ones\_like(anext))}\\[2pt]
-{\small Asset holdings are clipped at $a_{\max} = 20$ to prevent overflow.}
+{\small Asset holdings are clipped at $a_{\max} = 20$ to prevent overflow.\\
+\emphc{Teaching notebook \texttt{11\_Continuum\_of\_Agents\_DEQN.ipynb} handles the boundary inside \texttt{get\_weights\_eta()} via the histogram-redistribution math, not via a direct \texttt{tf.minimum} clamp.}}
 \end{block}
 \end{frame}
 
@@ -1210,7 +1217,8 @@ Total mass is preserved: $0.10 + 0.15 = 0.25$ = original mass at bin $0.5$. \che
 \begin{center}
 \tiny
 Mean preserved: $\bar{k}_t = \bar{k}_{t+1}$\\[1pt]
-\emphc{Exact mean preservation!}
+\emphc{Exact mean preservation!}\\[1pt]
+\emph{Schematic histograms (hand-set bar values); for the actual before/after distributions produced by the algorithm see nb~10 and nb~11.}
 \end{center}
 \end{frame}
 
@@ -1293,7 +1301,8 @@ $\Rightarrow$ Agents use a simple forecasting rule based on the \emphc{mean} of 
 
 \vspace{0.25em}
 \begin{alertblock}{Same operator, different shell}
-KS explains \emphc{why} distribution tracking matters. Appendix A.5 shows the same histogram update \emphc{inside} a DEQN.
+KS explains \emphc{why} distribution tracking matters. Appendix A.5 shows the same histogram update \emphc{inside} a DEQN.\\[2pt]
+\emphc{Distinct calibrations}: the KS benchmark above uses log utility, $\beta=0.99$, two aggregate states.  The Appendix-A.5 teaching parameterisation in nb~11 uses Epstein--Zin recursive utility with $\beta=0.95$, $\rho=2$, $\sigma=8$, six aggregate states ($2$ uncertainty $\times$ $3$ income), bonds in unit net supply.  Notebook~12 retains the canonical KS log-utility calibration.
 \end{alertblock}
 \end{frame}
 

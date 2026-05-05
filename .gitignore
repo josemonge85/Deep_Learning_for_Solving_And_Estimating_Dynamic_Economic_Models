@@ -57,6 +57,13 @@ codex_results/
 .codex/
 .claude/
 
+# Audit and prompt-kit working files (kept locally, never pushed)
+audit_reports/
+chapter_reports/
+claude_lecture_audit_prompt_kit/
+codex_lecture_audit_prompt_kit/
+codex_lecture_audit_prompt_kit.zip
+
 # Test outputs
 .pytest_cache/
 .coverage
