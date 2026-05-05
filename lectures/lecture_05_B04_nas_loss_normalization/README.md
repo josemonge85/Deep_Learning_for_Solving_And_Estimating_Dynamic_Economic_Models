@@ -41,8 +41,6 @@ After this lecture you can:
 
 ## Figures
 
-- [`figures/irbc_4approach_loss.pdf`](figures/irbc_4approach_loss.pdf)
-- [`figures/irbc_4approach_loss.png`](figures/irbc_4approach_loss.png)
 - [`figures/loss_norm_T_sensitivity.pdf`](figures/loss_norm_T_sensitivity.pdf)
 - [`figures/loss_norm_T_sensitivity.png`](figures/loss_norm_T_sensitivity.png)
 - [`figures/loss_norm_equal_errmap.pdf`](figures/loss_norm_equal_errmap.pdf)

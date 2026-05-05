@@ -7,7 +7,7 @@ The central method of the course. **Deep Equilibrium Nets (DEQNs)** parameterize
 > 📑 **Slides:** [02_DeepEquilibriumNets.pdf](slides/02_DeepEquilibriumNets.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_03_B02_01_Brock_Mirman_1972_DEQN.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_03_B02.md)  
-> 📖 **Script:** §2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.4, 2.9 (Constraints and residual kernels)
+> 📖 **Script:** §2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.9 (Choice of Loss Kernel)
 
 ## What this lecture covers
 
@@ -42,7 +42,7 @@ After this lecture you can:
 
 ## In the lecture script
 
-§2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.4, 2.9 (Constraints and residual kernels). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+§2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.9 (Choice of Loss Kernel). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 

@@ -5,7 +5,7 @@ Overlapping-generations (OLG) models with DEQNs, at two scales.
 `gpu-recommended` · `long` · builds on [Lecture 07 (B05)](../lecture_07_B05_autodiff_for_deqns/README.md)
 
 > 📑 **Slides:** [07_OLG_Models_DEQNs.pdf](slides/07_OLG_Models_DEQNs.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb) (3 in [`code/`](code/))  
+> 📓 **Notebooks:** [start here](code/lecture_09_B07_08_OLG_Analytic_DEQN_persistent.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_09_B07.md)  
 > 📖 **Script:** §5.1-5.5 (OLG with DEQNs), §5.6 (Large OLG benchmark)
 
@@ -33,9 +33,16 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb`](code/lecture_09_B07_07_OLG_Analytic_DEQN.ipynb)
-- [`code/lecture_09_B07_08_OLG_Benchmark_DEQN.ipynb`](code/lecture_09_B07_08_OLG_Benchmark_DEQN.ipynb)
-- [`code/lecture_09_B07_09_OLG_Exercise.ipynb`](code/lecture_09_B07_09_OLG_Exercise.ipynb)
+**Analytic 6-agent OLG** — closed-form validation target.
+- [`code/lecture_09_B07_08_OLG_Analytic_DEQN_persistent.ipynb`](code/lecture_09_B07_08_OLG_Analytic_DEQN_persistent.ipynb) — primary classroom variant: persistent-simulation training, validation against the Krueger–Kübler closed-form savings rates.
+- [`code/lecture_09_B07_07_OLG_Analytic_DEQN_exogenous.ipynb`](code/lecture_09_B07_07_OLG_Analytic_DEQN_exogenous.ipynb) — feedback-free ablation: training cloud drawn from broad exogenous boxes.
+
+**Benchmark 56-agent OLG** — Azinovic–Gaegauf–Scheidegger (2022) production scale.
+- [`code/lecture_09_B07_10_OLG_Benchmark_DEQN_persistent.ipynb`](code/lecture_09_B07_10_OLG_Benchmark_DEQN_persistent.ipynb) — primary classroom variant: persistent-simulation training on the model's ergodic set.
+- [`code/lecture_09_B07_09_OLG_Benchmark_DEQN_exogenous.ipynb`](code/lecture_09_B07_09_OLG_Benchmark_DEQN_exogenous.ipynb) — feedback-free ablation: training cloud drawn from broad exogenous boxes.
+
+**Student exercise.**
+- [`code/lecture_09_B07_11_OLG_Exercise.ipynb`](code/lecture_09_B07_11_OLG_Exercise.ipynb)
 
 ## In the lecture script
 

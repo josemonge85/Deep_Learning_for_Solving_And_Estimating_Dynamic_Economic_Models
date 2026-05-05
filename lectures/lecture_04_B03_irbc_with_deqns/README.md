@@ -5,7 +5,7 @@ The first large-scale nonlinear DSGE application of DEQNs.
 `gpu-recommended` · `long` · builds on [Lecture 03 (B02)](../lecture_03_B02_deep_equilibrium_nets/README.md)
 
 > 📑 **Slides:** [03_IRBC.pdf](slides/03_IRBC.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_04_B03_01_IRBC_DEQN.ipynb)  
+> 📓 **Notebooks:** [smooth benchmark](code/lecture_04_B03_01_IRBC_DEQN_smooth.ipynb) · [irreversible investment](code/lecture_04_B03_02_IRBC_DEQN_irreversible.ipynb)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_04_B03.md)  
 > 📖 **Script:** §Chapter 3 (International real business cycle)
 
@@ -32,7 +32,8 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_04_B03_01_IRBC_DEQN.ipynb`](code/lecture_04_B03_01_IRBC_DEQN.ipynb)
+- [`code/lecture_04_B03_01_IRBC_DEQN_smooth.ipynb`](code/lecture_04_B03_01_IRBC_DEQN_smooth.ipynb) — smooth benchmark IRBC: persistent-simulation training, time-invariance and zero-shock steady-state diagnostics.
+- [`code/lecture_04_B03_02_IRBC_DEQN_irreversible.ipynb`](code/lecture_04_B03_02_IRBC_DEQN_irreversible.ipynb) — irreversible-investment extension with KKT multipliers and a Fischer–Burmeister complementarity loss.
 
 ## Figures
 

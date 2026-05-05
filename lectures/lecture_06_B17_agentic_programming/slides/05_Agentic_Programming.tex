@@ -1136,7 +1136,7 @@ Get a working Claude Code session in a version-controlled project.
 \column{0.55\textwidth}
 \begin{enumerate}\itemsep1pt
     \item Create directory: \texttt{mkdir \~{}/research/lecture-demo}
-    \item Copy \texttt{day5/code/generate\_synthetic\_data.py} and run it once
+    \item Copy \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/generate\_synthetic\_data.py} and run it once
     \item Initialize git: \texttt{git init \&\& git branch -M main}
     \item Launch Claude: \texttt{claude}
     \item Run \texttt{/init} to bootstrap CLAUDE.md
@@ -1163,7 +1163,7 @@ Get a working Claude Code session in a version-controlled project.
 \end{itemize}
 
 \vspace{0.3em}
-{\scriptsize See \texttt{day5/code/exercise\_prompts.md} for copy-pasteable prompts.}
+{\scriptsize See \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/exercise\_prompts.md} for copy-pasteable prompts.}
 \end{columns}
 \end{frame}
 
@@ -1917,7 +1917,7 @@ paper/main.tex
 \end{lstlisting}
 
 \vspace{0.1em}
-{\tiny Copy-pasteable version: \texttt{day5/code/CLAUDE\_md\_template.md}}
+{\tiny Copy-pasteable version: \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/CLAUDE\_md\_template.md}}
 \end{columns}
 \end{frame}
 
@@ -1972,7 +1972,7 @@ Create a CLAUDE.md for a real or hypothetical research project.
 
 \begin{enumerate}\itemsep2pt
     \item Choose a project (your own, or the lecture demo)
-    \item Copy the template from \texttt{day5/code/CLAUDE\_md\_template.md}
+    \item Copy the template from \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/CLAUDE\_md\_template.md}
     \item Fill in the \emphc{three highest-value sections}: Repository Structure, Coding Standards, Current Status
     \item Launch a fresh Claude session (\texttt{/clear})
     \item Type: \texttt{> Summarize this project and what I should work on next.}
@@ -2077,7 +2077,7 @@ When invoked with a file path:
 \end{itemize}
 
 \vspace{0.2em}
-{\scriptsize Example skill file: \texttt{day5/code/example\_skill/SKILL.md}}
+{\scriptsize Example skill file: \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/skills/example\_skill/SKILL.md}}
 \end{columns}
 \end{frame}
 
@@ -2136,8 +2136,8 @@ plan persists across sessions and can be shared with coauthors.
 
 \vspace{0.2em}
 \textbf{Source:} \href{https://github.com/jusi-aalto/strategic-revision}{github.com/jusi-aalto/strategic-revision}\\
-\textbf{In course repo:} \texttt{day5/code/}\\
-\phantom{xx}\texttt{example\_skill\_strategic\_revision/SKILL.md}
+\textbf{In course repo:} \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/}\\
+\phantom{xx}\texttt{skills/strategic\_revision/SKILL.md}
 \end{columns}
 
 \vspace{0.2em}
@@ -2263,7 +2263,7 @@ economics project.
 or let Claude pick based on the \texttt{description}.
 
 \vspace{0.2em}
-\textbf{7 ready-made examples in \texttt{day5/code/example\_subagent/}:}
+\textbf{7 ready-made examples in \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/subagents/}:}
 {\tiny \texttt{verifier} (Haiku) · \texttt{code\_reviewer}, \texttt{test\_writer},
 \texttt{econometrics\_reviewer}, \texttt{monte\_carlo\_designer},
 \texttt{backtest\_validator} (Opus) · \texttt{doc\_generator} (Sonnet).}
@@ -2276,7 +2276,7 @@ or let Claude pick based on the \texttt{description}.
 % --- Research Subagent Gallery (3 quant agents) ---
 \begin{frame}[fragile]{Three Research Subagents for Quant Econ \& Finance}
 \scriptsize
-Three domain-specific subagents in \texttt{day5/code/example\_subagent/}.
+Three domain-specific subagents in \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/subagents/}.
 
 \vspace{0.2em}
 \begin{columns}[T]
@@ -2398,7 +2398,7 @@ or after Claude's tool calls. Configured in \texttt{.claude/settings.json}.
 }
 \end{lstlisting}
 
-\emphc{Full file:} \texttt{day5/code/example\_hooks/settings.json}.
+\emphc{Full file:} \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/hooks/settings.json}.
 \end{columns}
 
 \vspace{0.2em}
@@ -2417,8 +2417,8 @@ Create a custom skill and a specialist subagent, then use both on a toy task.
 \column{0.48\textwidth}
 \textbf{Part A: Create a skill}
 \begin{enumerate}\itemsep0pt
-    \item Copy \texttt{example\_skill/SKILL.md} into \texttt{.claude/skills/data-diagnostics/}
-    \item Copy \texttt{example\_subagent/verifier.md} into \texttt{.claude/agents/}
+    \item Copy \texttt{skills/example\_skill/SKILL.md} into \texttt{.claude/skills/data-diagnostics/}
+    \item Copy \texttt{subagents/verifier.md} into \texttt{.claude/agents/}
     \item Launch Claude; type \texttt{/data-diagnostics data/synthetic\_panel.csv}
     \item Ask the verifier subagent to review the report
 \end{enumerate}
@@ -2435,7 +2435,7 @@ Create a custom skill and a specialist subagent, then use both on a toy task.
 
 \vspace{0.2em}
 \emphc{Reflection:} what did the specialist catch that a generic reviewer would miss?
-\textbf{Solutions:} \texttt{day5/code/exercise\_solutions.md}.
+\textbf{Solutions:} \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/exercise\_solutions.md}.
 \end{frame}
 
 % ============================================================================
@@ -2702,7 +2702,7 @@ $\log(\text{wage}) = \beta_0 + \beta_1\,\text{educ} + \beta_2\,\text{exper} + \b
 \end{itemize}
 
 \vspace{0.2em}
-\emphc{Runnable reference:}~\selfstudy~\texttt{day5/code/mincer\_demo.py}
+\emphc{Runnable reference:}~\selfstudy~\texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/mincer\_demo.py}
 reproduces this output locally in \textasciitilde{}3~seconds. Self-study readers:
 \texttt{python3 mincer\_demo.py} now, then look at the next slide for the artifacts.
 \end{columns}
@@ -2712,7 +2712,7 @@ reproduces this output locally in \textasciitilde{}3~seconds. Self-study readers
 \begin{frame}{\selfstudy~~Mincer Demo: What Claude Produces}
 \scriptsize
 After \textasciitilde{}45 seconds Claude writes the script, runs it, and emits
-the two artifacts below (actual outputs of \texttt{day5/code/mincer\_demo.py}).
+the two artifacts below (actual outputs of \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/mincer\_demo.py}).
 
 \vspace{0.2em}
 \begin{columns}[T]
@@ -2880,7 +2880,7 @@ $<5\%$ error = \checkmark match; 5--20\% = $\sim$ close; $>20\%$ = \ding{55} fai
 \column{0.48\textwidth}
 \begin{exampleblock}{Ex.\,6: Data $\to$ Figures $\to$ LaTeX (25 min)}
 \small
-Use \texttt{day5/code/generate\_synthetic\_data.py} to create data, then build a mini pipeline:
+Use \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/generate\_synthetic\_data.py} to create data, then build a mini pipeline:
 \begin{enumerate}\itemsep0pt
     \item Run data diagnostics (use your \texttt{/data-diagnostics} skill!)
     \item Estimate DiD: $\log(\text{revenue}) \sim \text{treated} \times \text{post}$

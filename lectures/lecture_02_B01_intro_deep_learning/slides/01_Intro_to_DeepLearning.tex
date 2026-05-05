@@ -481,7 +481,7 @@ Neural networks date back to the 1940s.  Three developments made them practical:
 \vspace{0.5cm}
 \begin{center}
 {\small This course covers \textbf{both} paradigms: we begin with the \emph{supervised} pipeline (model, loss, optimizer)\\
-and then build on it for the \emph{unsupervised} methods at the heart of the course (DEQNs, PINNs).}
+and then build on it for the \emph{self-supervised residual} methods at the heart of the course (DEQNs, PINNs).}
 \end{center}
 \end{frame}
 
@@ -606,7 +606,7 @@ Every machine learning algorithm follows the same three steps:
 \vspace{0.3cm}
 \begin{block}{Cost function example (supervised regression: Mean Squared Error)}
 \[
-    J(\bm{\theta}) \;=\; \frac{1}{2m}\sum_{i=1}^{m}\!\big(h_{\bm{\theta}}(\x^{(i)}) - y^{(i)}\big)^{2}
+    J(\bm{\theta}) \;=\; \frac{1}{m}\sum_{i=1}^{m}\!\big(h_{\bm{\theta}}(\x^{(i)}) - y^{(i)}\big)^{2}
 \]
 \end{block}
 {\footnotesize\emphc{Same recipe, different loss.}  DEQNs and PINNs (later chapters) replace step~2 by an Euler-equation or PDE residual; steps~1 and~3 are unchanged.}
@@ -1382,7 +1382,7 @@ The loss function $J(\bm{\theta})$ measures how far predictions $\hat{\bm{y}}$ a
 \column{0.48\textwidth}
 \begin{block}{Regression: Mean Squared Error}
 \[
-    J(\bm{\theta}) = \frac{1}{2n}\sum_{i=1}^{n}\big(y^{(i)} - f(\x^{(i)};\bm{\theta})\big)^{2}
+    J(\bm{\theta}) = \frac{1}{n}\sum_{i=1}^{n}\big(y^{(i)} - f(\x^{(i)};\bm{\theta})\big)^{2}
 \]
 Penalizes large deviations quadratically.
 \end{block}
@@ -1787,7 +1787,7 @@ Define the \textbf{error signal} at layer $\ell$:
     xmin=0, xmax=50, ymin=0, ymax=6,
     grid=major, grid style={gray!15},
 ]
-    \addplot[thick, darkred, domain=0:50, samples=100]{2+1.5*sin(deg(x*0.8))*exp(-0.01*x)+0.5*rand};
+    \addplot[thick, darkred, domain=0:50, samples=100]{2+1.5*sin(deg(x*0.8))*exp(-0.01*x)+0.4*sin(deg(x*4))};
     \node[font=\tiny, darkred] at (axis cs:30,5) {diverges};
 \end{axis}
 \end{tikzpicture}
@@ -1804,7 +1804,7 @@ Define the \textbf{error signal} at layer $\ell$:
 % --- Intermezzo: Hands-on (GD / SGD / learning rate) ---
 \begin{frame}{Intermezzo -- Hands-On}
 \begin{block}{Gradient Descent Notebook}
-Open and work through: \textbf{lectures/day1/code/02\_GradientDescent\_and\_StochasticGradientDescent.ipynb}
+Open and work through: \textbf{lectures/lecture\_02\_B01\_intro\_deep\_learning/code/lecture\_02\_B01\_02\_GradientDescent\_and\_StochasticGradientDescent.ipynb}
 \end{block}
 
 \vspace{0.5cm}
@@ -1834,13 +1834,14 @@ Open and work through: \textbf{lectures/day1/code/02\_GradientDescent\_and\_Stoc
 \textbf{Adam} & $\bm{m}_t = \beta_1\bm{m}_{t-1} + (1-\beta_1)\nabla J$~~~~(1st moment) \\
 & $\bm{v}_t = \beta_2\bm{v}_{t-1} + (1-\beta_2)(\nabla J)^2$~~~~(2nd moment) \\
 & $\hat{\bm{m}}_t = \bm{m}_t/(1-\beta_1^t)$,~~$\hat{\bm{v}}_t = \bm{v}_t/(1-\beta_2^t)$~~~~(bias correction) \\
-& $\bm{\theta}_{t+1} = \bm{\theta}_t - \eta\,\hat{\bm{m}}_t \big/ (\sqrt{\hat{\bm{v}}_t} + \varepsilon)$ \\
+& $\bm{\theta}_{t+1} = \bm{\theta}_t - \eta\,\hat{\bm{m}}_t \big/ (\sqrt{\hat{\bm{v}}_t} + \varepsilon)$ \\[2pt]
+\textbf{AdamW} & $\bm{\theta}_{t+1} = (1-\eta\lambda)\bm{\theta}_t - \eta\,\hat{\bm{m}}_t \big/ (\sqrt{\hat{\bm{v}}_t} + \varepsilon)$~~~~(decoupled weight decay) \\
 \bottomrule
 \end{tabular}
 \end{small}
 
 \vspace{0.4cm}
-{\small \textbf{Adam} (Kingma \& Ba, 2015) is the most widely used default optimizer.  Typical hyperparameters: $\beta_1=0.9$, $\beta_2=0.999$, $\varepsilon=10^{-8}$.}
+{\small \textbf{Adam} (Kingma \& Ba, 2015) is the most widely used default optimizer.  Typical hyperparameters: $\beta_1=0.9$, $\beta_2=0.999$, $\varepsilon=10^{-8}$.  \textbf{AdamW} (Loshchilov \& Hutter, 2019) decouples the weight-decay term from the adaptive update; it is the default we use for PINN training in later chapters.}
 \end{frame}
 
 % --- Slide 38: Weight Initialization ---
@@ -2411,11 +2412,11 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \textcolor{softgreen}{\textbf{3. Modern}} ($n_\text{par}\!\gg\!n_\text{data}$): gradient descent implicitly picks the \emphc{minimum-norm / smoothest} interpolator $\Rightarrow$ it generalizes \emph{better}. More parameters help.
 
 \vspace{0.08cm}
-{\scriptsize Belkin et al.\ (2019); Nakkiran et al.\ (2019).}}
+{\scriptsize Belkin et al.\ (2019); Nakkiran et al.\ (2020).}}
 \end{columns}
 
 \vspace{0.05cm}
-{\footnotesize\emphc{Hands-on:} \texttt{lectures/day1/code/03\_Double\_Descent.ipynb} --- reproduce the curve with random Fourier features.}
+{\footnotesize\emphc{Hands-on:} \texttt{lectures/lecture\_02\_B01\_intro\_deep\_learning/code/lecture\_02\_B01\_03\_Double\_Descent.ipynb} --- reproduce the curve with random Fourier features.}
 \end{frame}
 
 % ============================================================================
@@ -2432,8 +2433,8 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \end{center}
 \end{frame}
 
-% --- Slide 48a: Reinforcement Learning in Finance ---
-\begin{frame}{Reinforcement Learning in Finance}
+% --- Slide 48a: Reinforcement Learning in Finance (outlook only) ---
+\begin{frame}{Outlook (not covered): Reinforcement Learning in Finance}
 \begin{columns}[T]
 \column{0.55\textwidth}
 \textbf{The RL Loop:}
@@ -2500,7 +2501,7 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \vspace{5pt}
 \begin{center}
 \small
-\emphc{Design goals} (Rumelhart et al.\ 1986): \textbf{variable length} $\cdot$ \textbf{order} $\cdot$ \textbf{long-range dependence} $\cdot$ \textbf{parameter sharing across time}.
+\emphc{Design goals} (Elman 1990; Rumelhart, Hinton \& Williams 1986): \textbf{variable length} $\cdot$ \textbf{order} $\cdot$ \textbf{long-range dependence} $\cdot$ \textbf{parameter sharing across time}.
 \end{center}
 \end{frame}
 
@@ -2610,8 +2611,9 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \column{0.56\textwidth}
 \textbf{Gradient through time.} For the gradient of $\mathcal{L}_T$ w.r.t.\ an early state $\bm{h}_k$,
 \[
-\frac{\partial \mathcal{L}_T}{\partial \bm{h}_k} \;=\; \frac{\partial \mathcal{L}_T}{\partial \bm{h}_T} \;\cdot\; \prod_{t=k+1}^{T} \underbrace{\frac{\partial \bm{h}_t}{\partial \bm{h}_{t-1}}}_{=\,\W_{hh}^{\top}\mathrm{diag}(\tanh')}.
+\nabla_{\bm{h}_k}\mathcal{L}_T \;=\; \Bigl(\!\prod_{t=k+1}^{T} \underbrace{\frac{\partial \bm{h}_t}{\partial \bm{h}_{t-1}}}_{=\,\mathrm{diag}(\tanh')\,\W_{hh}}\!\Bigr)^{\!\!\top}\,\nabla_{\bm{h}_T}\mathcal{L}_T.
 \]
+{\scriptsize Standard Jacobian convention; the transpose lives on the chain-rule product (matches script Eq.~\eqref*{eq:bptt} in \S1.10). For details see script \S1.10 ``Vanishing and Exploding Gradients''.}\\[2pt]
 A \emphc{long product of the same Jacobian}:
 \begin{itemize}\itemsep1pt
     \item If $\|\W_{hh}\|\!>\!1$: gradient \emphc{explodes} $\to$ NaN.
@@ -2972,6 +2974,22 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
         \item PyTorch tutorials: \url{https://pytorch.org/tutorials}
     \end{itemize}
 \end{itemize}
+
+\vspace{0.3cm}
+{\footnotesize\emphc{This chapter intentionally exercises both stacks.} Notebooks 04, 05, 07 use \emphc{TensorFlow/Keras}; notebooks 06, 08, 09 use \emphc{PyTorch}. The chapter's later DEQN/PINN materials (Chs.~2--7) are TensorFlow-based; the heterogeneous-agent and sequence-space chapters add JAX (Chs.~6 and~8).}
+\end{frame}
+
+% --- Slide 49b: Notation pact ---
+\begin{frame}{Notation Pact for the Rest of the Course}
+\footnotesize
+This chapter uses $\bm{\theta}$ for generic trainable model parameters, following the textbook convention.  From Chapter~2 onward the script switches:
+\vspace{0.3em}
+\begin{itemize}\itemsep2pt
+    \item $\rho$ = neural-network weights (e.g.\ $\mathcal{N}_\rho(\x)$), matching Azinovic, Gaegauf \& Scheidegger (2022) and the rest of the DEQN literature.
+    \item $\bm{\theta}$ = \emph{structural} economic parameters that the network does not see (e.g.\ Chs.~10 \& 11 on structural estimation and climate).
+\end{itemize}
+\vspace{0.4em}
+Both symbols denote the same object \emph{abstractly} (free parameters of the model); the rename foregrounds which kind of parameter is being trained.  Whenever a network appears in subsequent chapters, expect $\rho$.
 \end{frame}
 
 % --- Slide 50: Hands-on Notebooks ---

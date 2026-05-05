@@ -117,7 +117,7 @@ DOI: \url{https://doi.org/10.1111/iere.12575}}\\[4pt]
 \textbf{From ANNs to DEQNs}
 \begin{itemize}
     \item DNNs as function approximators
-    \item Supervised vs.\ unsupervised loss
+    \item Supervised vs.\ self-supervised loss
     \item The DEQN training algorithm
 \end{itemize}
 
@@ -149,7 +149,7 @@ DOI: \url{https://doi.org/10.1111/iere.12575}}\\[4pt]
 \textbf{By the end of this lecture you should be able to:}
 \begin{itemize}
   \item Formulate dynamic stochastic economic models as equilibrium systems and identify computational challenges in high dimensions
-  \item Replace grid-based collocation with unsupervised neural-network training using equilibrium errors as the loss function
+  \item Replace grid-based collocation with self-supervised neural-network training using equilibrium errors as the loss function
   \item Build and train Deep Equilibrium Nets (DEQNs) to solve representative-agent and heterogeneous-agent models
   \item Implement simulated paths from the model's ergodic distribution to construct training data without explicit grids
   \item Parallelize DEQN training across multiple nodes and scale solutions to 100+ dimensions
@@ -754,7 +754,7 @@ Let $G(\x, f(\x)) = 0$ be the system of equilibrium equations. Define:
 \end{itemize}
 
 \vspace{0.5em}
-$\Rightarrow$ \emphc{No labels needed}, so this is \textbf{unsupervised} (or ``self-supervised'') learning.
+$\Rightarrow$ \emphc{No labels needed}; we call this \textbf{self-supervised} learning (sometimes labelled ``unsupervised'' in the narrow no-labels sense).
 \\[2pt]
 {\scriptsize In stochastic models, expectations inside $G$ are approximated, e.g.\ by path averaging or quadrature.}
 \end{frame}
@@ -814,8 +814,8 @@ $\Rightarrow$ \emphc{No labels needed}, so this is \textbf{unsupervised} (or ``s
 {\small \textbf{Note:} Training points come from the \emphc{model's own simulation}, so the network learns on the ergodic distribution, focusing on economically relevant regions.}
 \end{frame}
 
-% --- Slide 21: Supervised vs Unsupervised ---
-\begin{frame}{Supervised vs.\ Unsupervised (DEQN) Learning}
+% --- Slide 21: Supervised vs Self-Supervised ---
+\begin{frame}{Supervised vs.\ Self-Supervised (DEQN) Learning}
 \begin{columns}[T]
 \column{0.47\textwidth}
 \begin{center}
@@ -842,7 +842,7 @@ $\Rightarrow$ \emphc{No labels needed}, so this is \textbf{unsupervised} (or ``s
         rounded corners=3pt},
     arr/.style={-{Stealth[length=2.5mm]}, thick, darkred}
 ]
-    \node[font=\small\bfseries, darkred] at (0,3.2) {DEQN (Unsupervised)};
+    \node[font=\small\bfseries, darkred] at (0,3.2) {DEQN (Self-Supervised)};
     \node[mlstep] (d) at (0,2.4) {Equations $G(\x, p(\x))=0$};
     \node[mlstep] (l) at (0,1.2) {$\ell = \|G(\x_i, \mathcal{N}_\rho(\x_i))\|^2$};
     \node[mlstep] (s) at (0,0) {SGD $\to$ $\rho^\star$};
@@ -1208,7 +1208,7 @@ Throw $N$ uniform darts at $\Omega = [0,1]^2$:
 \E{h(\bm\varepsilon')} \;\approx\; \frac{1}{2d} \sum_{k=1}^{d} \Bigl[\, h\bigl(+\sqrt{d}\,\bm{e}_k\bigr) + h\bigl(-\sqrt{d}\,\bm{e}_k\bigr)\Bigr]
 \;}
 \]
-where $\bm{e}_k$ is the $k$-th standard basis vector, giving $2d$ nodes at common radius $\sqrt{d}$.  For Brock--Mirman ($d=1$) this reduces to two nodes at $\pm 1$; for IRBC ($d=N+1$) it gives $2(N+1)$ nodes.
+where $\bm{e}_k$ is the $k$-th standard basis vector, giving $2d$ nodes at common radius $\sqrt{d}$.  For Brock--Mirman ($d=1$) this reduces to two nodes at $\pm 1$ (exact for univariate polynomials of degree $\le 3$); for IRBC ($d=N+1$) it gives $2(N+1)$ nodes.
 
 \vspace{0.5em}
 \begin{columns}[T]
@@ -1346,11 +1346,11 @@ CVaR     & mean of top $10\%$ of $|r|$                        & explicitly train
 
 \vspace{0.4em}
 \begin{exampleblock}{Practical default}
-\textbf{MSE} for smooth problems; \textbf{LogCosh} as a drop-in that is more forgiving with heavy-tailed residuals; \textbf{Huber / Quantile / CVaR} when the worst-case state matters.
+\textbf{MSE} remains the canonical default, but \textbf{LogCosh} is a smooth, kink-free alternative that should be benchmarked alongside it before defaulting; \textbf{Huber / Quantile / CVaR} when the worst-case state matters.
 \end{exampleblock}
 
 \vspace{0.2em}
-{\scriptsize Companion notebook: \texttt{lectures/day2/code/05\_StochasticBM\_LossComparison.ipynb}.}
+{\scriptsize Companion notebook: \texttt{lectures/lecture\_03\_B02\_deep\_equilibrium\_nets/code/lecture\_03\_B02\_05\_StochasticBM\_LossComparison.ipynb}.}
 \end{frame}
 
 % ============================================================================
@@ -1404,7 +1404,7 @@ than to grow a gigantic ox.''}
     \node[worker] (wP) at (3.5,-1.5) {Worker $P$};
 
     \node[mlstep] (grad) at (0,-3.0) {Allreduce: $\bar{g} = \frac{1}{P}\sum_{p=1}^P g_p$};
-    \node[mlstep] (upd) at (0,-4.3) {$\rho \leftarrow \rho - \alpha \bar{g}$};
+    \node[mlstep] (upd) at (0,-4.3) {$\rho \leftarrow \rho - \eta \bar{g}$};
 
     \draw[arr] (data) -- (w1) node[midway, above, font=\tiny, sloped] {$\mathcal{B}_1$};
     \draw[arr] (data) -- (w2) node[midway, above, font=\tiny, sloped] {$\mathcal{B}_2$};
@@ -1436,7 +1436,7 @@ than to grow a gigantic ox.''}
     \node[mlstep] (fwd) at (0,-2.0) {Forward pass \& compute $G(\cdot)$};
     \node[mlstep] (bwd) at (0,-3.0) {Backward pass: local $\nabla_\rho \ell$};
     \node[mlstep] (all) at (0,-4.0) {MPI Allreduce: average gradients};
-    \node[mlstep] (step) at (0,-5.0) {SGD step: $\rho \leftarrow \rho - \alpha \bar{g}$};
+    \node[mlstep] (step) at (0,-5.0) {SGD step: $\rho \leftarrow \rho - \eta \bar{g}$};
 
     \draw[arr] (sim) -- (mb);
     \draw[arr] (mb) -- (fwd);
@@ -1453,7 +1453,7 @@ than to grow a gigantic ox.''}
 \end{frame}
 
 % --- Slide 30: Scalability ---
-\begin{frame}{Illustrative Scaling Pattern}
+\begin{frame}{Illustrative Scaling Pattern (Schematic)}
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[

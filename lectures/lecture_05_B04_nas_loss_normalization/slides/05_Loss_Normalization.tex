@@ -532,7 +532,7 @@ Raw $\Delta_i^{(t)}$ is dimensional: a component with loss $\sim 10^3$ produces 
     \item Prevents weight drift
     \item ``Resets'' to global perspective
     \item Stabilizes training
-    \item Like simulated annealing for weights
+    \item Stochastic regularization of the baseline-vs-step trade-off
 \end{itemize}
 \end{block}
 \end{columns}
@@ -757,6 +757,9 @@ Total rel.\ error & 1.00 & 0.41 & \emphc{0.12} \\
     \item \textbf{Inverse-loss:} Improves $f_A$, but introduces oscillations
     \item \textbf{ReLoBRaLo:} All three functions well approximated; $\sim 8\times$ lower total error
 \end{itemize}
+
+\vspace{0.2cm}
+{\scriptsize Numbers shown are produced by \texttt{04\_Loss\_Normalization.ipynb} at \texttt{MODE = "classroom"} (500 epochs), seed 42; absolute values are seed-/MODE-sensitive and may drift across kernels.}
 \end{frame}
 
 % --- Slide 23: Sensitivity to T ---

@@ -76,8 +76,8 @@
 \begin{frame}
 \titlepage
 \begin{center}
-{\footnotesize Prompts: \texttt{day5/code/exercise\_prompts.md}\\
-Solution notes: \texttt{day5/code/exercise\_solutions.md}\\[2pt]
+{\footnotesize Prompts: \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/exercise\_prompts.md}\\
+Solution notes: \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/exercise\_solutions.md}\\[2pt]
 Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}}
@@ -121,7 +121,7 @@ Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimat
 \end{center}
 
 \vspace{0.2em}
-{\tiny Solutions in \texttt{day5/code/exercise\_solutions.md}; consult only \emph{after} attempting.}
+{\tiny Solutions in \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/exercise\_solutions.md}; consult only \emph{after} attempting.}
 \end{frame}
 
 % --- Learning objectives ---
@@ -278,7 +278,7 @@ Create a project memory file and test both normal behavior and guardrails.
 \end{exampleblock}
 \small
 \begin{enumerate}\itemsep2pt
-    \item Copy \texttt{day5/code/CLAUDE\_md\_template.md}
+    \item Copy \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/CLAUDE\_md\_template.md}
     \item Fill in Repository Structure, Coding Standards, and Current Status
     \item Start a fresh Claude session and ask for a project summary
     \item Test one normal coding request
@@ -317,7 +317,7 @@ Create one reusable skill and one verifier-style subagent.
 \column{0.48\textwidth}
 \textbf{Part A: Skill}
 \begin{enumerate}\itemsep1pt
-    \item Copy \texttt{day5/code/example\_skill/SKILL.md}
+    \item Copy \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/skills/example\_skill/SKILL.md}
     \item Save it to \texttt{.claude/skills/data-diagnostics/}\\
     \texttt{SKILL.md}
     \item Run \texttt{/data-diagnostics data/synthetic\_panel.csv}
@@ -326,7 +326,7 @@ Create one reusable skill and one verifier-style subagent.
 \column{0.48\textwidth}
 \textbf{Part B: Subagent}
 \begin{enumerate}\itemsep1pt
-    \item Copy \texttt{day5/code/example\_subagent/}\\
+    \item Copy \texttt{lectures/lecture\_06\_B17\_agentic\_programming/code/subagents/}\\
     \texttt{verifier.md}
     \item Save it to \texttt{.claude/agents/verifier.md}
     \item Ask Claude to use the verifier subagent on the diagnostics report

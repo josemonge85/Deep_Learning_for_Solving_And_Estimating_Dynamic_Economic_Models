@@ -11,7 +11,7 @@
 %   Part III Benchmark (AGS 2022 leading example)   (12)
 %            same 9-step skeleton, applied to
 %            the 56-cohort two-asset model that
-%            notebook 08 implements
+%            notebook 10 (benchmark_persistent) implements
 %   Part IV  Wrap-up + references                    (2)
 % ============================================================================
 
@@ -82,7 +82,7 @@
 % ---------- Title ----------
 \title[Deep Learning for Dynamic Economic Models]
 {Deep Learning for Economics and Finance}
-\subtitle{Overlapping generations, borrowing constraints, Fischer--Burmeister complementarity}
+\subtitle{Overlapping generations, borrowing constraints, product-form KKT complementarity}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
 \date{}
@@ -97,7 +97,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Companion notebooks: \texttt{07\_OLG\_Analytic\_DEQN.ipynb}, \texttt{08\_OLG\_Benchmark\_DEQN.ipynb}, and the student exercise notebook \texttt{09\_OLG\_Exercise.ipynb}.}\\[3pt]
+{\footnotesize Companion notebooks: \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} / \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb} (analytic 6-agent), \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} / \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb} (benchmark 56-agent), and the student exercise notebook \texttt{11\_OLG\_Exercise.ipynb}.}\\[3pt]
 {\footnotesize Based on Azinovic, Gaegauf \& Scheidegger (2022, \emph{IER} 63(4), 1471--1525) and Krueger \& K\"ubler (2004, \emph{JEDC}).}
 \end{center}
 \end{frame}
@@ -114,14 +114,14 @@
 \begin{block}{Part II --- The analytic 6-agent model (Krueger \& K\"ubler, 2004)}
 \vspace{-3pt}\begin{itemize}\itemsep0pt
     \item Model $\to$ equilibrium $\to$ cost $\to$ FREE $\to$ architecture $\to$ training $\to$ validation against the closed form.
-    \item Notebook: \texttt{07\_OLG\_Analytic\_DEQN.ipynb}.
+    \item Primary notebook: \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}; companion ablation \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}.
 \end{itemize}
 \end{block}
 \vspace{-2pt}
 \begin{block}{Part III --- The leading example of AGS (2022): the 56-cohort benchmark}
 \vspace{-3pt}\begin{itemize}\itemsep0pt
     \item Same 9-step recipe at research scale: two assets, two borrowing constraints, capital adjustment costs, persistent shocks, hump-shaped labor.
-    \item Notebook: \texttt{08\_OLG\_Benchmark\_DEQN.ipynb}.
+    \item Primary notebook: \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}; companion ablation \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb}.
 \end{itemize}
 \end{block}
 \end{frame}
@@ -224,8 +224,8 @@ At each period $t$ we have $A$ coexisting cohorts.  A newborn enters (age 1); th
     \item Write down the \emphc{economic model}: preferences, technology, constraints, shocks.
     \item Define the \emphc{equilibrium}: choices + prices that satisfy optimization + market clearing.
     \item Write the \emphc{equilibrium conditions} as a system $G(x, f(x)) = 0$.
-    \item Replace $f$ by a \emphc{neural network} $\N_\rho$ and form the \emphc{cost function} $\Loss(\rho) = \frac{1}{|D|}\sum_j \|G(x_j, \N_\rho(x_j))\|^2$.
-    \item Sample training states $D$, minimize $\Loss(\rho)$ by SGD.
+    \item Replace $f$ by a \emphc{neural network} $\N_\theta$ and form the \emphc{cost function} $\Loss(\theta) = \frac{1}{|D|}\sum_j \|G(x_j, \N_\theta(x_j))\|^2$.
+    \item Sample training states $D$, minimize $\Loss(\theta)$ by SGD.
 \end{enumerate}
 \end{block}
 
@@ -397,7 +397,7 @@ r_t \;=\; \alpha\,\eta(z_t)\, K_t^{\alpha-1}\, L_t^{1-\alpha} \;+\; \bigl(1-\del
 \small
 \begin{block}{Explicit cost function}
 \[
-\boxed{\;\Loss_{D_{\text{train}}}(\rho) \;:=\; \frac{1}{|D_{\text{train}}|}\;\frac{1}{A-1}\,
+\boxed{\;\Loss_{D_{\text{train}}}(\theta) \;:=\; \frac{1}{|D_{\text{train}}|}\;\frac{1}{A-1}\,
 \sum_{x_j \in D_{\text{train}}}\;\sum_{i=1}^{A-1} \bigl(e_{\text{REE}}^{\,i}(x_j)\bigr)^2\;}
 \]
 \end{block}
@@ -452,10 +452,10 @@ Stack these $A-1$ residuals as $G\bigl([z_t, \bm{k}_t],\, f([z_t, \bm{k}_t])\big
 \begin{columns}[T,totalwidth=0.96\textwidth]
 \column{0.46\textwidth}
 \[
-\N_\rho:\;\{1,2,3,4\}\times\R^A \to \R^{A-1}
+\N_\theta:\;\{1,2,3,4\}\times\R^A \to \R^{A-1}
 \]
 \[
-\N_\rho\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix}\!\right) \;=\;
+\N_\theta\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix}\!\right) \;=\;
 \left[
 \begin{array}{l}
 a_t^{\,1}\\ a_t^{\,2}\\ \vdots\\ a_t^{\,A-1}
@@ -464,7 +464,7 @@ a_t^{\,1}\\ a_t^{\,2}\\ \vdots\\ a_t^{\,A-1}
 \]
 such that
 \[
-G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\rho\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix}\!\right)\right) \;\approx\; \bm{0}.
+G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\theta\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix}\!\right)\right) \;\approx\; \bm{0}.
 \]
 {\footnotesize \emphc{Softplus} output layer $\Rightarrow$ $a_t^{\,s} \ge 0$ \emphc{by construction}, so the borrowing constraint is satisfied at every iteration without an explicit multiplier.}
 
@@ -525,7 +525,7 @@ G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\rho\!\left(\!\beg
 % --- Hand-over to the analytic-model notebook -------------------------
 \begin{frame}{Companion Notebook Hand-over}
 \scriptsize
-\emphc{Open notebook 07.}  It implements the model, equilibrium conditions, loss, FREE map, architecture, training, and validation covered in Part II.
+\emphc{Open notebook \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}} (the persistent-simulation primary; the exogenous-sampling companion is \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}).  It implements the model, equilibrium conditions, loss, FREE map, architecture, training, and validation covered in Part II.
 \vspace{-2pt}
 \begin{block}{Cell-to-slide map}
 \vspace{-4pt}
@@ -535,9 +535,9 @@ G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\rho\!\left(\!\beg
 \toprule
 \textbf{Deck slide} & \textbf{Notebook section} \\
 \midrule
-II.1--II.6 Model and equilibrium        & \S 1--5 \;calibration, prices, residuals \\
-II.7--II.9 Loss, FREE, architecture     & \S 6--7 \;\texttt{compute\_cost()}, \texttt{build\_network()} \\
-II.10--II.13 Training/validation        & \S 8--10 \;cloud method + closed-form checks \\
+II.1--II.6 Model and equilibrium        & \S 1--3 \;parameters, state, network/policy \\
+II.7--II.9 Loss, FREE, architecture     & \S 4 \;\texttt{compute\_cost()} + training-data construction \\
+II.10--II.13 Training/validation        & \S 5--8 \;mini-batches, diagnostics, policy stability, closed-form checks \\
 \bottomrule
 \end{tabular}}
 \end{center}
@@ -552,12 +552,12 @@ II.10--II.13 Training/validation        & \S 8--10 \;cloud method + closed-form 
 \begin{block}{Cloud method (Azinovic, Gaegauf \& Scheidegger, 2022)}
 \vspace{-2pt}
 \begin{enumerate}\itemsep2pt
-    \item \emphc{Initialisation.}  Sample a cloud of initial states $D_0 = \{x_j^{\,0}\}_{j=1}^{N}$; initialise $\rho^0$.
+    \item \emphc{Initialisation.}  Sample a cloud of initial states $D_0 = \{x_j^{\,0}\}_{j=1}^{N}$; initialise $\theta^0$.
     \item \emphc{Episode $k$.}
     \begin{enumerate}
-        \item[(a)] \textbf{Simulate.}  Draw fresh shocks $\{z_{+,j}\}$ from $\pi$; roll the cloud forward one period using the \emphc{current} policy $\N_{\rho^k}$:
-        $x_j^{\,k+1} = \bigl(z_{+,j},\,0,\,\N_{\rho^k}^{[1:A-1]}(x_j^{\,k})\bigr)$.
-        \item[(b)] \textbf{Mini-batch SGD.}  Take $\texttt{steps}$ Adam steps on $\Loss_{D_k}(\rho)$ using mini-batches from $D_k$.
+        \item[(a)] \textbf{Simulate.}  Draw fresh shocks $\{z_{+,j}\}$ from $\pi$; roll the cloud forward one period using the \emphc{current} policy $\N_{\theta^k}$:
+        $x_j^{\,k+1} = \bigl(z_{+,j},\,0,\,\N_{\theta^k}^{[1:A-1]}(x_j^{\,k})\bigr)$.
+        \item[(b)] \textbf{Mini-batch SGD.}  Take $\texttt{steps}$ Adam steps on $\Loss_{D_k}(\theta)$ using mini-batches from $D_k$.
     \end{enumerate}
     \item \emphc{Stop} when $\log_{10} \Loss$ falls below the target.
 \end{enumerate}
@@ -620,7 +620,7 @@ II.10--II.13 Training/validation        & \S 8--10 \;cloud method + closed-form 
 
 \vspace{0.15em}
 \begin{block}{Reading the plots}
-\emphc{Left:} cost falls in $\log_{10}$ as the network learns the Krueger--K\"ubler policy; classroom is diagnostic, production reaches tight residuals.\\
+\emphc{Left:} cost falls in $\log_{10}$ as the network learns the Krueger--K\"ubler policy; teaching is diagnostic, production reaches tight residuals.\\
 \emphc{Right:} trained DEQN savings policy overlays the closed-form Krueger--K\"ubler solution across cohorts.
 \end{block}
 \end{frame}
@@ -632,7 +632,7 @@ II.10--II.13 Training/validation        & \S 8--10 \;cloud method + closed-form 
 \textbf{Setup.}  With $u = \ln$, cohort $h$'s Euler equation reads $1/c_t^h = \beta\,\mathbb{E}_t[r_{t+1}/c_{t+1}^{h+1}]$ and the budget constraint is $c_t^h + a_t^h = \text{inc}_t^h$ where $\text{inc}_t^h = r_t k_t^h + \ell^h w_t$.  (The household-level setup slides II.2--II.6 used the index symbol $s$; from this slide onward we follow the script convention and use $h$ instead.)
 
 \vspace{0.4em}
-\textbf{Claim (Krueger \& K\"ubler, 2004).}  With log utility and 100\% consumption at age $A$, the savings rate $\beta_h := a_t^h/\text{inc}_t^h$ of cohort $h$ depends only on age:
+\textbf{Claim (closed-form log-utility OLG savings rate; the validation target used by Krueger \& K\"ubler, 2004).}  With log utility and 100\% consumption at age $A$, the savings rate $\beta_h := a_t^h/\text{inc}_t^h$ of cohort $h$ depends only on age:
 \[
 \beta_h \;=\; \beta\,\frac{1 - \beta^{A-h}}{1 - \beta^{A-h+1}}, \qquad h = 1, \ldots, A-1.
 \]
@@ -706,7 +706,7 @@ Cohort $h$ & Periods remaining ($A-h$) & Savings rate $\beta_h$\\
 The plotted points are the \emphc{exact closed form} from the finger-exercise solution slide.  The DEQN should reproduce this curve cohort-by-cohort.
 
 \vspace{2pt}
-The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram are produced by notebook 07 (\S 10).  Production target in AGS (2022): mean relative Euler error $\lesssim 10^{-3}$.
+The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram are produced by \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb} (\S 8).  Production target in AGS (2022): mean relative Euler error $\lesssim 10^{-3}$.
 \end{block}
 \end{frame}
 
@@ -718,19 +718,19 @@ The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram 
     \item OLG model with 6 cohorts, log utility, 4 i.i.d.\ shocks (II.1--II.4).
     \item Equilibrium definition + conditions (II.5--II.6).
     \item Conditions $\to$ \emphc{cost function} (II.7).
-    \item Equilibrium map $f$ $\to$ neural network $\N_\rho$ (II.8--II.9).
+    \item Equilibrium map $f$ $\to$ neural network $\N_\theta$ (II.8--II.9).
     \item Trained by sampling + SGD (II.10--II.11), \emphc{validated} against the closed form (II.13).
 \end{enumerate}
 \end{block}
 
 \begin{block}{Hands-on}
-Open notebook 07.  Default \texttt{MODE = "classroom"} ($\sim 5$ min, 1\,000 ep); \texttt{"smoke"} is a 30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.
+Open \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}.  Default \texttt{MODE = "teaching"} ($\sim 5$ min, 1\,000 ep); \texttt{"smoke"} is a 30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch (the persistent primary uses \texttt{"simulation"}, the companion \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} uses \texttt{"exogenous"}); the model and loss are identical -- only the training cloud differs.
 \end{block}
 \end{frame}
 
 
 % =====================================================================
-% Part III -- Benchmark (AGS 2022 leading example), notebook 08
+% Part III -- Benchmark (AGS 2022 leading example), notebook 10 (benchmark_persistent)
 % =====================================================================
 
 \section{Part III: Benchmark 56-cohort OLG (AGS 2022 \S 3)}
@@ -773,7 +773,7 @@ Open notebook 07.  Default \texttt{MODE = "classroom"} ($\sim 5$ min, 1\,000 ep)
 \end{axis}
 \end{tikzpicture}
 
-{\scriptsize \emphc{Schematic shape only}, rises through working years, drops sharply at retirement, low but nonzero after.  See AGS (2022) for the exact $\ell^s$ used in the notebook.}
+{\scriptsize \emphc{Schematic shape only}, rises through working years, drops sharply at retirement, low but nonzero after.  See \emphc{Brumm, K\"ubler \& Scheidegger (2017)} for the exact $\ell^s$ used in the notebook; AGS (2022) reuse this calibration as part of their benchmark.}
 \end{columns}
 \end{frame}
 
@@ -790,7 +790,7 @@ An agent of age $s$ alive at $t$ maximises
 \textbf{Two saving instruments} (instead of one):
 \begin{itemize}\itemsep2pt
     \item \emphc{Capital} $k_{t+1}^{\,s+1}$: yields gross return $r_{t+1}$ next period; incurs an \emphc{adjustment cost} $\Psi_t^s = \tfrac{\zeta}{2}(k_{t+1}^{\,s+1} - r_t k_t^{\,s})^2$.
-    \item \emphc{Bonds} $b_{t+1}^{\,s+1}$: traded at price $q_t$ today, pay one unit of consumption next period. \emphc{Zero net supply}: $\sum_{s=1}^A b_t^s = 0$.
+    \item \emphc{Bonds} $b_{t+1}^{\,s+1}$: traded at price $p_t$ today, pay one unit of consumption next period. \emphc{Zero net supply}: $\sum_{s=1}^A b_t^s = 0$.
 \end{itemize}
 
 \vspace{0.3em}
@@ -812,9 +812,9 @@ k'^s \;+\; \kappa\, b'^s \;\ge\; 0 \quad (\text{collateral constraint}).
 \]
 
 \vspace{0.4em}
-\textbf{Budget constraint} of cohort $s$ (bonds enter at price $q_t$ on the left-hand side, pay off on the right):
+\textbf{Budget constraint} of cohort $s$ (bonds enter at price $p_t$ on the left-hand side, pay off on the right):
 \[
-c_t^{\,s} \;+\; k_{t+1}^{\,s+1} \;+\; q_t\, b_{t+1}^{\,s+1} \;+\; \Psi_t^s
+c_t^{\,s} \;+\; k_{t+1}^{\,s+1} \;+\; p_t\, b_{t+1}^{\,s+1} \;+\; \Psi_t^s
 \;=\; r_t\, k_t^{\,s} \;+\; b_t^{\,s} \;+\; \ell_t^{\,s}\, w_t.
 \qquad (4')
 \]
@@ -858,7 +858,7 @@ Labor now aggregates over the hump-shaped profile: $L_t = \sum_{s=1}^{A} \ell^s$
 \begin{block}{Definition 1' (competitive equilibrium, benchmark)}
 Given initial conditions $z_0,\, \{k_0^{\,s}, b_0^{\,s}\}_{s=1}^{A-1}$, a competitive equilibrium is
 a collection of choices $\bigl\{(c_t^s,\,k_t^{\,s+1},\,b_t^{\,s+1})_{s=1}^{A-1}\bigr\}_{t=0}^\infty$,
-firm demands $(K_t, L_t)_{t \ge 0}$, and prices $(r_t, w_t, q_t)_{t\ge 0}$, such that:
+firm demands $(K_t, L_t)_{t \ge 0}$, and prices $(r_t, w_t, p_t)_{t\ge 0}$, such that:
 \begin{enumerate}\itemsep1pt
     \item Households maximize $(1')$ subject to $(2')$--$(4')$.
     \item Firm maximises profits, same closed-form FOCs as Part II.
@@ -867,7 +867,7 @@ firm demands $(K_t, L_t)_{t \ge 0}$, and prices $(r_t, w_t, q_t)_{t\ge 0}$, such
 \end{block}
 
 \vspace{0.3em}
-{\footnotesize Relative to Part II: one new price ($q_t$), one new market-clearing condition (bonds), one new asset class per cohort in the choice vector.  Everything else is the same.}
+{\footnotesize Relative to Part II: one new price ($p_t$), one new market-clearing condition (bonds), one new asset class per cohort in the choice vector.  Everything else is the same.}
 \end{frame}
 
 
@@ -884,7 +884,7 @@ u'(c_t^s) \cdot \bigl(1 + \zeta\,(k'^s - r_t k_t^s)\bigr) \;=\; \beta\,\E{u'(c_{
 \]
 \[
 \text{(bonds)}\;\;
-u'(c_t^s)\cdot q_t \;=\; \beta\,\E{u'(c_{t+1}^{s+1})} \;+\; \kappa\,\lambda_{\text{c}}^s.
+u'(c_t^s)\cdot p_t \;=\; \beta\,\E{u'(c_{t+1}^{s+1})} \;+\; \kappa\,\lambda_{\text{c}}^s.
 \]
 
 \vspace{0.3em}
@@ -909,7 +909,7 @@ u'(c_t^s)\cdot q_t \;=\; \beta\,\E{u'(c_{t+1}^{s+1})} \;+\; \kappa\,\lambda_{\te
 \begin{block}{Five loss components, one cost function}
 \vspace{-2pt}
 \[
-\Loss_{D_{\text{train}}}(\rho) \;=\; \frac{1}{|D_{\text{train}}|}\,\frac{1}{4(A-1)+1}\!
+\Loss_{D_{\text{train}}}(\theta) \;=\; \frac{1}{|D_{\text{train}}|}\,\frac{1}{4(A-1)+1}\!
 \sum_{x_j \in D_{\text{train}}}\!\Biggl[\;\sum_{s=1}^{A-1} R^{\,s}(x_j)^2 \;+\; \bigl(e_{\text{MC},b}(x_j)\bigr)^2\;\Biggr],
 \]
 
@@ -969,16 +969,16 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \\ \bm{b}_t \end{bmatrix}\!\right)
 \begin{frame}{III.9 Architecture --- Benchmark}
 \scriptsize
 \begin{center}
-$\N_\rho:\;\R^{236} \to \R^{221}$
+$\N_\theta:\;\R^{236} \to \R^{221}$
 \end{center}
 \vspace{-4pt}
 
-\begin{block}{Sizes from notebook 08}
+\begin{block}{Sizes from \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}}
 \centering
 \begin{tabular}{ll}
 \toprule
 Notebook input   & $236$ (minimal state: $113$) \\
-Hidden layers    & $2 \times 128$ (classroom) \\
+Hidden layers    & $2 \times 128$ (teaching) \\
                  & $2 \times 1000$ (production) \\
 Output dim       & $4(A{-}1) + 1 = 221$ \\
 Output layer     & softplus on every output \\
@@ -991,7 +991,7 @@ Optimizer        & Adam, lr $10^{-5}$\\
 \begin{exampleblock}{Output slicing}
 \vspace{-6pt}
 \[
-\N_\rho(x_t)
+\N_\theta(x_t)
 =
 \bigl(\hat k'^{1:A-1},\;\hat\lambda_b^{1:A-1},\;\hat q^{1:A-1},\;\hat\mu^{1:A-1},\;\hat p\bigr).
 \]
@@ -1009,17 +1009,17 @@ Same MLP template as Part II, scaled up and augmented by a bond-price head.  Bon
 \begin{axis}[
     width=6.5cm, height=4.5cm,
     xlabel={Episode}, ylabel={$\log_{10}(\Loss)$},
-    xmin=0, xmax=10000, ymin=-8, ymax=8,
+    xmin=0, xmax=2000, ymin=-8, ymax=8,
     grid=major, grid style={gray!15},
     axis line style={uzhblue}, tick style={uzhblue},
     label style={font=\footnotesize}, ticklabel style={font=\scriptsize},
     title style={font=\footnotesize, uzhblue},
-    title={Cost per episode (benchmark, 56 cohorts)}
+    title={Cost per episode (teaching, $128^2$, 2{,}000 ep.)}
 ]
 \addplot[harvardcrimson, thick, smooth] coordinates {
     (0,7.2) (10,4.5) (20,0.5) (30,-0.8) (50,-1.2) (100,-1.6)
     (200,-2.3) (300,-3.0) (500,-3.8) (800,-4.5) (1200,-5.0)
-    (2000,-5.8) (4000,-6.4) (6000,-6.8) (10000,-7.0)
+    (1600,-5.5) (2000,-5.8)
 };
 \end{axis}
 \end{tikzpicture}
@@ -1075,7 +1075,7 @@ Same MLP template as Part II, scaled up and augmented by a bond-price head.  Bon
 \begin{frame}{III.11 Consumption Profiles by Aggregate State}
 \footnotesize
 \begin{block}{What the notebook will plot}
-For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, evaluated on a long ergodic simulation from notebook 08.
+For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, evaluated on a long ergodic simulation from \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}.
 \end{block}
 
 \begin{block}{The four aggregate states}
@@ -1107,12 +1107,13 @@ Four distinct profiles, ordered as in the table above.  The exact magnitudes and
     \item \emphc{Per-equation Euler errors.}  Plot mean $|e_{\text{REE},k}^{\,s}|$ and $|e_{\text{REE},b}^{\,s}|$ by age $s$; expect $\sim 10^{-3}$ everywhere.
     \item \emphc{Bond market clearing.}  $|e_{\text{MC},b}| < 10^{-4}$ on the ergodic simulation path.
     \item \emphc{Borrow-binding fraction.}  Ages where $\lambda_{\text{b}}^s > 0$; standard calibration: only the youngest few cohorts.
+    \item \emphc{Policy-drift on a fixed anchor cloud.}  Evaluate the policy on \texttt{X\_anchor} each monitoring interval; report \texttt{policy\_drift\_rms}, \texttt{policy\_drift\_max}; flag the run \emph{time-invariant} once both fall below \texttt{TIME\_INVARIANCE\_TOL\_RMS} / \texttt{\_MAX}.
     \item \emphc{Ergodic simulation.}  Simulate $10\,000$ periods; plot lifecycle consumption + capital with percentile bands.
 \end{enumerate}
 \end{block}
 
 \vspace{-2pt}
-\textbf{Hands-on: \texttt{08\_OLG\_Benchmark\_DEQN.ipynb}.}  \S 1--5 match III.1--III.5; \S 6 = cost function (III.7); \S 7--8 = training (III.9); \S 9--11 = plots and diagnostics of III.10--III.12.  Classroom runtime (128-wide, 2\,000 episodes): $\approx 30$ min on CPU.
+\textbf{Hands-on: \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}} (the persistent-simulation primary; \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} is the feedback-free ablation).  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch -- the model and loss are identical, only the training cloud differs.  \S 1--4 match III.1--III.5; \S 5--7 = training and policy stability; \S 8 = plots and diagnostics of III.10--III.12.  Teaching runtime (128-wide, 2\,000 episodes): $\approx 30$ min on CPU.
 \end{frame}
 
 
@@ -1146,11 +1147,11 @@ Four distinct profiles, ordered as in the table above.  The exact magnitudes and
 \begin{frame}{References and Further Reading}
 \small
 \begin{itemize}\itemsep3pt
-    \item Azinovic, M., Gaegauf, L., \& Scheidegger, S. (2022). \emph{Deep equilibrium nets.} International Economic Review 63(4), 1471--1525.  \;[\,notebook 08 implements \S 3 of this paper].
+    \item Azinovic, M., Gaegauf, L., \& Scheidegger, S. (2022). \emph{Deep equilibrium nets.} International Economic Review 63(4), 1471--1525.  \;[\,notebook 10 (\texttt{benchmark\_persistent}) implements \S 3 of this paper].
 
-    \item Krueger, D., \& K\"ubler, F. (2004). \emph{Computing equilibrium in OLG models with stochastic production.} Journal of Economic Dynamics \& Control 28(7), 1411--1436.  \;[\,notebook 07 implements their 6-agent analytic model].
+    \item Krueger, D., \& K\"ubler, F. (2004). \emph{Computing equilibrium in OLG models with stochastic production.} Journal of Economic Dynamics \& Control 28(7), 1411--1436.  \;[\,notebook 08 (\texttt{analytic\_persistent}) implements their 6-agent analytic model].
 
-    \item Fischer, A. (1992). \emph{A special Newton-type optimization method.} Optimization 24, 269--284.  \;[FB-complementarity function].
+    \item Fischer, A. (1992). \emph{A special Newton-type optimization method.} Optimization 24, 269--284.  \;[FB-complementarity function -- used in the \textbf{IRBC chapter (Ch.~3)}; mentioned in this lecture only as an alternative to the product-form KKT residuals adopted here.]
 
     \item Code: \scriptsize\url{https://github.com/sischei/DeepEquilibriumNets}.
 \end{itemize}
@@ -1158,20 +1159,12 @@ Four distinct profiles, ordered as in the table above.  The exact magnitudes and
 
 
 % --- Bridge to the Agentic-Programming Lecture ---
-\begin{frame}{Bridge to the Agentic-Programming Lecture}
+\begin{frame}{Optional Next: Agentic-Programming Workshop}
 \footnotesize
-\textbf{Where the technical content rests.}  At this point we have a complete discrete-time DEQN toolkit: feed-forward policy net + softplus output, Euler/KKT residuals + Fischer--Burmeister, simulation-based sampling, NAS-tuned architecture, and ReLoBRaLo-balanced losses, all of it scaling from a single-shock RBC sandbox up to a 56-cohort OLG benchmark with two binding constraints.
+\textbf{What's next (optional, no lecture-script chapter).}  A hands-on workshop in which an LLM-driven coding agent (Claude Code, Cursor, Codex) acts as a pair programmer on a fresh DEQN model.
 
 \vspace{0.4em}
-\textbf{The agentic-programming lecture (workshop, no lecture script chapter).}  We turn the workflow on its head and treat the model file, the loss, and the diagnostics as artefacts that an LLM-driven coding agent can author, refactor, and debug in conversation.  Concretely, you will:
-\begin{itemize}\itemsep1pt
-    \item Use Claude Code / Cursor / Codex-style agents as pair programmers on a fresh DEQN model derived from the chapters of the discrete-time lectures.
-    \item Practice the loop \emphc{specification $\to$ scaffold $\to$ run $\to$ diagnose $\to$ refactor}, with the agent doing the typing and you driving the economics.
-    \item Connect the slide-deck $\to$ notebook $\to$ figure $\to$ commit pipeline that the manuscript itself was built with.
-\end{itemize}
-
-\vspace{0.4em}
-\textbf{Self-study extension (notebooks 10--12, deck 08).}  Heterogeneous agents on a histogram (Young's method), continuum-of-agents DEQN, and Krusell--Smith with deep learning.  These pieces sit \emph{above} the OLG content and can be revisited any time before the the PINN material.
+\textbf{Self-study extension (notebooks 10--12, deck 08).}  Heterogeneous agents on a histogram (Young's method), continuum-of-agents DEQN, and Krusell--Smith with deep learning -- visit any time before the PINN material.
 \end{frame}
 
 
