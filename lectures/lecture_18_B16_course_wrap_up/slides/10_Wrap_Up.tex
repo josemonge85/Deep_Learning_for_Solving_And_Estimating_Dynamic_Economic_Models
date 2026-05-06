@@ -77,7 +77,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Closing lecture: climate economics, deep UQ, and policy design}\\[4pt]
+{\footnotesize Closing lecture: synthesis, method choice, and outlook}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -144,6 +144,7 @@ but share the same core optimization logic.
 1 & Deep learning foundations and optimization diagnostics \\
 2--4 & DEQNs for discrete-time equilibrium (RA, IRBC, OLG, heterogeneity) \\
 5 & PINNs for continuous-time PDE problems \\
+6 & Heterogeneous agents, OLG, and Young's method (sequence space, Krusell--Smith) \\
 7 & Deep surrogates and GP/BAL for fast policy/estimation loops \\
 8 & Climate IAMs, deep UQ, constrained policy design \\
 \bottomrule
@@ -166,7 +167,7 @@ The toolkit is modular: solve, emulate, quantify uncertainty, then optimize poli
     arr/.style={-{Stealth[length=2.2mm]}, thick, uzhblue!80}
 ]
 \node[phasebox, fill=softblue!25]   (d1) at (0,0)    {DL basics};
-\node[phasebox, fill=softblue!25]   (d2) at (2.3,0)  {the discrete-time lectures\\DEQN solvers};
+\node[phasebox, fill=softblue!25]   (d2) at (2.3,0)  {Discrete-time\\DEQN solvers};
 \node[phasebox, fill=gray!20]       (d5) at (4.6,0)  {Agents};
 \node[phasebox, fill=softgreen!25]  (d6) at (6.9,0)  {PINNs, CT HA};
 \node[phasebox, fill=softorange!25] (d7) at (9.2,0)  {Surrogates, GP};
@@ -200,9 +201,57 @@ GP + BAL & UQ and active design & Built-in uncertainty and sample efficiency \\
 \end{center}
 \end{frame}
 
+% --- Slide 5b: Brock--Mirman through every lens (mirrors script Tbl 12.2) ---
+\begin{frame}{Brock--Mirman Through Every Lens}
+\scriptsize
+\begin{center}
+\begin{tabular}{p{0.13\textwidth}p{0.27\textwidth}p{0.30\textwidth}p{0.18\textwidth}}
+\toprule
+\textbf{Method} & \textbf{What is approximated} & \textbf{Loss / objective} & \textbf{Diagnostic} \\
+\midrule
+DEQN              & Savings share $s(K,z)\in(0,1)$              & Squared rel.\ Euler residual on simulated trajectory & $s\to\alpha\beta$ at $\delta=1$, log utility \\
+PINN              & Value function $\hat V(a)$, 1-D interval     & HJB residual $\rho V-\max_c[u(c)+V'(a)(ra-c)]$ & $\hat V$ matches CRRA closed form \\
+GP + BAL          & $\hat V(K)$ on BM ergodic set                & GP marginal likelihood; BAL picks next $K_*$ & 95\% pred.\ band covers true $V$ \\
+SMM + surrogate   & Policy $s(K,z,\varrho)$ pseudo-state on $\varrho$ & SMM moment objective in $\varrho$ & $\hat\varrho$ within MCSE of truth \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.15cm}
+\footnotesize
+One model, four lenses. The economic content is identical; the methodology determines what is approximated and what diagnostic certifies convergence.  Companion notebooks in L03/B02, L11/B09, L14/B12, L15/B13.
+\end{frame}
+
+% --- Slide 5c: When NOT to use deep learning (mirrors script Sec 12.6) ---
+\begin{frame}{When \emph{Not} to Use Deep Learning}
+\small
+\begin{itemize}
+    \item \textbf{State space is genuinely low-dimensional.}  $d\lesssim 5$ smooth-policy models: classical projection / VFI / perturbation usually win on accuracy and audit cost.
+    \item \textbf{Local linearity, local question.}  First/second-order responses around steady state: perturbation gives analytical IRFs in seconds (e.g.\ \emph{Dynare}).
+    \item \textbf{Likelihood-based inference + small model.}  Closed-form or quadrature likelihoods: full-information ML / Bayesian particle filtering dominate any simulation-based route.
+    \item \textbf{Small $n$ + uncertainty is the answer.}  $n\lesssim 10^3$ design points: GPs with active learning beat deep nets of comparable complexity.
+    \item \textbf{Reproducibility / audit-ability is paramount.}  Heterogeneous BLAS / GPU non-determinism makes deep-learning solutions hard to pin to the bit; deterministic FD has fewer moving parts.
+    \item \textbf{Training instability is a model-misspecification signal.}  A divergent DEQN run is usually a bad loss / missing constraint, not a missing layer.
+\end{itemize}
+\end{frame}
+
+% --- Slide 5d: Open frontiers (mirrors script Sec 12.5) ---
+\begin{frame}{Open Frontiers}
+\small
+\begin{itemize}
+    \item \textbf{Convergence theory.}  Rates as a function of width, depth, and training budget.
+    \item \textbf{Hybrid global/local.}  GPs near kinks/boundary layers + DNNs for global approximation.
+    \item \textbf{Real-time policy analysis.}  Substantial speedups of full DSGE counterfactuals; carbon-tax surrogates (K\"ubler--Scheidegger--Surbek 2025).
+    \item \textbf{Estimation of rich structural models.}  DEQN/PINN $+$ surrogate-based estimation pipelines (Friedl et al.\ 2023; Chen--Didisheim--Scheidegger 2026; Kase et al.\ 2022).
+    \item \textbf{Climate--economy IAMs.}  Tipping points, regional heterogeneity, multiple risks (Fern\'andez-Villaverde--Gillingham--Scheidegger 2025).
+    \item \textbf{Heterogeneous-agent models with aggregate shocks.}  DeepHAM (Han--Yang--E 2024); DeepSAM (Payne--Rebei--Yang 2025); structural-RL price-only state (Yang--Wang--Schaab--Moll 2025).
+    \item \textbf{Operator learning.}  DeepONet (Lu et al.\ 2021), Fourier Neural Operator (Li et al.\ 2021): learn the solver, amortise across model instances.
+\end{itemize}
+\end{frame}
+
 % --- Climate UQ contributions ---
 \begin{frame}{Climate UQ in One Slide}
-\textbf{Climate UQ in context.}  Pseudo-states let one trained DEQN answer policy questions for \emph{all} plausible parameter values simultaneously.  A GP surrogate on top enables fast computation of SCC, temperature paths, and welfare across the parameter space.  Bayesian active learning then identifies which parameters drive policy recommendations, for example, climate sensitivity matters more than the pure rate of time preference for carbon-tax design.
+\textbf{Climate UQ in context.}  Pseudo-states let one trained DEQN answer policy questions for \emph{all} plausible parameter values simultaneously.  A GP surrogate on top enables fast computation of SCC, temperature paths, and welfare across the parameter space.  Bayesian active learning then identifies which parameters drive policy recommendations: in the calibrations of Friedl et al.\ (2023), climate sensitivity is among the most important parameters for carbon-tax design (more so than the pure rate of time preference).
 
 \vspace{0.25cm}
 \begin{exampleblock}{The payoff}
@@ -215,7 +264,7 @@ Constrained Pareto-improving tax rules become feasible once the expensive solves
 \small
 \begin{columns}[T]
 \column{0.49\textwidth}
-\textbf{Failure modes}
+\textbf{Deployment-time failure modes}
 \begin{itemize}
     \item Calibration mismatch to benchmark science
     \item Training focused on wrong state regions
@@ -232,6 +281,10 @@ Constrained Pareto-improving tax rules become feasible once the expensive solves
     \item Active learning and uncertainty-aware evaluation
 \end{itemize}
 \end{columns}
+
+\vspace{0.15cm}
+\footnotesize
+Script Tbl.~12.3 lists the complementary \emph{training-time} failure modes (loss declines but solution wrong; policy collapse; NaN; large boundary Euler errors; GP variance too large).
 \end{frame}
 
 % --- Slide 7b: Risk-priority matrix ---
