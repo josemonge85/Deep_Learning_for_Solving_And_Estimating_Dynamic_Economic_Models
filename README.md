@@ -11,7 +11,7 @@ runnable, and self-contained.*
 <p align="center">
   <a href="COURSE_MAP.md"><img alt="18 lectures" src="https://img.shields.io/badge/lectures-18-1f4e79?style=for-the-badge"></a>
   <a href="lectures/"><img alt="Runnable notebooks" src="https://img.shields.io/badge/notebooks-runnable-1f4e79?style=for-the-badge"></a>
-  <a href="lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf"><img alt="Companion script" src="https://img.shields.io/badge/script-284%20pages-1f4e79?style=for-the-badge"></a>
+  <a href="lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf"><img alt="Companion script" src="https://img.shields.io/badge/companion%20script-PDF-1f4e79?style=for-the-badge"></a>
   <br/>
   <a href="lectures/lecture_06_B17_agentic_programming/"><img alt="AI-coding workshop" src="https://img.shields.io/badge/AI%20coding-workshop-1f4e79?style=for-the-badge"></a>
   <a href="#syllabus"><img alt="Exercises with solutions" src="https://img.shields.io/badge/exercises-with%20solutions-1f4e79?style=for-the-badge"></a>

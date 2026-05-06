@@ -42,7 +42,7 @@ _(none)_
 - [`code/python_basics_5_conditionals.ipynb`](code/python_basics_5_conditionals.ipynb)
 - [`code/python_basics_6_loops.ipynb`](code/python_basics_6_loops.ipynb)
 - [`code/python_basics_7_functions.ipynb`](code/python_basics_7_functions.ipynb)
-- [`code/python_basics_8_Classes.ipynb`](code/python_basics_8_Classes.ipynb)
+- [`code/python_basics_8_classes.ipynb`](code/python_basics_8_classes.ipynb)
 - [`code/python_basics_9_numpy_linalg.ipynb`](code/python_basics_9_numpy_linalg.ipynb)
 - [`code/temp_price.csv`](code/temp_price.csv)
 
