@@ -523,7 +523,7 @@ unimportant axis; random search samples the important axis more densely.}
 \end{enumerate}
 \end{block}
 
-\textbf{Hyperband} = SHA with multiple brackets (different $n/b$ trade-offs).  The usual default is $\eta=3$.
+\textbf{Hyperband} = SHA with several brackets (different $n/b$ trade-offs), each bracket itself being a stage cascade like $9 \to 3 \to 1$ above.  The usual default is $\eta=3$.
 
 \textbf{Resource use:} many cheap trials; full budgets only for survivors.
 
@@ -598,6 +598,9 @@ unimportant axis; random search samples the important axis more densely.}
 \vspace{0.1cm}
 $9 \to 3 \to 1$ (factor $\eta=3$): total cost $= 9 \times 10 + 3 \times 30 + 1 \times 90
 = \emphc{270}$ epoch-equivalents (vs.\ $9 \times 90 = 810$ for full training).
+
+\vspace{0.05cm}
+{\scriptsize \textbf{Bracket vs.\ schedule.}  This $9 \to 3 \to 1$ cascade is one SHA bracket.  Hyperband itself runs several brackets in parallel, each with a different starting $(n, b)$ trade-off, hedging across the unknown correlation between early- and late-training performance.}
 \end{frame}
 
 % --- Slide 13: Method Comparison ---
