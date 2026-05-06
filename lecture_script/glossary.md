@@ -25,7 +25,9 @@ Replaces the linear projection $U_m^\top x$ by a learned nonlinear
 encoder $h : \mathbb{R}^D \to \mathbb{R}^d$, trained jointly with an
 MLP link $g : \mathbb{R}^d \to \mathbb{R}$ so that $\hat f(\xi) = g(h(\xi))$;
 gradient-free, with $d$ chosen by a validation-MSE elbow instead of a
-spectral gap (Section 9.7.1; Tripathy and Bilionis, 2018).
+spectral gap (subsection "Nonlinear Generalization: Deep Active
+Subspaces" inside Chapter 9 §"Scaling GPs to High Dimensions: Active
+Subspaces"; Tripathy and Bilionis, 2018).
 
 **Adam, AdamW.**
 Adaptive stochastic-gradient optimizers using momentum on the gradient
@@ -108,9 +110,11 @@ Operator-learning architecture parameterizing a kernel integral operator
 in Fourier space; cheap and resolution-invariant (Li et al., 2021).
 
 **Functional derivative.**
-$\delta V / \delta g$, the kernel of the Fr\'echet derivative of $V$
-with respect to a function-valued argument $g$; appears in the master
-equation (Chapter 8).
+$\delta V / \delta g$, the density / Riesz representer of the Fr\'echet
+derivative of $V$ with respect to a function-valued argument $g$
+(equivalently, the directional derivative of $V$ at $g$ in the
+direction of a Dirac perturbation $\delta_{y_0}$); appears in the
+master equation (Chapter 8).
 
 **Gauss-Hermite quadrature.**
 Polynomial quadrature rule for integrals against the standard normal
