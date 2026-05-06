@@ -5638,13 +5638,16 @@ In practice, PINN training often fails for optimization reasons rather than appr
 Large boundary violations & Soft BC penalties underweighted or unstable & Prefer hard BC trial solutions when possible; otherwise use adaptive loss balancing (e.g., ReLoBRaLo). \\
 Good BC fit, poor interior PDE fit & Boundary penalties overweighted & Decrease BC weights or rebalance losses dynamically. \\
 Residual spikes in narrow regions & Collocation undercoverage (boundary layers / kinks) & Use residual-based adaptive resampling, Sobol/LHS points, and local point refinement. \\
-Slow or stalled optimization & Gradient imbalance across loss terms & Normalize loss components and monitor per-term gradients; use adaptive balancing schemes \citep{wang2021understanding, bischof2025relobralo}. \\
+Slow or stalled optimization & Gradient imbalance across loss terms; or initialization in a basin disconnected from the true solution & Normalize loss components and monitor per-term gradients; use adaptive balancing schemes \citep{wang2021understanding, bischof2025relobralo}; restart with different seeds or warm-start from a coarser solver if the loss plateaus far from any plausible solution. \\
+Optimizer stuck on a symmetric / structureless ansatz & Initialization too symmetric to represent an asymmetric solution; gradient updates preserve the symmetry & Break the symmetry explicitly: asymmetric weight initialization, an auxiliary symmetry-breaking input feature, or a short pre-training pass that nudges the ansatz toward the correct shape. \\
 Oscillatory solution near payoff kink & Spectral bias and non-smooth target geometry & Increase sampling density near kink and split domain if needed; use problem-specific transforms. \\
 \bottomrule
 \end{tabular}
 \caption{Common PINN failure modes and practical remedies.  The main implementation lesson is to monitor loss components separately: a small total loss can hide boundary violations, interior residual spikes, or gradient imbalance across terms.}
 \label{tab:pinn_failure_modes}
 \end{table}
+
+The penultimate row above is folklore in computational quantum chemistry, where solvers routinely ship dedicated symmetry-breaking modules because a symmetric initial guess is preserved exactly under gradient training; the analogous trap shows up in PINNs whenever the true solution lacks a symmetry that the architecture happens to enforce.
 
 For the course applications, a robust default stack is: smooth activation ($\tanh$ or Swish), hard BCs when analytically available, adaptive loss balancing, and adaptive collocation near high-residual regions.
 
@@ -5731,6 +5734,11 @@ Now expand both the discount factor and the value function to first order in $\D
 e^{-\rho\,\Delta t} &\approx 1 - \rho\,\Delta t, \label{eq:cake_expand_disc} \\
 V\!\bigl(a + (ra - c)\,\Delta t\bigr) &\approx V(a) + V'(a)\,(ra - c)\,\Delta t. \label{eq:cake_expand_V}
 \end{align}
+
+\begin{remarkbox}[Where the upwind scheme comes from]
+The expansion~\eqref{eq:cake_expand_V} silently assumes that $V$ is differentiable at $a$.  When $V$ has a kink, a common feature of HJB solutions, e.g.\ at borrowing constraints or policy-switching points, the expansion still holds, but $V'(a)$ must be replaced by the appropriate \emph{one-sided} derivative chosen by the sign of the drift $(ra-c)$.  This is exactly the origin of the upwind scheme used in finite-difference HJB solvers: the side of the derivative is selected to follow information flow.  PINNs that minimize the strong-form residual implicitly demand two-sided differentiability and therefore tend to over-smooth genuine kinks, one of the mechanisms behind the oscillatory failure mode in Table~\ref{tab:pinn_failure_modes}.
+\end{remarkbox}
+
 Substituting~\eqref{eq:cake_expand_disc} and~\eqref{eq:cake_expand_V} into~\eqref{eq:cake_bellman_dt}:
 \begin{equation}
 V(a) = \max_c \left\{\frac{c^{1-\gamma}}{1-\gamma}\,\Delta t + (1 - \rho\,\Delta t)\Bigl[V(a) + V'(a)(ra-c)\,\Delta t\Bigr]\right\} + \mathcal{O}(\Delta t^2).
@@ -5850,6 +5858,14 @@ s(a_{\min}, z)\, g(a_{\min}, z) = 0 \quad \text{for each } z.
 \end{equation}
 Similarly, at the upper boundary $a_{\max}$ (chosen large enough that it does not bind in equilibrium), we impose zero flux.
 
+\paragraph{Aggregate flux conservation.}
+Summing the stationary KFE~\eqref{eq:kfp_hank} across $z$ states gives, at each $a$ in the interior, the conservation law
+\begin{equation}
+\sum_{z}\, s(a,z)\, g(a,z) \;=\; 0 \qquad \text{for all } a \in (a_{\min}, a_{\max}),
+\label{eq:kfp_total_flux}
+\end{equation}
+since the income-process generator preserves total mass within each $a$-slice and the no-flux boundary~\eqref{eq:kfp_noflux} fixes the integration constant at zero.  This identity is a free consistency check at solution time, and is sometimes added as an auxiliary loss term during training.
+
 \paragraph{Mass normalization.}
 The total mass of agents across all income states equals one:
 \begin{equation}
@@ -5890,6 +5906,10 @@ The joint loss has four components:
 where $\ell_{\mathrm{HJB}}$ and $\ell_{\mathrm{KFE}}$ are mean squared PDE residuals computed on collocation points, $\ell_{\mathrm{flux}}$ enforces the no-flux boundary conditions~\eqref{eq:kfp_noflux}, and the mass term enforces normalization~\eqref{eq:kfp_mass}.  The integral is evaluated numerically (quadrature or Monte Carlo on the collocation points).
 
 Balancing the four loss components is critical: the HJB and KFE residuals can differ by orders of magnitude, so adaptive loss balancing (ReLoBRaLo, Chapter~\ref{ch:nas}) is strongly recommended.  Practical considerations include using separate learning rate schedules for the two networks, concentrating collocation points near the borrowing constraint where the density can become sharply peaked, and verifying that the consumption policy $c^\star$ from~\eqref{eq:ct_foc} satisfies $c^\star > 0$ everywhere.  If the true stationary distribution contains an atom at the borrowing constraint, a continuous density network alone cannot represent it; one must add a separate boundary-mass variable or use a discretization that permits point mass.
+
+\begin{remarkbox}[Why a Fourier basis is a poor test-function set]
+A natural-looking alternative to pointwise (collocation) residuals is to project the KFE residual onto a set of test functions $\{\psi_n\}$ and minimize the resulting projection coefficients.  The pitfall is that for the obvious choice of a Fourier basis, $\psi_n(a) = e^{i 2\pi n a / L}$, the coefficients $c_n$ of any smooth $g$ decay to zero by the Riemann--Lebesgue lemma; the smoother $g$ is, and the more it vanishes near the boundary, the faster the decay.  In practice, beyond $n \approx 5$ the $c_n$ are essentially zero \emph{regardless} of how well the residual is solved: they no longer measure error, they only measure smoothness.  Hat functions, low-order polynomials on local patches, or learned neural test functions (the WAN, or weak-adversarial-networks, idea) probe the residual far more honestly.
+\end{remarkbox}
 
 \subsection{Connection to Discrete-Time Methods}
 \label{sec:ct_comparison}
@@ -6153,7 +6173,7 @@ The \emph{Kolmogorov forward equation} (KFE), also known as the \emph{Fokker--Pl
 
 Consider a population of particles, each independently following $dX_t = \mu\,dt + \sigma\,dB_t$ with constant coefficients.  If the initial density is $g_0(x)$, what is the density $g(x,t)$ at time $t > 0$?
 
-The derivation proceeds in four steps.  (i) For any smooth test function $\varphi(x)$, $\E{\varphi(X_t)} = \int \varphi(x)\,g(x,t)\,dx$.  (ii) Differentiate with respect to $t$ and apply It\^o's lemma: $\tfrac{d}{dt}\int \varphi\,g\,dx = \int [\mu\,\varphi' + \tfrac{\sigma^2}{2}\varphi'']\,g\,dx$.  (iii) Integrate by parts (assuming $g \to 0$ at $\pm\infty$): $\int \mu\,\varphi'\,g\,dx = -\int \varphi\,\mu\,\partial_x g\,dx$ and $\int \tfrac{\sigma^2}{2}\varphi''\,g\,dx = \int \varphi\,\tfrac{\sigma^2}{2}\partial_{xx}g\,dx$.  (iv) Since the identity holds for all test functions $\varphi$, we obtain:
+The derivation proceeds in four steps.  (i) For any smooth test function $\varphi(x)$, $\E{\varphi(X_t)} = \int \varphi(x)\,g(x,t)\,dx$.  (ii) Differentiate with respect to $t$ and apply It\^o's lemma: $\tfrac{d}{dt}\int \varphi\,g\,dx = \int [\mu\,\varphi' + \tfrac{\sigma^2}{2}\varphi'']\,g\,dx$.  (iii) Integrate by parts.  Take $\varphi$ to be \emph{compactly supported}: this kills the boundary terms cleanly and costs nothing here, since the identity must hold for every such $\varphi$.  We obtain $\int \mu\,\varphi'\,g\,dx = -\int \varphi\,\mu\,\partial_x g\,dx$ and $\int \tfrac{\sigma^2}{2}\varphi''\,g\,dx = \int \varphi\,\tfrac{\sigma^2}{2}\partial_{xx}g\,dx$.  (The natural-looking assumption $g \to 0$ at $\pm\infty$ is automatic for any continuous density, but it is not by itself enough: what is needed is that the product $g\,\varphi$ vanishes at infinity, which compact support of $\varphi$ delivers for free.  Spatial boundaries, e.g.\ a borrowing constraint, require separate treatment in the next subsection.)  (iv) Since the identity holds for all test functions $\varphi$, we obtain:
 
 \begin{equation}
 \boxed{\frac{\partial g}{\partial t}(x,t) = -\mu\frac{\partial g}{\partial x}(x,t) + \frac{\sigma^2}{2}\frac{\partial^2 g}{\partial x^2}(x,t).}
@@ -6174,6 +6194,8 @@ where $J = \mu g - \tfrac{1}{2}\partial_x(\sigma^2 g)$ is the probability flux. 
 \paragraph{Heat equation.}  With $\mu = 0$ and constant $\sigma$, the KFE reduces to $\partial_t g = \tfrac{\sigma^2}{2}\partial_{xx}g$, the classical heat equation.  Starting from a point mass $g(x,0) = \delta(x-x_0)$, the solution is a Gaussian with variance growing linearly: $g(x,t) = (2\pi\sigma^2 t)^{-1/2}\exp[-(x-x_0)^2/(2\sigma^2 t)]$.
 
 \paragraph{Ornstein--Uhlenbeck process.}  For $dX_t = \eta(\bar{x} - X_t)\,dt + \sigma\,dB_t$, the KFE is $\partial_t g = \eta\,\partial_x[(x - \bar{x})\,g] + \tfrac{\sigma^2}{2}\partial_{xx}g$.  Setting $\partial_t g = 0$ yields the stationary distribution $g^*(x) = \mathcal{N}(\bar{x}, \sigma^2/(2\eta))$: mean reversion concentrates mass around $\bar{x}$, while diffusion spreads it, and the balance produces a Gaussian steady state.
+
+\paragraph{Reading the SDE qualitatively.}  It is worth pausing to read the drift sign by eye, because students are often trained to compute with differential equations but rarely to look at them.  When $X_t < \bar{x}$, the drift $\eta(\bar{x} - X_t)$ is positive and pushes $X_t$ upward; when $X_t > \bar{x}$, the drift is negative and pushes $X_t$ downward, hence the name \emph{mean-reverting}.  Flipping the sign ($\eta < 0$) gives a \emph{mean-repelling}, unstable process that drifts away from $\bar{x}$ without bound.  Closely related cubic SDEs make the same point sharply.  The process $dX_t = -X_t^3\,dt + \sigma\,dB_t$ uses the cubic well as a restoring force and is well-posed with a stationary distribution, while $dX_t = +X_t^3\,dt + \sigma\,dB_t$ blows up in finite time, and a naive Euler discretization produces \texttt{NaN}s almost immediately.  Throughout this chapter the same qualitative reading is what carries intuition over from SDEs to KFEs and HJBs.
 
 \subsection{From Physics to Economics: A Continuum of Agents}
 
@@ -6431,12 +6453,12 @@ The master equation subsumes the HJB, KFE, and market clearing into a \emph{sing
 \end{keyinsightbox}
 
 \begin{remarkbox}[A user's note on the functional derivative $\delta W/\delta g$]
-The objects $\delta V/\delta g$ and $\delta W/\delta g$ deserve a moment of attention because they are the only piece of mathematics in this chapter that is not standard PDE calculus.  $V$ takes \emph{a function} (the density $g$) as one of its arguments; differentiating $V$ with respect to $g$ therefore returns not a number but again a function.  Concretely, if $g_\varepsilon = g + \varepsilon\,\zeta$ for some test perturbation $\zeta(y)$ with $\int \zeta\, dy = 0$, then
+The objects $\delta V/\delta g$ and $\delta W/\delta g$ deserve a moment of attention because they are the only piece of mathematics in this chapter that is not standard PDE calculus.  $V$ takes \emph{a function} (the density $g$) as one of its arguments; differentiating $V$ with respect to $g$ therefore returns not a number but again a function.  (Strictly speaking, the Fr\'echet derivative is the linear functional $\zeta \mapsto \int (\delta V/\delta g)\,\zeta\,dy$ itself, and the kernel $\delta V/\delta g$ is what is properly called the \emph{functional} or \emph{variational} derivative.  We follow common usage and call the kernel the Fr\'echet derivative below.)  Concretely, if $g_\varepsilon = g + \varepsilon\,\zeta$ for some test perturbation $\zeta(y)$ with $\int \zeta\, dy = 0$, then
 \[
   \frac{d}{d\varepsilon}\, V(\cdot, g_\varepsilon)\Big|_{\varepsilon=0}
   \;=\; \int \frac{\delta V}{\delta g}(y)\,\zeta(y)\,dy.
 \]
-The kernel $\delta V/\delta g$ is the \emph{Fr\'echet} (or \emph{linear functional}) derivative of $V$ in the $g$-argument; it measures how the value of an agent at a given $(a,n,z)$ responds to an infinitesimal redistribution of mass at point $y$ in the cross-section.  The infinite-dimensionality of the master equation is the price of this extra argument; the EMINN approach in the next section makes it tractable by replacing $g$ with a finite-dimensional surrogate $\hat\varphi$ and then differentiating through $\hat\varphi$ via the chain rule and standard automatic differentiation.  For the underlying mean-field-games calculus see \citet{cardaliaguet2019master}.
+The kernel $\delta V/\delta g$ is the \emph{Fr\'echet} (or \emph{linear functional}) derivative of $V$ in the $g$-argument; it measures how the value of an agent at a given $(a,n,z)$ responds to an infinitesimal redistribution of mass at point $y$ in the cross-section.  In the master-equation literature this object is more precisely the \emph{Lions derivative} $\partial_\mu V$ with respect to the mean-field measure $\mu$; when $\mu$ admits a density $g$ it reduces to the functional derivative used here.  The infinite-dimensionality of the master equation is the price of this extra argument; the EMINN approach in the next section makes it tractable by replacing $g$ with a finite-dimensional surrogate $\hat\varphi$ and then differentiating through $\hat\varphi$ via the chain rule and standard automatic differentiation.  For the underlying mean-field-games calculus see \citet{cardaliaguet2019master}.
 \end{remarkbox}
 
 \section{EMINNs: Solving the Master Equation with Deep Learning}
@@ -6444,7 +6466,7 @@ The kernel $\delta V/\delta g$ is the \emph{Fr\'echet} (or \emph{linear function
 
 Economic Model Informed Neural Networks (EMINNs), introduced by \citet{gu2024masterequations}, solve the master equation by (i) approximating the infinite-dimensional distribution $g$ by a finite-dimensional object $\hat{\varphi}$, and (ii) parameterizing $W$ by a neural network trained to minimize the master equation residual.  A teaching-scale companion notebook for EMINNs is forthcoming; in the present edition, the master-equation discussion is text-only and the Aiyagari notebook (\tpath{08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb}) is the closest computational reference.
 
-\subsection{Three Approximation Approaches for the Distribution}
+\subsection{Three Approximation Approaches for the Distribution}\label{subsec:three_approx}
 
 The infinite-dimensional distribution $g$ must be replaced by a finite-dimensional approximation $\hat{\varphi} \in \R^d$ so that $V(a,n,z,g) \approx \hat{V}(a,n,z,\hat{\varphi})$.  Table~\ref{tab:eminn_distribution_approximations} summarizes the three approaches used in \citet{gu2024masterequations}.
 
@@ -6497,6 +6519,14 @@ The master equation residual decomposes as:
 0 = (r(z,\hat{\varphi}) - \rho)\,\hat{W} + \hat{\mathcal{L}}_x\hat{W} + \hat{\mathcal{L}}_z\hat{W} + \hat{\mathcal{L}}_g\hat{W},
 \end{equation}
 where $\hat{\mathcal{L}}_x\hat{W} = s(\cdot)\partial_a\hat{W} + \lambda(n)(\hat{W}(\hat{n}) - \hat{W}(n))$ captures savings and income switching, $\hat{\mathcal{L}}_z\hat{W} = \partial_z\hat{W}\cdot\mu^z + \frac{1}{2}(\sigma^z)^2\partial_{zz}\hat{W}$ captures the OU aggregate shock, and $\hat{\mathcal{L}}_g\hat{W} = \sum_n (\partial\hat{W}/\partial\hat{\varphi}_n)\cdot\mu_{\hat{\varphi},n}$ captures distribution evolution.
+
+\paragraph{Computing the drift coefficients $\mu_{\hat{\varphi},n}$.}  The coefficients $\mu_{\hat{\varphi},n}$ describing how the finite-dimensional approximation $\hat{\varphi}$ of the cross-sectional density evolves in time are not given for free.  Recovering them is a genuine algorithmic step, and it is the place where the three approximation choices in Section~\ref{subsec:three_approx} differ most sharply:
+\begin{itemize}[itemsep=2pt]
+\item \textbf{Finite-population approximation.}  $\hat{\varphi}$ is the empirical measure of a finite particle system, so $\mu_{\hat{\varphi},n}$ is the SDE drift of particle~$n$, available in closed form from the underlying individual problem.
+\item \textbf{Discrete-state (grid) approximation.}  $\hat{\varphi}_{i,j}$ is the mass at $(a_i, n_j)$; the discretized KFE evaluated at that node returns $\mu_{\hat{\varphi},(i,j)}$ directly.  This is also where an upwind scheme reappears (see the remark after \eqref{eq:cake_expand_V}): the side of $\partial_a$ used in the discretization is selected by the sign of the drift $s$.
+\item \textbf{Projection / basis expansion.}  $\hat{\varphi}(a) = \sum_n c_n \psi_n(a)$.  The KFE returns $\partial_t g$ as a function of $a$; one then recovers $\mu_{\hat{\varphi},n} = \dot c_n$ by least-squares projection of $\partial_t g$ onto $\{\psi_n\}$.  This is the only step of EMINN that genuinely depends on the choice of approximation, and it is where most of the practical art lives.
+\end{itemize}
+Concretely, between the forward pass and the residual evaluation in Algorithm~\ref{alg:eminn}, an additional sub-step computes $\mu_{\hat{\varphi},n}$ for the current $\hat{\varphi}$; the chain rule through $\hat{\varphi}$ then propagates these coefficients into $\hat{\mathcal{L}}_g\hat{W}$.
 
 \subsection{Shape Constraints and Training Stability}
 
