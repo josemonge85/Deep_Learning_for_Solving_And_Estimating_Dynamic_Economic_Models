@@ -800,7 +800,7 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \end{itemize}
 
 \vspace{0.2em}
-{\small This is exactly what PINNs solve (Day~5)!}
+{\small This is exactly what PINNs solve (Chapter~7).}
 \end{columns}
 \end{frame}
 
@@ -906,6 +906,23 @@ Boundary atoms can form at $\ubar a$ when constrained agents pile up.
 \end{tikzpicture}
 \end{center}
 \end{columns}
+\end{frame}
+
+% --- Slide: Boundary Atom Decomposition ---
+\begin{frame}{Boundary Atoms: Decomposition of $g$}
+\small
+When the borrowing constraint binds on a positive mass of agents, the stationary measure is \emphc{not absolutely continuous} with respect to Lebesgue measure: it carries a Dirac atom at $a=\ubar a$.
+\[
+   \boxed{\,g(a,n) \;=\; \underbrace{g_{\mathrm{ac}}(a,n)}_{\text{interior density}} \;+\; \underbrace{\alpha(n)\,\delta(a-\ubar a)}_{\text{constrained mass}}\,}
+\]
+\begin{itemize}\itemsep2pt
+    \item $g_{\mathrm{ac}}(a,n)$ is the absolutely-continuous interior density.
+    \item $\alpha(n)\geq 0$ is the constrained mass for income state $n$.
+    \item The KFE introduced above governs only the interior part $g_{\mathrm{ac}}$; the atomic mass $\alpha(n)$ is determined by a \emph{separate flux-balance equation} that equates inflows from the no-flux boundary condition with the income-driven outflow back into the interior.
+\end{itemize}
+
+\vspace{0.2em}
+{\footnotesize\textbf{Implementation.} Finite-difference solvers represent $\alpha(n)$ as the mass in the first grid cell.  PINN solvers either absorb the atom implicitly into a smooth density approximation (with corresponding accuracy loss near $\ubar a$) or explicitly parameterize $\alpha(n)$ alongside the interior network.}
 \end{frame}
 
 % --- Slide: From Physics to Economics ---
@@ -1333,6 +1350,8 @@ s(a,n) = wn + ra - c^*(a,n)
     \item High-income agents: positive savings $\Rightarrow$ accumulate wealth
     \item \emphc{Precautionary savings}: more saving than in the certainty benchmark
 \end{itemize}
+\vspace{0.1em}
+{\scriptsize\emph{Schematic.}  The actual policy from NB~06 has a kink at the borrowing constraint where $c=wn+r\,\ubar a$ and $s(\ubar a, n)=0$ for the constrained type; see the ``Handling the Borrowing Constraint'' slide in the numerics deck.}
 \end{frame}
 
 % --- Slide: HJB with Aggregate Shocks ---

@@ -1317,7 +1317,7 @@ Advantages:
 \begin{itemize}\itemsep0pt
     \item Exact BC satisfaction
     \item No tuning of $\kappa$
-    \item Recall Day~5, Notebook~02
+    \item Recall Chapter~7 (PINNs), Notebook~02
 \end{itemize}
 \end{block}
 \end{columns}
@@ -1388,6 +1388,9 @@ Use the \emphc{soft borrowing constraint} $\psi(a)$. The inequality BC causes te
 
 \vspace{0.1em}
 {\footnotesize The PINN correctly captures these qualitative differences. Same code architecture, different market clearing conditions.}
+
+\vspace{0.05em}
+{\scriptsize\emph{Schematic.}  Curves are illustrative; actual PINN outputs from NB~08 are slightly noisier near the borrowing limit and in the right tail.}
 \end{frame}
 
 % --- Slide: Why PINNs over FD ---
@@ -1518,7 +1521,7 @@ Replace continuum by $N$ agents with states $\hat{\varphi}_t = \{(a_t^1, l_t^1),
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.7\textwidth}{\centering\small
 This is much smaller than discrete-time simulation methods\\
-(e.g., Young's method from Day~4 used $\sim 10{,}000$ agents).\\
+(e.g., Young's method from Chapter~6 used $\sim 10{,}000$ agents).\\
 Continuous-time formulation helps!}}
 \end{center}
 \end{frame}
@@ -1938,6 +1941,9 @@ Discrete State NN & $9.3 \times 10^{-6}$ & $6.6 \times 10^{-5}$ \\
 
 \vspace{0.1em}
 {\small NN and FD are very close across all three panels.}
+
+\vspace{0.05em}
+{\scriptsize\emph{Schematic.}  Curves are illustrative; for the actual NB~08 outputs (with PINN jitter visible near $\ubar a$ and in the right tail) run the notebook end to end.}
 \end{frame}
 
 % --- Slide: Krusell-Smith Results ---
@@ -2052,6 +2058,9 @@ All three approaches achieve reported training losses around $10^{-5}$.
 
 \vspace{0.1em}
 {\small All three NN approaches produce \emphc{nearly identical} time paths for aggregate variables.}
+
+\vspace{0.05em}
+{\scriptsize\emph{Schematic.}  Curves are illustrative impulse responses, not exports from a trained EMINN run; for the actual reported numerics see Gu, Lauri\`ere, Merkel \& Payne (2024), Fig.~5--7.}
 \end{frame}
 
 % --- Slide: Method Comparison ---
@@ -2202,7 +2211,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 \begin{block}{PINN (Coupled PDEs)}
 \centering\small
 \vspace{0.1em}
-\emphc{Mesh-free} solution of HJB + KFE via auto-diff. Same philosophy as Day~5.
+\emphc{Mesh-free} solution of HJB + KFE via auto-diff. Same philosophy as Chapter~7.
 \vspace{0.1em}
 \end{block}
 
@@ -2228,7 +2237,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 
 \vspace{0.1em}
 \begin{center}
-\textbf{Tomorrow}: Surrogate models \& Gaussian Processes (Day~7).
+\textbf{Next chapter}: Surrogate models \& Gaussian Processes (Chapter~9).
 \end{center}
 \end{frame}
 
@@ -2240,6 +2249,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
     \item \textbf{NB 06} \textit{(self-study)}: \texttt{06\_PE\_Discrete\_HJB\_PINN.ipynb} --- 1D PE with discrete income: upwind FD + PINN
     \item \textbf{NB 07} \textit{(self-study)}: \texttt{07\_PE\_Diffusion\_HJB\_PINN.ipynb} --- 2D PE with OU earnings: 2D FD + PINN
     \item \textbf{NB 08} \textit{(in-class)}: \texttt{08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb} --- full GE Aiyagari: HJB + KFE + market clearing
+    \item \textbf{NB 09} \textit{(homework warm-up)}: \texttt{09\_PINN\_Exercise.ipynb} --- toy 1D ODE $u''+u=0$ on $[0,\pi]$ with hard zero BCs; a low-stakes PINN scaffold before tackling the HJB exercises in NB~08
 \end{itemize}
 
 \vspace{0.2em}
