@@ -223,9 +223,8 @@ Treat model parameters $\theta$ as \emphc{extra state variables}:
 \vspace{-2pt}
 \[
 \tilde{\x} = \bigl(\underbrace{s_1,\dots,s_n}_{\text{states}},\;
-\underbrace{h_1,\dots,h_h}_{\text{hidden}},\;
 \underbrace{\theta_1,\dots,\theta_p}_{\text{parameters}}\bigr)
-\in \R^{d}, \quad d = n + h + p.
+\in \R^{d}, \quad d = n + p.
 \]
 \vspace{-6pt}
 \end{block}
@@ -239,17 +238,15 @@ Treat model parameters $\theta$ as \emphc{extra state variables}:
     >=Stealth
 ]
 \node[mlstep] (states) {States $s$};
-\node[mlstep, below=0.2cm of states] (hidden) {Hidden $h$};
-\node[mlstep, below=0.2cm of hidden, fill=softorange!30] (params) {Params $\theta$};
+\node[mlstep, below=0.4cm of states, fill=softorange!30] (params) {Params $\theta$};
 
-\node[mlstep, right=1.8cm of hidden, fill=softblue!30,
-      minimum width=2.2cm, minimum height=2.2cm] (surr) {\large Surrogate $\phi$};
+\node[mlstep, right=2.2cm of states, yshift=-0.5cm, fill=softblue!30,
+      minimum width=2.2cm, minimum height=1.6cm] (surr) {\large Surrogate $\phi$};
 
 \node[mlstep, right=1.8cm of surr] (output) {$y = \phi(\tilde{\x}|\theta_{NN})$};
 
-\draw[->, thick] (states.east) -- ++(0.4,0) |- ([yshift=0.35cm]surr.west);
-\draw[->, thick] (hidden.east) -- (surr.west);
-\draw[->, thick] (params.east) -- ++(0.4,0) |- ([yshift=-0.35cm]surr.west);
+\draw[->, thick] (states.east) -- ++(0.4,0) |- ([yshift=0.25cm]surr.west);
+\draw[->, thick] (params.east) -- ++(0.4,0) |- ([yshift=-0.25cm]surr.west);
 \draw[->, thick] (surr) -- (output);
 \end{tikzpicture}
 \end{center}
@@ -273,7 +270,7 @@ Solve the model \emphc{once} over the full augmented space $\Rightarrow$ instant
 
 \vspace{0.4cm}
 \begin{block}{Remark}
-Since we can generate \emph{unlimited} data from the true model, the training set can be made as large as needed $\Rightarrow$ \emphc{no overfitting risk} in the traditional sense.
+Since we can generate \emph{unlimited} data from the true model, classical overfitting from data scarcity is not the binding constraint. The binding errors come from \emphc{approximation} (network capacity vs.\ true regularity of $f$) and from \emphc{label noise} when $f$ is itself an approximate inner solver (Euler residuals, Monte Carlo simulation).
 \end{block}
 \end{frame}
 
@@ -303,7 +300,7 @@ Since we can generate \emph{unlimited} data from the true model, the training se
 \vspace{0.5cm}
 \begin{block}{Once trained}
 \begin{itemize}
-  \item \emphc{Highly accurate} (errors $< 10^{-4}$ relative)
+  \item \emphc{Accurate enough for the downstream task} (relative errors typically $10^{-3}$--$10^{-5}$ on benchmarks; verify per application)
   \item \emphc{Orders of magnitude faster} than the original model
   \item \emphc{Differentiable:} gradients via automatic differentiation (backprop)
 \end{itemize}
@@ -342,7 +339,7 @@ Deep surrogates enable \emphc{real-time calibration} of option pricing models --
 \toprule
 \textbf{Criterion} & \textbf{Polynomials/Splines} & \textbf{Sparse Grids} & \textbf{GPs} & \textbf{DNNs} \\
 \midrule
-High dimension ($d > 10$) & \textcolor{darkred}{\ding{55}} & \textcolor{softorange}{$\sim$} & \textcolor{darkred}{\ding{55}} & \textcolor{darkgreen}{\ding{51}} \\
+High raw dim.\ ($d > 10$, no AS) & \textcolor{darkred}{\ding{55}} & \textcolor{softorange}{$\sim$} & \textcolor{darkred}{\ding{55}} & \textcolor{darkgreen}{\ding{51}} \\
 Local features / kinks    & \textcolor{darkred}{\ding{55}} & \textcolor{darkgreen}{\ding{51}} & \textcolor{softorange}{$\sim$} & \textcolor{darkgreen}{\ding{51}} \\
 Irregular domains          & \textcolor{darkred}{\ding{55}} & \textcolor{darkred}{\ding{55}} & \textcolor{darkgreen}{\ding{51}} & \textcolor{darkgreen}{\ding{51}} \\
 Large training set ($N > 10^4$) & \textcolor{darkgreen}{\ding{51}} & \textcolor{softorange}{$\sim$} & \textcolor{darkred}{\ding{55}} & \textcolor{darkgreen}{\ding{51}} \\
@@ -390,32 +387,32 @@ where $m(\theta)$ are model-implied moments and computing them naively requires 
 \begin{center}
 \begin{tikzpicture}[
     mlstep/.style={rectangle, draw=uzhblue, fill=uzhgreylight,
-        minimum width=2.2cm, minimum height=0.75cm, font=\small,
-        rounded corners=2pt, thick},
-    >=Stealth, scale=0.92, transform shape
+        minimum width=2.2cm, minimum height=0.85cm, font=\small,
+        rounded corners=2pt, thick, align=center},
+    >=Stealth, scale=0.9, transform shape
 ]
-\node[mlstep] (model) {IAM};
-\node[mlstep, right=1.1cm of model, fill=softblue!30] (surr) {Deep Surrogate};
-\node[mlstep, right=1.1cm of surr, fill=softgreen!30] (bayes) {Bayesian Inf.};
-\node[mlstep, right=1.1cm of bayes, fill=softorange!30] (post) {$p(\theta|\text{data})$};
+\node[mlstep] (model) {Solve IAM};
+\node[mlstep, right=2.0cm of model, fill=softblue!30] (surr) {SCC\\surrogate};
+\node[mlstep, right=2.0cm of surr, fill=softgreen!30] (uq) {Global UQ};
+\node[mlstep, right=2.0cm of uq, fill=softorange!30] (out) {Sobol\\\& effects};
 
-\draw[->, thick] (model) -- node[above, font=\scriptsize]{train} (surr);
-\draw[->, thick] (surr) -- node[above, font=\scriptsize]{$10^6$ evals} (bayes);
-\draw[->, thick] (bayes) -- node[above, font=\scriptsize]{MCMC} (post);
+\draw[->, thick] (model) -- node[midway, above, font=\scriptsize]{train} (surr);
+\draw[->, thick] (surr) -- node[midway, above, font=\scriptsize]{cheap evals} (uq);
+\draw[->, thick] (uq) -- node[midway, above, font=\scriptsize]{decompose} (out);
 \end{tikzpicture}
 \end{center}
 
 \vspace{0.2cm}
 \begin{itemize}\small\itemsep1pt
-  \item Surrogate over \emphc{100+ climate and economic parameters}
-  \item Posterior distributions of \emphc{damage functions} and \emphc{optimal carbon tax}
-  \item MCMC requires millions of model evaluations, only feasible with a surrogate
+  \item Solve a high-dimensional IAM, train a surrogate for the \emphc{social cost of carbon} $\mathrm{SCC}(\theta)$
+  \item Cheap surrogate evaluations enable \emphc{global sensitivity analysis}: Sobol indices, univariate effects
+  \item Identifies which climate/economic parameters drive SCC uncertainty
 \end{itemize}
 \end{frame}
 
 % --- Slide 12: Application III — Optimal Policy ---
 \begin{frame}{Application III: Optimal Policy}
-K\"ubler, Scheidegger \& Surbek (2025):
+K\"ubler, Scheidegger \& Surbek (2026, forthcoming in \emph{JPE Macroeconomics}):
 
 \vspace{0.3cm}
 \begin{itemize}
@@ -423,7 +420,7 @@ K\"ubler, Scheidegger \& Surbek (2025):
   \item \emphc{GP surrogate + Bayesian Active Learning (BAL)} for the value function
   \item GP provides \emph{uncertainty quantification} at each point
   \item BAL selects training points where uncertainty is highest
-  \item Result: optimal carbon tax policy with \emphc{rigorous error bounds}
+  \item Result: optimal carbon tax policy
 \end{itemize}
 
 \vspace{0.3cm}
@@ -460,44 +457,23 @@ Parts III and IV of this lecture introduce \emphc{Gaussian Processes} and \emphc
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.15cm}
-{\small\textbf{Benefits:}
+\vspace{0.1cm}
+{\footnotesize\textbf{Benefits.}
 \begin{itemize}\itemsep0pt
-    \item \textbf{Calibration:} Invert the surrogate to find $\theta_{\text{mod}}$ matching market prices.
-    \item \textbf{Arbitrage-free:} Can enforce constraints (no calendar/butterfly arb) in the loss.
-    \item \textbf{Speed:} Enables real-time pricing for complex stochastic volatility models.
+    \item \textbf{Calibration:} fit $\theta$ by gradient descent on $\sum_i [\phi - \sigma_{IV}^{\mathrm{mkt}}]^2$; $\partial\phi/\partial\theta$ from autograd.
+    \item \textbf{Arbitrage-free:} differentiable penalties for calendar ($\partial_T C \!\ge\! 0$) and butterfly ($\partial^2_K C \!\ge\! 0$) violations.
+    \item \textbf{Speed:} real-time pricing for stochastic-vol models without closed form.
 \end{itemize}}
 \end{frame}
 
-% --- Slide 13: Pseudo-States — Concrete Use Cases ---
-\begin{frame}{Pseudo-States: Concrete Use Cases}
-\begin{block}{1. Exploring parameter distributions}
-Surrogate $\phi(s, \theta)$ maps \emph{any} parameter $\theta$ to the model output instantly:
-\begin{itemize}\setlength{\itemsep}{2pt}
-  \item Draw $\theta^{(j)} \sim p(\theta)$ from a prior or posterior distribution
-  \item Evaluate $\phi(s, \theta^{(j)})$ for each draw --- \emphc{no re-solving}
-  \item Obtain the full distribution of outcomes: $\{y^{(j)}\}_{j=1}^M$
-\end{itemize}
-$\Rightarrow$ \emphc{Bayesian inference, sensitivity analysis, robust policy design}
-\end{block}
-
-\vspace{0.2cm}
-\begin{exampleblock}{Example: Climate--economy models}
-\begin{itemize}\setlength{\itemsep}{2pt}
-  \item Parameters: climate sensitivity, damage curvature, discount rate
-  \item Surrogate over 100+ parameters trained once ($\sim$hours)
-  \item MCMC posterior with $10^6$ evaluations ($\sim$minutes with surrogate)
-\end{itemize}
-\end{exampleblock}
-\end{frame}
-
-% --- Slide 14: Pseudo-States — Policy Parameterization ---
+% --- Slide: Pseudo-States — Policy Parameterization ---
 \begin{frame}{Pseudo-States: Policy Parameterization}
-\begin{block}{2. Parameterizing policies}
-Include \emphc{policy parameters} $\theta_{\text{pol}}$ as pseudo-states.  Optimize via autograd:
+\begin{block}{Split the parameter vector}
+\small
+$\theta = (\theta_{\text{model}}, \theta_{\text{pol}})$: \emphc{model} = environment (preferences, technology); \emphc{policy} = decision rule (tax path, Taylor coefficients). Both go in as pseudo-state; optimise by autograd through $\phi$:
 \vspace{-4pt}
 \[
-\theta_{\text{pol}}^* = \argmax_{\theta_{\text{pol}}} \;\phi\bigl(s,\, \theta_{\text{model}},\, \theta_{\text{pol}}\bigr)
+\theta_{\text{pol}}^*(\theta_{\text{model}}) = \argmax_{\theta_{\text{pol}}} \;\phi\bigl(s,\, \theta_{\text{model}},\, \theta_{\text{pol}}\bigr)
 \]
 \vspace{-6pt}
 \end{block}
@@ -526,53 +502,6 @@ Include \emphc{policy parameters} $\theta_{\text{pol}}$ as pseudo-states.  Optim
 
 \vspace{0.15cm}
 \emphc{Key:} evaluate welfare for \emph{any} model + policy configuration instantly $\Rightarrow$ no re-solving.
-\end{frame}
-
-% --- Slide 15: Sources of Approximation Error ---
-\begin{frame}{Sources of Approximation Error}
-\begin{center}
-\begin{tikzpicture}[
-    every node/.style={font=\footnotesize},
-    >=Stealth
-]
-% Outer set: all functions
-\draw[thick, fill=blue!5, rounded corners=8pt]
-    (0,0) ellipse (4.8cm and 2.2cm);
-\node[anchor=north east] at (4.5,1.95) {$\mathcal{Y}^{\mathcal{X}}$ (all functions)};
-
-% Hypothesis class
-\draw[thick, fill=softblue!15, rounded corners=6pt]
-    (-0.4,0) ellipse (3.2cm and 1.6cm);
-\node[anchor=north] at (-0.4,1.35) {$\mathcal{H}$ (hypothesis class)};
-
-% Achievable with finite data
-\draw[thick, fill=softgreen!20, rounded corners=4pt]
-    (-0.8,0) ellipse (1.8cm and 0.95cm);
-\node[font=\scriptsize, text width=2.5cm, align=center] at (-0.8,0) {Achievable with\\finite training set};
-
-% Target function
-\node[circle, fill=harvardcrimson, inner sep=2pt, label={[font=\scriptsize]above right:$f^*$}] (fstar) at (3.2,0.8) {};
-
-% Best in H
-\node[circle, fill=uzhblue, inner sep=2pt, label={[font=\scriptsize]below:$f_{\mathcal{H}}^*$}] (fH) at (1.5,0.4) {};
-
-% Trained model
-\node[circle, fill=darkgreen, inner sep=2pt, label={[font=\scriptsize]below:$\hat{f}$}] (fhat) at (-0.2,-0.2) {};
-
-% Error arrows with readable labels
-\draw[<->, very thick, harvardcrimson] (fstar) -- (fH);
-\node[font=\small, text=harvardcrimson, above] at (2.35,1.0) {approx.\ error};
-\draw[<->, very thick, uzhblue] (fH) -- (fhat);
-\node[font=\small, text=uzhblue, above] at (0.65,0.6) {est.\ error};
-\end{tikzpicture}
-\end{center}
-
-\vspace{0.1cm}
-\begin{itemize}
-  \item \textbf{Approximation error:} $f^*$ may not lie in $\mathcal{H}$ $\Rightarrow$ increase network capacity.
-  \item \textbf{Estimation error:} finite data $\Rightarrow$ mitigated by generating more training points.
-  \item For surrogates, \emphc{estimation error $\to 0$} as we can always generate more data.
-\end{itemize}
 \end{frame}
 
 % --- Slide 14: Practical Tips ---
@@ -621,11 +550,11 @@ Include \emphc{policy parameters} $\theta_{\text{pol}}$ as pseudo-states.  Optim
   \item \textbf{Surrogates} = cheap, accurate replicas of expensive models.
   \item \textbf{Pseudo-states} ($\theta$ as extra inputs) unlock:
   \begin{itemize}
-    \item Structural estimation (GMM in seconds)
-    \item Uncertainty quantification (MCMC with surrogate)
+    \item Structural estimation (SMM in seconds)
+    \item Uncertainty quantification (Sobol indices, univariate effects)
     \item Optimal policy design
   \end{itemize}
-  \item \textbf{Key advantage:} unlimited training data $\Rightarrow$ no overfitting.
+  \item \textbf{Key advantage:} unlimited training data $\Rightarrow$ classical overfitting is not the binding constraint.
   \item \textbf{Speed:} orders of magnitude faster than original model.
 \end{enumerate}
 
@@ -814,8 +743,8 @@ A multivariate Gaussian is \emphc{fully characterized} by its mean vector $\bm{\
 \emphc{Nearby points ($f_1, f_2$) should be more correlated than distant ones ($f_1, f_3$).}
 
 \vspace{0.1cm}
-\textbf{Example:}\;
-$K = \bigl(\begin{smallmatrix} 1.0 & 0.7 & 0.2 \\ 0.7 & 1.0 & 0.6 \\ 0.2 & 0.6 & 1.0 \end{smallmatrix}\bigr)$
+\textbf{Example} (SE kernel, $\ell = 2$):\;
+$K \!=\! \bigl(\begin{smallmatrix} 1.00 & 0.76 & 0.22 \\ 0.76 & 1.00 & 0.61 \\ 0.22 & 0.61 & 1.00 \end{smallmatrix}\bigr)$
 
 \vspace{0.15cm}
 Covariance via a \emphc{kernel function}: $K_{ij} = k(x_i, x_j)$
@@ -837,7 +766,7 @@ f(\x) \sim \mathcal{GP}\bigl(\mu(\x),\; k(\x, \x')\bigr).
 
 \begin{itemize}
   \item \textbf{Mean function:} $\mu(\x) = \E{f(\x)}$ \quad (often set to $0$).
-  \item \textbf{Covariance function (kernel):} $k(\x,\x') = \E{(f(\x)-\mu(\x))(f(\x')-\mu(\x'))^\top}$.
+  \item \textbf{Covariance function (kernel):} $k(\x,\x') = \E{(f(\x)-\mu(\x))(f(\x')-\mu(\x'))}$.
 \end{itemize}
 
 \vspace{0.3cm}
@@ -924,7 +853,7 @@ K_\nu\!\bigl(\frac{\sqrt{2\nu}\,r}{\ell}\bigr),
 \vspace{-0.2cm}
 {\small
 \begin{itemize}\setlength{\itemsep}{0pt}
-  \item $\nu$ controls \emphc{smoothness}: $\nu\!=\!3/2$ $\Rightarrow$ once differentiable;\; $\nu\!=\!5/2$ $\Rightarrow$ twice;\; SE $\Rightarrow$ $\infty$-smooth.
+  \item $\nu$ controls \emphc{mean-square smoothness}: $\nu\!=\!3/2$ $\Rightarrow$ once MS-differentiable;\; $\nu\!=\!5/2$ $\Rightarrow$ twice;\; SE $\Rightarrow$ $\infty$-smooth.
   \item \textbf{Use case:} Mat\'ern when the true function is \emph{not} infinitely smooth (e.g., has kinks).
 \end{itemize}}
 \end{frame}
@@ -1177,18 +1106,20 @@ K_y = K + \sigma_y^2 I
 \begin{frame}{The Effect of Kernel Parameters}
 \begin{center}
 \begin{tikzpicture}
-% Panel 1: small length scale (overfit)
+% Panel 1: small length scale: interpolates but rings down to zero between points
 \begin{axis}[
     name=plot1,
     width=5.2cm, height=4cm,
-    title={\small $\ell^2 = 0.01$ (overfitting)},
+    title={\small $\ell^2 = 0.01$ (rings to prior)},
     xmin=0, xmax=6, ymin=-2, ymax=2,
     grid=major, grid style={gray!20},
     every axis plot/.append style={no markers},
 ]
-\addplot[uzhblue, thick, domain=0:6, samples=100] {sin(deg(0.9*x))};
-\addplot[harvardcrimson, thick, domain=0:6, samples=100]
-    {sin(deg(0.9*x)) + 0.3*sin(deg(8*x))*exp(-0.5*(x-1)^2) + 0.2*sin(deg(12*x))*exp(-0.5*(x-3)^2)};
+\addplot[uzhblue, thick, domain=0:6, samples=200] {sin(deg(0.9*x))};
+\addplot[harvardcrimson, thick, domain=0:6, samples=400]
+    {0.434*exp(-(x-0.5)^2/0.02) + 0.963*exp(-(x-1.5)^2/0.02)
+   + 0.780*exp(-(x-2.5)^2/0.02) - 0.165*exp(-(x-3.5)^2/0.02)
+   - 0.985*exp(-(x-4.5)^2/0.02) - 0.453*exp(-(x-5.5)^2/0.02)};
 \addplot[only marks, mark=*, mark size=1.5pt] coordinates
     {(0.5,0.434) (1.5,0.963) (2.5,0.780) (3.5,-0.165) (4.5,-0.985) (5.5,-0.453)};
 \end{axis}
@@ -1208,17 +1139,17 @@ K_y = K + \sigma_y^2 I
     {(0.5,0.434) (1.5,0.963) (2.5,0.780) (3.5,-0.165) (4.5,-0.985) (5.5,-0.453)};
 \end{axis}
 
-% Panel 3: large length scale (underfit)
+% Panel 3: large length scale + noise: oversmooths, doesn't interpolate
 \begin{axis}[
     name=plot3, at={(plot2.east)}, anchor=west, xshift=0.5cm,
     width=5.2cm, height=4cm,
-    title={\small $\ell^2 = 10.0$ (underfitting)},
+    title={\small $\ell^2 = 10$, $\sigma_y > 0$ (oversmoothing)},
     xmin=0, xmax=6, ymin=-2, ymax=2,
     grid=major, grid style={gray!20},
     every axis plot/.append style={no markers},
 ]
 \addplot[uzhblue, thick, domain=0:6, samples=100] {sin(deg(0.9*x))};
-\addplot[harvardcrimson, thick, domain=0:6, samples=100] {0.1*sin(deg(0.3*x))};
+\addplot[harvardcrimson, thick, domain=0:6, samples=100] {0.5*sin(deg(0.4*x)) - 0.05};
 \addplot[only marks, mark=*, mark size=1.5pt] coordinates
     {(0.5,0.434) (1.5,0.963) (2.5,0.780) (3.5,-0.165) (4.5,-0.985) (5.5,-0.453)};
 \end{axis}
@@ -1227,12 +1158,12 @@ K_y = K + \sigma_y^2 I
 
 \vspace{0.2cm}
 \begin{itemize}
-  \item \textcolor{uzhblue}{\textbf{Blue:}} true function $f(x) = \sin(0.9x)$.
-  \item \textcolor{harvardcrimson}{\textbf{Red:}} GP posterior mean.
-  \item \textbf{Too small $\ell$:} overfits noise/wiggles. \quad \textbf{Too large $\ell$:} underfits, misses structure.
+  \item \textcolor{uzhblue}{\textbf{Blue:}} true function $f(x) = \sin(0.9x)$. \textcolor{harvardcrimson}{\textbf{Red:}} GP posterior mean.
+  \item \textbf{Too small $\ell$ (noiseless):} interpolates exactly but the posterior rings back to the prior mean between points $\Rightarrow$ poor predictions away from data.
+  \item \textbf{Too large $\ell$ + noise:} GP smooths through the data, misses high-frequency structure of $f$.
 \end{itemize}
 
-$\Rightarrow$ We need a principled way to learn $\ell$ and $\sigma_f^2$.
+$\Rightarrow$ We need a principled way to learn $\ell$, $\sigma_f^2$, and $\sigma_y^2$.
 \end{frame}
 
 % --- Slide 26: Learning Hyperparameters ---
@@ -1240,7 +1171,7 @@ $\Rightarrow$ We need a principled way to learn $\ell$ and $\sigma_f^2$.
 \textbf{Problem:} How to choose $\ell$, $\sigma_f$, $\sigma_y$?  $\Rightarrow$ Maximize the \emphc{marginal likelihood}.
 
 \vspace{0.2cm}
-\begin{block}{Marginal likelihood (model evidence)}
+\begin{block}{Marginal likelihood (model evidence, zero-mean prior)}
 \[
 \log p(\bm{y}\,|\,\X) = \underbrace{-\tfrac{1}{2}\bm{y}^\top K_y^{-1}\bm{y}}_{\text{data fit}}
 \underbrace{-\tfrac{1}{2}\log|K_y|}_{\text{complexity penalty}}
@@ -1260,11 +1191,11 @@ $\Rightarrow$ We need a principled way to learn $\ell$ and $\sigma_f^2$.
 \end{column}
 \begin{column}{0.48\textwidth}
 \textbf{Optimization:}
-\begin{itemize}\setlength{\itemsep}{2pt}
+\begin{itemize}\setlength{\itemsep}{1pt}\small
   \item Gradient ascent on $\log p(\bm{y}|\X)$
-  \item Hyperparameters: $\theta = \{\ell, \sigma_f, \sigma_y\}$
-  \item Closed-form gradients available
-  \item Implemented in scikit-learn, GPyTorch
+  \item Kernel HPs $\theta_{\mathrm{GP}}\!=\!\{\ell, \sigma_f, \sigma_y\}$ (separate from structural $\theta$ and NN $\theta_{NN}$)
+  \item Closed-form gradients
+  \item scikit-learn, GPyTorch
 \end{itemize}
 \end{column}
 \end{columns}
@@ -1272,25 +1203,20 @@ $\Rightarrow$ We need a principled way to learn $\ell$ and $\sigma_f^2$.
 
 % --- New slide: Leave-one-out predictive error ---
 \begin{frame}{Leave-One-Out Predictive Error}
-\textbf{Idea.} Quantify out-of-sample predictive accuracy without holding out data.
+\textbf{Idea.} Out-of-sample predictive accuracy without holding out data.
 
 \smallskip
-For a GP with training set $\{(\x_i, y_i)\}_{i=1}^n$ and noise variance $\sigma_y^2$:
+For a GP on $\{(\x_i, y_i)\}_{i=1}^n$ with noise $\sigma_y^2$:
 \begin{equation*}
 \mu_{-i}(\x_i) - y_i \;=\; -\frac{[K_y^{-1}\bm y]_i}{[K_y^{-1}]_{ii}}, \qquad
 \sigma_{-i}^2(\x_i) \;=\; \frac{1}{[K_y^{-1}]_{ii}}.
 \end{equation*}
 
 \smallskip
-\textbf{Why it's free.}
-\begin{itemize}\itemsep0pt
-  \item $K_y^{-1}$ is recovered from the same Cholesky factor used for posterior inference
-  \item LOO across all $n$ points: $\mathcal{O}(n^2)$ on top of the existing $\mathcal{O}(n^3)$
-  \item No new training, no held-out split lost
-\end{itemize}
+\textbf{Why free.} Once $\mathrm{diag}(K_y^{-1})$ and $K_y^{-1}\bm y$ are available from the same Cholesky factor used for posterior inference, all $n$ LOO residuals cost only $\mathcal O(n)$ extra. No re-training, no held-out split lost.
 
 \smallskip
-\textbf{Use cases.} Surrogate-health diagnostic across iterations of GP-VFI (Part IV) and across active-learning rounds in SMM (companion exercise deck).
+\textbf{Use cases.} Surrogate-health diagnostic across iterations of GP-VFI (Part IV) and across active-learning rounds in SMM.
 
 \medskip
 {\scriptsize Closed form: Rasmussen \& Williams (2006), \S5.4.2.}
@@ -1354,55 +1280,52 @@ var = kernel(X_te, X_te) - Ks.T @ v # variance
 \begin{frame}[shrink=5]{Prediction \& Confidence Intervals}
 \begin{center}
 \begin{tikzpicture}
-% Left panel: 10 points
+% Left panel: 5 widely-spaced training points -- CI shrinks at data, balloons between
 \begin{axis}[
     name=left,
     width=7cm, height=4.65cm,
-    title={\small $N = 10$ training points},
+    title={\small $N = 5$ training points},
     xlabel={$x$}, ylabel={$f(x)$},
     xmin=-5, xmax=5, ymin=-2, ymax=2,
     grid=major, grid style={gray!20},
     every axis plot/.append style={no markers},
 ]
-% True function
-\addplot[uzhblue, thick, domain=-5:5, samples=100] {sin(deg(0.9*x))/1.0};
-% Mean (same as true for good GP)
-\addplot[harvardcrimson, thick, domain=-5:5, samples=100] {sin(deg(0.9*x))/1.0};
-% CI upper
-\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=100]
-    {sin(deg(0.9*x))/1.0 + 0.3*(1 + 0.1*x^2)};
-% CI lower
-\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=100]
-    {sin(deg(0.9*x))/1.0 - 0.3*(1 + 0.1*x^2)};
-% Training points
+\addplot[uzhblue, thick, domain=-5:5, samples=200] {sin(deg(0.9*x))};
+\addplot[harvardcrimson, thick, domain=-5:5, samples=200] {sin(deg(0.9*x))};
+% CI envelope: shrinks near each training point (5 nearest-neighbor Gaussian "wells").
+\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=400]
+    {sin(deg(0.9*x)) + 0.6*sqrt( max(1 - exp(-(x+4)^2/0.6) - exp(-(x+2)^2/0.6) - exp(-(x-0)^2/0.6) - exp(-(x-2)^2/0.6) - exp(-(x-4)^2/0.6), 0.02) )};
+\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=400]
+    {sin(deg(0.9*x)) - 0.6*sqrt( max(1 - exp(-(x+4)^2/0.6) - exp(-(x+2)^2/0.6) - exp(-(x-0)^2/0.6) - exp(-(x-2)^2/0.6) - exp(-(x-4)^2/0.6), 0.02) )};
 \addplot[only marks, mark=*, mark size=2pt, black] coordinates
-    {(-4,-0.71) (-3,0.07) (-2,-0.97) (-1,-0.78) (0,0)
-     (1,0.78) (2,0.97) (3,-0.07) (4,0.71)};
+    {(-4,0.71) (-2,-0.97) (0,0) (2,0.97) (4,-0.71)};
 \end{axis}
 
-% Right panel: 50 points
+% Right panel: 11 closely-spaced training points -- band is uniformly tight
 \begin{axis}[
     at={(left.east)}, anchor=west, xshift=1cm,
     width=7cm, height=4.65cm,
-    title={\small $N = 50$ training points},
+    title={\small $N = 11$ training points},
     xlabel={$x$},
     xmin=-5, xmax=5, ymin=-2, ymax=2,
     grid=major, grid style={gray!20},
     every axis plot/.append style={no markers},
 ]
-\addplot[uzhblue, thick, domain=-5:5, samples=100] {sin(deg(0.9*x))/1.0};
-\addplot[harvardcrimson, thick, domain=-5:5, samples=100] {sin(deg(0.9*x))/1.0};
-\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=100]
-    {sin(deg(0.9*x))/1.0 + 0.08};
-\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=100]
-    {sin(deg(0.9*x))/1.0 - 0.08};
+\addplot[uzhblue, thick, domain=-5:5, samples=200] {sin(deg(0.9*x))};
+\addplot[harvardcrimson, thick, domain=-5:5, samples=200] {sin(deg(0.9*x))};
+\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=400]
+    {sin(deg(0.9*x)) + 0.15*sqrt( max(1 - exp(-(x+5)^2/0.15) - exp(-(x+4)^2/0.15) - exp(-(x+3)^2/0.15) - exp(-(x+2)^2/0.15) - exp(-(x+1)^2/0.15) - exp(-x^2/0.15) - exp(-(x-1)^2/0.15) - exp(-(x-2)^2/0.15) - exp(-(x-3)^2/0.15) - exp(-(x-4)^2/0.15) - exp(-(x-5)^2/0.15), 0.05) )};
+\addplot[harvardcrimson, thin, dashed, domain=-5:5, samples=400]
+    {sin(deg(0.9*x)) - 0.15*sqrt( max(1 - exp(-(x+5)^2/0.15) - exp(-(x+4)^2/0.15) - exp(-(x+3)^2/0.15) - exp(-(x+2)^2/0.15) - exp(-(x+1)^2/0.15) - exp(-x^2/0.15) - exp(-(x-1)^2/0.15) - exp(-(x-2)^2/0.15) - exp(-(x-3)^2/0.15) - exp(-(x-4)^2/0.15) - exp(-(x-5)^2/0.15), 0.05) )};
+\addplot[only marks, mark=*, mark size=2pt, black] coordinates
+    {(-5,0.59) (-4,0.71) (-3,-0.43) (-2,-0.97) (-1,-0.78) (0,0)
+     (1,0.78) (2,0.97) (3,0.43) (4,-0.71) (5,-0.59)};
 \end{axis}
 \end{tikzpicture}
 \end{center}
 
 \vspace{0.05cm}
-{\footnotesize \textcolor{uzhblue}{\textbf{Blue:}} true function. \textcolor{harvardcrimson}{\textbf{Red:}} posterior mean. \textcolor{harvardcrimson}{\textbf{Dashed:}} 95\% confidence interval. \\
-More data $\Rightarrow$ tighter confidence intervals.}
+{\footnotesize \textcolor{uzhblue}{\textbf{Blue:}} true function. \textcolor{harvardcrimson}{\textbf{Red:}} posterior mean. \textcolor{harvardcrimson}{\textbf{Dashed:}} approximate 95\% credible band. The band collapses at training inputs (noiseless GP) and widens between them; with more data the band stays uniformly tight.}
 \end{frame}
 
 % --- Slide 30: Algorithmic Complexity ---
@@ -1410,7 +1333,7 @@ More data $\Rightarrow$ tighter confidence intervals.}
 \begin{block}{Cost of GP inference}
 \begin{itemize}
   \item \textbf{Training:} Cholesky decomposition of $K_y \in \R^{N \times N}$: \emphc{$O(N^3)$}.
-  \item \textbf{Prediction (per test point):} $O(N)$ for mean, $O(N^2)$ for variance.
+  \item \textbf{Prediction (per test point, after one-off precomputation of $\bm\alpha = K_y^{-1}\bm y$):} $O(N)$ for mean, $O(N^2)$ for variance.
   \item \textbf{Hyperparameter optimization:} $O(N^3)$ per gradient step.
 \end{itemize}
 \end{block}
@@ -1442,7 +1365,7 @@ Hyperparameter tuning & \textcolor{darkgreen}{Marginal likelihood} & \textcolor{
 Scaling with $N$ & \textcolor{darkred}{$O(N^3)$, limit $\sim 10^4$} & \textcolor{darkgreen}{$O(N)$ per epoch} \\
 Scaling with $d$ & \textcolor{darkred}{Curse of dimensionality} & \textcolor{darkgreen}{Handles $d \gg 100$} \\
 Small data ($N < 100$) & \textcolor{darkgreen}{Excellent} & \textcolor{darkred}{Typically underfits} \\
-Training & \textcolor{softorange}{Posterior closed-form; hyperparams via marg.\ likelihood} & \textcolor{softorange}{SGD, many epochs} \\
+Training & \textcolor{darkgreen}{Closed-form} & \textcolor{softorange}{SGD, many epochs} \\
 Interpretability & \textcolor{darkgreen}{Kernel encodes prior} & \textcolor{darkred}{Black box} \\
 \bottomrule
 \end{tabular}
@@ -1581,23 +1504,21 @@ Given a budget of $N$ model evaluations, which input points $\{x_1, \dots, x_N\}
 \textbf{Use the GP posterior variance to guide sampling.}
 
 \vspace{0.2cm}
-\begin{block}{Acquisition / score function}
+\begin{block}{A general score function}
 \vspace{-4pt}
 \[
-U(\x) = w_{\mathrm{exp}} \cdot \mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x)
+U(\x) = w_{\mathrm{obj}} \cdot \mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x)
 \]
 \vspace{-8pt}
-\begin{itemize}\setlength{\itemsep}{1pt}
-  \item $\mu(\x)$: posterior mean (\emphc{exploitation} --- sample where function is large)
-  \item $\sigma^2(\x)$: posterior variance (\emphc{exploration} --- sample where uncertainty is high)
-  \item $w_{\mathrm{exp}}, w_{\mathrm{var}} \geq 0$: trade-off weights (distinct from the AR(1) coefficient $\rho$ and the discount factor $\beta$ used elsewhere).
+\begin{itemize}\setlength{\itemsep}{1pt}\small
+  \item $\sigma^2(\x)$: posterior variance \,---\, \emphc{exploration}; sampling where large reduces global uncertainty.
+  \item $\mu(\x)$: posterior mean \,---\, \emphc{objective-following} bias (useful in Bayesian optimisation, not for global surrogate accuracy).
+  \item $w_{\mathrm{obj}}, w_{\mathrm{var}} \geq 0$: weights (independent of AR(1) $\rho$ and discount $\beta$).
 \end{itemize}
 \end{block}
 
-\vspace{0.2cm}
-\textbf{Pure exploration} ($w_{\mathrm{exp}} = 0$): maximize $\sigma^2(\x)$, i.e., uncertainty sampling.\\[3pt]
-\textbf{Mixed} ($w_{\mathrm{exp}} > 0, w_{\mathrm{var}} > 0$): balance exploration and exploitation.\\[3pt]
-{\small For surrogate building, pure exploration (max variance) is often sufficient.}
+\vspace{0.1cm}
+{\small\textbf{Default:} pure exploration ($w_{\mathrm{obj}} = 0$, maximise $\sigma^2$, i.e.\ uncertainty sampling) for surrogate building. Add the $\mu$-term when also targeting an optimum.}
 \end{frame}
 
 % --- Slide 35: BAL Algorithm ---
@@ -1608,7 +1529,7 @@ U(\x) = w_{\mathrm{exp}} \cdot \mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(
 \REQUIRE Initial design $\mathcal{D}_0 = \{(\x_i, y_i)\}_{i=1}^{n_0}$, budget $N$, candidate set $\mathcal{C}$
 \STATE Fit GP on $\mathcal{D}_0$: compute posterior mean $\mu(\cdot)$ and variance $\sigma^2(\cdot)$
 \FOR{$t = 1, \dots, N - n_0$}
-    \STATE Compute score $U(\x) = w_{\mathrm{exp}}\,\mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x)$ for all $\x \in \mathcal{C}$
+    \STATE Compute score $U(\x) = w_{\mathrm{obj}}\,\mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x)$ for all $\x \in \mathcal{C}$
     \STATE Select $\x_{\text{new}} = \argmax_{\x \in \mathcal{C}} U(\x)$
     \STATE Query the expensive model: $y_{\text{new}} = f(\x_{\text{new}})$
     \STATE Update: $\mathcal{D}_t \leftarrow \mathcal{D}_{t-1} \cup \{(\x_{\text{new}}, y_{\text{new}})\}$
@@ -1664,7 +1585,7 @@ BAL + GP $=$ grid-free adaptive sparse grids:
 \end{columns}
 
 \vspace{0.3cm}
-{\small References: Renner \& Scheidegger (2018); K\"ubler, Scheidegger \& Surbek (2025).}
+{\small References: Renner \& Scheidegger (2018); K\"ubler, Scheidegger \& Surbek (2026, forthcoming in \emph{JPE Macroeconomics}).}
 \end{frame}
 
 % --- Slide 39: BAL + GP for Surrogates ---
@@ -1754,9 +1675,9 @@ subject to $\x_{t+1} \sim F(\cdot \,|\, \x_t, \xi_t)$.
 \vspace{0.3em}
 \textbf{Bellman's principle of optimality:}
 \[
-V(\x) = \max_\xi \bigl\{ r(\x, \xi) + \beta\, \E{V(\x_{t+1})} \bigr\}
+(TV)(\x) := \max_\xi \bigl\{ r(\x, \xi) + \beta\, \E{V(\x_{t+1})} \bigr\}, \qquad V = TV.
 \]
-Solve this \emphc{one equation} instead of the infinite-horizon problem.
+$T$ is the \emphc{Bellman operator}; the value function $V$ is its fixed point.
 
 \column{0.48\textwidth}
 \textbf{Why DP matters:}
@@ -1775,7 +1696,7 @@ Solve this \emphc{one equation} instead of the infinite-horizon problem.
 % --- Slide: The Stochastic Growth Model ---
 \begin{frame}{Example: The Stochastic Optimal Growth Model}
 \small
-Workhorse testbed for computational macro (cf.\ the DEQN lectures). Model with $D$ sectors:
+Workhorse testbed for computational macro (cf.\ Days 2--3). Model with $D$ sectors:
 
 \vspace{0.2em}
 \begin{columns}[T]
@@ -1797,7 +1718,7 @@ $D$ ranges from 1 (textbook) to \emphc{500}.
 V(\bm{k}) = \max_{\bm{c}, \bm{l}} \bigl\{ u(\bm{c}, \bm{l}) + \beta\, \E{V(\bm{k}^+)} \bigr\}
 \]
 
-\textbf{Challenge:} approximate $V$ on $\R^D$ at each VFI step. Tensor-product grids become infeasible past $D \sim 20$. \emphc{GPs as interpolation} $\Rightarrow$ arbitrary geometries; with active-subspace reduction, scales to 500D in problems with low-dim active structure (Scheidegger \& Bilionis, 2019).
+\textbf{Challenge:} approximate $V$ on $\R^D$ at each VFI step. Grid methods fail for $D > 20$. \emphc{GPs as interpolation} (and the \emphc{Active-Subspace GP --- ASGP} introduced below) $\Rightarrow$ arbitrary geometries, scales to 500D.
 \end{columns}
 
 \vspace{0.3em}
@@ -1857,10 +1778,10 @@ Same GP posterior from Part~II, now applied iteratively inside a DP algorithm.
     \FOR{$\x^{(i)} \in \X$}
         \STATE Bellman target: $t_i = (TV_{\text{next}})(\x^{(i)})$; \quad policy: $\xi_j(\x^{(i)}) \in \argmax TV(\x^{(i)})$
     \ENDFOR
-    \STATE Learn surrogate $V_{\text{surr}}$ with ASGP (or GP) from $\{\X, \bm{t}\}$
+    \STATE Learn surrogate $V_{\text{surr}}$ from $\{\X, \bm{t}\}$ via ASGP (Active-Subspace GP, defined two slides below) or a plain GP for low $D$
     \STATE Error: $\eta = \|V_{\text{surr}} - V_{\text{next}}\|_\infty$; \quad $V_{\text{next}} \leftarrow V_{\text{surr}}$
 \ENDWHILE
-\STATE \textbf{Output:} $V$, policy functions $\xi^* = (\xi_1^*, \ldots, \xi_{3D}^*)$
+\STATE \textbf{Output:} $V$, policy functions $\xi^* = (\xi_1^*, \ldots, \xi_{3D}^*)$ \quad ($3D$ controls $=(\bm c, \bm l, \bm i)$, one per sector)
 \end{algorithmic}
 
 \vspace{0.3em}
@@ -1869,7 +1790,7 @@ Same GP posterior from Part~II, now applied iteratively inside a DP algorithm.
 
 % --- New slide: Cheap BAL inside the VFI loop ---
 \begin{frame}{Cheap BAL Inside the VFI Loop}
-\textbf{Goal of acquisition.} Uniform interpolation accuracy of $V$, not optimization $\Rightarrow$ pure exploration.
+\textbf{Goal of acquisition.} Uniform interpolation accuracy of $V$, not optimisation $\Rightarrow$ pure exploration.
 
 \medskip
 \textbf{Acquisition function.} Posterior standard deviation only:
@@ -1896,7 +1817,7 @@ Same GP posterior from Part~II, now applied iteratively inside a DP algorithm.
 % --- Slide: Active Subspaces ---
 \begin{frame}{Active Subspaces: Breaking the Curse of Dimensionality}
 \scriptsize
-Standard GPs degrade past $D \gtrsim 10$ (kernel distances become uninformative without dimensionality reduction). \emphc{Active Subspaces} (AS) find a low-dim manifold of maximal response variation.
+Standard GPs fail for $D \gtrsim 10$ (Euclidean distance uninformative). \emphc{Active Subspaces} (AS) find a low-dim manifold of maximal response variation.
 
 \vspace{0.2em}
 \begin{columns}[T]
@@ -1907,8 +1828,8 @@ Standard GPs degrade past $D \gtrsim 10$ (kernel distances become uninformative 
 \textbf{Finding $\W$:}
 \begin{enumerate}\itemsep0pt
     \item Collect gradients $\bm{g}^{(i)} = \nabla f(\x^{(i)})$
-    \item $\bm{C}_N = \frac{1}{N}\sum \bm{g}^{(i)} (\bm{g}^{(i)})^T$
-    \item SVD: $\bm{C}_N = \bm{V}\bm{\Lambda}\bm{V}^T$; find \emphc{sharp drop} in $\lambda_i$
+    \item $\bm{C}_N = \frac{1}{N}\sum \bm{g}^{(i)} (\bm{g}^{(i)})^T$ (symmetric PSD)
+    \item Eigendecompose: $\bm{C}_N = \bm{V}\bm{\Lambda}\bm{V}^T$; find \emphc{sharp drop} in $\lambda_i$
     \item $\W = [\bm{v}_1, \ldots, \bm{v}_d]$ (top $d$ eigenvectors)
 \end{enumerate}
 
@@ -1935,7 +1856,7 @@ Standard GPs degrade past $D \gtrsim 10$ (kernel distances become uninformative 
 \end{center}
 
 \vspace{0.2em}
-In the growth model, AS dim is typically $d = 1$, even when $D = 500$ $\Rightarrow$ \emphc{tractable}.
+In the (separable) growth-model benchmark of S\&B (2019), the AS dim is $d = 1$ even at $D = 500$ $\Rightarrow$ tractable. Other models can have larger $d$; the spectral-gap test in step~3 decides.
 \end{columns}
 
 \vspace{0.1em}
@@ -2053,7 +1974,7 @@ Self-contained recipe for the Tripathy-Bilionis architecture. All steps rely onl
 \textbf{Algorithm.}
 \begin{enumerate}\itemsep1pt
   \item \textbf{Sample} $(\xi_i, y_i)_{i=1}^N$; $80/20$ train/val split.
-  \item \textbf{Standardize} inputs (unit variance), center outputs.
+  \item \textbf{Standardize} inputs (unit variance), centre outputs.
   \item For $d \in \{1, 2, 3, \ldots\}$:
     encoder $h_\theta\!: \R^D\!\to\!\R^d$ with widths $d_k = \lceil D e^{\eta_{\mathrm{w}} k}\rceil$, link $g_\theta\!: \R^d\!\to\!\R$ ($16$--$32$ units); train on
     $\mathcal L = \text{MSE}(\hat f, y) + \lambda_1\|\theta\|_1 + \lambda_2\|\theta\|_2^2$ with Adam + cosine LR.
@@ -2198,11 +2119,12 @@ CPU time grows \emphc{sub-exponentially} ($<$2 days wall-clock for 500D with 100
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Key results} (see Figs.~1--5 in the paper):
-\begin{itemize}\itemsep3pt
-    \item \textbf{1D:} Convergence in $\sim$70 VFI iterations; error $10^{-1} \to 10^{-5}$; GP CI bands negligible with just 10 training points
-    \item \textbf{10D:} GP alone works; ASGP ($d=1$) equally accurate
-    \item \textbf{50--500D:} ASGP converges to $10^{-4}$ normalized error; all dimensions converge in $\sim$70 iterations
+\begin{itemize}\itemsep1pt
+    \item \textbf{1D:} error $10^{-1}\!\to\!10^{-5}$; CI bands negligible with $\sim\!10$ points
+    \item \textbf{10D:} plain GP works; ASGP ($d{=}1$) equally accurate
+    \item \textbf{50--500D:} ASGP $\sim\!10^{-4}$ normalised error
 \end{itemize}
+{\scriptsize Iteration count is set by the contraction rate of $T$ ($\sim\!\log(\text{tol})/\log\beta$), not by $D$.}
 
 \column{0.48\textwidth}
 \textbf{Why this works:}
@@ -2222,15 +2144,15 @@ CPU time grows \emphc{sub-exponentially} ($<$2 days wall-clock for 500D with 100
 % --- New slide: 2D GP-VFI in action ---
 \begin{frame}{2D GP-VFI in Action}
 \centering
-\includegraphics[height=0.72\textheight,keepaspectratio]{fig/gp_vfi_2d_active_benchmark.pdf}
+\includegraphics[height=0.65\textheight,keepaspectratio]{fig/gp_vfi_2d_active_benchmark.pdf}
 
 \smallskip
-{\scriptsize Separable benchmark $V_2(k_1,k_2) = V^*(k_1) + V^*(k_2)$ with $\delta = 1$ closed form. Active design places points where $\sigma_{\text{GP}}$ is largest. (Notebook 04, cell~25.)}
+{\scriptsize Separable benchmark $V_2(k_1,k_2) = V^*(k_1) + V^*(k_2)$ with $\delta = 1$ (full depreciation $\Rightarrow$ closed-form 1D Brock--Mirman, summed across sectors as a 2D ground truth). Workflow is identical for $\delta < 1$; we just lose the analytic check. Active design places points where $\sigma_{\text{GP}}$ is largest. (Notebook 04, cell 25.)}
 \end{frame}
 
 % --- Finger Exercise: GP-VFI ---
 \begin{frame}{\exercisepause{} Finger Exercise: One Step of GP-Based VFI}
-\begin{exampleblock}{Exercise}
+\begin{exampleblock}{Exercise (5 min)}
 Consider a 1D growth model with $V(k) = \max_c \{ \log(c) + \beta\, V(k') \}$, $k' = k^{0.36} - c$, $\beta = 0.96$.  Suppose you have a GP trained on 3 points: $V(0.5) = -8.0$, $V(1.5) = -2.5$, $V(2.5) = 0.5$.
 \begin{enumerate}
     \item At $k = 1.0$ (a new point not in the training set): the Bellman maximization yields $V^{\text{new}}(1.0) = -4.1$.  How does the GP posterior update when you add this observation?
@@ -2301,7 +2223,7 @@ Both are \emphc{complementary tools}---choose based on problem structure:
 \renewcommand{\arraystretch}{1.15}
 \begin{tabular}{p{2.8cm} p{3.8cm} p{3.8cm}}
 \toprule
- & \textbf{GP / ASGP} & \textbf{DEQNs (the discrete-time lectures)} \\
+ & \textbf{GP / ASGP} & \textbf{DEQNs (Days 2--4)} \\
 \midrule
 Method & Value function iteration & Euler equation residuals \\
 Dimensionality & Up to $\sim$500 (with AS) & $>$1000 feasible \\
@@ -2350,7 +2272,7 @@ The same GP machinery, applied at \emphc{increasing levels of ambition}:
 
 \vspace{0.2em}
 \begin{block}{Hands-on}
-\small \textbf{Notebook:} \texttt{lecture\_14\_B12\_04\_GP\_Value\_Function\_Iteration.ipynb}.
+\small \textbf{Notebook:} \texttt{04\_GP\_Value\_Function\_Iteration.ipynb} (in \texttt{day7/code/}).
 \end{block}
 \end{frame}
 
@@ -2359,7 +2281,7 @@ The same GP machinery, applied at \emphc{increasing levels of ambition}:
 % ============================================================================
 \section{Summary \& Outlook}
 
-% --- Slide: DEQN Recap ---
+% --- Slide: Day 2 Recap ---
 \begin{frame}{Recap: The Computational Toolbox}
 \small
 \begin{columns}[T]
@@ -2456,7 +2378,7 @@ All four approaches are \emphc{complementary}: choose based on the problem struc
 \end{itemize}
 
 \vspace{0.1cm}
-{\tiny \textbf{Notebooks:} \texttt{01\_Surrogate\_Primer}, \texttt{02\_GP\_and\_BAL}, \texttt{03\_Structural\_Estimation\_BM}, \texttt{04\_GP\_Value\_Function\_Iteration}, \texttt{05--07\_Active\_Subspace} (2D, 10D, nonlinear), \texttt{08\_Deep\_Kernel\_Learning}, \texttt{09\_Deep\_Active\_Subspace\_Ridge}, \texttt{10\_Deep\_AS\_vs\_Linear\_AS\_Borehole}}
+{\tiny \textbf{Notebooks:} \texttt{01\_Surrogate\_Primer}, \texttt{02\_GP\_and\_BAL}, \texttt{03\_Structural\_Estimation\_BM} (single $\varrho$), \texttt{03b\_Structural\_Estimation\_BM\_Joint} (joint $\beta,\varrho$), \texttt{04\_GP\_Value\_Function\_Iteration}, \texttt{05--07\_Active\_Subspace} (2D, 10D, nonlinear), \texttt{08\_Deep\_Kernel\_Learning}, \texttt{09\_Deep\_Active\_Subspace\_Ridge}, \texttt{10\_Deep\_AS\_vs\_Linear\_AS\_Borehole}}
 
 \vspace{0.15cm}
 \textbf{GitHub:} \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}

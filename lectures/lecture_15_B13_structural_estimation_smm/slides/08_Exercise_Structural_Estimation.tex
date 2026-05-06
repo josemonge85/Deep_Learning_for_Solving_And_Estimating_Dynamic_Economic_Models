@@ -182,6 +182,8 @@ $\alpha$ & $\delta$ & $\sigma$ & $\beta$ (single-$\varrho$ exercise) \\
 $0.36$ & $0.10$ & $0.04$ & $0.96$ \\
 \bottomrule
 \end{tabular}\end{center}
+\vspace{-0.05cm}
+{\scriptsize Note: the textbook closed-form policy $s = \alpha\beta$ requires $\delta = 1$. We use $\delta = 0.10$, so no analytic policy exists and the Euler equation must be solved numerically -- the surrogate replaces this expensive inner solve.}
 
 \textbf{Pedagogical sequence:}
 \begin{itemize}
@@ -198,9 +200,9 @@ $0.36$ & $0.10$ & $0.04$ & $0.96$ \\
 \small
 \begin{itemize}
   \item $\beta$ is famously \emphc{poorly identified} from macro moments alone -- it shifts the level of the savings rate but every level moment depends on the same scalar.
-  \item In practice, $\beta$ is calibrated to a target interest rate ($1/\beta \approx 1+r$), \emph{not} estimated from data.
+  \item In practice, $\beta$ is calibrated to a target steady-state interest rate (under log utility and full depreciation, $1/\beta = 1+r$ at SS; with general $\delta$, the SS Euler relation is $1/\beta = 1 + \alpha (k^*)^{\alpha-1} - \delta$).
   \item $\varrho$ has a \emphc{clean direct mapping} to autocorrelation moments: $\mathrm{Corr}(\log Y_t, \log Y_{t-1})$, $\mathrm{Corr}(\Delta\log C_t, \Delta\log C_{t-1})$, and the simulated volatility moment move with persistence.
-  \item This is the textbook example of a \emphc{just-identified} parameter, which is exactly what we want for teaching the SMM workflow.
+  \item This is the textbook example of a \emphc{sharply identified} scalar parameter -- exactly what we want for teaching the SMM workflow. (With three moments and one parameter the system is technically \emph{over-identified}; the extra moments make the criterion sharper.)
 \end{itemize}
 \vspace{0.2cm}
 The single-parameter exercise (notebook 03) recovers $\hat\varrho$ accurately under CRN. The joint exercise (notebook 03b) shows what happens when an additional, partially-identified parameter is freed.
@@ -214,9 +216,9 @@ Train $\mathcal{N}(z_t, K_t, \varrho) \to s_t \in (0,1)$, with $K_{t+1} = (1-\de
 \begin{enumerate}
   \itemsep1pt
   \item 3-input MLP $(z, K, \varrho) \to s$ with sigmoid output.
-  \item Euler residual loss with Gauss--Hermite quadrature; $\varrho$ enters the \emph{transition} as well as the policy.
+  \item Euler residual loss with Gauss--Hermite quadrature; $\varrho$ enters the \emph{transition} as well as the policy. Under log utility, $u'(C) = 1/C$, so the Euler ratio simplifies to $u'(C_t)/u'(C_{t+1}) = C_{t+1}/C_t$, and dividing by $C_t$ gives:
   {\small\[
-  \mathcal{L} = \frac{1}{N}\sum_i \!\left(1 - \beta C^{(i)}_t \sum_j w_j \frac{1-\delta + \alpha z^{(i)}_{t+1,j} K^{(i)\,\alpha-1}_{t+1}}{C^{(i)}_{t+1,j}}\right)^{\!2}
+  \mathcal{L} = \frac{1}{N}\sum_i \!\left(1 - \beta\, C^{(i)}_t \sum_j w_j \frac{1-\delta + \alpha z^{(i)}_{t+1,j} K^{(i)\,\alpha-1}_{t+1}}{C^{(i)}_{t+1,j}}\right)^{\!2}
   \]}
   \vspace{-10pt}
   \item Two-phase training: (i) uniform sampling on $(z, K, \varrho)$ box, (ii) simulation-based refinement.
@@ -227,7 +229,7 @@ Train $\mathcal{N}(z_t, K_t, \varrho) \to s_t \in (0,1)$, with $K_{t+1} = (1-\de
 % --- Task 2 ---
 \begin{frame}{Task 2: Simulate and Compute Identifying Moments}
 \begin{block}{Goal}
-Generate synthetic ``ex-post'' data at $\varrho_{\text{true}} = 0.90$ and compute three identifying moments.
+Generate synthetic ``ex-post'' data at $\varrho_{\text{true}} = 0.90$ and compute three identifying moments (plus one diagnostic, see below).
 \end{block}
 \begin{center}\small
 \begin{tabular}{cl}
@@ -237,6 +239,8 @@ Generate synthetic ``ex-post'' data at $\varrho_{\text{true}} = 0.90$ and comput
 $m_1 = \mathrm{Std}(\Delta\log C_t)$               & Growth-rate volatility; check numerically \\
 $m_2 = \mathrm{Corr}(\Delta\log C_t, \Delta\log C_{t-1})$ & Persistence in consumption growth \\
 $m_3 = \mathrm{Corr}(\log Y_t, \log Y_{t-1})$       & Persistence in output (very direct) \\
+\midrule
+$m_0 = \mathrm{mean}(s_t)$ (\emph{diagnostic only}) & Should be flat in $\varrho$; included to show what \emph{not} to use \\
 \bottomrule
 \end{tabular}\end{center}
 \vspace{0.15cm}
@@ -249,7 +253,9 @@ $m_3 = \mathrm{Corr}(\log Y_t, \log Y_{t-1})$       & Persistence in output (ver
 \begin{block}{SMM objective (single-parameter case, $\theta = \varrho$)}
 \vspace{-4pt}
 \[\hat\varrho = \argmin_{\varrho}\; [m(\varrho) - \hat{m}^{\mathrm{data}}]^\top W \,[m(\varrho) - \hat{m}^{\mathrm{data}}], \quad W = I.\]
-\vspace{-12pt}
+\vspace{-8pt}
+
+{\scriptsize $W = I$ is the unweighted criterion -- the cleanest pedagogical default. The efficient choice is $W = S^{-1}$ where $S = \mathrm{Var}\bigl(\sqrt{T}\,\hat m^{\mathrm{data}}\bigr)$; with $W = I$ the asymptotic variance of $\hat\varrho$ is suboptimal but consistency and the interior-solution argument are unchanged.}
 \end{block}
 \begin{enumerate}
   \item Define one routine $\varrho \mapsto (C_t, I_t, Y_t) \mapsto m(\varrho)$ that reuses the trained surrogate.
@@ -262,8 +268,11 @@ Re-seed the simulator every evaluation. Without CRN the criterion is dominated b
 \end{alertblock}
 \end{frame}
 
-% --- New frame: Stacking a GP over the moment map ---
-\begin{frame}{Stacking a GP over the Moment Map}
+% --- New frame: Stacking a GP over the moment map (forward-references the joint exercise) ---
+\begin{frame}{Stacking a GP over the Moment Map (used in Part B)}
+\textbf{Forward reference.} Task 4 only needs the single-$\varrho$ surrogate; the construction below is what Notebook \texttt{03b} adds for the \emph{joint} $(\beta,\varrho)$ exercise.
+
+\medskip
 \textbf{Two-layer surrogate} for high-throughput SMM:
 
 \smallskip
@@ -314,7 +323,7 @@ The 3-input network is a smooth function over the entire $(K, \varrho)$ rectangl
 \end{center}
 \vspace{-0.15cm}
 \small
-At fixed CRN, each candidate moment is monotone (or near-monotone) in $\varrho$ \emph{except} the mean savings rate (rightmost panel), which is essentially flat -- correctly diagnosed as uninformative for $\varrho$ identification.
+All four candidate moments traced as a function of $\varrho$: the three identifying moments $m_1, m_2, m_3$ (Task~2 table, leftmost three panels) are monotone or near-monotone in $\varrho$. The diagnostic moment $m_0=\mathrm{mean}(s_t)$ (rightmost panel) is essentially flat -- correctly diagnosed as uninformative.
 \end{frame}
 
 \begin{frame}{Expected Result: SMM Objective + Estimate}
@@ -366,7 +375,7 @@ $\hat\theta = \argmin_{\theta = (\beta,\varrho)}\; [m(\theta) - \hat{m}^{\mathrm
   \item 4-input MLP $(z, K, \beta, \varrho) \to s$. Train once on the whole rectangle.
   \item Forge synthetic data at $(\beta_{\text{true}}, \varrho_{\text{true}}) = (0.96, 0.90)$.
   \item Compute the SMM criterion on a $25\times 25$ grid in $(\beta, \varrho)$ -- visualize both moment subsets.
-  \item Refine with \texttt{scipy.optimize.minimize} (bounded Nelder--Mead from the grid argmin).
+  \item Refine with \texttt{scipy.optimize.minimize} (\texttt{L-BFGS-B}, which honours the box constraints natively, started from the grid argmin).
   \item Verify the solution is interior; report distance to truth on each axis.
 \end{enumerate}
 \end{frame}
@@ -378,22 +387,21 @@ $\hat\theta = \argmin_{\theta = (\beta,\varrho)}\; [m(\theta) - \hat{m}^{\mathrm
 \smallskip
 \textbf{Acquisition function} (notebook 03b):
 \[
-a(\theta) \;=\; \bigl[\,0.25 + \widetilde{\mathrm{UCB}}_{g}(\theta)\,\bigr] \cdot \Bigl\|\boldsymbol\sigma_m(\theta) / \widehat{\mathrm{sd}}(m)\Bigr\|_2,\quad
-g(\theta)=-\log_{10}(Q(\theta)+\epsilon).
+a(\theta) \;=\; \bigl[\,0.25 + \widetilde{\mathrm{UCB}}_{g}(\theta)\,\bigr] \cdot \Bigl\|\boldsymbol\sigma_m(\theta) / \widehat{\mathrm{sd}}(m)\Bigr\|_2.
 \]
 
-\smallskip
+{\scriptsize
 \begin{itemize}\itemsep0pt
-  \item First factor: \emphc{exploit} -- favor $\theta$ with small SMM criterion
-  \item Second factor: \emphc{explore} -- favor $\theta$ where the moment GP is uncertain
-  \item Constant $0.25$: keep exploration alive even where scaled UCB$=0$
-\end{itemize}
+  \item $g(\theta) = -\log_{10}(Q(\theta) + \epsilon)$ is the negative log-criterion (a GP is fit to $g$); $\widetilde{\mathrm{UCB}}_g$ is BoTorch's standard $\mu_g + \kappa\sigma_g$ rescaled to $[0,1]$ over the grid.
+  \item $\boldsymbol\sigma_m(\theta) \in \mathbb{R}^{n_m}$ stacks the moment-GP posterior std-deviations; $\widehat{\mathrm{sd}}(m)$ is the empirical std-deviation of each moment in the design (a unit-normaliser).
+  \item $0.25$: a small floor on the exploit factor so candidates with low UCB on $g$ but high moment-GP uncertainty still enter the design.
+\end{itemize}}
 
 \smallskip
-\textbf{Three-way comparison.} Pilot grid / naive LHS / BoTorch BAL at the same budget: compare LOO error, criterion error, and recovered estimate.
+{\small\textbf{Roles.} First factor = \emph{exploit} (basin of small $Q$); second factor = \emph{explore} (where moment GPs are uncertain). Pure UCB on $g$ alone would over-collapse to the basin; pure moment-uncertainty would ignore the criterion shape.}
 
 \medskip
-{\scriptsize Implementation: BoTorch \texttt{SingleTaskGP} + \texttt{UpperConfidenceBound}.}
+{\scriptsize Built on BoTorch \texttt{SingleTaskGP} + \texttt{UpperConfidenceBound}; the multiplicative form is custom (not a stock BoTorch acquisition).}
 \end{frame}
 
 \begin{frame}{Expected Result: Surrogate Slices on $(\beta, \varrho)$}
@@ -459,7 +467,7 @@ What the two notebooks teach together:
 \vspace{0.10cm}
 {\footnotesize \textbf{Formal identification machinery} (moment Jacobian $M = \partial m/\partial\theta$, rank condition, $J$-statistic, weak-identification diagnostics): see lecture script Sec. 10.4 (Practical Considerations).}
 \vspace{0.10cm}\\
-\textbf{Production pipeline:} Chen, Didisheim \& Scheidegger (2026, JFE), exactly this surrogate-and-SMM logic at scale, applied to finance.
+\textbf{Production pipeline:} Chen, Didisheim \& Scheidegger (2026, \emph{J.\ Financial Economics}), exactly this surrogate-and-SMM logic at scale, applied to finance.
 \end{frame}
 
 \end{document}
