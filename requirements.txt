@@ -27,7 +27,7 @@ jaxlib>=0.4.20
 optax>=0.1.5
 flax>=0.7.0
 
-# Gaussian process regression (Lecture 14 (B12); used by Lecture 17 (B15) DICE-2P GP surrogate pipeline)
+# Gaussian process regression (Lecture 14; used by Lecture 17 DICE-2P GP surrogate pipeline)
 gpytorch>=1.11
 botorch>=0.11
 

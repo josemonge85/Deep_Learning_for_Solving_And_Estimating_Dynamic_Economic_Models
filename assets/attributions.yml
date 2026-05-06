@@ -19,7 +19,7 @@ attributions:
   # confirms (or replaces with a CC0 redraw). See COPYRIGHT_AUDIT.csv
   # for the full list and status.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/Miraculix.jpg
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/Miraculix.jpg
     source: unknown
     authors: unknown
     year: unknown
@@ -30,7 +30,7 @@ attributions:
       Les Editions Albert Rene. Recommendation: replace with a CC0 alternative
       or remove from the deck.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/knutti.png
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/knutti.png
     source: likely Knutti et al., Nature Geoscience (2017)
     authors: Knutti et al.
     year: 2017
@@ -41,7 +41,7 @@ attributions:
       Add explicit citation in the slide caption and either confirm fair-use /
       author permission, or redraw from the underlying public estimates.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/olg_agents.jpg
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/olg_agents.jpg
     source: unknown
     authors: unknown
     year: unknown
@@ -49,7 +49,7 @@ attributions:
     redistribution_allowed: review_required
     notes: Cohort-illustration stock image. Verify origin or replace.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/quote.png
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/quote.png
     source: unknown
     authors: unknown
     year: unknown
@@ -57,7 +57,7 @@ attributions:
     redistribution_allowed: review_required
     notes: Decorative quote image; consider replacing with rendered LaTeX text.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/global-warming.png
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/global-warming.png
     source: unknown
     authors: unknown
     year: unknown
@@ -65,7 +65,7 @@ attributions:
     redistribution_allowed: review_required
     notes: Opening motivation figure; verify whether it is a course-author original.
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/damge.png
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/damge.png
     source: unknown
     authors: unknown
     year: unknown
@@ -75,7 +75,7 @@ attributions:
 
   # ----- Course-author originals (kept for completeness; not strictly required) -----
 
-  - path: lectures/lecture_15_B14_climate_economics_iams/slides/fig/CDICE-vs-DICE.png
+  - path: lectures/lecture_16_climate_economics_iams/slides/fig/CDICE-vs-DICE.png
     source: Folini et al. (2024), CDICE paper; rendered by the course author
     authors: Doris Folini, Aleksandra Friedl, Felix Kuebler, Simon Scheidegger
     year: 2024

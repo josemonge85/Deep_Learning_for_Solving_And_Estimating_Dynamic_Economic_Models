@@ -13,7 +13,7 @@ runnable, and self-contained.*
   <a href="lectures/"><img alt="Runnable notebooks" src="https://img.shields.io/badge/notebooks-runnable-1f4e79?style=for-the-badge"></a>
   <a href="lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf"><img alt="Companion script" src="https://img.shields.io/badge/companion%20script-PDF-1f4e79?style=for-the-badge"></a>
   <br/>
-  <a href="lectures/lecture_06_B17_agentic_programming/"><img alt="AI-coding workshop" src="https://img.shields.io/badge/AI%20coding-workshop-1f4e79?style=for-the-badge"></a>
+  <a href="lectures/lecture_06_agentic_programming/"><img alt="AI-coding workshop" src="https://img.shields.io/badge/AI%20coding-workshop-1f4e79?style=for-the-badge"></a>
   <a href="#syllabus"><img alt="Exercises with solutions" src="https://img.shields.io/badge/exercises-with%20solutions-1f4e79?style=for-the-badge"></a>
   <a href="LICENSE"><img alt="Open source, self-paced, no enrollment" src="https://img.shields.io/badge/open%20source-self--paced-1f4e79?style=for-the-badge"></a>
 </p>
@@ -21,7 +21,7 @@ runnable, and self-contained.*
 <h3 align="center">
   Course author: <a href="https://sischei.github.io/">Simon Scheidegger</a>
 </h3>
-<p align="center"><em>University of Lausanne</em></p>
+<p align="center"><em>University of Lausanne &nbsp;·&nbsp; Grantham Research Institute, London School of Economics</em></p>
 
 <br/>
 
@@ -77,8 +77,8 @@ deadline, just pick the method you need and dig in.
 
 > ### 🚀 Start here
 >
-> - **Jump in:** [Lecture 02 — Intro to deep learning](lectures/lecture_02_B01_intro_deep_learning/README.md)
-> - **New to Python?** Begin with the [Python primer (Lecture 01)](lectures/lecture_01_B00_python_primer/README.md)
+> - **Jump in:** [Lecture 02 — Intro to deep learning](lectures/lecture_02_intro_deep_learning/README.md)
+> - **New to Python?** Begin with the [Python primer (Lecture 01)](lectures/lecture_01_python_primer/README.md)
 > - **Want the panoramic view?** Open the [course map](COURSE_MAP.md)
 
 ## What you will learn
@@ -169,14 +169,14 @@ Different readers come in with different goals, so pick the entry point
 that fits yours:
 
 - 🚀 **I want a guided start.** Open the
-  [Python primer (Lecture 01)](lectures/lecture_01_B00_python_primer/README.md)
+  [Python primer (Lecture 01)](lectures/lecture_01_python_primer/README.md)
   if you need it, then follow the **Complete path** in
   [`COURSE_MAP.md`](COURSE_MAP.md). It walks through all 18 lectures
   in their natural order.
 - 🎯 **I have a specific topic in mind.** Jump straight to the
   **syllabus** below.
 - 🧪 **I want the research-workflow training first.** Jump to
-  [Lecture 06, agentic programming](lectures/lecture_06_B17_agentic_programming/README.md),
+  [Lecture 06, agentic programming](lectures/lecture_06_agentic_programming/README.md),
   then come back to the rest of the sequence.
 - 📖 **I want a textbook.** Read the chapter-based
   [companion script](lecture_script/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models.pdf); each chapter
@@ -201,24 +201,24 @@ notebook also fixes a `SEED` for reproducibility.
 
 | If you want to learn… | Read | Notebooks |
 |---|---|---|
-| **Python warm-up** (skip if you write Python every day) | [Lecture 01](lectures/lecture_01_B00_python_primer/README.md) | Jupyter, basic data structures, NumPy, plotting, classes |
-| **Deep-learning fundamentals** (training, generalization, sequence models) | [Lecture 02](lectures/lecture_02_B01_intro_deep_learning/README.md) | MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations |
-| **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_B02_deep_equilibrium_nets/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels |
-| **Large-scale nonlinear DSGE** (IRBC) | [Lecture 04](lectures/lecture_04_B03_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
-| **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_B04_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
-| **Agentic programming** (AI coding agents as research partners) | [Lecture 06](lectures/lecture_06_B17_agentic_programming/README.md) | Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, plus a 12-exercise workshop |
-| **Automatic differentiation for DEQNs** | [Lecture 07](lectures/lecture_07_B05_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
-| **Sequence-space DEQNs** | [Lecture 08](lectures/lecture_08_B06_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
-| **OLG with DEQNs** | [Lecture 09](lectures/lecture_09_B07_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
-| **Heterogeneous agents and Young's method** | [Lecture 10](lectures/lecture_10_B08_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
-| **Physics-informed neural networks (PINNs)** | [Lecture 11](lectures/lecture_11_B09_pinns/README.md) | ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes |
-| ↳ **Continuous-time HA, theory** | [Lecture 12](lectures/lecture_12_B10_continuous_time_ha_theory/README.md) | HJB, Kolmogorov-forward, master equation, Ito calculus |
-| ↳ **Continuous-time HA, numerics** | [Lecture 13](lectures/lecture_13_B11_continuous_time_ha_numerics/README.md) | Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari |
-| **Surrogates, Gaussian processes, deep kernels** | [Lecture 14](lectures/lecture_14_B12_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
-| **Structural estimation via SMM** | [Lecture 15](lectures/lecture_15_B13_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
-| **Climate economics and IAMs (DICE, CDICE)** | [Lecture 16](lectures/lecture_16_B14_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN |
-| ↳ **Deep UQ and Pareto-improving carbon-tax design** | [Lecture 17](lectures/lecture_17_B15_deep_uq_pareto_improving_policy/README.md) | GP surrogates, Bayesian active learning, Sobol / Shapley, constrained Pareto-improving carbon-tax rules |
-| **Synthesis, when to use which method** | [Lecture 18](lectures/lecture_18_B16_course_wrap_up/README.md) | Decision guide and outlook |
+| **Python warm-up** (skip if you write Python every day) | [Lecture 01](lectures/lecture_01_python_primer/README.md) | Jupyter, basic data structures, NumPy, plotting, classes |
+| **Deep-learning fundamentals** (training, generalization, sequence models) | [Lecture 02](lectures/lecture_02_intro_deep_learning/README.md) | MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations |
+| **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_deep_equilibrium_nets/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels |
+| **Large-scale nonlinear DSGE** (IRBC) | [Lecture 04](lectures/lecture_04_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
+| **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
+| **Agentic programming** (AI coding agents as research partners) | [Lecture 06](lectures/lecture_06_agentic_programming/README.md) | Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, plus a 12-exercise workshop |
+| **Automatic differentiation for DEQNs** | [Lecture 07](lectures/lecture_07_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
+| **Sequence-space DEQNs** | [Lecture 08](lectures/lecture_08_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
+| **OLG with DEQNs** | [Lecture 09](lectures/lecture_09_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
+| **Heterogeneous agents and Young's method** | [Lecture 10](lectures/lecture_10_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
+| **Physics-informed neural networks (PINNs)** | [Lecture 11](lectures/lecture_11_pinns/README.md) | ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes |
+| ↳ **Continuous-time HA, theory** | [Lecture 12](lectures/lecture_12_continuous_time_ha_theory/README.md) | HJB, Kolmogorov-forward, master equation, Ito calculus |
+| ↳ **Continuous-time HA, numerics** | [Lecture 13](lectures/lecture_13_continuous_time_ha_numerics/README.md) | Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari |
+| **Surrogates, Gaussian processes, deep kernels** | [Lecture 14](lectures/lecture_14_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
+| **Structural estimation via SMM** | [Lecture 15](lectures/lecture_15_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
+| **Climate economics and IAMs (DICE, CDICE)** | [Lecture 16](lectures/lecture_16_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN |
+| ↳ **Deep UQ and Pareto-improving carbon-tax design** | [Lecture 17](lectures/lecture_17_deep_uq_pareto_improving_policy/README.md) | GP surrogates, Bayesian active learning, Sobol / Shapley, constrained Pareto-improving carbon-tax rules |
+| **Synthesis, when to use which method** | [Lecture 18](lectures/lecture_18_course_wrap_up/README.md) | Decision guide and outlook |
 
 For the full table including compute and time budgets, prerequisites,
 and the visual prerequisite diagram, see
@@ -247,7 +247,7 @@ and BoTorch (Lecture 13).
 .
 ├── README.md             ← you are here
 ├── COURSE_MAP.md         ← detailed map, learning paths, prerequisite diagram
-├── lectures/             ← 18 lecture folders (lecture_XX_BYY_*)
+├── lectures/             ← 18 lecture folders (lecture_XX_*)
 │   └── lecture_*/
 │       ├── README.md         summary, slides, code, prerequisites, readings
 │       ├── slides/           PDFs and .tex sources

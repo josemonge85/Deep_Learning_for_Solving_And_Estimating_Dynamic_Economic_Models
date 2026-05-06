@@ -6,7 +6,7 @@ Thanks for your interest in improving this course. Errata, corrections, and ques
 
 Open an issue on [GitHub](https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models/issues) with:
 
-- which lecture, notebook, or slide deck it concerns (use the `Lecture XX (BYY)` form),
+- which lecture, notebook, or slide deck it concerns (use the `Lecture XX` form),
 - what you expected and what you saw,
 - if it is a code bug, a minimal reproducer (Python version, library versions, the smallest cell that fails).
 
