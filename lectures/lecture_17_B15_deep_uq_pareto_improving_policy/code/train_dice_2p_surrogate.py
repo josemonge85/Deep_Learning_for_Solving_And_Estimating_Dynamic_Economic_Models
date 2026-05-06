@@ -3,8 +3,7 @@
 Architecture: 9-D input (7 economic states + 2 normalized pseudo-states),
 768-wide ReLU MLP, 8 outputs (same as the fixed-theta net).
 
-Training protocol applies the B1 fix from the prior 3-parameter EZ failure
-(see memory/project_day8_surrogate_v1_v2_status.md):
+Training protocol applies the B1 fix from the prior 3-parameter EZ failure:
   - one (rho, pi2) per trajectory (consistent within rollout)
   - 80% Sobol QMC sampling over the (rho, pi2) cube + 20% anchored on the
     five fixed-theta point-solution corners (forces point-solution-like

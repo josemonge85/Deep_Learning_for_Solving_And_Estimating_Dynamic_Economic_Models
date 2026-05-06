@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-# Driver for the four-stage 2-parameter (rho, pi2) DICE-DEQN surrogate pipeline.
+# Driver for the three-stage 2-parameter (rho, pi2) DICE-DEQN surrogate pipeline.
 #
 # Stages:
 #   A: 5 fixed-theta point solutions   (~25 min total at classroom budget)
 #   B: 9-D parameterised surrogate     (~2-3 h at production budget)
-#   C: validation against the 5 corners
-#   D: GP + Sobol + univariate effects
+#   D: GP + Sobol + univariate effects (anchored on Stage-A SCCs)
 #
 # Idempotent: each stage skips if its sentinel exists in _pt_solutions/2p/.
 # Override budgets via env vars: PT_EPISODES, SG_EPISODES, SG_WIDTH, etc.
 
 set -euo pipefail
 
-ROOT="/home/simon/projects/lectures/Deep_Learning_Econ_Finance_Geneva_2026/lectures/day8/code"
+# Resolve ROOT relative to this script's location so the pipeline runs from
+# whichever checkout of the repository it lives in.
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 mkdir -p _pt_solutions/2p/figures
 
@@ -24,7 +25,6 @@ SG_ANCHOR_SHARE="${SG_ANCHOR_SHARE:-0.0}"
 SG_ARCH="${SG_ARCH:-film}"
 SG_CVAR_ALPHA="${SG_CVAR_ALPHA:-0.2}"
 SG_REPLAY_FRACTION="${SG_REPLAY_FRACTION:-0.25}"
-GP_DESIGN="${GP_DESIGN:-256}"
 
 echo "== Stage A: 5 fixed-theta point solutions =="
 python3 -u train_dice_2p_pointsolutions.py \
@@ -41,13 +41,10 @@ python3 -u train_dice_2p_surrogate.py \
   --replay-pt-width "$PT_WIDTH" \
   2>&1 | tee -a _pt_solutions/2p/stage_B.log
 
-echo "== Stage C: validate surrogate vs point solutions =="
-python3 -u validate_dice_2p_surrogate.py --width "$SG_WIDTH" --arch "$SG_ARCH" --soft \
-  2>&1 | tee -a _pt_solutions/2p/stage_C.log
-
 echo "== Stage D: GP + Sobol + univariate effects =="
-python3 -u compute_dice_2p_gp_sobol.py \
-  --width "$SG_WIDTH" --arch "$SG_ARCH" --n-design "$GP_DESIGN" \
+# Anchored on the Stage-A point-solution SCCs cached in _pt_solutions/2p/
+# (see _pt_solutions/2p/gp_anchors_25.json for the 25-point reference cube).
+python3 -u compute_dice_2p_gp_anchors.py \
   2>&1 | tee -a _pt_solutions/2p/stage_D.log
 
 echo "== Pipeline complete =="

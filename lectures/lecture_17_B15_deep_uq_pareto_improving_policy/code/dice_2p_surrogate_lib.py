@@ -1,12 +1,23 @@
 """Helpers for the two-parameter (rho, pi2) DICE-DEQN surrogate.
 
-Ported from `02_DICE_DEQN_Library_Port.ipynb` cells f0fe85c1, 378772d8, a7d914b0.
+Ported from `02_DICE_DEQN_Library_Port.ipynb`:
+  * §1   — `class P` (calibration constants)
+  * §3   — exogenous functions (`population`, `tfp`, `sigma`, `theta1`, `beta_hat`, ...)
+           and one-step transitions (`carbon_next`, `temperature_next`)
+  * §4–5 — `build_net`, `split_policy`, `loss_fn`, `simulate`
+
 The functions below are shared between (a) the five fixed-theta point solutions
 and (b) the parameterised surrogate that takes (rho, pi2) as pseudo-states.
 
 Network input is either 7-D (fixed) or 9-D (surrogate, last two dims =
 normalized rho, pi2). The loss residual structure is identical; only the
 beta_hat and damage Omega calls now depend on per-batch rho and pi2 tensors.
+
+Note on design sets used downstream:
+  * `ANCHOR_THETAS` (5 corner tags, used by Stage A point solutions and as
+    Stage B replay anchors).
+  * `_pt_solutions/2p/gp_anchors_25.json` (25-point reference cube, used by
+    Stage D for the GP fit + Sobol indices). The two design sets are distinct.
 """
 from __future__ import annotations
 
