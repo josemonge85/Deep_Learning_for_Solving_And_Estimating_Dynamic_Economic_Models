@@ -137,7 +137,10 @@ where $W$ is a positive-definite \emphc{weighting matrix}.
 % --- SMM primer 3: asymptotic distribution ---
 \begin{frame}{SMM Primer (3/3): Asymptotic Distribution}
 \small
-Under standard regularity conditions (smoothness of $m$, stationarity, identification), as $T,S\to\infty$ with $T/S \to \tau \in [0,\infty)$,\footnote{\scriptsize Notation bridge to the script: the script parameterises $S$ independent simulated panels each of length $\tau T$ (so its $\tau$ is the relative panel-length factor), giving an asymptotic factor $(1+1/(\tau S))\Sigma_m$. Both conventions yield the same consistent estimator; the symbol $\tau$ plays inverse roles.}
+\textit{Notation bridge to the script: this deck uses $G=\partial m/\partial\theta^\top$, $\Sigma_g$, and $\tau=T/S$; the script uses $M$, $\Omega$, and $\tau_{\mathrm{script}}$ = relative simulation panel length. The two conventions are related by $\tau = 1/(S\tau_{\mathrm{script}})$ so $(1+\tau)\Sigma_g = (1+1/(\tau_{\mathrm{script}}S))\Sigma_m$ -- both give the same consistent estimator.}
+
+\smallskip
+Under standard regularity conditions (smoothness of $m$, stationarity, identification), as $T,S\to\infty$ with $T/S \to \tau \in [0,\infty)$,
 \[
     \sqrt{T}\,(\widehat\theta_{\text{SMM}} - \theta_0)
     \;\xrightarrow{d}\; \mathcal{N}\bigl(0, V(W)\bigr),
@@ -264,7 +267,7 @@ $m_0 = \mathrm{mean}(s_t)$ (\emph{diagnostic only}) & Should be flat in $\varrho
   \item \emphc{Verify the solution is interior} ($\hat\varrho$ strictly inside the bounds), required for asymptotic theory.
 \end{enumerate}
 \begin{alertblock}{Hint}
-Re-seed the simulator every evaluation. Without CRN the criterion is dominated by simulation noise.
+Re-seed the simulator \emph{to the same seed} on every evaluation, so the candidate parameter is the only thing that changes. Without CRN the criterion is dominated by simulation noise.
 \end{alertblock}
 \end{frame}
 
