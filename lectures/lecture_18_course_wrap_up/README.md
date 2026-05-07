@@ -4,7 +4,7 @@ Synthesis of the course: when to choose which method, and where the literature i
 
 `cpu-light` · `short` · builds on [Lecture 17](../lecture_17_deep_uq_pareto_improving_policy/README.md)
 
-> 📑 **Slides:** [10_Wrap_Up.pdf](slides/10_Wrap_Up.pdf)  
+> 📑 **Slides:** [lecture_18_wrap_up.pdf](slides/lecture_18_wrap_up.pdf)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_18.md)  
 > 📖 **Script:** §Chapter 12 (Synthesis and method choice), §Appendix A (Glossary), §Appendix D (Fixed points and Bellman)
 
@@ -25,8 +25,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/10_Wrap_Up.pdf`](slides/10_Wrap_Up.pdf)
-- [`slides/10_Wrap_Up.tex`](slides/10_Wrap_Up.tex)
+- [`slides/lecture_18_wrap_up.pdf`](slides/lecture_18_wrap_up.pdf)
+- [`slides/lecture_18_wrap_up.tex`](slides/lecture_18_wrap_up.tex)
 
 ## Code
 

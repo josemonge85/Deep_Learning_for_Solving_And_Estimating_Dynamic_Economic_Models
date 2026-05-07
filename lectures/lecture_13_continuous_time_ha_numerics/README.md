@@ -4,7 +4,7 @@ Two methods to solve the HJB-KFE system numerically: a finite-difference scheme 
 
 `gpu-recommended` · `long` · builds on [Lecture 12](../lecture_12_continuous_time_ha_theory/README.md)
 
-> 📑 **Slides:** [08_CT_Heterogeneous_Agents_Numerical.pdf](slides/08_CT_Heterogeneous_Agents_Numerical.pdf)  
+> 📑 **Slides:** [lecture_13_continuous_time_ha_numerics.pdf](slides/lecture_13_continuous_time_ha_numerics.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_13_06_PE_Discrete_HJB_PINN.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_13.md)  
 > 📖 **Script:** §8.7 (Numerical methods for CT-HA)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/08_CT_Heterogeneous_Agents_Numerical.pdf`](slides/08_CT_Heterogeneous_Agents_Numerical.pdf)
-- [`slides/08_CT_Heterogeneous_Agents_Numerical.tex`](slides/08_CT_Heterogeneous_Agents_Numerical.tex)
+- [`slides/lecture_13_continuous_time_ha_numerics.pdf`](slides/lecture_13_continuous_time_ha_numerics.pdf)
+- [`slides/lecture_13_continuous_time_ha_numerics.tex`](slides/lecture_13_continuous_time_ha_numerics.tex)
 
 ## Code
 

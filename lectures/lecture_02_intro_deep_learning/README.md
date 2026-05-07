@@ -4,7 +4,7 @@ The working knowledge of deep learning that the rest of the course assumes, with
 
 `cpu-standard` · `long` · builds on [Lecture 01](../lecture_01_python_primer/README.md)
 
-> 📑 **Slides:** [01_Intro_to_DeepLearning.pdf](slides/01_Intro_to_DeepLearning.pdf)  
+> 📑 **Slides:** [lecture_02_intro_deep_learning.pdf](slides/lecture_02_intro_deep_learning.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_02_01_BasicML_intro.ipynb) (9 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_02.md)  
 > 📖 **Script:** §1.1-1.4 (Foundations and function approximation), §1.5-1.9 (Optimization, depth, and regularization), §1.10-1.11 (Generalization, sequence models)
@@ -29,8 +29,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/01_Intro_to_DeepLearning.pdf`](slides/01_Intro_to_DeepLearning.pdf)
-- [`slides/01_Intro_to_DeepLearning.tex`](slides/01_Intro_to_DeepLearning.tex)
+- [`slides/lecture_02_intro_deep_learning.pdf`](slides/lecture_02_intro_deep_learning.pdf)
+- [`slides/lecture_02_intro_deep_learning.tex`](slides/lecture_02_intro_deep_learning.tex)
 
 ## Code
 

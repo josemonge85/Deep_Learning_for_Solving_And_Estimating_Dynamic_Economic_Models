@@ -4,7 +4,7 @@ A modern DEQN variant where the policy reads a long shock history instead of a c
 
 `gpu-recommended` · `long` · builds on [Lecture 07](../lecture_07_autodiff_for_deqns/README.md)
 
-> 📑 **Slides:** [06_SequenceSpace_DEQNs.pdf](slides/06_SequenceSpace_DEQNs.pdf)  
+> 📑 **Slides:** [lecture_08_sequence_space_deqns.pdf](slides/lecture_08_sequence_space_deqns.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_08_05_SequenceSpace_BrockMirman.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_08.md)  
 > 📖 **Script:** §6.7 (Sequence-space DEQNs)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/06_SequenceSpace_DEQNs.pdf`](slides/06_SequenceSpace_DEQNs.pdf)
-- [`slides/06_SequenceSpace_DEQNs.tex`](slides/06_SequenceSpace_DEQNs.tex)
+- [`slides/lecture_08_sequence_space_deqns.pdf`](slides/lecture_08_sequence_space_deqns.pdf)
+- [`slides/lecture_08_sequence_space_deqns.tex`](slides/lecture_08_sequence_space_deqns.tex)
 
 ## Code
 

@@ -4,7 +4,7 @@ Two of the main hyperparameter-engineering tasks for DEQN training in practice: 
 
 `gpu-recommended` · `long` · builds on [Lecture 04](../lecture_04_irbc_with_deqns/README.md)
 
-> 📑 **Slides:** [04_Neural_Architecture_Search.pdf](slides/04_Neural_Architecture_Search.pdf) and 1 more under [`slides/`](slides/)  
+> 📑 **Slides:** [lecture_05_neural_architecture_search.pdf](slides/lecture_05_neural_architecture_search.pdf) and 1 more under [`slides/`](slides/)  
 > 📓 **Notebooks:** [start here](code/lecture_05_02_NAS_Random_Search_10D.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_05.md)  
 > 📖 **Script:** §Chapter 4 (Neural architecture search and loss normalization)
@@ -27,10 +27,10 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/04_Neural_Architecture_Search.pdf`](slides/04_Neural_Architecture_Search.pdf)
-- [`slides/04_Neural_Architecture_Search.tex`](slides/04_Neural_Architecture_Search.tex)
-- [`slides/05_Loss_Normalization.pdf`](slides/05_Loss_Normalization.pdf)
-- [`slides/05_Loss_Normalization.tex`](slides/05_Loss_Normalization.tex)
+- [`slides/lecture_05_neural_architecture_search.pdf`](slides/lecture_05_neural_architecture_search.pdf)
+- [`slides/lecture_05_neural_architecture_search.tex`](slides/lecture_05_neural_architecture_search.tex)
+- [`slides/lecture_05_loss_normalization.pdf`](slides/lecture_05_loss_normalization.pdf)
+- [`slides/lecture_05_loss_normalization.tex`](slides/lecture_05_loss_normalization.tex)
 
 ## Code
 

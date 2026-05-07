@@ -4,7 +4,7 @@ Overlapping-generations (OLG) models with DEQNs, at two scales.
 
 `gpu-recommended` · `long` · builds on [Lecture 07](../lecture_07_autodiff_for_deqns/README.md)
 
-> 📑 **Slides:** [07_OLG_Models_DEQNs.pdf](slides/07_OLG_Models_DEQNs.pdf)  
+> 📑 **Slides:** [lecture_09_olg_models_deqns.pdf](slides/lecture_09_olg_models_deqns.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_09_08_OLG_Analytic_DEQN_persistent.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_09.md)  
 > 📖 **Script:** §5.1-5.5 (OLG with DEQNs), §5.6 (Large OLG benchmark)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/07_OLG_Models_DEQNs.pdf`](slides/07_OLG_Models_DEQNs.pdf)
-- [`slides/07_OLG_Models_DEQNs.tex`](slides/07_OLG_Models_DEQNs.tex)
+- [`slides/lecture_09_olg_models_deqns.pdf`](slides/lecture_09_olg_models_deqns.pdf)
+- [`slides/lecture_09_olg_models_deqns.tex`](slides/lecture_09_olg_models_deqns.tex)
 
 ## Code
 

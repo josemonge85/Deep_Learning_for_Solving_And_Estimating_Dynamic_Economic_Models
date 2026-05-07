@@ -4,7 +4,7 @@ Stochastic IAMs depend on parameters whose true values are deeply uncertain. Plu
 
 `gpu-recommended` · `long` · builds on [Lecture 16](../lecture_16_climate_economics_iams/README.md)
 
-> 📑 **Slides:** [09_Deep_UQ_and_Optimal_Policies.pdf](slides/09_Deep_UQ_and_Optimal_Policies.pdf)  
+> 📑 **Slides:** [lecture_17_deep_uq_pareto_policy.pdf](slides/lecture_17_deep_uq_pareto_policy.pdf)  
 > 📓 **Notebooks:** [`code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb`](code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_17.md)  
 > 📖 **Script:** §11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/09_Deep_UQ_and_Optimal_Policies.pdf`](slides/09_Deep_UQ_and_Optimal_Policies.pdf)
-- [`slides/09_Deep_UQ_and_Optimal_Policies.tex`](slides/09_Deep_UQ_and_Optimal_Policies.tex)
+- [`slides/lecture_17_deep_uq_pareto_policy.pdf`](slides/lecture_17_deep_uq_pareto_policy.pdf)
+- [`slides/lecture_17_deep_uq_pareto_policy.tex`](slides/lecture_17_deep_uq_pareto_policy.tex)
 
 ## Code
 

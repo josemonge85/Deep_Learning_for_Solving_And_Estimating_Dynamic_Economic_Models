@@ -4,7 +4,7 @@ The first large-scale nonlinear DSGE application of DEQNs.
 
 `gpu-recommended` · `long` · builds on [Lecture 03](../lecture_03_deep_equilibrium_nets/README.md)
 
-> 📑 **Slides:** [03_IRBC.pdf](slides/03_IRBC.pdf)  
+> 📑 **Slides:** [lecture_04_irbc.pdf](slides/lecture_04_irbc.pdf)  
 > 📓 **Notebooks:** [smooth benchmark](code/lecture_04_01_IRBC_DEQN_smooth.ipynb) · [irreversible investment](code/lecture_04_02_IRBC_DEQN_irreversible.ipynb)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_04.md)  
 > 📖 **Script:** §Chapter 3 (International real business cycle)
@@ -27,8 +27,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/03_IRBC.pdf`](slides/03_IRBC.pdf)
-- [`slides/03_IRBC.tex`](slides/03_IRBC.tex)
+- [`slides/lecture_04_irbc.pdf`](slides/lecture_04_irbc.pdf)
+- [`slides/lecture_04_irbc.tex`](slides/lecture_04_irbc.tex)
 
 ## Code
 

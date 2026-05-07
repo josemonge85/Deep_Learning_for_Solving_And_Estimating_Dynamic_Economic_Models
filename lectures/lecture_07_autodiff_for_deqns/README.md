@@ -4,7 +4,7 @@ The automatic-differentiation machinery that DEQN training depends on, made expl
 
 `cpu-standard` · `standard` · builds on [Lecture 03](../lecture_03_deep_equilibrium_nets/README.md)
 
-> 📑 **Slides:** [05b_AutoDiff_for_DEQN.pdf](slides/05b_AutoDiff_for_DEQN.pdf)  
+> 📑 **Slides:** [lecture_07_autodiff_for_deqns.pdf](slides/lecture_07_autodiff_for_deqns.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_07_01_AutoDiff_Analytical_Examples.ipynb) (4 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_07.md)  
 > 📖 **Script:** §2.7 (Automatic differentiation), §Appendix B (Matrix calculus)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/05b_AutoDiff_for_DEQN.pdf`](slides/05b_AutoDiff_for_DEQN.pdf)
-- [`slides/05b_AutoDiff_for_DEQN.tex`](slides/05b_AutoDiff_for_DEQN.tex)
+- [`slides/lecture_07_autodiff_for_deqns.pdf`](slides/lecture_07_autodiff_for_deqns.pdf)
+- [`slides/lecture_07_autodiff_for_deqns.tex`](slides/lecture_07_autodiff_for_deqns.tex)
 
 ## Code
 

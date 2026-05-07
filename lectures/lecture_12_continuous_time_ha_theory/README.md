@@ -4,7 +4,7 @@ The continuous-time heterogeneous-agent system, paired with the master equation 
 
 `cpu-light` · `standard` · builds on [Lecture 11](../lecture_11_pinns/README.md)
 
-> 📑 **Slides:** [07_CT_Heterogeneous_Agents_Theory.pdf](slides/07_CT_Heterogeneous_Agents_Theory.pdf)  
+> 📑 **Slides:** [lecture_12_continuous_time_ha_theory.pdf](slides/lecture_12_continuous_time_ha_theory.pdf)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_12.md)  
 > 📖 **Script:** §8.1-8.6 (HJB, KFE, master equation), §Appendix C (Ito calculus)
 
@@ -26,8 +26,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/07_CT_Heterogeneous_Agents_Theory.pdf`](slides/07_CT_Heterogeneous_Agents_Theory.pdf)
-- [`slides/07_CT_Heterogeneous_Agents_Theory.tex`](slides/07_CT_Heterogeneous_Agents_Theory.tex)
+- [`slides/lecture_12_continuous_time_ha_theory.pdf`](slides/lecture_12_continuous_time_ha_theory.pdf)
+- [`slides/lecture_12_continuous_time_ha_theory.tex`](slides/lecture_12_continuous_time_ha_theory.tex)
 
 ## Code
 

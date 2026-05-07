@@ -4,7 +4,7 @@ Integrated assessment models (IAMs), the canonical climate-economy framework: DI
 
 `gpu-recommended` · `long` · builds on [Lecture 07](../lecture_07_autodiff_for_deqns/README.md)
 
-> 📑 **Slides:** [08_Climate_Economics_IAMs.pdf](slides/08_Climate_Economics_IAMs.pdf)  
+> 📑 **Slides:** [lecture_16_climate_economics_iams.pdf](slides/lecture_16_climate_economics_iams.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_16_01_Climate_Exercise.ipynb) (3 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_16.md)  
 > 📖 **Script:** §11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/08_Climate_Economics_IAMs.pdf`](slides/08_Climate_Economics_IAMs.pdf)
-- [`slides/08_Climate_Economics_IAMs.tex`](slides/08_Climate_Economics_IAMs.tex)
+- [`slides/lecture_16_climate_economics_iams.pdf`](slides/lecture_16_climate_economics_iams.pdf)
+- [`slides/lecture_16_climate_economics_iams.tex`](slides/lecture_16_climate_economics_iams.tex)
 
 ## Code
 

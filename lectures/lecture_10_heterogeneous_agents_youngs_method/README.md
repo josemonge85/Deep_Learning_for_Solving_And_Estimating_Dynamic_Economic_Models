@@ -4,7 +4,7 @@ Two complementary methods for stationary distributions in heterogeneous-agent mo
 
 `gpu-recommended` · `long` · builds on [Lecture 09](../lecture_09_olg_models_deqns/README.md)
 
-> 📑 **Slides:** [08_Heterogeneous_Agents_Youngs_Method.pdf](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)  
+> 📑 **Slides:** [lecture_10_heterogeneous_agents_youngs.pdf](slides/lecture_10_heterogeneous_agents_youngs.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_10_10_Youngs_Method_Examples.ipynb) (3 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_10.md)  
 > 📖 **Script:** §6.1-6.3 (Heterogeneous agents I), §6.4-6.6 (Heterogeneous agents II)
@@ -32,8 +32,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/08_Heterogeneous_Agents_Youngs_Method.pdf`](slides/08_Heterogeneous_Agents_Youngs_Method.pdf)
-- [`slides/08_Heterogeneous_Agents_Youngs_Method.tex`](slides/08_Heterogeneous_Agents_Youngs_Method.tex)
+- [`slides/lecture_10_heterogeneous_agents_youngs.pdf`](slides/lecture_10_heterogeneous_agents_youngs.pdf)
+- [`slides/lecture_10_heterogeneous_agents_youngs.tex`](slides/lecture_10_heterogeneous_agents_youngs.tex)
 
 ## Code
 

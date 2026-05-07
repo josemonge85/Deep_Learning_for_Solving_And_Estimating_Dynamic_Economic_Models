@@ -4,7 +4,7 @@ The central method of the course. **Deep Equilibrium Nets (DEQNs)** parameterize
 
 `cpu-standard` · `long` · builds on [Lecture 02](../lecture_02_intro_deep_learning/README.md)
 
-> 📑 **Slides:** [02_DeepEquilibriumNets.pdf](slides/02_DeepEquilibriumNets.pdf)  
+> 📑 **Slides:** [lecture_03_deep_equilibrium_nets.pdf](slides/lecture_03_deep_equilibrium_nets.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_03_01_Brock_Mirman_1972_DEQN.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_03.md)  
 > 📖 **Script:** §2.1-2.4 (DEQN theory and motivation), §2.5 (Deterministic Brock-Mirman), §2.6 (Quadrature for conditional expectations), §2.9 (Choice of Loss Kernel)
@@ -29,8 +29,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/02_DeepEquilibriumNets.pdf`](slides/02_DeepEquilibriumNets.pdf)
-- [`slides/02_DeepEquilibriumNets.tex`](slides/02_DeepEquilibriumNets.tex)
+- [`slides/lecture_03_deep_equilibrium_nets.pdf`](slides/lecture_03_deep_equilibrium_nets.pdf)
+- [`slides/lecture_03_deep_equilibrium_nets.tex`](slides/lecture_03_deep_equilibrium_nets.tex)
 
 ## Code
 

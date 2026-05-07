@@ -4,7 +4,7 @@ Structural estimation by simulated method of moments (SMM), made tractable by re
 
 `cpu-standard` · `long` · builds on [Lecture 14](../lecture_14_surrogates_and_gps/README.md)
 
-> 📑 **Slides:** [08_Exercise_Structural_Estimation.pdf](slides/08_Exercise_Structural_Estimation.pdf)  
+> 📑 **Slides:** [lecture_15_structural_estimation_smm.pdf](slides/lecture_15_structural_estimation_smm.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_15_03_Structural_Estimation_BM.ipynb) (2 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_15.md)  
 > 📖 **Script:** §Chapter 10 (Structural estimation via SMM)
@@ -28,8 +28,8 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/08_Exercise_Structural_Estimation.pdf`](slides/08_Exercise_Structural_Estimation.pdf)
-- [`slides/08_Exercise_Structural_Estimation.tex`](slides/08_Exercise_Structural_Estimation.tex)
+- [`slides/lecture_15_structural_estimation_smm.pdf`](slides/lecture_15_structural_estimation_smm.pdf)
+- [`slides/lecture_15_structural_estimation_smm.tex`](slides/lecture_15_structural_estimation_smm.tex)
 
 ## Code
 

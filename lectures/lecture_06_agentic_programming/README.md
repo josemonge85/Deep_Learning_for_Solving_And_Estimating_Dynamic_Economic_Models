@@ -4,7 +4,7 @@ A workshop on using AI coding agents (Claude Code) as research partners. Teaches
 
 `cpu-light` · `long` · builds on [Lecture 05](../lecture_05_nas_loss_normalization/README.md)
 
-> 📑 **Slides:** [05_Agentic_Programming.pdf](slides/05_Agentic_Programming.pdf) and 1 more under [`slides/`](slides/)  
+> 📑 **Slides:** [lecture_06_agentic_programming.pdf](slides/lecture_06_agentic_programming.pdf) and 1 more under [`slides/`](slides/)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_06.md)  
 > 📖 **Script:** —
 
@@ -28,10 +28,10 @@ After this lecture you can:
 
 ## Slides
 
-- [`slides/05_Agentic_Programming.pdf`](slides/05_Agentic_Programming.pdf)
-- [`slides/05_Agentic_Programming.tex`](slides/05_Agentic_Programming.tex)
-- [`slides/05_Agentic_Programming_Exercises.pdf`](slides/05_Agentic_Programming_Exercises.pdf)
-- [`slides/05_Agentic_Programming_Exercises.tex`](slides/05_Agentic_Programming_Exercises.tex)
+- [`slides/lecture_06_agentic_programming.pdf`](slides/lecture_06_agentic_programming.pdf)
+- [`slides/lecture_06_agentic_programming.tex`](slides/lecture_06_agentic_programming.tex)
+- [`slides/lecture_06_agentic_programming_exercises.pdf`](slides/lecture_06_agentic_programming_exercises.pdf)
+- [`slides/lecture_06_agentic_programming_exercises.tex`](slides/lecture_06_agentic_programming_exercises.tex)
 
 ## Code
 
