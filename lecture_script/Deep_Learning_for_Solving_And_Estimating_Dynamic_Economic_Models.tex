@@ -1199,7 +1199,7 @@ Beyond the three classical choices (sigmoid, tanh, ReLU), several modern activat
 Sigmoid     & $\sigma(z) = (1+e^{-z})^{-1}$              & $(0,1)$                       & Smooth, saturates           \\
 Tanh        & $\tanh(z)$                                 & $(-1,1)$                      & Zero-centered, saturates     \\
 ReLU        & $\max(0,z)$                                & $[0,\infty)$                  & Non-saturating for $z>0$    \\
-Leaky ReLU  & $\max(\alpha z, z)$, $\alpha\!=\!0.01$     & $(-\infty,\infty)$            & No dead neurons             \\
+Leaky ReLU  & $\max(\alpha z, z)$, $\alpha\!=\!0.1$      & $(-\infty,\infty)$            & No dead neurons             \\
 ELU         & $z\text{ if }z>0;\ \alpha(e^z-1)\text{ else}$ & $[-\alpha,\infty)$         & Negative saturation; $C^1$ if $\alpha=1$ \\
 Swish       & $z \cdot \sigma(z)$                        & $\approx [-0.28,\infty)$      & Smooth, non-monotone        \\
 GELU        & $z\cdot\Phi(z)$                            & $\approx [-0.17,\infty)$      & Smooth, default in BERT / GPT \\
@@ -1286,7 +1286,7 @@ y_i = \gamma\,\hat z_i + \beta,
 \end{equation}
 where $\varepsilon$ is a small constant for numerical stability and $(\gamma,\beta)$ are \emph{learnable} scalar parameters specific to that neuron.  The transformed activation $y_i$ is what the next layer sees.  In the standard recipe BN is inserted between the linear map $\W^{(\ell)}\bm a^{(\ell-1)}+\bm b^{(\ell)}$ and the elementwise nonlinearity $g(\cdot)$.
 
-\paragraph{Why standardisation, layer by layer.}  Without BN, the input distribution to a hidden layer $\ell$ depends on every weight in layers $1,\dots,\ell-1$.  As earlier weights update during gradient descent, the distribution faced by layer $\ell$ \emph{drifts} from one optimization step to the next: each layer therefore chases a moving target — a phenomenon \citet{ioffe2015batch} called \emph{internal covariate shift}.  BN pins the input distribution of every layer to mean zero and unit variance at every step (Figure~\ref{fig:batchnorm_intuition}).  Gradients become better conditioned, and substantially larger learning rates become safe.
+\paragraph{Why standardisation, layer by layer.}  Without BN, the input distribution to a hidden layer $\ell$ depends on every weight in layers $1,\dots,\ell-1$.  As earlier weights update during gradient descent, the distribution faced by layer $\ell$ \emph{drifts} from one optimization step to the next: each layer therefore chases a moving target, a phenomenon \citet{ioffe2015batch} called \emph{internal covariate shift}.  BN pins the input distribution of every layer to mean zero and unit variance at every step (Figure~\ref{fig:batchnorm_intuition}).  Gradients become better conditioned, and substantially larger learning rates become safe.
 
 \paragraph{The role of the affine parameters.}  At first glance the learnable shift and scale $(\gamma,\beta)$ seem to undo the normalization that BN just imposed.  This is exactly the point.  If a layer happens to prefer non-standard inputs, for example a tanh layer that needs slightly negative pre-activations to operate in its linear regime, the network is free to recover them via $(\gamma,\beta)$.  BN therefore never reduces the network's representational capacity; it merely shifts to a parameterization in which the optimization trajectory is easier to follow.
 
