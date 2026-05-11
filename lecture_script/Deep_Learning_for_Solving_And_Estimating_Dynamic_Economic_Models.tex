@@ -1099,7 +1099,7 @@ where $T$ is the total number of training iterations.  Figure~\ref{fig:lr_schedu
 \label{fig:lr_schedules}
 \end{figure}
 
-For the DEQN and PINN applications in this course, exponential decay or cosine annealing schedules are commonly used to achieve fine-grained convergence in the later stages of training, after the optimizer has found a good basin of attraction.
+In practice, decaying schedules such as exponential decay or cosine annealing tend to refine solutions in the later stages of training, once the optimizer has found a good basin of attraction.
 
 \begin{keyinsightbox}[Loss function landscape]
 The loss surface of a deep network is high-dimensional and non-convex, containing saddle points, plateaus, and sharp minima.  Stochastic optimization methods navigate this landscape effectively because the noise from mini-batch sampling helps escape shallow local minima and saddle points.  In economic applications, the loss function has direct economic interpretation, whether an Euler equation residual, a PDE residual, or a moment matching criterion, which provides a natural metric for assessing convergence quality.
