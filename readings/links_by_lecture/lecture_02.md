@@ -10,6 +10,7 @@ Default policy: link only.
 ## Sequence models and double descent
 
 - **Belkin, Hsu, Ma, Mandal (2019), "Reconciling modern machine learning practice and the bias-variance trade-off,"** *PNAS*, 116(32). [DOI](https://doi.org/10.1073/pnas.1903070116). The original double-descent paper.
+- **Nakkiran, Kaplun, Bansal, Yang, Barak, Sutskever (2020), "Deep Double Descent: Where Bigger Models and More Data Hurt,"** *ICLR 2020*. [arXiv](https://arxiv.org/abs/1912.02292). Extends double-descent to deep neural networks, datasets, and training epochs.
 - **Vaswani et al. (2017), "Attention is all you need,"** *NeurIPS*. [arXiv](https://arxiv.org/abs/1706.03762). The Transformer reference for the sequence-models block.
 
 ## Companion lecture script

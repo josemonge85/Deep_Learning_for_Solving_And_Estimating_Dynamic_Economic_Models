@@ -714,7 +714,7 @@ No labels, only inputs $\{\x^{(i)}\}_{i=1}^{m}$. The goal is to discover hidden 
 \end{itemize}
 
 \vspace{0.3cm}
-{\small We will not cover RL in this course, but the neural network tools you learn here are the building blocks for deep RL.}
+{\small We will not cover RL in this course, but the neural network tools you learn here are the building blocks for deep RL. Deep RL for sequential decision-making shares the Bellman structure developed in Chapters~2--5.}
 \end{frame}
 
 % ============================================================================
@@ -1382,7 +1382,7 @@ The loss function $J(\bm{\theta})$ measures how far predictions $\hat{\bm{y}}$ a
 \column{0.48\textwidth}
 \begin{block}{Regression: Mean Squared Error}
 \[
-    J(\bm{\theta}) = \frac{1}{n}\sum_{i=1}^{n}\big(y^{(i)} - f(\x^{(i)};\bm{\theta})\big)^{2}
+    J(\bm{\theta}) = \frac{1}{m}\sum_{i=1}^{m}\big(y^{(i)} - f(\x^{(i)};\bm{\theta})\big)^{2}
 \]
 Penalizes large deviations quadratically.
 \end{block}
@@ -2417,6 +2417,24 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 
 \vspace{0.05cm}
 {\footnotesize\emphc{Hands-on:} \texttt{lectures/lecture\_02\_intro\_deep\_learning/code/lecture\_02\_03\_Double\_Descent.ipynb} --- reproduce the curve with random Fourier features.}
+\end{frame}
+
+% --- NTK / Benign Overfitting: further reading pointer ---
+\begin{frame}{Further Reading: NTK and Benign Overfitting}
+\begin{block}{Why does interpolation generalize? Two perspectives}
+\begin{itemize}
+    \item \textbf{Neural Tangent Kernel (NTK):} in the infinite-width limit, gradient descent on a neural network is equivalent to kernel regression with a fixed kernel; the kernel encodes the architecture.
+    \begin{itemize}
+        \item Jacot, Gabriel \& Hongler (2018, NeurIPS).
+    \end{itemize}
+    \item \textbf{Benign overfitting:} interpolators generalize when signal aligns with the top eigendirections and noise spreads across many small ones.
+    \begin{itemize}
+        \item Bartlett, Montanari \& Rakhlin (2021, \textit{Proc.\ Natl.\ Acad.\ Sci.}).
+    \end{itemize}
+\end{itemize}
+\end{block}
+\vspace{0.2cm}
+{\footnotesize These theories provide a theoretical foundation for the double-descent phenomenon. Both are active research areas; consult the course reading list for entry points.}
 \end{frame}
 
 % ============================================================================
