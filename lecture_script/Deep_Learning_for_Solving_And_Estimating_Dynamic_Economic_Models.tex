@@ -698,6 +698,7 @@ Figure~\ref{fig:rl-loop} illustrates this agent--environment interaction loop.
 
 \phantomsection
 \section{Course Focus: Supervised vs. Unsupervised Learning}
+\label{sec:supervised_vs_unsupervised}
 
 This course begins with the \emph{supervised learning} paradigm, which provides the essential building blocks: choosing a parameterized model, defining a loss function, and minimizing it via gradient descent.
 
@@ -1928,11 +1929,77 @@ $d$ & Grid points ($10^d$) & Memory (64-bit) & Feasibility \\
 \label{tab:curse_of_dim}
 \end{table}
 
-\paragraph{The volume paradox.}  A complementary perspective on the curse of dimensionality comes from geometry.  The ratio of the volume of the unit $d$-ball to the unit $d$-cube is:
+\paragraph{The volume paradox.}  A complementary, and more geometric, perspective on the curse of dimensionality starts from a single ratio.  The volume of the unit $d$-ball relative to the smallest cube that contains it, $[-1,1]^d$, is
 \begin{equation}
 \frac{V_\mathrm{ball}(d)}{V_\mathrm{cube}(d)} = \frac{\pi^{d/2}}{2^d\,\Gamma(d/2+1)}.
+\label{eq:volume_ratio}
 \end{equation}
-This ratio decreases rapidly with $d$: for $d=2$ it is $\pi/4 \approx 0.785$, for $d=10$ it drops to $\approx 0.0025$, and for $d=100$ it is less than $10^{-70}$.  In other words, in high dimensions, almost all the volume of the cube is concentrated in its ``corners,'' far from the center.  Uniformly spaced grids waste nearly all their points in these corners, where the economic model's ergodic distribution typically places negligible probability mass.  Figure~\ref{fig:ergodic_vs_grid} visualizes this mismatch.  The geometric insight motivates the DEQN approach of training on the model's own ergodic distribution rather than on a fixed grid.
+This ratio collapses with $d$ (Figure~\ref{fig:volume_paradox}): it is $\pi/4 \approx 0.785$ at $d=2$ and $\pi/6 \approx 0.524$ at $d=3$, has fallen to $\approx 2.5\times 10^{-3}$ by $d=10$, and is below $10^{-70}$ at $d=100$.  The geometry behind the numbers is sharp.  The inscribed ball touches the center of each of the $2d$ faces, at distance $1$ from the center, but its surface never gets within $\sqrt{d}-1$ of any of the $2^d$ corners, which sit at distance $\sqrt{d}$.  As $d$ grows the corners march off to infinity while the ball stays put, so essentially all of the cube's volume drains into its corners, far from the center.  A box-shaped object in high dimensions is, to a first approximation, all corners and no middle.
+
+Why should an economist care about a fact about cubes and balls?  Because solving a dynamic stochastic model means producing a \emph{global} solution\footnote{In the sense of \citet{ECTA:ECTA1716}: an approximation of the equilibrium policy (or value) functions over the entire economically relevant region of the state space, in particular over the model's ergodic set, as opposed to a \emph{local} (perturbation) solution that is accurate only in a neighborhood of the deterministic steady state.}, and the region over which that solution actually has to be accurate is the model's \emph{ergodic set}, the states the economy visits under its own law of motion.  That set is typically a thin, curved, low-volume sliver of any hypercube $[\x_{\min},\x_{\max}]^d$ that one would draw around it, often well under one percent of the bounding box already at moderate $d$ \citep{judd2011numerically}.  Yet most of the high-dimensional approximation machinery on offer, tensor-product grids, adaptive sparse grids, tensor-product quadrature, is built on the hypercube; by the volume paradox an exponentially growing fraction of those nodes lands in corners the model never visits, so most of the computational effort is spent representing the function where it does not matter.  Figure~\ref{fig:ergodic_vs_grid} visualizes this mismatch.  This is exactly the waste the DEQN approach is designed to avoid: instead of tiling a box, it trains the network on states sampled from the model's own simulated trajectories, putting the approximation effort where the economics lives.
+
+Distance itself is the second casualty of high dimensions, and it is worth flagging now because it returns later with teeth.  Draw a point uniformly from the unit $d$-ball: its radius has cumulative distribution $r^d$ and density $d\,r^{d-1}$ on $[0,1]$, which for large $d$ piles essentially all of its mass against the shell $r\to 1$.  Random points sit on the pulp, not in the core, and they do so with overwhelming probability.  Relatedly, pairwise Euclidean distances among random points concentrate so tightly that the nearest and the farthest neighbor of a query point become almost equidistant, so ``distance'' loses most of its power to discriminate \citep{aggarwal2001surprising} (Figure~\ref{fig:distance_concentration}).  This is not a curio: any method that judges similarity through $\|\x-\x'\|$, from $k$-nearest-neighbors to kernel ridge regression to the Gaussian-process surrogates of Chapter~\ref{ch:gp}, whose RBF and Mat\'ern kernels are functions of $\|\x-\x'\|$ alone, loses resolution as $d$ grows.  It is one of the reasons Chapter~\ref{ch:gp} reaches for dimension reduction, active subspaces and deep kernels, before fitting a GP in a high-dimensional input space.
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.40\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.74, every node/.style={font=\footnotesize}]
+  % oblique ("cabinet") cube standing in for [-1,1]^d
+  \coordinate (F1) at (0,0);      \coordinate (F2) at (3.2,0);
+  \coordinate (F3) at (3.2,3.2);  \coordinate (F4) at (0,3.2);
+  \coordinate (B1) at (1.3,1.3);  \coordinate (B2) at (4.5,1.3);
+  \coordinate (B3) at (4.5,4.5);  \coordinate (B4) at (1.3,4.5);
+  % three visible faces tinted: their interior away from the ball is "all corners"
+  \fill[darkred!9] (F1)--(F2)--(F3)--(F4)--cycle;          % front face
+  \fill[darkred!13] (F2)--(F3)--(B3)--(B2)--cycle;         % right face
+  \fill[darkred!7] (F4)--(F3)--(B3)--(B4)--cycle;          % top face
+  % hidden edges
+  \draw[uzhgreydark, dashed, thin] (B1)--(B2) (B1)--(B4) (F1)--(B1);
+  % inscribed ball
+  \shade[ball color=softblue!55] (2.25,2.25) circle (1.5);
+  \draw[softblue!60!black, very thin] (2.25,2.25) ellipse (1.5 and 0.48);
+  \draw[softblue!60!black, very thin, dashed] (2.25,2.25) ellipse (0.48 and 1.5);
+  % visible cube edges over the ball
+  \draw[uzhblue, thick] (F1)--(F2)--(F3)--(F4)--cycle;
+  \draw[uzhblue, thick] (B2)--(B3)--(B4) (F2)--(B2) (F3)--(B3) (F4)--(B4);
+  % radial markers: ball touches a face (distance 1), corner is at distance sqrt(d)
+  \draw[-{Stealth[length=1.8mm]}, darkred, thick] (2.25,2.25) -- node[right, pos=0.5, inner sep=2pt]{$1$} (2.25,0.75);
+  \draw[-{Stealth[length=1.8mm]}, darkred, thick] (2.25,2.25) -- node[sloped, above, pos=0.62, inner sep=1pt]{$\sqrt{d}$} (F1);
+  \node[darkred, align=center, font=\scriptsize, anchor=south] at (2.25,5.0) {$2^d$ corners hold\\nearly all the volume};
+\end{tikzpicture}\\[0.2em]
+{\footnotesize (a) the unit ball inscribed in $[-1,1]^d$}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.57\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.93\textwidth, height=5.4cm,
+  xlabel={dimension $d$}, ylabel={$V_{\mathrm{ball}}/V_{\mathrm{cube}}$},
+  ymode=log, xmin=0, xmax=31, ymin=1e-15, ymax=4,
+  ytick={1e0,1e-3,1e-6,1e-9,1e-12,1e-15},
+  xtick={1,5,10,15,20,25,30},
+  tick label style={font=\scriptsize}, label style={font=\small},
+  grid=both, grid style={gray!15}, axis lines=left, clip=false,
+]
+  \addplot[uzhblue, very thick, mark=*, mark size=1pt] coordinates {
+    (1,1.0)(2,7.8540e-1)(3,5.2360e-1)(4,3.0843e-1)(5,1.6449e-1)(6,8.0746e-2)
+    (7,3.6912e-2)(8,1.5854e-2)(9,6.4424e-3)(10,2.4904e-3)(11,9.1997e-4)
+    (12,3.2599e-4)(13,1.1116e-4)(14,3.6576e-5)(15,1.1641e-5)(16,3.5909e-6)
+    (17,1.0756e-6)(18,3.1336e-7)(19,8.8924e-8)(20,2.4611e-8)(21,6.6515e-9)
+    (22,1.7572e-9)(23,4.5427e-10)(24,1.1501e-10)(25,2.8542e-11)(26,6.9485e-12)
+    (27,1.6605e-12)(28,3.8981e-13)(29,8.9943e-14)(30,2.0410e-14)
+  };
+  \node[darkred, font=\scriptsize, anchor=south west] at (axis cs:2.4,7.85e-1) {$d{=}2:\ \pi/4\approx0.79$};
+  \node[darkred, font=\scriptsize, anchor=west]       at (axis cs:11,2.49e-3)  {$d{=}10:\ \approx2.5\times10^{-3}$};
+  \node[uzhgreydark, font=\scriptsize, anchor=south west] at (axis cs:2,3e-13) {ratio $<10^{-70}$ by $d{=}100$};
+\end{axis}
+\end{tikzpicture}\\[0.2em]
+{\footnotesize (b) ratio~\eqref{eq:volume_ratio} versus $d$ (log scale)}
+\end{minipage}
+\caption{The volume paradox behind the curse of dimensionality.  \emph{(a)} The largest ball that fits inside the cube $[-1,1]^d$ touches the center of every face, at distance $1$ from the center, but its surface stays $\sqrt{d}-1$ away from each of the $2^d$ corners, which lie at distance $\sqrt{d}$.  As $d$ grows the corners recede while the ball does not, so almost all of the cube's volume ends up in the corners (tinted), far from the center.  \emph{(b)} The ball-to-cube volume ratio of equation~\eqref{eq:volume_ratio} on a logarithmic scale: $\pi/4$ at $d=2$, about $2.5\times10^{-3}$ at $d=10$, and below $10^{-70}$ at $d=100$.  A grid or quadrature rule built on the bounding hypercube therefore spends an exponentially growing share of its nodes in corners that the model's ergodic set never reaches.}
+\label{fig:volume_paradox}
+\end{figure}
 
 \begin{figure}[ht]
 \centering
@@ -1983,9 +2050,55 @@ This ratio decreases rapidly with $d$: for $d=2$ it is $\pi/4 \approx 0.785$, fo
 \label{fig:ergodic_vs_grid}
 \end{figure}
 
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.50\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.84]
+  % three d-balls; in each, the red annulus and the blue core each hold HALF the volume.
+  % r_half(d) = (1/2)^(1/d):  d=2 -> .707, d=10 -> .933, d=50 -> .986
+  \foreach \dd/\rh/\xc in {2/0.707/0, 10/0.933/2.7, 50/0.986/5.4}{
+    \begin{scope}[shift={(\xc,0)}]
+      \fill[darkred!30]  (0,0) circle (1);
+      \fill[softblue!16] (0,0) circle (\rh);
+      \draw[uzhblue, thick] (0,0) circle (1);
+      \draw[darkred!55!black, very thin] (0,0) circle (\rh);
+      \node[font=\scriptsize] at (0,-1.32) {$d=\dd$};
+    \end{scope}
+  }
+  % key, drawn on the d=2 ball where both regions are clearly visible
+  \node[font=\scriptsize] at (0,0) {$\tfrac12$};
+  \node[font=\scriptsize, darkred!55!black] at (0.855,0) {$\tfrac12$};
+\end{tikzpicture}\\[0.2em]
+{\footnotesize (a) blue core and red shell each hold half a $d$-ball's volume; the shell thins as $d$ grows}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.92\textwidth, height=5cm,
+  xlabel={radius $r=\|\x\|$ of a uniform draw}, ylabel={$\Pr(\|\x\|\le r)=r^{d}$},
+  domain=0:1, samples=140, xmin=0, xmax=1.02, ymin=0, ymax=1.05,
+  legend pos=north west, legend style={font=\scriptsize, draw=none, fill=none},
+  tick label style={font=\scriptsize}, label style={font=\small}, axis lines=left,
+]
+  \addplot[uzhblue, very thick]   {x^2};   \addlegendentry{$d=2$}
+  \addplot[softgreen, very thick]  {x^5};   \addlegendentry{$d=5$}
+  \addplot[softorange, very thick] {x^20};  \addlegendentry{$d=20$}
+  \addplot[darkred, very thick]    {x^50};  \addlegendentry{$d=50$}
+\end{axis}
+\end{tikzpicture}\\[0.2em]
+{\footnotesize (b) the radius CDF piles up at $r\to1$ as $d$ grows}
+\end{minipage}
+\caption{Why a ``random'' point in high dimensions lives on the shell, not in the core.  \emph{(a)} For each $d$, the blue inner disk and the red outer shell each hold half of the $d$-ball's volume; the shell's fractional thickness $1-(1/2)^{1/d}$ shrinks from $\approx0.29$ at $d=2$ to $\approx0.07$ at $d=10$ to $\approx0.014$ at $d=50$, so half of the mass crowds into an ever thinner rim near the surface.  \emph{(b)} Equivalently, the radius of a uniform draw has cumulative distribution $r^{d}$, which for large $d$ stays near zero until $r$ is almost $1$ and then jumps: the radius is essentially deterministic at $1$.  The companion fact is that pairwise Euclidean distances among random points concentrate, so a query point's nearest and farthest neighbors become nearly indistinguishable~\citep{aggarwal2001surprising}; this is why distance-based methods, including the Gaussian-process kernels of Chapter~\ref{ch:gp}, lose resolution in high dimensions.}
+\label{fig:distance_concentration}
+\end{figure}
+
 \section{From Supervised Learning to Self-Supervised Equilibrium Solving}
 
-The key conceptual shift introduced by \citet{azinovicDEEPEQUILIBRIUMNETS2022} is to replace the labeled training data of standard supervised learning with the structural equations of the economic model.  In a generic dynamic stochastic economic model, the state of the economy at time $t$ is summarized by a vector $\x_t \in \R^d$, and agents choose policy (or decision) variables $p_t = p(\x_t) \in \R^m$.  The equilibrium is characterized by a system of functional equations
+A word on terminology before we start, recalling the taxonomy of Section~\ref{sec:supervised_vs_unsupervised}.  A learning method is \emph{supervised} when its loss compares the network's output to an externally given target label; it is \emph{unsupervised} when there are no target labels at all (clustering, density estimation, dimension reduction); and it is \emph{self-supervised} when, although no human-provided labels exist, the method manufactures its own supervisory target out of the available structure.  Deep Equilibrium Nets are unsupervised in the narrow ``no labels'' sense, but the sharper and more useful description is \emph{equation-based self-supervision}: at every state where we evaluate the model, the equilibrium conditions tell us what the correct relationship between today's policy and tomorrow's must be, namely a residual of zero, and that residual plays exactly the role a label plays in supervised learning.  The DEQN objective introduced below is therefore a genuine regression loss, only against a target the model itself dictates rather than one handed to us as data.
+
+With that in mind, the key conceptual shift introduced by \citet{azinovicDEEPEQUILIBRIUMNETS2022} is to replace the labeled training data of standard supervised learning with the structural equations of the economic model.  In a generic dynamic stochastic economic model, the state of the economy at time $t$ is summarized by a vector $\x_t \in \R^d$, and agents choose policy (or decision) variables $p_t = p(\x_t) \in \R^m$.  The equilibrium is characterized by a system of functional equations
 \begin{equation}
 G\bigl(\x_t,\, p(\x_t),\, \mathbb{E}_t[H(\x_{t+1}, p(\x_{t+1}))]\bigr) = 0, \qquad \forall\, \x_t,
 \end{equation}
@@ -2067,76 +2180,10 @@ Several features of this algorithm deserve emphasis:
 
 \paragraph{Connection to continuous-time methods.}  The DEQN residual loss is the discrete-time analogue of the Deep Galerkin Method (DGM) of \citet{sirignano2018dgm}, which minimizes a PDE residual on neural-network-parameterized PDE solutions in continuous time, and of the deep BSDE solver of \citet{han2018solving} (Han--Jentzen--E), which formulates the same problem as a backward stochastic differential equation.  Within the discrete-time deep-learning toolkit, \citet{maliar2021deep} unify lifetime-reward, Bellman-equation, and Euler-equation training into a single framework, paired with an ``all-in-one'' integration operator that estimates all conditional expectations from a single Monte Carlo realization; DEQN as developed here is the Euler-equation branch of that taxonomy.  Chapters~\ref{ch:pinn} and~\ref{ch:ct_theory} develop the continuous-time analogues explicitly; the present chapter should be read as introducing the discrete-time machinery on which those continuous-time methods are built.
 
-\section{Encoding Equilibrium Conditions: Hard vs.\ Soft Constraints}
-\label{sec:deqn_hard_soft}
-
-The loss~\eqref{eq:deqn_loss} treats every equilibrium equation symmetrically, but in practice \citet{azinovicDEEPEQUILIBRIUMNETS2022}~\S4.2.2 split the conditions into two groups.  We illustrate the split with the Brock--Mirman model introduced in the next section and indicate how it generalizes.
-
-\begin{description}[itemsep=3pt, leftmargin=1.4em]
-\item[Hard constraints — encoded in the architecture (never in the loss).]  Some equations can be satisfied exactly for every state $\x = (K,z)$:
-  \begin{itemize}\itemsep1pt
-  \item The \emph{resource / state-transition} equation $K_{t+1} = z_t K_t^\alpha - C_t$ defines next-period capital from the network's consumption policy.  It is \emph{not} minimized; it is evaluated as a closed-form function of $\x_t$ and $C_t$.
-  \item The economic requirements $C_t > 0$ \emph{and} $K_{t+1} > 0$ are jointly imposed by parameterizing the network's output as a \emph{savings share} $s_t \in (0,1)$ via a \emph{sigmoid} activation, $\mathrm{sigmoid}(z) = 1/(1+e^{-z})$, and recovering both quantities in closed form from the resource constraint, $C_t = (1-s_t)\,z_t K_t^\alpha$ and $K_{t+1} = s_t\,z_t K_t^\alpha$.  A softplus head on $C_t$ alone would guarantee $C_t>0$ but not $K_{t+1}>0$ (the network could output $C_t > z_t K_t^\alpha$).  This sigmoid-savings parameterization removes an entire class of infeasible candidate policies before training begins; see the code listing in Section~\ref{sec:bm} below.
-  \end{itemize}
-\item[Soft constraint — minimized in the loss.]
-  The only equilibrium condition that cannot be enforced analytically is the \emph{Euler equation}~\eqref{eq:bm_euler}.  The squared relative Euler error~\eqref{eq:ree_bm} is averaged over the mini-batch and driven toward zero by stochastic gradient descent.
-\end{description}
-
-This split is pedagogically important for three reasons: (i)~only the genuinely non-closed-form conditions enter the loss, which speeds up training; (ii)~it eliminates a family of bad local minima in which the network produces, e.g., slightly negative consumption or infeasible states; and (iii)~it explains why the loss typically converges to a small but nonzero value even at the optimum, since the Euler residual is intrinsic and cannot be removed by re-parameterization.  Figure~\ref{fig:hard_soft} summarizes this construction for Brock--Mirman.
-
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}[
-    io/.style={rectangle, draw=uzhblue, thick, rounded corners=2pt, fill=uzhblue!6,
-               minimum width=1.6cm, minimum height=0.7cm, font=\scriptsize, align=center},
-    dnn/.style={rectangle, draw=uzhblue, very thick, fill=uzhgreylight, rounded corners=4pt,
-                minimum width=2.2cm, minimum height=1.8cm, font=\small\bfseries, align=center},
-    softbox/.style={rectangle, draw=darkred, thick, fill=red!6, rounded corners=2pt,
-                 font=\scriptsize, align=left, inner sep=4pt},
-    hardbox/.style={rectangle, draw=softgreen, thick, fill=green!6, rounded corners=2pt,
-                 font=\scriptsize, align=left, inner sep=4pt},
-    sp/.style={rectangle, draw=softgreen, thick, fill=softgreen!15, rounded corners=2pt,
-               minimum width=2.2cm, minimum height=0.55cm, font=\footnotesize, align=center, inner sep=2pt},
-    arr/.style={-{Stealth[length=2mm]}, thick}
-]
-    % Input state
-    \node[io] (x) at (0,0) {State $(K_t,z_t)$};
-    % DNN
-    \node[dnn] (nn) at (3.3,0) {$\mathcal{N}_\rho$};
-    % Sigmoid output: savings share
-    \node[sp] (s) at (6.8,0) {$s_t = \mathrm{sigmoid}(\cdot)$};
-    \node[font=\tiny, text=softgreen, anchor=west] at ($(s.east)+(0.1,0)$) {$\in(0,1)$};
-
-    \draw[arr] (x) -- (nn);
-    \draw[arr, softgreen] (nn.east) -- (s.west);
-
-    % Hard-constraint box (above)
-    \node[hardbox, above=0.9cm of nn, text width=6.6cm] (hb) {%
-        \textbf{\textcolor{softgreen}{Hard}} (exact, no loss term):\\[1pt]
-        \quad$C_t = (1-s_t)\,z_t K_t^\alpha$ \hfill ($C_t>0$)\\
-        \quad$K_{t+1} = s_t\,z_t K_t^\alpha$ \hfill ($K_{t+1}>0$)};
-
-    % Soft-constraint box (below)
-    \node[softbox, below=0.9cm of nn, text width=6.6cm] (sb) {%
-        \textbf{\textcolor{darkred}{Soft}} (minimized in the loss $\ell_\rho$):\\[1pt]
-        \quad $M_t=\mathbb{E}_t[\alpha z_{t+1}K_{t+1}^{\alpha-1}/C_{t+1}]$\\
-        \quad $e^{\mathrm{REE}}(K_t,z_t)=C_t^{-1}(\beta M_t)^{-1}-1$};
-
-    \draw[dashed, softgreen, arr] (hb.south) -- ($(nn.north)+(-0.4,0)$);
-    \draw[dashed, darkred,  arr] ($(s.south west)+(0.15,0)$) -- (sb.north east);
-\end{tikzpicture}
-\caption{Hard vs.\ soft constraints in the DEQN architecture for Brock--Mirman.  The network $\mathcal{N}_\rho$ reads the state $(K_t,z_t)$ and emits a \emph{savings share} $s_t \in (0,1)$ via a \emph{sigmoid} head.  Both consumption $C_t = (1-s_t)\,z_t K_t^\alpha$ and next-period capital $K_{t+1} = s_t\,z_t K_t^\alpha$ are then defined in closed form (green, top), guaranteeing $C_t>0$ \emph{and} $K_{t+1}>0$ simultaneously; a softplus head on $C_t$ alone could not, since $C_t > z_t K_t^\alpha$ would push $K_{t+1}<0$ and make $K_{t+1}^{\alpha-1}$ undefined.  Only the relative Euler-equation residual (red, bottom) is squared, averaged over the mini-batch, and minimized by SGD.  This figure matches the code listing in Section~\ref{sec:bm} below.  In richer models (OLG, Chapter~\ref{ch:olg}) the same split extends to firm first-order conditions, household budget constraints, and KKT multipliers with softplus heads and Fischer--Burmeister complementarity residuals.}
-\label{fig:hard_soft}
-\end{figure}
-
-\paragraph{How the split generalizes.}  In models with more equilibrium objects (the OLG benchmark of \citet{azinovicDEEPEQUILIBRIUMNETS2022}, the IRBC model of Chapter~\ref{ch:irbc}, the HA economies of Chapter~\ref{ch:young}), the same logic extends: firm first-order conditions for prices $(w_t,r_t)$ are closed-form in the aggregate state, the household budget constraint algebraically determines consumption given savings, and each inequality constraint contributes a softplus-headed KKT multiplier paired with a Fischer--Burmeister complementarity residual in the soft part of the loss (Chapter~\ref{ch:irbc}).  The Brock--Mirman case above is the minimal instance of the pattern.
-
-\paragraph{Market-clearing layers.}  One can push this design philosophy further by encoding the \emph{market-clearing condition itself} into the network as a dedicated output layer rather than minimizing a market-clearing residual in the loss: the network outputs unnormalized cohort savings (or shares) and a final layer rescales them so that aggregate clearing holds by construction.  \citet{azinoviczemlicka_2024} use such a ``market-clearing layer'' in an OLG economy with rare disasters; this is the discrete-time counterpart of the PINN-style practice of baking conservation laws directly into the network output (Chapter~\ref{ch:pinn}).  Sigmoid heads, softplus heads, Fischer--Burmeister residuals, and market-clearing rescaling layers thus form a small toolbox of architecture-level encodings that each move part of the equilibrium structure from the soft loss into the hard part of the network.
-
 \section{The Brock--Mirman Benchmark}
 \label{sec:bm}
 
-To validate the DEQN methodology, \citet{azinovicDEEPEQUILIBRIUMNETS2022} begin with the stochastic growth model of \citet{brock1972optimal}, which admits a closed-form solution and therefore serves as an ideal test case.
+Having laid out the generic training loop, we now put it to work on a concrete model.  To validate the DEQN methodology, \citet{azinovicDEEPEQUILIBRIUMNETS2022} begin with the stochastic growth model of \citet{brock1972optimal}, which admits a closed-form solution and therefore serves as an ideal test case.
 
 The social planner solves:
 \begin{equation}
@@ -2197,7 +2244,7 @@ The derivation proceeds by guessing that the value function takes the form $V(K,
 \begin{equation}
 G(K_t, z_t) = 1 - \beta \, \frac{C_t}{C_{t+1}} \cdot \alpha z_{t+1} K_{t+1}^{\alpha-1},
 \end{equation}
-where $z_{t+1}$ denotes a single realization of the next-period shock and $K_{t+1} = z_t K_t^\alpha - \mathcal{N}_\rho(K_t, z_t)$.  Note that the Euler equation~\eqref{eq:bm_euler} involves the conditional expectation $\mathbb{E}_t[\cdot]$, whereas the residual $G$ above is written for a single realization of $z_{t+1}$.  Two approaches are common for handling this expectation:
+where $z_{t+1}$ denotes a single realization of the next-period shock and $K_{t+1} = z_t K_t^\alpha - \mathcal{N}_\rho(K_t, z_t)$.  In the code listing below the network actually emits a \emph{savings share} $s_t\in(0,1)$ through a sigmoid head rather than $C_t$ directly, which guarantees $C_t>0$ \emph{and} $K_{t+1}>0$ at every training step; Section~\ref{sec:deqn_hard_soft} explains the hard-vs-soft constraint split this exemplifies.  Note that the Euler equation~\eqref{eq:bm_euler} involves the conditional expectation $\mathbb{E}_t[\cdot]$, whereas the residual $G$ above is written for a single realization of $z_{t+1}$.  Two approaches are common for handling this expectation:
 \begin{enumerate}[itemsep=2pt]
 \item \textbf{Path averaging:} draw a single $z_{t+1}$ per state, compute $G$ for that draw, and average $G^2$ over many states along the simulated path.  This minimizes $\mathbb{E}_{(K_t,z_t,z_{t+1})}[G^2]$ -- the squared \emph{pathwise} residual.  It is an unbiased Monte Carlo objective for that stronger loss, and Jensen's inequality gives $\bigl(\mathbb{E}_t[G]\bigr)^2 \leq \mathbb{E}_t[G^2]$.  Thus $G=0$ almost surely implies the conditional Euler equation, but the converse need not hold: a policy can have $\mathbb{E}_t[G]=0$ while $G$ varies with the shock.  In the log/full-depreciation Brock--Mirman benchmark the closed-form policy happens to drive the pathwise residual itself to zero, so this stronger target is harmless; in richer models it is a modeling choice.  This is the approach used in the Brock--Mirman code listing below.
 \item \textbf{Quadrature:} for each state $(K_t, z_t)$, approximate $\mathbb{E}_t[\cdot]$ explicitly via deterministic nodes and weights (Section~\ref{sec:quadrature_rules}), form the residual from the estimated expectation, and then square.  This targets $\bigl(\mathbb{E}_t[G]\bigr)^2$ directly and is the approach used for the IRBC model of Chapter~\ref{ch:irbc}, where accurate expectations are critical for convergence.
@@ -2233,6 +2280,72 @@ def deqn_loss(model, K, z, beta, alpha, z_next):
     G = 1.0 - beta * (C / C_next) * alpha * z_next * K_next**(alpha-1)
     return tf.reduce_mean(G**2)
 \end{lstlisting}
+
+\section{Encoding Equilibrium Conditions: Hard vs.\ Soft Constraints}
+\label{sec:deqn_hard_soft}
+
+The Brock--Mirman DEQN loss above already used one design choice without dwelling on it: the network emits a savings share through a sigmoid rather than consumption directly.  This is an instance of a general principle.  \citet{azinovicDEEPEQUILIBRIUMNETS2022}~\S4.2.2 do not treat every equilibrium equation symmetrically in the loss~\eqref{eq:deqn_loss}; they split the conditions into two groups.  We make the split explicit on the Brock--Mirman model of the previous section and then indicate how it generalizes.
+
+\begin{description}[itemsep=3pt, leftmargin=1.4em]
+\item[Hard constraints — encoded in the architecture (never in the loss).]  Some equations can be satisfied exactly for every state $\x = (K,z)$:
+  \begin{itemize}\itemsep1pt
+  \item The \emph{resource / state-transition} equation $K_{t+1} = z_t K_t^\alpha - C_t$ defines next-period capital from the network's consumption policy.  It is \emph{not} minimized; it is evaluated as a closed-form function of $\x_t$ and $C_t$.
+  \item The economic requirements $C_t > 0$ \emph{and} $K_{t+1} > 0$ are jointly imposed by parameterizing the network's output as a \emph{savings share} $s_t \in (0,1)$ via a \emph{sigmoid} activation, $\mathrm{sigmoid}(z) = 1/(1+e^{-z})$, and recovering both quantities in closed form from the resource constraint, $C_t = (1-s_t)\,z_t K_t^\alpha$ and $K_{t+1} = s_t\,z_t K_t^\alpha$.  A softplus head on $C_t$ alone would guarantee $C_t>0$ but not $K_{t+1}>0$ (the network could output $C_t > z_t K_t^\alpha$).  This sigmoid-savings parameterization removes an entire class of infeasible candidate policies before training begins; see the code listing in Section~\ref{sec:bm} above.
+  \end{itemize}
+\item[Soft constraint — minimized in the loss.]
+  The only equilibrium condition that cannot be enforced analytically is the \emph{Euler equation}~\eqref{eq:bm_euler}.  The squared relative Euler error~\eqref{eq:ree_bm} is averaged over the mini-batch and driven toward zero by stochastic gradient descent.
+\end{description}
+
+This split is pedagogically important for three reasons: (i)~only the genuinely non-closed-form conditions enter the loss, which speeds up training; (ii)~it eliminates a family of bad local minima in which the network produces, e.g., slightly negative consumption or infeasible states; and (iii)~it explains why the loss typically converges to a small but nonzero value even at the optimum, since the Euler residual is intrinsic and cannot be removed by re-parameterization.  Figure~\ref{fig:hard_soft} summarizes this construction for Brock--Mirman.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    io/.style={rectangle, draw=uzhblue, thick, rounded corners=2pt, fill=uzhblue!6,
+               minimum width=1.6cm, minimum height=0.7cm, font=\scriptsize, align=center},
+    dnn/.style={rectangle, draw=uzhblue, very thick, fill=uzhgreylight, rounded corners=4pt,
+                minimum width=2.2cm, minimum height=1.8cm, font=\small\bfseries, align=center},
+    softbox/.style={rectangle, draw=darkred, thick, fill=red!6, rounded corners=2pt,
+                 font=\scriptsize, align=left, inner sep=4pt},
+    hardbox/.style={rectangle, draw=softgreen, thick, fill=green!6, rounded corners=2pt,
+                 font=\scriptsize, align=left, inner sep=4pt},
+    sp/.style={rectangle, draw=softgreen, thick, fill=softgreen!15, rounded corners=2pt,
+               minimum width=2.2cm, minimum height=0.55cm, font=\footnotesize, align=center, inner sep=2pt},
+    arr/.style={-{Stealth[length=2mm]}, thick}
+]
+    % Input state
+    \node[io] (x) at (0,0) {State $(K_t,z_t)$};
+    % DNN
+    \node[dnn] (nn) at (3.3,0) {$\mathcal{N}_\rho$};
+    % Sigmoid output: savings share
+    \node[sp] (s) at (6.8,0) {$s_t = \mathrm{sigmoid}(\cdot)$};
+    \node[font=\tiny, text=softgreen, anchor=west] at ($(s.east)+(0.1,0)$) {$\in(0,1)$};
+
+    \draw[arr] (x) -- (nn);
+    \draw[arr, softgreen] (nn.east) -- (s.west);
+
+    % Hard-constraint box (above)
+    \node[hardbox, above=0.9cm of nn, text width=6.6cm] (hb) {%
+        \textbf{\textcolor{softgreen}{Hard}} (exact, no loss term):\\[1pt]
+        \quad$C_t = (1-s_t)\,z_t K_t^\alpha$ \hfill ($C_t>0$)\\
+        \quad$K_{t+1} = s_t\,z_t K_t^\alpha$ \hfill ($K_{t+1}>0$)};
+
+    % Soft-constraint box (below)
+    \node[softbox, below=0.9cm of nn, text width=6.6cm] (sb) {%
+        \textbf{\textcolor{darkred}{Soft}} (minimized in the loss $\ell_\rho$):\\[1pt]
+        \quad $M_t=\mathbb{E}_t[\alpha z_{t+1}K_{t+1}^{\alpha-1}/C_{t+1}]$\\
+        \quad $e^{\mathrm{REE}}(K_t,z_t)=C_t^{-1}(\beta M_t)^{-1}-1$};
+
+    \draw[dashed, softgreen, arr] (hb.south) -- ($(nn.north)+(-0.4,0)$);
+    \draw[dashed, darkred,  arr] ($(s.south west)+(0.15,0)$) -- (sb.north east);
+\end{tikzpicture}
+\caption{Hard vs.\ soft constraints in the DEQN architecture for Brock--Mirman.  The network $\mathcal{N}_\rho$ reads the state $(K_t,z_t)$ and emits a \emph{savings share} $s_t \in (0,1)$ via a \emph{sigmoid} head.  Both consumption $C_t = (1-s_t)\,z_t K_t^\alpha$ and next-period capital $K_{t+1} = s_t\,z_t K_t^\alpha$ are then defined in closed form (green, top), guaranteeing $C_t>0$ \emph{and} $K_{t+1}>0$ simultaneously; a softplus head on $C_t$ alone could not, since $C_t > z_t K_t^\alpha$ would push $K_{t+1}<0$ and make $K_{t+1}^{\alpha-1}$ undefined.  Only the relative Euler-equation residual (red, bottom) is squared, averaged over the mini-batch, and minimized by SGD.  This figure matches the code listing in Section~\ref{sec:bm} above.  In richer models (OLG, Chapter~\ref{ch:olg}) the same split extends to firm first-order conditions, household budget constraints, and KKT multipliers with softplus heads and Fischer--Burmeister complementarity residuals.}
+\label{fig:hard_soft}
+\end{figure}
+
+\paragraph{How the split generalizes.}  In models with more equilibrium objects (the OLG benchmark of \citet{azinovicDEEPEQUILIBRIUMNETS2022}, the IRBC model of Chapter~\ref{ch:irbc}, the HA economies of Chapter~\ref{ch:young}), the same logic extends: firm first-order conditions for prices $(w_t,r_t)$ are closed-form in the aggregate state, the household budget constraint algebraically determines consumption given savings, and each inequality constraint contributes a softplus-headed KKT multiplier paired with a Fischer--Burmeister complementarity residual in the soft part of the loss (Chapter~\ref{ch:irbc}).  The Brock--Mirman case above is the minimal instance of the pattern.
+
+\paragraph{Market-clearing layers.}  One can push this design philosophy further by encoding the \emph{market-clearing condition itself} into the network as a dedicated output layer rather than minimizing a market-clearing residual in the loss: the network outputs unnormalized cohort savings (or shares) and a final layer rescales them so that aggregate clearing holds by construction.  \citet{azinoviczemlicka_2024} use such a ``market-clearing layer'' in an OLG economy with rare disasters; this is the discrete-time counterpart of the PINN-style practice of baking conservation laws directly into the network output (Chapter~\ref{ch:pinn}).  Sigmoid heads, softplus heads, Fischer--Burmeister residuals, and market-clearing rescaling layers thus form a small toolbox of architecture-level encodings that each move part of the equilibrium structure from the soft loss into the hard part of the network.
 
 \section{Quadrature Rules for Conditional Expectations}
 \label{sec:quadrature_rules}
