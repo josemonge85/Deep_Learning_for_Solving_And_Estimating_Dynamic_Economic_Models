@@ -436,11 +436,11 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \end{bmatrix}\!\right)
 
 \textbf{Such that, for all cohorts $s = 1, \ldots, A-1$, the (interior) Euler equation holds:}
 \[
-\beta\,\E{\frac{r_{t+1}\,u'(c_{t+1}^{\,s+1})}{u'(c_t^{\,s})}} - 1 \;=\; 0 \qquad (\text{Euler residual}).
+\beta\,\E{\frac{r_{t+1}\,u'(c_{t+1}^{\,s+1})}{u'(c_t^{\,s})}} - 1 \;=\; 0 \qquad (\text{Euler equation}).
 \]
-Stack these $A-1$ residuals as $G\bigl([z_t, \bm{k}_t],\, f([z_t, \bm{k}_t])\bigr) = \bm{0}$.
+Stack these $A-1$ conditions as $G\bigl([z_t, \bm{k}_t],\, f([z_t, \bm{k}_t])\bigr) = \bm{0}$.
 
-{\scriptsize $A=6 \Rightarrow 5$ outputs.  Notebook uses an extended state of dim $16+4A=40$ (pre-computed aggregates + per-agent income blocks + the transition-probability row) for ease of learning -- pure feature engineering.}
+{\scriptsize $A=6 \Rightarrow 5$ outputs; extended state of dim $16+4A=40$ -- pure feature engineering.  The residual \emph{squared} in the loss is the consumption-equivalent form of II.7 (same zeros).}
 \end{frame}
 
 
@@ -875,10 +875,10 @@ firm demands $(K_t, L_t)_{t \ge 0}$, and prices $(r_t, w_t, p_t)_{t\ge 0}$, such
 \textbf{Firm FOCs.}  Same closed form as Part II.
 
 \vspace{0.3em}
-\textbf{Two Euler equations per cohort}, for $s = 1, \ldots, A-1$:
+\textbf{Two Euler equations per cohort}, for $s = 1, \ldots, A-1$ (with the marginal adjustment-cost wedge $\mathcal{A}_t^s := 1 + \zeta\,(k'^s_t - r_t k_t^s)$):
 \[
 \text{(capital)}\;\;
-u'(c_t^s) \cdot \bigl(1 + \zeta\,(k'^s - r_t k_t^s)\bigr) \;=\; \beta\,\E{u'(c_{t+1}^{s+1})\,r_{t+1}} \;+\; \lambda_{\text{b}}^s \;+\; \lambda_{\text{c}}^s,
+u'(c_t^s)\,\mathcal{A}_t^s \;=\; \beta\,\E{u'(c_{t+1}^{s+1})\,r_{t+1}\,\mathcal{A}_{t+1}^{s+1}} \;+\; \lambda_{\text{b}}^s \;+\; \lambda_{\text{c}}^s,
 \]
 \[
 \text{(bonds)}\;\;
@@ -926,7 +926,7 @@ u'(c_t^s)\cdot p_t \;=\; \beta\,\E{u'(c_{t+1}^{s+1})} \;+\; \kappa\,\lambda_{\te
     \item $e_{\text{REE},k}^{\,s},\;e_{\text{REE},b}^{\,s}$: relative residuals of the capital and bond Euler equations.
     \item $e_{\text{KKT},b}^{\,s} = \lambda_{\text{b}}^s \cdot k'^s$: borrowing KKT.
     \item $e_{\text{KKT},c}^{\,s} = \lambda_{\text{c}}^s \cdot (k'^s + \kappa b'^s)$: collateral KKT.
-    \item $e_{\text{MC},b} = \sum_{s=1}^{A} b_t^{\,s}$: bond market clearing.
+    \item $e_{\text{MC},b} = \sum_{s=1}^{A-1} \hat b'^{\,s}$: bond market clearing (\emphc{chosen} next-period bonds, not the current state).
 \end{itemize}
 
 \vspace{0.2em}
@@ -959,7 +959,7 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \\ \bm{b}_t \end{bmatrix}\!\right)
 \textbf{Such that} $G\bigl([z_t, \bm{k}_t, \bm{b}_t],\,f([z_t, \bm{k}_t, \bm{b}_t])\bigr) = \bm{0}$ where $G$ stacks the $4(A-1)+1$ equations of III.6.
 
 \vspace{0.3em}
-{\footnotesize With $A = 56$: minimal state dim $=113$; the notebook input is $240$ after engineered aggregates and transition probabilities.  Output dim $=4\times55+1=\bm{221}$.  Bond holdings are recovered as $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$, and softplus enforces $\hat k'^h,\hat\lambda_b^h,\hat q^h,\hat\mu^h\ge0$.}
+{\footnotesize With $A = 56$: minimal state dim $=113$; the notebook input is $240$ after engineered aggregates and transition probabilities.  Output dim $=4\times55+1=\bm{221}$.  Bond holdings are recovered as $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$, and the output transforms enforce $\hat k'^h,\hat\lambda_b^h,\hat q^h,\hat\mu^h\ge0$.}
 \end{frame}
 
 
@@ -978,7 +978,7 @@ $\N_\theta:\;\R^{240} \to \R^{221}$
 Notebook input   & $240$ (minimal state: $113$) \\
 Hidden layers    & $2{\times}128$ (teach.) / $2{\times}1000$ (prod.) \\
 Output dim       & $4(A{-}1) + 1 = 221$ \\
-Output layer     & softplus on every output \\
+Output layer     & softplus (multipliers, collateral slack) / bounded-exp (capital, bond price) \\
 Optimizer        & Adam, lr $10^{-5}$\\
 \bottomrule
 \end{tabular}
@@ -1071,9 +1071,9 @@ Same MLP template as Part II, plus a bond-price head; bonds recovered as $\hat b
 % --- III.11 Consumption by shock state --------------------------------
 \begin{frame}{III.11 Consumption Profiles by Aggregate State}
 \footnotesize
-\begin{block}{What the notebook will plot}
+\begin{block}{State-conditioned slices of the trained policy}
 \vspace{-3pt}
-For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, evaluated on a long ergodic simulation from \texttt{lecture\_08\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}.
+For each aggregate state $z \in \{1,2,3,4\}$ the trained policy yields a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, read off a long ergodic simulation from \texttt{lecture\_08\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}.  (The notebook ships pooled lifecycle bands and residual diagnostics; the per-shock breakdown is a small add.)
 \end{block}
 
 \begin{block}{The four aggregate states}
@@ -1113,7 +1113,7 @@ Four distinct profiles, ordered as in the table; exact magnitudes and crossover 
 \end{block}
 
 \vspace{-2pt}
-\textbf{Hands-on: \texttt{lecture\_08\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}} (persistent-simulation primary; \texttt{lecture\_08\_09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} is the feedback-free ablation, same model and loss, different training cloud).  \S 1--4 match III.1--III.5; \S 5--7 = training and policy stability; \S 8 = plots and diagnostics of III.10--III.12.  Teaching runtime (128-wide, 2\,000 episodes): $\approx 30$ min on CPU.
+\textbf{Hands-on: \texttt{lecture\_08\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}} (persistent-simulation primary; \texttt{lecture\_08\_09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} is the feedback-free ablation, same model and loss, different training cloud).  \S 1--4 match III.1--III.5; \S 5--7 = training and policy stability; \S 8 = plots/diagnostics of III.10--III.12.  Teaching runtime ($\sim$200 segments, 128-wide): a few minutes.
 \end{frame}
 
 
