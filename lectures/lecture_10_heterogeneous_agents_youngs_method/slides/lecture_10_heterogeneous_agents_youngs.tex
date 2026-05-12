@@ -172,9 +172,11 @@ Azinovic, Gaegauf \& Scheidegger (2022), \emph{International Economic Review} 63
   \item Recognize why aggregate state becomes infinite-dimensional in heterogeneous-agent economies and how Young's method avoids the curse
   \item Implement a histogram-based distribution simulator that updates aggregate states without Monte Carlo noise
   \item Build and train a policy network on a two-dimensional wealth distribution in the Krusell--Smith benchmark
-  \item Diagnose the failure mode of state-space deep learning when the distribution shifts and explain how sequence space addresses it
-  \item Deploy shape-preserving (I-spline) parameterizations to enforce marginal-propensity-to-consume monotonicity by construction
+  \item Embed the histogram update inside a DEQN training loop (the Appendix-A.5 endowment economy) so the distribution co-evolves with the policy and price networks
+  \item Compare the alternative deep-learning routes to Krusell--Smith (all-in-one DL, DeepHAM's learned generalized moments) and judge which one fits a given model
 \end{itemize}
+\vspace{0.4em}
+{\small (The sequence-space alternative to histogram encoding is developed in the Sequence-Space DEQNs deck and in Chapter~6.7 of the script.)}
 \end{frame}
 
 

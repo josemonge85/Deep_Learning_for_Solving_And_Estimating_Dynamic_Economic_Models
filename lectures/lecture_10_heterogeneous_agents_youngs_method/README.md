@@ -11,24 +11,26 @@ Two complementary methods for stationary distributions in heterogeneous-agent mo
 
 ## What this lecture covers
 
-The deck is intentionally encyclopedic. Treat the three Parts below as your reading map; budget ~60 min per Part, and feel free to stop at the end of Part II on a first pass.
+The deck is intentionally encyclopedic, in five parts. Treat them as your reading map; budget ~30–45 min per part, and feel free to stop after Part IV on a first pass.
 
-- **Part I: Methods.** Young's (2010) histogram method, traditional Krusell-Smith with bounded rationality, and three deep-learning approaches to the same problem (continuum-of-agents DEQN, all-in-one DL after Maliar-Maliar-Winant, DeepHAM). Read first; this is the conceptual core.
-- **Part II: Aiyagari teaching model.** Run Young and the DEQN side-by-side on the same calibration; read off the wealth distribution and aggregates. Notebooks 10 and 11 belong here.
-- **Part III: State-of-the-art.** Krusell-Smith with the deep-learning machinery; comparison against Young's method on a model with aggregate risk. Notebook 12 belongs here. Skip on a first pass if time-pressed.
+- **Part I — Motivation.** Why the aggregate state becomes infinite-dimensional once agents are heterogeneous, and why the cross-sectional distribution has to be tracked at all.
+- **Part II — Young's (2010) non-stochastic simulation.** The mean-preserving lottery, the two-stage capital/shock cascade, grid design, and the O(1) bracketing trick. Notebook 10 isolates this operator on toy examples (including the script's hand-worked 4-point update).
+- **Part III — The Krusell–Smith logic.** The traditional nested fixed point, bounded rationality, and approximate aggregation (R² > 0.9999 on mean dynamics, with the caveats). No notebook of its own; this is the benchmark the DEQN methods are measured against.
+- **Part IV — DEQN teaching implementation.** Young's histogram embedded in a DEQN training loop, on the Appendix-A.5 **Bewley endowment** economy of Azinovic, Gaegauf & Scheidegger (2022): no capital and no firm, a single bond in unit net supply, Epstein–Zin preferences, a six-state aggregate shock, and two idiosyncratic productivity types. Notebook 11 is this implementation.
+- **Part V — Alternative deep-learning routes to Krusell–Smith.** All-in-one DL (Maliar–Maliar–Winant 2021), DeepHAM's learned generalized moments (Han–Yang–E 2024), DeepSAM, and structural RL, with a "which method, when?" chooser. Notebook 12 is a classroom-scale all-in-one DL solver on the canonical KS economy. (The sequence-space alternative to histogram encoding is developed in the Sequence-Space DEQNs lecture and in §6.7 of the script, not here.)
 
-The notebooks map to the Parts:
-- Notebook 10 (`10_Youngs_Method_Examples.ipynb`) -> Parts I-II
-- Notebook 11 (`11_Continuum_of_Agents_DEQN.ipynb`) -> Part II
-- Notebook 12 (`12_KrusellSmith_DeepLearning.ipynb`) -> Part III (extension)
+Notebook → part map:
+- Notebook 10 (`lecture_10_10_Youngs_Method_Examples.ipynb`) → Part II
+- Notebook 11 (`lecture_10_11_Continuum_of_Agents_DEQN.ipynb`) → Part IV
+- Notebook 12 (`lecture_10_12_KrusellSmith_DeepLearning.ipynb`) → Part V (extension)
 
 ## Learning objectives
 
 After this lecture you can:
 
-- Iterate Young's histogram method to convergence on Aiyagari and read off the wealth distribution.
-- Train a continuum-of-agents DEQN and compare its policy against the Young-method solution.
-- Diagnose when each method is preferable.
+- Run Young's (2010) histogram update by hand and in code, and explain why it preserves the mean exactly while only approximating higher moments.
+- Embed the histogram update inside a DEQN training loop on the Appendix-A.5 Bewley endowment economy, with the distribution co-evolving with the policy and price networks.
+- Compare the deep-learning routes to Krusell–Smith (all-in-one DL, DeepHAM) and judge which one fits a given heterogeneous-agent model.
 
 ## Slides
 

@@ -4788,7 +4788,7 @@ The aggregate state is encoded as a vector containing three aggregate-shock inde
 x_t^{agg} = \bigl(\underbrace{z_t^{\mathrm{idx}},\,\mathrm{inc}_t^{\mathrm{idx}},\,\mathrm{unc}_t^{\mathrm{idx}}}_{3\text{ shock-index entries}},\; \underbrace{h_t^{\eta=0.8}(b_1),\ldots,h_t^{\eta=0.8}(b_{N_b})}_{N_b\text{ values}},\;\underbrace{h_t^{\eta=1.2}(b_1),\ldots,h_t^{\eta=1.2}(b_{N_b})}_{N_b\text{ values}}\bigr).
 \label{eq:young_hist_state}
 \end{equation}
-For $N_b = 100$ grid points and 2 idiosyncratic states, the aggregate state has dimension $3 + 200 = 203$.  The full input to the policy network adds the individual state $(b_t, \eta_t)$, giving total dimension $205$.  Figure~\ref{fig:young_encoding} shows how the histogram vector and individual state are assembled and fed into the two networks.
+For $N_b = 100$ grid points and 2 idiosyncratic states, the aggregate state has dimension $3 + 200 = 203$.  The full input to the policy network adds the individual state $(b_t, \eta_t)$, giving total dimension $205$.  This is the \texttt{production} setting; the checked-in \texttt{smoke} and \texttt{teaching} runs use $N_b = 50$, so the aggregate state has dimension $103$ and the policy input $105$.  Figure~\ref{fig:young_encoding} shows how the histogram vector and individual state are assembled and fed into the two networks.
 
 \paragraph{How the notebooks fit together.}
 The companion notebook sequence mirrors this decomposition.  \tpath{10_Youngs_Method_Examples.ipynb} isolates Young's redistribution operator on toy examples, first in one dimension and then with idiosyncratic shocks.  \tpath{11_Continuum_of_Agents_DEQN.ipynb} then reuses the same logic inside the full aggregate state vector~\eqref{eq:young_hist_state}.  In other words, the second notebook is not a new distributional device; it is the first notebook's histogram update embedded in a larger equilibrium-learning loop.
@@ -4876,7 +4876,7 @@ Two networks are trained jointly:
 \item \textbf{Policy network} $\mathcal{N}_{pol}$: takes individual + aggregate state ($\mathbb{R}^{5+2N_b}$) $\to$ outputs savings $b'$, borrowing multiplier $\lambda$, and value $V$ (3 outputs with softplus activation).
 \item \textbf{Price network} $\mathcal{N}_{price}$: takes only aggregate state ($\mathbb{R}^{3+2N_b}$) $\to$ outputs the bond price $p$ (1 output with softplus).
 \end{itemize}
-Both networks use two hidden layers with 500 units (production) or fewer (classroom).
+Both networks use two hidden layers with 500 units (\texttt{production}) or 128 (the checked-in \texttt{smoke}/\texttt{teaching} runs).
 
 \medskip\noindent\textbf{Equilibrium conditions as loss.}
 The loss function comprises five terms, all of which should be zero in equilibrium:
@@ -4889,10 +4889,10 @@ where EE is the Euler equation residual, BE is the Bellman equation consistency 
 \paragraph{Market clearing via histogram.}
 A key advantage of the histogram representation is that market clearing can be computed \emph{exactly} (no Monte Carlo):
 \begin{equation}
-\mathrm{MC} = \left|\sum_{\eta}\sum_{j=1}^{N_b} h_t(\eta, b_j)\cdot b'(\eta, b_j, x_t^{agg}) - \bar B\right|,
+\mathrm{MC} = \sum_{\eta}\sum_{j=1}^{N_b} h_t(\eta, b_j)\cdot b'(\eta, b_j, x_t^{agg}) - \bar B,
 \label{eq:young_mc}
 \end{equation}
-where $h_t(\eta, b_j)$ is the histogram mass, $b'(\cdot)$ is the policy network output, and $\bar B$ is aggregate net bond supply.  The Appendix~A.5 notebook normalizes $\bar B=1$, which is the source of the ``$-1$'' term sometimes seen in code and slides.
+where $h_t(\eta, b_j)$ is the histogram mass, $b'(\cdot)$ is the policy network output, and $\bar B$ is aggregate net bond supply.  We write the \emph{signed} residual here because it enters the loss~\eqref{eq:young_loss} squared, which is also how the notebook computes it.  The Appendix~A.5 notebook normalizes $\bar B=1$, which is the source of the ``$-1$'' term sometimes seen in code and slides.
 
 \paragraph{Young's method inside the training loop.}
 During each training episode, the histogram is propagated forward using Young's method (Algorithm~\ref{alg:young}) with the current neural network providing the policy function.  This creates a sequence of aggregate states $(x_0^{agg}, x_1^{agg}, \ldots, x_T^{agg})$ on which the equilibrium residuals~\eqref{eq:young_loss} are evaluated.  The distribution update is differentiable almost everywhere (linear interpolation conditional on fixed brackets), so gradients flow through the histogram propagation during backpropagation.  Crucially, the distribution co-evolves with the network: early in training, when the policy network is inaccurate, the simulated distribution will be ``wrong,'' but market-clearing residuals provide corrective feedback through the loss.  As the network improves, the distribution converges toward the ergodic steady state.
