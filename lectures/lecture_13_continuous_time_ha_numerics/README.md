@@ -5,9 +5,9 @@ Two methods to solve the HJB-KFE system numerically: a finite-difference scheme 
 `gpu-recommended` · `long` · builds on [Lecture 12](../lecture_12_continuous_time_ha_theory/README.md)
 
 > 📑 **Slides:** [lecture_13_continuous_time_ha_numerics.pdf](slides/lecture_13_continuous_time_ha_numerics.pdf)  
-> 📓 **Notebooks:** [start here](code/lecture_13_06_PE_Discrete_HJB_PINN.ipynb) (4 in [`code/`](code/))  
+> 📓 **Notebook:** [Aiyagari: FD benchmark + PINN](code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb) (1 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_13.md)  
-> 📖 **Script:** §8.7 (Numerical methods for CT-HA)
+> 📖 **Script:** Chapter 8 (continuous-time HA; the stationary HJB-KFE PINN solver is §8.5)
 
 ## What this lecture covers
 
@@ -33,14 +33,13 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_13_06_PE_Discrete_HJB_PINN.ipynb`](code/lecture_13_06_PE_Discrete_HJB_PINN.ipynb)
-- [`code/lecture_13_07_PE_Diffusion_HJB_PINN.ipynb`](code/lecture_13_07_PE_Diffusion_HJB_PINN.ipynb)
-- [`code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb`](code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb)
-- [`code/lecture_13_09_PINN_Exercise.ipynb`](code/lecture_13_09_PINN_Exercise.ipynb)
+- [`code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb`](code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb) — the stationary Aiyagari equilibrium solved twice: an upwind finite-difference benchmark and a PINN re-solve of the coupled HJB-KFE system at the FD-computed prices.
+
+(The partial-equilibrium HJB warm-ups live in the PINN lecture, [Lecture 11](../lecture_11_pinns/README.md), which is where that material belongs.)
 
 ## In the lecture script
 
-§8.7 (Numerical methods for CT-HA). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+Chapter 8 (heterogeneous agent models in continuous time): the stationary HJB-KFE PINN solver is §8.5, and §8.7 covers the master equation and EMINNs. The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 
