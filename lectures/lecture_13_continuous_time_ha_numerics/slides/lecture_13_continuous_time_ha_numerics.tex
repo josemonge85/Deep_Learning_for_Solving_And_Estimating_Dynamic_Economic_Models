@@ -120,7 +120,7 @@
 
 % --- Slide 2: Recap and Goals ---
 \begin{frame}{Recap and Goals}
-\textbf{From Deck 1}: We derived the \emphc{theory} of CT heterogeneous agent models:
+\textbf{From the Lecture~12 theory deck}: We derived the \emphc{theory} of CT heterogeneous agent models:
 \begin{itemize}\itemsep2pt
     \item Stochastic calculus: Brownian motion, It\^o's lemma, Poisson jumps
     \item KFE (Fokker--Planck): density evolution, from physics to economics
@@ -794,14 +794,8 @@ FD unknowns     & $2J$       & $J_a \times J_z$ & $2J$ + distribution \\
         learn upwind FD and PINN mechanics
   \item \textbf{NB\,07}: extend to 2D with diffusion $\to$
         mesh-free PINN advantage ($V_{zz}$ via auto-diff)
-  \item \textbf{NB\,08}: add the \emphc{KFE} for stationary distribution +
-        \emphc{market clearing} $\to$ full Aiyagari GE
+  \item \textbf{NB\,08}: an upwind FD solver finds the GE prices; a PINN then re-solves the \emphc{coupled HJB+KFE system} at those prices --- a consistency / representation check, not price discovery
 \end{enumerate}
-
-\vspace{0.1em}
-\centering
-\colorbox{uzhgreylight}{\parbox{0.75\textwidth}{\centering\small
-Notebook~08 adds the KFE and equilibrium conditions $\to$ \emphc{full Aiyagari}.}}
 \end{frame}
 
 % --- Slide: From Single PDE to Coupled System ---
@@ -1130,21 +1124,18 @@ Integrals are evaluated via Monte Carlo or quadrature.
 \begin{frame}{Training Algorithm: Jointly Solving HJB + KFE}
 \begin{columns}[T]
 \column{0.52\textwidth}
-\begin{block}{PINN Training (Stationary Equilibrium)}
+\begin{block}{PINN Training at FD-Computed Equilibrium Prices (Notebook 08)}
 \footnotesize
 \setlength{\itemsep}{0pt}
 \begin{algorithmic}[1]
-\STATE Initialize $V_\theta$, $g_\phi$, guess $r^{(0)}$ \;\;\textit{(FD reserved for validation)}
+\STATE Initialize $V_\theta$, $g_\phi$; fix prices at the FD equilibrium $(r^\star, w^\star)$
 \FOR{$k = 1, \ldots, N_{\text{epochs}}$}
     \STATE Sample $M$ collocation points $\{(a_m, n_m)\}$
     \STATE Compute $c_m^* = (V'_\theta(a_m))^{-1/\gamma}$
     \STATE Compute $R_{\text{HJB}}^m$, $R_{\text{KFE}}^m$ via auto-diff
     \STATE Integrate KFE on a fixed asset grid
-    \STATE Compute $\mathcal{L}_{\text{SC}}, \mathcal{L}_{\text{flux}}, \mathcal{L}_{\text{mass}}, \mathcal{L}_{\text{MC}}$
+    \STATE Compute $\mathcal{L}_{\text{SC}}, \mathcal{L}_{\text{flux}}, \mathcal{L}_{\text{mass}}, \mathcal{L}_{\text{MC}}$ \;\;($\mathcal{L}_{\text{MC}}$ at fixed $r^\star$)
     \STATE Total loss: $\mathcal{L} = \sum \kappa_i \mathcal{L}_i$;\; update $\theta,\phi$ (Adam)
-    \IF{$k \mod N_r = 0$}
-        \STATE $r \leftarrow r + \eta(K^s - K^d)$
-    \ENDIF
 \ENDFOR
 \STATE Freeze collocation grid; run FP64 L-BFGS polish
 \end{algorithmic}
@@ -1154,14 +1145,13 @@ Integrals are evaluated via Monte Carlo or quadrature.
 \footnotesize
 \textbf{Key choices:}
 \begin{itemize}\itemsep0pt
+    \item \textbf{Prices}: fixed at the FD $(r^\star, w^\star)$; outer $r\!\leftarrow\!r+\alpha(K^s\!-\!K^d)$ updates $\Rightarrow$ GE PINN
     \item \textbf{Collocation}: sample $(a,n)$ uniformly on $[\ubar{a}, \bar{a}] \times \{n_1, n_2\}$
-    \item \textbf{Price update}: update $r$ slowly (every $N_r$ steps) to let NN adapt
     \item \textbf{Loss weights}: start with $\kappa_{\text{HJB}}=\kappa_{\text{KFE}}=1$, larger $\kappa_{\text{SC}},\kappa_{\text{flux}},\kappa_{\text{MC}}$
     \item \textbf{Optimizer}: Adam, lr $\sim 10^{-3}$, then FP64 L-BFGS
     \item \textbf{Validation}: compare against FD only after training
 \end{itemize}
 
-\vspace{0.15em}
 \begin{center}
 \colorbox{uzhgreylight}{\parbox{0.95\columnwidth}{\centering\scriptsize
 Same philosophy as the PINN lecture: \emphc{economic equations = loss function};
@@ -1236,7 +1226,7 @@ Same philosophy as the PINN lecture: \emphc{economic equations = loss function};
 \textbf{vs.\ Huggett:} two prices $(r,w)$ from firm FOC, $\int a g = K$, $\int n g = L$, $r = \alpha K^{\alpha-1}L^{1-\alpha} - \delta$.
 
 \vspace{0.3em}
-\textbf{PINN diagnostics (notebook 08):}\\[2pt]
+\textbf{PINN diagnostics (notebook 08, longer in-class run):}\\[2pt]
 {\scriptsize
 \renewcommand{\arraystretch}{1.0}
 \begin{tabular}{@{}ll@{}}
@@ -1254,7 +1244,7 @@ $\max|R_{\text{KFE}}|$ & $2.7\!\times\!10^{-1}$ \\
 \end{tabular}}
 
 \vspace{0.2em}
-{\footnotesize \emphc{Honest read:} $K$ matches to 5 digits; pointwise density and KS gaps are non-trivial. The integrated-KFE term targets exactly the loosest residual.}
+{\footnotesize \emphc{Honest read:} $K$ matches to 5 digits; pointwise density and KS gaps are non-trivial. The integrated-KFE term targets exactly the loosest residual. The checked-in \texttt{smoke} run is shorter and prints larger gaps.}
 
 \column{0.47\textwidth}
 \begin{center}
@@ -1468,7 +1458,7 @@ V = V(a, n, z, g) \qquad \text{where } g \text{ is infinite-dimensional}
 \end{itemize}
 
 \vspace{0.2em}
-\begin{block}{The Master Equation (from Deck 1)}
+\begin{block}{The Master Equation (Lecture~12)}
 \small
 Substitute KFE + market clearing + belief consistency into HJB $\Rightarrow$ \emphc{single PDE}:
 \[
@@ -2254,8 +2244,8 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 \begin{itemize}\itemsep2pt
     \item \textbf{NB 06} \textit{(self-study)}: \texttt{06\_PE\_Discrete\_HJB\_PINN.ipynb} --- 1D PE with discrete income: upwind FD + PINN
     \item \textbf{NB 07} \textit{(self-study)}: \texttt{07\_PE\_Diffusion\_HJB\_PINN.ipynb} --- 2D PE with OU earnings: 2D FD + PINN
-    \item \textbf{NB 08} \textit{(in-class)}: \texttt{08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb} --- full GE Aiyagari: HJB + KFE + market clearing
-    \item \textbf{NB 09} \textit{(homework warm-up)}: \texttt{09\_PINN\_Exercise.ipynb} --- toy 1D ODE $u''+u=0$ on $[0,\pi]$ with hard zero BCs; a low-stakes PINN scaffold before tackling the HJB exercises in NB~08
+    \item \textbf{NB 08} \textit{(in-class)}: \texttt{08\_Aiyagari\_Continuous\_Time\_FD\_and\_PINN\_PyTorch.ipynb} --- Aiyagari HJB+KFE: an upwind FD solver computes the GE prices, then a PINN re-solves the coupled system at those prices
+    \item \textbf{NB 09} \textit{(homework warm-up)}: \texttt{09\_PINN\_Exercise.ipynb} --- toy 1D ODE $u''(x)=-\sin x$ on $[0,\pi]$ with zero BCs (unique solution $\sin x$); a low-stakes PINN scaffold before tackling the HJB exercises in NB~08
 \end{itemize}
 
 \vspace{0.2em}
@@ -2263,7 +2253,7 @@ Fast and accurate for \emphc{stationary, low-dim} problems. Gold standard for Ai
 \begin{enumerate}\itemsep1pt
     \item Start with NB~06 (simplest, self-study): FD convergence, then PINN overlay
     \item Move to NB~07 (self-study): 2D contour plots, cross-sections, mesh-free advantage
-    \item Focus on NB~08 (in-class): full GE loop, PINN vs FD agreement diagnostics
+    \item Focus on NB~08 (in-class): the FD GE loop, then the PINN re-solve at the FD prices and the PINN-vs-FD agreement diagnostics
 \end{enumerate}
 \end{frame}
 
