@@ -14,7 +14,7 @@ Overlapping-generations (OLG) models with DEQNs, at two scales.
 - **Cohort structure.** One Euler equation per cohort, stacked into a single Lagrangian primitive; the DEQN training principle does not change.
 - **Analytic small OLG.** A closed-form lifecycle savings model used as a sanity check on the DEQN solution.
 - **The 56-period benchmark.** The standard production-scale OLG model with borrowing constraints.
-- **Borrowing constraints.** Fischer-Burmeister complementarity used cohort-by-cohort to handle the inequality.
+- **Borrowing constraints.** Product-form KKT complementarity used cohort-by-cohort to handle the inequalities (softplus heads for non-negativity, squared product residuals `(λ·k')²` in the loss).
 - **Diagnostics.** Lifecycle profiles, aggregate dynamics, and equilibrium residuals across cohorts.
 
 ## Learning objectives
@@ -23,7 +23,7 @@ After this lecture you can:
 
 - Write the cohort-stacked Lagrangian for an OLG DEQN.
 - Train an analytic small-OLG DEQN and verify lifecycle savings against the closed form.
-- Reproduce the 56-period OLG benchmark with borrowing constraints via Fischer-Burmeister.
+- Reproduce the 56-period OLG benchmark with borrowing and collateral constraints via product-form KKT residuals.
 - Read off lifecycle profiles, aggregate dynamics, and equilibrium residuals across cohorts.
 
 ## Slides

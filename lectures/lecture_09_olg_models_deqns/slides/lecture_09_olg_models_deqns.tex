@@ -413,7 +413,7 @@ e_{\text{REE}}^{\,i}(x_j) \;:=\;
 \textbf{Sampling next state.}  $\hat x_{j,+} = \bigl(z_+,\; 0,\; \hat a^{\,[1:A-1]}(x_j)\bigr)$ with $z_+$ drawn from $\pi$ (newborn enters with $k^1 = 0$).
 
 \vspace{0.2em}
-{\scriptsize \emphc{Feasibility.}  $a^s\ge 0$ is enforced by the softplus output of II.9; small soft penalties on negative $c$ and $K$ are added in the notebook for numerical robustness only -- they vanish at convergence.}
+{\scriptsize \emphc{Feasibility.}  $a^s\ge 0$ and $c^s\ge 0$ are enforced by the sigmoid savings-fraction output of II.9 (each $a^s\in[0,\mathrm{inc}^s]$); small soft penalties on negative $c$ and $K$ are added in the notebook as numerical backstops but are inactive with this head.}
 \end{frame}
 
 
@@ -442,7 +442,7 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \end{bmatrix}\!\right)
 \]
 Stack these $A-1$ residuals as $G\bigl([z_t, \bm{k}_t],\, f([z_t, \bm{k}_t])\bigr) = \bm{0}$.
 
-{\scriptsize $A=6 \Rightarrow 5$ outputs.  Notebook uses an extended state of dim $8+4A=32$ (pre-computed aggregates + per-agent income blocks) for ease of learning -- pure feature engineering.}
+{\scriptsize $A=6 \Rightarrow 5$ outputs.  Notebook uses an extended state of dim $16+4A=40$ (pre-computed aggregates + per-agent income blocks + the transition-probability row) for ease of learning -- pure feature engineering.}
 \end{frame}
 
 
@@ -466,7 +466,7 @@ such that
 \[
 G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\theta\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix}\!\right)\right) \;\approx\; \bm{0}.
 \]
-{\footnotesize \emphc{Softplus} output layer $\Rightarrow$ $a_t^{\,s} \ge 0$ \emphc{by construction}, so the borrowing constraint is satisfied at every iteration without an explicit multiplier.}
+{\footnotesize \emphc{Sigmoid savings-fraction} output $\Rightarrow$ $0 \le a_t^{\,s} \le \mathrm{inc}_t^{\,s}$ \emphc{by construction}, so $a_t^{\,s}\ge 0$ (borrowing constraint) and $c_t^{\,s}\ge 0$ both hold at every iteration without an explicit multiplier.}
 
 \column{0.48\textwidth}
 \centering
@@ -514,7 +514,7 @@ G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\theta\!\left(\!\b
 
 \node[font=\scriptsize, gray] at (1.8, -1.6) {ReLU};
 \node[font=\scriptsize, gray] at (3.4, -1.6) {ReLU};
-\node[font=\scriptsize, gray] at (5.2, -1.6) {softplus};
+\node[font=\scriptsize, gray] at (5.2, -1.6) {sigmoid frac};
 \end{tikzpicture}
 
 {\footnotesize 2 hidden layers $\times$ (100, 50) units; single forward pass.}
@@ -724,7 +724,7 @@ The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram 
 \end{block}
 
 \begin{block}{Hands-on}
-Open \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}.  Default \texttt{MODE = "teaching"} ($\sim 5$ min, 1\,000 ep); \texttt{"smoke"} is a 30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch (the persistent primary uses \texttt{"simulation"}, the companion \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} uses \texttt{"exogenous"}); the model and loss are identical -- only the training cloud differs.
+Open \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}.  Set \texttt{RUN\_MODE = "teaching"} ($\sim 5$ min) for the classroom run; \texttt{"smoke"} (the default) is a $\sim$30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch (the persistent primary uses \texttt{"simulation"}, the companion \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} uses \texttt{"exogenous"}); the model and loss are identical -- only the training cloud differs.
 \end{block}
 \end{frame}
 
@@ -961,7 +961,7 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \\ \bm{b}_t \end{bmatrix}\!\right)
 \textbf{Such that} $G\bigl([z_t, \bm{k}_t, \bm{b}_t],\,f([z_t, \bm{k}_t, \bm{b}_t])\bigr) = \bm{0}$ where $G$ stacks the $4(A-1)+1$ equations of III.6.
 
 \vspace{0.3em}
-{\footnotesize With $A = 56$: minimal state dim $=113$; the notebook input is $236$ after engineered aggregates and transition probabilities.  Output dim $=4\times55+1=\bm{221}$.  Bond holdings are recovered as $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$, and softplus enforces $\hat k'^h,\hat\lambda_b^h,\hat q^h,\hat\mu^h\ge0$.}
+{\footnotesize With $A = 56$: minimal state dim $=113$; the notebook input is $240$ after engineered aggregates and transition probabilities.  Output dim $=4\times55+1=\bm{221}$.  Bond holdings are recovered as $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$, and softplus enforces $\hat k'^h,\hat\lambda_b^h,\hat q^h,\hat\mu^h\ge0$.}
 \end{frame}
 
 
@@ -969,7 +969,7 @@ f\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t \\ \bm{b}_t \end{bmatrix}\!\right)
 \begin{frame}{III.9 Architecture --- Benchmark}
 \scriptsize
 \begin{center}
-$\N_\theta:\;\R^{236} \to \R^{221}$
+$\N_\theta:\;\R^{240} \to \R^{221}$
 \end{center}
 \vspace{-4pt}
 
@@ -977,7 +977,7 @@ $\N_\theta:\;\R^{236} \to \R^{221}$
 \centering
 \begin{tabular}{ll}
 \toprule
-Notebook input   & $236$ (minimal state: $113$) \\
+Notebook input   & $240$ (minimal state: $113$) \\
 Hidden layers    & $2 \times 128$ (teaching) \\
                  & $2 \times 1000$ (production) \\
 Output dim       & $4(A{-}1) + 1 = 221$ \\
@@ -1082,7 +1082,7 @@ For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption p
 \centering\renewcommand{\arraystretch}{1.05}
 \begin{tabular}{cccl}
 \toprule
-$z$ & $\xi(z)$ & $\delta(z)$ & expected consumption ranking \\
+$z$ & $\eta(z)$ & $\delta(z)$ & expected consumption ranking \\
 \midrule
 2 & $1.022$ & $0.08$ & \emphc{highest} -- best technology, low depreciation \\
 4 & $1.022$ & $0.11$ & high \\
