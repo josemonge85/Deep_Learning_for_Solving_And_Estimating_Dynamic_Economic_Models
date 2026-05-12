@@ -175,6 +175,9 @@
 \vspace{0.3cm}
 Architecture choice can matter \emphc{more than training duration}.
 
+\vspace{0.25cm}
+{\scriptsize\itshape Illustrative numbers from a depth/width sweep on the companion regression task; the from-scratch search in Notebook~03 reproduces the same ordering on a different testbed.}
+
 \column{0.45\textwidth}
 \begin{tikzpicture}[scale=0.75, transform shape]
     \begin{axis}[
@@ -204,22 +207,22 @@ Architecture choice can matter \emphc{more than training duration}.
 \column{0.50\textwidth}
 \textbf{Architectural hyperparameters:}
 \begin{itemize}
-    \item Number of hidden layers $L \in \{1, \ldots, 10\}$
-    \item Units per layer $n_\ell \in \{16, 32, \ldots, 512\}$
-    \item Activation: ReLU, tanh, swish, \ldots
+    \item Number of hidden layers $L \in \{1, \ldots, 5\}$
+    \item Units per layer $n_\ell \in \{32, 64, \ldots, 256\}$ (8 values)
+    \item Activation: ReLU, tanh, swish
 \end{itemize}
 
 \vspace{0.3cm}
 \textbf{Training hyperparameters:}
 \begin{itemize}
-    \item Learning rate $\eta \in [10^{-5}, 10^{-1}]$
+    \item Learning rate $\eta$ log-uniform on $[10^{-4}, 10^{-2}]$ (20-point grid)
     \item Batch size $B \in \{16, 32, 64, 128\}$
     \item Epochs, regularization, \ldots
 \end{itemize}
 
 \column{0.47\textwidth}
 \begin{block}{Combinatorial explosion}
-Even a modest search space:
+Even this modest search space:
 \[
     |\mathcal{H}| = 5 \times 8 \times 3 \times 20 \times 4 = \emphc{9{,}600}
 \]
@@ -577,7 +580,7 @@ unimportant axis; random search samples the important axis more densely.}
     \draw[->, softgreen!70!black] (r1-2) -- (r2-2);
 
     % Round 3: 1 survives (top 1/3 of 3)
-    \foreach \i in {0,1} {
+    \foreach \i in {0} {
         \node[alive] (r3-\i) at (\i*1.2 + 3.0, -3.0) {};
     }
     % Round 3 (winner from 3): keep top 1/3 = 1
@@ -677,7 +680,7 @@ def sample_config(rng):
 \begin{block}{30 trials, single function}
 {\scriptsize
 \begin{verbatim}
-def random_search(n_trials=30, epochs=80, seed=0):
+def random_search(n_trials=30, epochs=50, seed=0):
     rng = np.random.default_rng(seed)
     records = []
     for t in range(n_trials):
@@ -855,7 +858,7 @@ If manual tuning took $N$ trials, automated search with $3N$ trials will likely 
     \item \textbf{Surrogate models:} Replace expensive simulations (e.g., climate IAMs) with NNs --- architecture determines approximation quality.
 
     \vspace{0.2cm}
-    \item \textbf{DSGE policy functions:} Deep equilibrium nets (Lecture 02) use NNs to approximate policy/value functions. \emphc{Architecture search over the policy network} can improve convergence.
+    \item \textbf{DSGE policy functions:} Deep equilibrium nets (Lecture 03) use NNs to approximate policy/value functions. \emphc{Architecture search over the policy network} can improve convergence.
 
     \vspace{0.2cm}
     \item \textbf{High-dimensional problems:} As $d$ grows (many state variables), the architecture must scale. NAS automates this adaptation.
