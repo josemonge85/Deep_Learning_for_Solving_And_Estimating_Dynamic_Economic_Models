@@ -384,7 +384,7 @@ Before tackling full GE (Aiyagari), solve the HJB alone with exogenous prices.
   \item 2-state Markov chain $z\in\{z_L,z_H\}$
   \item Coupled system: $V_1(a), V_2(a)$
   \item FOC eliminates $\max$; upwind FD vs PINN
-  \item \textbf{Notebook 01}
+  \item \textbf{Notebook 06}
 \end{itemize}
 \end{block}
 
@@ -394,7 +394,7 @@ Before tackling full GE (Aiyagari), solve the HJB alone with exogenous prices.
   \item Earnings: $dz = \theta(\mu-z)\,dt + \sigma\,dW$
   \item Single PDE: $V(a,z)$, second-order in $z$
   \item Neumann BCs; 2D auto-diff PINN
-  \item \textbf{Notebook 02}
+  \item \textbf{Notebook 07}
 \end{itemize}
 \end{block}
 \end{columns}
@@ -566,6 +566,9 @@ R = rho*V - u(c) - V_a*s
 
 \vspace{0.2em}
 {\scriptsize No grid, no upwind logic --- auto-diff handles all derivatives.}
+
+\vspace{0.1em}
+{\scriptsize\emph{This slide shows the simpler implicit-policy form ($c=(V_a)^{-1/\gamma}$) for intuition; the production notebook \texttt{lecture\_13\_06} uses width $96$, depth $3$, and the explicit $(V,c)$ output of the next slide.}}
 \end{columns}
 \end{frame}
 
@@ -582,7 +585,7 @@ R = rho*V - u(c) - V_a*s
 \[
 \boxed{dz = \theta(\mu - z)\,dt + \sigma\,dW}
 \]
-with mean-reversion $\theta$, long-run mean $\mu$, volatility $\sigma$.
+with mean-reversion speed $\theta$ (denoted $\eta$ in the script), long-run mean $\mu$, volatility $\sigma$.
 
 \vspace{0.3em}
 \textbf{2D HJB} (after FOC substitution):
@@ -756,6 +759,9 @@ $\mathcal{L}_{\text{curv}}$ & Concavity: $\text{relu}(V_{aa})^2$ \\
 \colorbox{uzhgreylight}{\parbox{0.95\linewidth}{\centering\scriptsize
 \textbf{1D $\to$ 2D}: add $z$ as 1 extra input neuron.\\
 No tensor-product blow-up --- sample cost grows \emphc{polynomially}, not exponentially, in $d$.}}
+
+\vspace{0.1em}
+{\scriptsize\emph{Schematic architecture; the production notebook \texttt{lecture\_13\_07} uses width $96$, depth $3$, with the explicit $(V,c)$ output.}}
 \end{columns}
 \end{frame}
 
@@ -769,7 +775,7 @@ No tensor-product blow-up --- sample cost grows \emphc{polynomially}, not expone
 \begin{center}
 \begin{tabular}{@{}l c c c@{}}
 \toprule
-& \textbf{PE Discrete (NB\,01)} & \textbf{PE Diffusion (NB\,02)} & \textbf{GE Aiyagari (NB\,03)} \\
+& \textbf{PE Discrete (NB\,06)} & \textbf{PE Diffusion (NB\,07)} & \textbf{GE Aiyagari (NB\,08)} \\
 \midrule
 PDEs solved     & HJB only   & HJB only   & HJB + KFE \\
 Prices $(r,w)$  & exogenous  & exogenous  & \emphc{endogenous} \\
@@ -784,18 +790,18 @@ FD unknowns     & $2J$       & $J_a \times J_z$ & $2J$ + distribution \\
 \vspace{0.2em}
 \textbf{Progression of complexity:}
 \begin{enumerate}\itemsep0pt
-  \item \textbf{NB\,01}: isolate the HJB with simplest income process $\to$
+  \item \textbf{NB\,06}: isolate the HJB with simplest income process $\to$
         learn upwind FD and PINN mechanics
-  \item \textbf{NB\,02}: extend to 2D with diffusion $\to$
+  \item \textbf{NB\,07}: extend to 2D with diffusion $\to$
         mesh-free PINN advantage ($V_{zz}$ via auto-diff)
-  \item \textbf{NB\,03}: add the \emphc{KFE} for stationary distribution +
+  \item \textbf{NB\,08}: add the \emphc{KFE} for stationary distribution +
         \emphc{market clearing} $\to$ full Aiyagari GE
 \end{enumerate}
 
 \vspace{0.1em}
 \centering
 \colorbox{uzhgreylight}{\parbox{0.75\textwidth}{\centering\small
-Notebook~03 adds the KFE and equilibrium conditions $\to$ \emphc{full Aiyagari}.}}
+Notebook~08 adds the KFE and equilibrium conditions $\to$ \emphc{full Aiyagari}.}}
 \end{frame}
 
 % --- Slide: From Single PDE to Coupled System ---

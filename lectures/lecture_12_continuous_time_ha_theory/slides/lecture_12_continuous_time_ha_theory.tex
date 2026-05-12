@@ -140,7 +140,7 @@
 \node[done, right=of d2] (d3) {IRBC, NAS};
 \node[done, right=of d3] (d4) {OLG, Young's};
 \node[done, right=of d4] (d5) {Agents};
-\node[current, right=of d5] (d6) {\textbf{This lecture}\\PINNs + CT HA};
+\node[current, right=of d5] (d6) {\textbf{This lecture}\\CT HA: HJB + KFE};
 \node[future, right=of d6] (d7) {Surrogates};
 \node[future, right=of d7] (d8) {Climate};
 
@@ -807,15 +807,15 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 % --- Slide: Example - OU Process KFE ---
 \begin{frame}{Example 2: Ornstein--Uhlenbeck Process}
 \small
-\textbf{Setting}: $dX_t = \theta(\bar{x} - X_t)\ud t + \sigma\ud B_t$ \quad (mean-reverting).
+\textbf{Setting}: $dX_t = \eta(\bar{x} - X_t)\ud t + \sigma\ud B_t$ \quad (mean-reverting).
 
 \vspace{0.2em}
-\textbf{KFE}: $\partial_t g = \theta\,\partial_x\!\left[(x - \bar{x})\,g\right] + \frac{\sigma^2}{2}\partial_{xx}g$
+\textbf{KFE}: $\partial_t g = \eta\,\partial_x\!\left[(x - \bar{x})\,g\right] + \frac{\sigma^2}{2}\partial_{xx}g$
 
 \vspace{0.2em}
 \textbf{Stationary distribution} ($\partial_t g = 0$):
 \[
-\boxed{g^*(x) = \frac{1}{\sqrt{2\pi\sigma^2/(2\theta)}}\exp\!\left(-\frac{(x-\bar{x})^2}{2\cdot\sigma^2/(2\theta)}\right) = \mathcal{N}\!\left(\bar{x},\;\frac{\sigma^2}{2\theta}\right)}
+\boxed{g^*(x) = \frac{1}{\sqrt{2\pi\sigma^2/(2\eta)}}\exp\!\left(-\frac{(x-\bar{x})^2}{2\cdot\sigma^2/(2\eta)}\right) = \mathcal{N}\!\left(\bar{x},\;\frac{\sigma^2}{2\eta}\right)}
 \]
 
 \begin{columns}[T]
@@ -851,10 +851,10 @@ $g(x,t) = \frac{1}{\sqrt{2\pi\sigma^2 t}}\exp\!\left(-\frac{(x-x_0)^2}{2\sigma^2
 \column{0.42\textwidth}
 \textbf{Interpretation:}
 \begin{itemize}\itemsep2pt
-    \item Mean reversion ($\theta$) concentrates mass around $\bar{x}$
+    \item Mean reversion ($\eta$) concentrates mass around $\bar{x}$
     \item Diffusion ($\sigma$) spreads mass
     \item Balance $\Rightarrow$ Gaussian steady state
-    \item Larger $\theta$ $\Rightarrow$ tighter distribution
+    \item Larger $\eta$ $\Rightarrow$ tighter distribution
 \end{itemize}
 
 \vspace{0.2em}
