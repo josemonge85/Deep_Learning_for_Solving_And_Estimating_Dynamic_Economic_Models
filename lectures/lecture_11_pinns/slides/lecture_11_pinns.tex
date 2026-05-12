@@ -1241,16 +1241,17 @@ V^\star(a) = \frac{\kappa^{-\gamma}}{1-\gamma}\,a^{1-\gamma}, \qquad c^\star(a) 
 
 % --- Slide 29: PINN for HJB (trial solution, hard BCs) ---
 \begin{frame}{PINN for the HJB Equation: Hard-BC Trial Solution}
+\small
 \textbf{Anchor + mask + scaled MLP.}  Let $x(a) = (a-a_{\min})/(a_{\max}-a_{\min}) \in [0,1]$ and $S$ a value-scale constant:
 \[
 \hat V(a) \;=\; V^\star(a_{\min}) + x(a)\bigl[V^\star(a_{\max}) - V^\star(a_{\min})\bigr] \;+\; x(a)\bigl(1-x(a)\bigr)\,S\,f_\theta\bigl(x(a)\bigr).
 \]
 Endpoints are exact \emph{by construction}, so the boundary loss is identically zero and the optimizer focuses on the HJB residual only.
 
-\vspace{0.3em}
-\textbf{Consumption} via FOC, $\hat c(a) = (\widetilde V_a)^{-1/\gamma}$ with $\widetilde V_a := \operatorname{softplus}(\hat V'(a)) + \varepsilon$ (positivity safeguard).  The same $\widetilde V_a$ enters the HJB residual below; the printed $\hat V'$ is schematic.
+\vspace{0.15em}
+\textbf{Consumption} via FOC, $\hat c(a) = (\widetilde V_a)^{-1/\gamma}$ with $\widetilde V_a := \operatorname{softplus}(\hat V'(a)) + \varepsilon$ (positivity safeguard); the same $\widetilde V_a$ enters the residual below.
 
-\vspace{0.3em}
+\vspace{0.15em}
 \textbf{Loss}: only the interior HJB residual remains,
 \[
 \ell \;=\; \frac{1}{N}\sum_{i}\mathcal{R}(a_i)^2,
@@ -1258,11 +1259,11 @@ Endpoints are exact \emph{by construction}, so the boundary loss is identically 
 \mathcal{R}(a) = \rho\hat V - \Bigl[\tfrac{\hat c^{1-\gamma}}{1-\gamma} + \hat V'(ra - \hat c)\Bigr].
 \]
 
-\vspace{0.2em}
-{\small \emphc{Pedagogical point:} a small MLP plus hard BCs beats a large gated net with a soft-BC penalty, because the boundary term no longer dominates the objective.}
+\vspace{0.15em}
+{\small \emphc{Pedagogical point:} a small MLP with hard BCs beats a large gated net with a soft-BC penalty --- the boundary term no longer dominates the objective.}
 
-\vspace{0.2em}
-{\scriptsize \emphc{Well-posedness note:} the closed-form solution $V^\star(a) = \kappa^{-\gamma}\,a^{1-\gamma}/(1-\gamma)$ requires $\kappa = (\rho - (1-\gamma) r)/\gamma > 0$, i.e.\ $\rho > (1-\gamma) r$ (for $\gamma < 1$ a non-trivial parameter restriction; for $\gamma > 1$ automatic when $\rho, r > 0$). Absent this transversality, the value is unbounded.}
+\vspace{0.15em}
+{\scriptsize \emphc{Well-posedness:} $V^\star$ requires $\kappa = (\rho - (1-\gamma) r)/\gamma > 0$, i.e.\ $\rho > (1-\gamma)r$ (automatic for $\gamma > 1$ with $\rho, r > 0$; a real restriction for $\gamma < 1$); otherwise the value is unbounded.}
 \end{frame}
 
 % --- Slide 30: DGM Architecture (optional / high-D) ---

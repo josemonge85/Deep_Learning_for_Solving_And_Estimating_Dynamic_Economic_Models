@@ -154,7 +154,7 @@ A little calculus, a little Python. \emph{No prior exposure to autodiff assumed.
 
 \section*{1. Motivation}
 
-\begin{frame}{Derivatives are \emph{everywhere} in macro-finance}
+\begin{frame}[shrink=22]{Derivatives are \emph{everywhere} in macro-finance}
 \begin{columns}[t]
 \column{0.5\textwidth}
 \begin{block}{Where they show up}
@@ -344,7 +344,7 @@ def fd_grad(f, x, h=1e-6):
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Method 3: automatic differentiation -- the elevator pitch}
+\begin{frame}[shrink=12]{Method 3: automatic differentiation -- the elevator pitch}
 \small
 \begin{block}{Key insight}
 Every program is a composition of \emphc{elementary operations} ($+,-,\times,/,\exp,\log,\sin,\ldots$) whose derivatives we know in closed form. The chain rule mechanically combines these into the derivative of \emph{any} program.
@@ -523,7 +523,7 @@ v = g(u_1,u_2) \;\Rightarrow\; \dot v = g_1\,\dot u_1 + g_2\,\dot u_2.
 \emphc{Why ``forward''?} The derivative moves \emph{with} the program. \emphc{Why correct?} The chain rule, applied at every node. Next slide: in action on $y = x^2 + \sin(x)$.
 \end{frame}
 
-\begin{frame}{Forward mode: worked example on $y = x^2 + \sin(x)$ at $x=2$}
+\begin{frame}[shrink=10]{Forward mode: worked example on $y = x^2 + \sin(x)$ at $x=2$}
 \footnotesize
 \textbf{Seed} at the input: $(x,\;\dot x) = (2,\;1)$. Each elementary operation updates both fields via the chain rule:
 \begin{itemize}\itemsep1pt
@@ -720,7 +720,7 @@ dK, dKp = tape.gradient(g, [K, Kp])
 
 \section*{5. Brock--Mirman by hand}
 
-\begin{frame}{The deterministic Brock--Mirman model}
+\begin{frame}[shrink=10]{The deterministic Brock--Mirman model}
 \small The social planner solves
 \[
 \max_{\{C_t, K_{t+1}\}_{t \ge 0}} \;\sum_{t=0}^{\infty} \beta^t \ln(C_t)
@@ -833,7 +833,7 @@ V'(K_t) \;=\; u'(C_t)\,\bigl[\alpha K_t^{\alpha-1} + 1 - \delta\bigr].
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Recap: what we derived by hand}
+\begin{frame}[shrink=18]{Recap: what we derived by hand}
 \small
 \begin{center}
 \begin{tikzpicture}[node distance=4mm, every node/.style={font=\scriptsize}]
@@ -1140,7 +1140,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Pitfall 5: \texttt{stop\_gradient} and the envelope theorem}
+\begin{frame}[fragile,shrink=15]{Pitfall 5: \texttt{stop\_gradient} and the envelope theorem}
 \small The envelope formula $V'(K) = \partial_1 \Pi(K, g(K))$ is only valid \emph{at the optimum}. What if we are \emph{not yet} at the optimum, i.e.\ during training?
 \vspace{4pt}
 \textbf{Two natural ways to code it, with different results off the optimum:}
@@ -1181,7 +1181,7 @@ Envelope vs total grad & wrong loss off the optimum & differentiate w.r.t.\ the 
 
 \section*{8. Takeaways}
 
-\begin{frame}{One slide to remember}
+\begin{frame}[shrink=15]{One slide to remember}
 \small
 \begin{block}{The autodiff pattern for any recursive model}
 \[
@@ -1199,7 +1199,7 @@ Envelope vs total grad & wrong loss off the optimum & differentiate w.r.t.\ the 
 \centerline{\emphc{From now on, every model in this course ships with an autodiff loss.}}
 \end{frame}
 
-\begin{frame}[fragile]{Where to go next}
+\begin{frame}[fragile,shrink=15]{Where to go next}
 \footnotesize
 \begin{block}{Run the notebooks}
 \begin{itemize}\itemsep1pt

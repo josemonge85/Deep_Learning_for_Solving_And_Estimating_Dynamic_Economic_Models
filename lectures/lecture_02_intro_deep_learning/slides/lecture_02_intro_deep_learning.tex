@@ -288,7 +288,7 @@ Deep learning enables machines to:
 \end{frame}
 
 % --- Deep Learning in Economics and Finance ---
-\begin{frame}{Deep Learning in Economics and Finance}
+\begin{frame}[shrink=8]{Deep Learning in Economics and Finance}
 \small
 \begin{columns}[T]
 \column{0.48\textwidth}
@@ -331,7 +331,7 @@ Deep learning enables machines to:
 \end{frame}
 
 % --- Slide 11: Useful Materials ---
-\begin{frame}{Useful Materials}
+\begin{frame}[shrink=8]{Useful Materials}
 \begin{columns}[T]
 \column{0.42\textwidth}
 \begin{center}
@@ -739,7 +739,7 @@ No labels, only inputs $\{\x^{(i)}\}_{i=1}^{m}$. The goal is to discover hidden 
 \end{frame}
 
 % --- Biological Neurons ---
-\begin{frame}{Biological Neurons}
+\begin{frame}[shrink=8]{Biological Neurons}
 \begin{columns}[T]
 \column{0.55\textwidth}
 \begin{center}
@@ -818,7 +818,7 @@ Three components:
 \end{frame}
 
 % --- Hebb's Rule ---
-\begin{frame}{Hebb's Rule (1949)}
+\begin{frame}[shrink=10]{Hebb's Rule (1949)}
 {\small\emphc{The missing ingredient --- learning:} the McCulloch--Pitts neuron is static; its weights $w_i$ are fixed by hand. Hebb asks \textit{how should the weights change with experience?}}
 \vspace{0.2cm}
 \begin{columns}[T]
@@ -1209,7 +1209,7 @@ where $\W^{(1)}\in\R^{n_1\times d}$, $\W^{(2)}\in\R^{K\times n_1}$.
 \end{frame}
 
 % --- Slide 24: Deep Feedforward Network ---
-\begin{frame}{Deep Feedforward Networks}
+\begin{frame}[shrink=8]{Deep Feedforward Networks}
 \begin{center}
 \begin{tikzpicture}[scale=0.7, transform shape,
     neuron/.style={circle, draw=uzhblue, thick, minimum size=7mm},
@@ -1405,7 +1405,7 @@ $J = -\frac{1}{n}\sum_{i}\sum_{k} y_k^{(i)}\log \hat{y}_k^{(i)}$.
 \end{frame}
 
 % --- Slide 28a: Beyond MSE ---
-\begin{frame}{Beyond MSE: Robust and Asymmetric Losses}
+\begin{frame}[shrink=10]{Beyond MSE: Robust and Asymmetric Losses}
 \begin{columns}[T]
 \column{0.50\textwidth}
 {\small
@@ -1475,7 +1475,7 @@ Directly gives VaR at level $\tau$.
 \end{frame}
 
 % --- Slide 28b: Choosing a Loss Function ---
-\begin{frame}{Choosing a Loss Function}
+\begin{frame}[shrink=10]{Choosing a Loss Function}
 \begin{center}
 {\small
 \renewcommand{\arraystretch}{1.4}
@@ -1578,7 +1578,7 @@ where $\eta > 0$ is the \textbf{learning rate}.
 \end{frame}
 
 % --- Slide 31: SGD ---
-\begin{frame}{Stochastic Gradient Descent (SGD)}
+\begin{frame}[shrink=8]{Stochastic Gradient Descent (SGD)}
 \textbf{Idea:} approximate the full gradient with a cheap estimate from a small subset of data.
 
 \vspace{0.3cm}
@@ -2029,7 +2029,7 @@ The loss surface of a deep network is highly non-convex:
 \end{frame}
 
 % --- Slide 40: Modern Activation Functions ---
-\begin{frame}{Modern Activation Functions: When to Use What}
+\begin{frame}[shrink=10]{Modern Activation Functions: When to Use What}
 {\footnotesize The common thread is \emphc{smoothness}. ReLU's kink at $z{=}0$ causes \textit{dead neurons} and an \textit{undefined second derivative}. Two families fix this; they differ only in whether they keep ReLU's asymptotic shape.}
 
 \begin{columns}[T]
@@ -2249,7 +2249,7 @@ The next slides cover \textbf{early stopping}, \textbf{$L_2$}, and \textbf{dropo
 \end{frame}
 
 % --- Slide 44: Early Stopping ---
-\begin{frame}{Early Stopping}
+\begin{frame}[shrink=8]{Early Stopping}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \begin{center}
@@ -2300,7 +2300,7 @@ The next slides cover \textbf{early stopping}, \textbf{$L_2$}, and \textbf{dropo
 \end{frame}
 
 % --- Slide 45: Regularization ---
-\begin{frame}{Regularization: $L_2$ Penalty and Dropout}
+\begin{frame}[shrink=10]{Regularization: $L_2$ Penalty and Dropout}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{$L_2$ Regularization (Weight Decay):}
@@ -2358,7 +2358,7 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \end{frame}
 
 % --- Slide 47: Deep Double Descent ---
-\begin{frame}{Deep Double Descent}
+\begin{frame}[shrink=12]{Deep Double Descent}
 \begin{columns}[T]
 \column{0.52\textwidth}
 \begin{center}
@@ -2622,7 +2622,7 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \end{frame}
 
 % --- Slide S4: BPTT + vanishing/exploding ---
-\begin{frame}{Training: Backpropagation Through Time (BPTT)}
+\begin{frame}[shrink=10]{Training: Backpropagation Through Time (BPTT)}
 \footnotesize
 \textbf{Idea.}  The unrolled RNN is a feedforward net of depth $T$ with \emph{shared} weights.  Run backprop, \emph{sum} weight-gradients across time.
 
@@ -2667,7 +2667,7 @@ A \emphc{long product of the same Jacobian}:
 \end{frame}
 
 % --- Slide S5: LSTM ---
-\begin{frame}{LSTM: A Memory Conveyor Belt}
+\begin{frame}[shrink=8]{LSTM: A Memory Conveyor Belt}
 \footnotesize
 \textbf{Plain-language picture.} A vanilla RNN rewrites its memory at every step.  An LSTM keeps a dedicated \emphc{cell state} $\bm{C}_t$ that mostly flows forward unchanged.
 
@@ -2973,7 +2973,7 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
 \end{frame}
 
 % --- Slide 49: Software Ecosystem ---
-\begin{frame}{Software Ecosystem}
+\begin{frame}[shrink=8]{Software Ecosystem}
 \begin{center}
 \begin{tikzpicture}[
     fw/.style={rectangle, draw=uzhblue, fill=uzhblue!8, rounded corners=5pt,
@@ -3014,7 +3014,7 @@ Both symbols denote the same object \emph{abstractly} (free parameters of the mo
 \end{frame}
 
 % --- Slide 50: Hands-on Notebooks ---
-\begin{frame}{Hands-On Notebooks}
+\begin{frame}[shrink=15]{Hands-On Notebooks}
 The companion Jupyter notebooks are available in the course repository:
 
 \vspace{0.3cm}
@@ -3043,7 +3043,7 @@ The companion Jupyter notebooks are available in the course repository:
 \end{frame}
 
 % --- Slide 51: Exercise 1 ---
-\begin{frame}{Exercise: Function Approximation with Neural Networks}
+\begin{frame}[shrink=12]{Exercise: Function Approximation with Neural Networks}
 \textbf{Task:} approximate the Genz (1987) test functions with neural networks.
 
 \vspace{0.2cm}
