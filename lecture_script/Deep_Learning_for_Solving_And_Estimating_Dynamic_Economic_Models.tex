@@ -3574,7 +3574,7 @@ For the DEQN and PINN applications in this course, random search or Bayesian opt
 \section{Implementing the Search in Practice}
 \label{sec:nas-implementation}
 
-To keep the algorithms transparent, the companion notebook \tpath{03\_NAS\_RandomSearch\_Hyperband.ipynb} implements both Random Search (\S\,\ref{sec:nas_random_search}) and the Successive Halving Algorithm (\S\,\ref{sec:hyperband}) directly in plain Python, with no hyperparameter-search library involved.  The search space is encoded as an ordinary dict (number of hidden layers $\in \{1,\ldots,5\}$, units per layer $\in \{32, 64, \ldots, 256\}$, activation function $\in \{\texttt{relu}, \texttt{tanh}, \texttt{swish}\}$, and learning rate log-uniform in $[10^{-4}, 10^{-2}]$), and a single \texttt{sample\_config(rng)} function draws candidates from it.  Random Search is then a $30$-iteration loop that builds, trains, and scores each candidate; Successive Halving is the same loop wrapped in a halving schedule ($n_0 = 27$ candidates at $r_0 = 8$ epochs $\to$ $9$ at $24$ $\to$ $3$ at $72$ $\to$ winner, with $\eta = 3$).  Both implementations fit on a single slide and reproduce the qualitative finding of \citet{li2018hyperband} that Successive Halving reaches comparable accuracy to Random Search at substantially lower compute: in the notebook run, the same MAE is recovered with $\sim 2.3\times$ less compute (648 SHA config-epochs vs.\ 1500 for 30 Random Search trials at 50 epochs each) at a comparable number of architectures (27 vs.\ 30).  The precise multipliers are notebook-specific; the magnitudes reported in Li et al.\ vary by benchmark.
+To keep the algorithms transparent, the companion notebook \tpath{03_NAS_RandomSearch_Hyperband.ipynb} implements both Random Search (\S\,\ref{sec:nas_random_search}) and the Successive Halving Algorithm (\S\,\ref{sec:hyperband}) directly in plain Python, with no hyperparameter-search library involved.  The search space is encoded as an ordinary dict (number of hidden layers $\in \{1,\ldots,5\}$, units per layer $\in \{32, 64, \ldots, 256\}$, activation function $\in \{\texttt{relu}, \texttt{tanh}, \texttt{swish}\}$, and learning rate log-uniform in $[10^{-4}, 10^{-2}]$), and a single \texttt{sample\_config(rng)} function draws candidates from it.  Random Search is then a $30$-iteration loop that builds, trains, and scores each candidate; Successive Halving is the same loop wrapped in a halving schedule ($n_0 = 27$ candidates at $r_0 = 8$ epochs $\to$ $9$ at $24$ $\to$ $3$ at $72$ $\to$ winner, with $\eta = 3$).  Both implementations fit on a single slide and reproduce the qualitative finding of \citet{li2018hyperband} that Successive Halving reaches comparable accuracy to Random Search at substantially lower compute: in the notebook run, the same MAE is recovered with $\sim 2.3\times$ less compute (648 SHA config-epochs vs.\ 1500 for 30 Random Search trials at 50 epochs each) at a comparable number of architectures (27 vs.\ 30).  The precise multipliers are notebook-specific; the magnitudes reported in Li et al.\ vary by benchmark.
 
 \paragraph{Production tooling (footnote).}  Real projects rarely hand-roll the search loop.  Several established libraries wrap (and parallelise) the same algorithms behind uniform APIs: \texttt{KerasTuner}\footnote{\url{https://keras.io/keras_tuner/}} (Random, Bayesian, Hyperband; tight Keras integration), \texttt{Optuna}\footnote{\url{https://optuna.org/}} (TPE, CMA-ES, Hyperband, NSGA-II; framework-agnostic), \texttt{Ray Tune}\footnote{\url{https://docs.ray.io/en/latest/tune/}} (all of the above plus ASHA and population-based training, distributed by design), \texttt{Hyperopt}\footnote{\url{http://hyperopt.github.io/hyperopt/}} (the original TPE reference), \texttt{Ax} / \texttt{BoTorch}\footnote{\url{https://ax.dev/}} (PyTorch-native multi-objective Bayesian optimization), \texttt{NNI}\footnote{\url{https://nni.readthedocs.io/}} (Microsoft; full graph-NAS support), and \texttt{AutoKeras}\footnote{\url{https://autokeras.com/}} (full AutoML pipeline).  We deliberately teach the algorithms rather than the wrappers because library APIs change every few years; the underlying search procedures (Random, SHA / Hyperband, GP+EI, TPE) do not.  The notebook additionally compares the best NAS-found architecture to a hand-tuned baseline, which makes the pedagogical value of automated search concrete.
 
@@ -4217,7 +4217,7 @@ The OLG models of Chapter~\ref{ch:olg} featured a finite number of agent types, 
 Day~4 of the live course allocates the in-class slot to Sequence-Space DEQNs (\S\ref{sec:sequence_space}); the histogram-DEQN material in \S\S\ref{sec:young_motivation}--\ref{sec:ks_alternatives} is delivered there as self-study using the L09 deck.  The script presents Ch.~\ref{ch:young} as a numbered chapter on equal footing with the rest, so the self-paced reader can follow it linearly without consulting the live-course schedule.  ``Day~4'' below refers to the live-course schedule; the per-notebook headers (\texttt{Lecture 09}, \texttt{Lecture 10}) use the chapter-based taxonomy of the front-matter Execution Map.
 
 \paragraph{How this chapter maps onto the slides and notebooks.}
-The Day~4 in-class lecture covers Automatic Differentiation, Sequence-Space DEQNs, and OLG models; this chapter together with the companion deck \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/slides/lecture_09_heterogeneous_agents_youngs.tex} is offered as a self-study extension.  Two notebooks accompany Sections~\ref{sec:young_method}--\ref{sec:young_deqn}: \tpath{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/lecture\_09\_10\_Youngs\_Method\_Examples.ipynb} isolates Young's redistribution operator on toy examples, and \tpath{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/lecture\_09\_11\_Continuum\_of\_Agents\_DEQN.ipynb} embeds the same operator inside the Appendix~A.5 endowment-economy DEQN.  Section~\ref{sec:ks_alternatives} on alternative deep-learning approaches is paired with \tpath{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/lecture\_09\_12\_KrusellSmith\_DeepLearning.ipynb}, a classroom-scale all-in-one DL solver in the spirit of \citet{maliar2021deep}.
+Automatic differentiation, sequence-space DEQNs, and OLG models are covered in Lectures~07--10; the heterogeneous-agent material of this chapter, together with the companion deck \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/slides/lecture_09_heterogeneous_agents_youngs.tex}, forms the self-study extension that accompanies them.  Two notebooks accompany Sections~\ref{sec:young_method}--\ref{sec:young_deqn}: \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/code/lecture_09_10_Youngs_Method_Examples.ipynb} isolates Young's redistribution operator on toy examples, and \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/code/lecture_09_11_Continuum_of_Agents_DEQN.ipynb} embeds the same operator inside the Appendix~A.5 endowment-economy DEQN.  Section~\ref{sec:ks_alternatives} on alternative deep-learning approaches is paired with \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/code/lecture_09_12_KrusellSmith_DeepLearning.ipynb}, a classroom-scale all-in-one DL solver in the spirit of \citet{maliar2021deep}.
 
 \paragraph{The Bewley--Huggett--Aiyagari lineage.}  The continuum-agent framework that this chapter operationalises has three foundational sources.  \citet{bewley1986stationary} introduced stationary monetary equilibrium with a continuum of agents subject to iid endowment shocks; the explicit self-insurance-through-borrowing-constraints mechanism that defines the modern incomplete-markets workhorse is due to \citet{imrohoroglu1989cost}, \citet{huggett1993riskfree}, and \citet{aiyagari1994uninsured}.  \citet{huggett1993riskfree} cast the idea as a tractable endowment economy with a single risk-free asset, focusing on the equilibrium interest rate.  \citet{aiyagari1994uninsured} added neoclassical production, closing the model in general equilibrium with capital accumulation; this is the canonical incomplete-markets economy.  \citet{krusell1998income} layered aggregate productivity shocks on top, producing the modern Krusell--Smith economy that this chapter targets, and its continuous-time reformulation is developed by \citet{achdou2022income} and revisited in Chapter~\ref{ch:ct_theory}.
 
@@ -4614,7 +4614,7 @@ def young_step(G, kp, pi_eps, k_grid):
     return G_next
 \end{lstlisting}
 
-The four scatter-add lines correspond exactly to the four leaves of Figure~\ref{fig:young_cascade}: each leaf receives \texttt{omega} or \texttt{(1-omega)} from the capital lottery, multiplied by \texttt{pi\_eps[j, jp]} from the shock fork, multiplied by the source mass.  The Krusell--Smith JAX tutorial in \tpath{lectures/lecture\_10\_sequence\_space\_deqns/code/lecture\_10\_KrusellSmith\_Tutorial\_CPU.ipynb} implements this same operation as \texttt{distribution\_step}, vectorised over the grid via \texttt{jax.vmap} and accumulated with \texttt{.at[\,].add(\,)}.
+The four scatter-add lines correspond exactly to the four leaves of Figure~\ref{fig:young_cascade}: each leaf receives \texttt{omega} or \texttt{(1-omega)} from the capital lottery, multiplied by \texttt{pi\_eps[j, jp]} from the shock fork, multiplied by the source mass.  The Krusell--Smith JAX tutorial in \tpath{lectures/lecture_10_sequence_space_deqns/code/lecture_10_KrusellSmith_Tutorial_CPU.ipynb} implements this same operation as \texttt{distribution\_step}, vectorised over the grid via \texttt{jax.vmap} and accumulated with \texttt{.at[\,].add(\,)}.
 
 \begin{remarkbox}[Closed-form bracketing on GPUs, and how to keep it on log-spaced grids]
 The expensive sub-step of Young's update (and of any piecewise-linear interpolation) is the \emph{bracketing index}
@@ -4744,7 +4744,7 @@ Figure~\ref{fig:young_vs_mc} contrasts the two approaches visually: the histogra
         {0.062*exp(-0.5*((x-2.7)/0.8)^2)};
 \end{axis}
 \end{tikzpicture}
-\caption{Young's histogram (left) versus Monte Carlo panel simulation (right).  Both approximate the same underlying wealth density (dashed).  The histogram method is deterministic and smooth; the Monte Carlo panel exhibits $\mathcal{O}(1/\sqrt{N})$ sampling noise that contaminates downstream OLS regressions in the Krusell--Smith algorithm.  \emph{The bars in this figure are a TikZ schematic illustrating the two regimes; for the actual histograms produced by the algorithm see notebook \texttt{10\_Youngs\_Method\_Examples} in \texttt{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/}.}}
+\caption{Young's histogram (left) versus Monte Carlo panel simulation (right).  Both approximate the same underlying wealth density (dashed).  The histogram method is deterministic and smooth; the Monte Carlo panel exhibits $\mathcal{O}(1/\sqrt{N})$ sampling noise that contaminates downstream OLS regressions in the Krusell--Smith algorithm.  \emph{The bars in this figure are a TikZ schematic illustrating the two regimes; for the actual histograms produced by the algorithm see notebook \texttt{lecture\_09\_10\_Youngs\_Method\_Examples} in the Lecture-09 \texttt{code/} folder.}}
 \label{fig:young_vs_mc}
 \end{figure}
 
@@ -4774,7 +4774,7 @@ A remarkable empirical finding is that the log-linear forecasting rule~\eqref{eq
 The traditional Krusell--Smith algorithm provides the benchmark logic for this chapter, but the classroom DEQN notebook used in the course is the simpler Bewley endowment economy of Appendix~A.5 in \citet{azinovicDEEPEQUILIBRIUMNETS2022}.  This distinction is pedagogically useful.  Krusell--Smith explains \emph{why} distribution tracking matters and \emph{why} Young's method is valuable inside an outer forecasting-rule loop.  Appendix~A.5 then shows \emph{how} the same histogram machinery enters a neural-equilibrium implementation once one replaces the forecasting rule by a price network.  By combining Young's histogram method with neural network policies, the DEQN approach overcomes both main limitations of the traditional KS workflow: the network can condition on the \emph{full histogram}, and there is no need for a separate forecasting rule because the price network directly takes the distribution as input.
 
 \paragraph{What \S\ref{sec:young_deqn} inherits from Appendix~A.5.}
-Five features of the Appendix-A.5 teaching model anchor the rest of this section and the companion notebook \texttt{11\_Continuum\_of\_Agents\_DEQN.ipynb}; they are the distinguishing departures from the canonical Krusell--Smith calibration of \S\S\ref{sec:ks_economy}--\ref{sec:young_method}:
+Five features of the Appendix-A.5 teaching model anchor the rest of this section and the companion notebook \tpath{11_Continuum_of_Agents_DEQN.ipynb}; they are the distinguishing departures from the canonical Krusell--Smith calibration of \S\S\ref{sec:ks_economy}--\ref{sec:young_method}:
 \begin{itemize}[itemsep=2pt, leftmargin=*]
 \item \textbf{Endowment economy, not production.}  Aggregate output is exogenous, $Y_t = w(a_t)$, instead of $Y_t = z_t K_t^\alpha L_t^{1-\alpha}$; there is no capital and no firm problem.
 \item \textbf{Bonds in unit net supply.}  Households trade a single one-period bond at endogenous price $p_t$, and the market-clearing condition is $\int b_{t+1}\,d\mu_t = \bar B = 1$.
@@ -4882,10 +4882,10 @@ Both networks use two hidden layers with 500 units (\texttt{production}) or 128 
 \medskip\noindent\textbf{Equilibrium conditions as loss.}
 The loss function comprises five terms, all of which should be zero in equilibrium:
 \begin{equation}
-\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N}\left[\mathrm{EE}_i^2 + \mathrm{BE}_i^2 + n_Z\cdot\mathrm{MC}_i^2 + \mathrm{KKT}_i^2 + \mathrm{CB}_i^2\right],
+\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N}\left[\mathrm{EE}_i^2 + \mathrm{BE}_i^2 + \left(n_Z\,\mathrm{MC}_i\right)^2 + \mathrm{KKT}_i^2 + \mathrm{CB}_i^2\right],
 \label{eq:young_loss}
 \end{equation}
-where EE is the Euler equation residual, BE is the Bellman equation consistency condition, MC is the bond market clearing condition, KKT is the borrowing complementarity, and CB penalizes negative consumption.  The factor $n_Z$ on market clearing ensures comparable magnitude across terms.
+where EE is the Euler equation residual, BE is the Bellman equation consistency condition, MC is the bond market clearing condition, KKT is the borrowing complementarity, and CB penalizes negative consumption.  The market-clearing residual is rescaled by $n_Z$ before squaring, which puts it on a magnitude comparable to the other terms (the Euler, Bellman, and complementarity residuals are evaluated in relative terms, divided through by consumption).
 
 \paragraph{Market clearing via histogram.}
 A key advantage of the histogram representation is that market clearing can be computed \emph{exactly} (no Monte Carlo):
@@ -4896,15 +4896,15 @@ A key advantage of the histogram representation is that market clearing can be c
 where $h_t(\eta, b_j)$ is the histogram mass, $b'(\cdot)$ is the policy network output, and $\bar B$ is aggregate net bond supply.  We write the \emph{signed} residual here because it enters the loss~\eqref{eq:young_loss} squared, which is also how the notebook computes it.  The Appendix~A.5 notebook normalizes $\bar B=1$, which is the source of the ``$-1$'' term sometimes seen in code and slides.
 
 \paragraph{Young's method inside the training loop.}
-During each training episode, the histogram is propagated forward using Young's method (Algorithm~\ref{alg:young}) with the current neural network providing the policy function.  This creates a sequence of aggregate states $(x_0^{agg}, x_1^{agg}, \ldots, x_T^{agg})$ on which the equilibrium residuals~\eqref{eq:young_loss} are evaluated.  The distribution update is differentiable almost everywhere (linear interpolation conditional on fixed brackets), so gradients flow through the histogram propagation during backpropagation.  Crucially, the distribution co-evolves with the network: early in training, when the policy network is inaccurate, the simulated distribution will be ``wrong,'' but market-clearing residuals provide corrective feedback through the loss.  As the network improves, the distribution converges toward the ergodic steady state.
+During each training episode, the histogram is propagated forward using Young's method (Algorithm~\ref{alg:young}) with the current neural network providing the policy function.  This creates a sequence of aggregate states $(x_0^{agg}, x_1^{agg}, \ldots, x_T^{agg})$ on which the equilibrium residuals~\eqref{eq:young_loss} are evaluated.  Young's redistribution operator is differentiable almost everywhere (linear interpolation conditional on fixed brackets), so the \emph{one-step} histogram update that enters the market-clearing residual at each sampled state carries gradients back to the policy network.  The longer simulated path of aggregate states is treated as data: it is regenerated each episode from the current network and held fixed inside the gradient tape, rather than backpropagated through end to end.  Even so the distribution co-evolves with the network: early in training, when the policy network is inaccurate, the simulated path will be ``wrong,'' but the market-clearing residuals evaluated along it provide corrective feedback through the loss, and as the network improves the distribution converges toward the ergodic steady state.
 
 \section{Results and Discussion}
 \label{sec:young_results}
 
-In the Appendix~A.5 teaching model, the DEQN with histogram encoding achieves competitive accuracy: Euler equation errors are of order $10^{-3}$, and market-clearing residuals are comparably small.  The broader lesson for the Krusell--Smith benchmark is conceptual rather than model-specific.  Compared to the traditional KS algorithm, the DEQN approach has two advantages: (i) the neural network can condition on the \emph{full} distribution rather than just its mean, providing a richer approximation that can capture situations where higher moments of the distribution matter for prices, and (ii) there is no need for a separate outer loop to update forecasting coefficients, since equilibrium conditions are enforced directly through the loss function.
+In the Appendix~A.5 teaching model, the DEQN with histogram encoding achieves competitive accuracy: Euler equation errors are of order $10^{-3}$, and market-clearing residuals are comparably small.  These figures come from the checked-in \texttt{teaching}/\texttt{smoke} configuration of the companion notebook (a small network trained for a modest number of episodes); the \texttt{production} configuration tightens them further.  The broader lesson for the Krusell--Smith benchmark is conceptual rather than model-specific.  Compared to the traditional KS algorithm, the DEQN approach has two advantages: (i) the neural network can condition on the \emph{full} distribution rather than just its mean, providing a richer approximation that can capture situations where higher moments of the distribution matter for prices, and (ii) there is no need for a separate outer loop to update forecasting coefficients, since equilibrium conditions are enforced directly through the loss function.
 
 \begin{remarkbox}[Connection to continuous time]
-The discrete-time histogram approach presented here has a natural continuous-time counterpart.  In Chapter~\ref{ch:pinn}, we will see that the Kolmogorov forward equation (KFE; Fokker--Planck) describes the evolution of the wealth \emph{density} in continuous-time heterogeneous-agent models such as \citet{achdou2022income}.  While the mathematical formulation differs (histogram update vs.\ PDE), the economic question is the same: how does the wealth distribution evolve, and how does it feed back into equilibrium prices?
+The discrete-time histogram approach presented here has a natural continuous-time counterpart.  In Chapter~\ref{ch:ct_theory}, we will see that the Kolmogorov forward equation (KFE; Fokker--Planck) describes the evolution of the wealth \emph{density} in continuous-time heterogeneous-agent models such as \citet{achdou2022income}.  While the mathematical formulation differs (histogram update vs.\ PDE), the economic question is the same: how does the wealth distribution evolve, and how does it feed back into equilibrium prices?
 \end{remarkbox}
 
 
@@ -5026,7 +5026,7 @@ where $s = (k_t,\varepsilon_t; \bm{S}_t)$ is the individual-plus-aggregate state
 A central computational contribution is the \emph{all-in-one integration operator}: a single Monte Carlo realization of the next-period state is used to estimate the combined expectation across all residual terms simultaneously, rather than evaluating separate quadrature nodes for each conditional expectation.  This reduces the per-iteration cost from $\mathcal{O}(Q^m)$ (with $Q$ nodes per shock and $m$ shocks) to $\mathcal{O}(1)$ in expectation.
 
 \paragraph{Scale reported by the authors.}
-\citet{maliar2021deep} demonstrate the approach across several increasingly demanding setups: a Krusell--Smith variant with $N \geq 1{,}000$ explicit agents and $2{,}001$ state variables (one per agent plus one aggregate) in the baseline parameterization, scaled up to $N = 10{,}000$ agents in a moments-reduced variant where the cross section is summarized by $10$--$20$ aggregate moments; and on a one-agent consumption-savings problem with kinked policies they report approximation errors of at most a fraction of one percentage point.  A Python/TensorFlow replication is available at \url{https://github.com/marcmaliar/deep-learning-euler-method-krusell-smith} \citep{marcmaliar2022dlks}; it is the basis for the companion notebook \tpath{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/lecture\_09\_12\_KrusellSmith\_DeepLearning.ipynb} (described below).
+\citet{maliar2021deep} demonstrate the approach across several increasingly demanding setups: a Krusell--Smith variant with $N \geq 1{,}000$ explicit agents and $2{,}001$ state variables (one per agent plus one aggregate) in the baseline parameterization, scaled up to $N = 10{,}000$ agents in a moments-reduced variant where the cross section is summarized by $10$--$20$ aggregate moments; and on a one-agent consumption-savings problem with kinked policies they report approximation errors of at most a fraction of one percentage point.  A Python/TensorFlow replication is available at \url{https://github.com/marcmaliar/deep-learning-euler-method-krusell-smith} \citep{marcmaliar2022dlks}; it is the basis for the companion notebook \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/code/lecture_09_12_KrusellSmith_DeepLearning.ipynb} (described below).
 
 \paragraph{Why this approach?}
 All-in-one DL is the closest cousin of the DEQN framework of Chapter~\ref{ch:deqn}.  The only conceptual difference is that the aggregate state is represented by an \emph{explicit panel} of $N$ agents (a large vector $\bm{S}_t \in \R^N$) rather than by a histogram on a fixed grid.  Stochastic mini-batches draw both individual state and aggregate state, and the law of large numbers delivers permutation-invariance in the limit $N \to \infty$ without requiring a permutation-invariant architecture.  The appeal is conceptual simplicity; the cost is that the input dimension grows with~$N$ and the learner must rediscover permutation symmetry from the data.
@@ -5129,7 +5129,7 @@ DeepHAM \citep{han2023deepham}
 \end{table}
 
 \paragraph{Notebook: a classroom-scale all-in-one KS solver.}
-The accompanying Jupyter notebook \tpath{lectures/lecture\_09\_heterogeneous\_agents\_youngs\_method/code/lecture\_09\_12\_KrusellSmith\_DeepLearning.ipynb} (introduced in §\ref{sec:young_results} and described in detail in the README) implements a classroom-scale version of the all-in-one DL approach of \citet{maliar2021deep} on the Krusell--Smith benchmark with the parameters of \citet{krusell1998income}.  It uses a single policy network $\pi_\rho(k, \varepsilon, m_1, a)$ parameterized by TensorFlow/Keras, Euler-residual + Bellman-residual + market-clearing loss terms, and an explicit panel of $N$ agents as the distributional input.  The notebook is annotated cell-by-cell with the correspondence to the equations in this chapter, and is designed to converge in under ten minutes on a standard CPU.  For the production-scale counterpart (up to $N = 10^4$ agents, GPU acceleration, richer shock structure), we refer the reader to the replication repository of \citet{marcmaliar2022dlks}.
+The accompanying Jupyter notebook \tpath{lectures/lecture_09_heterogeneous_agents_youngs_method/code/lecture_09_12_KrusellSmith_DeepLearning.ipynb} (introduced in §\ref{sec:young_results} and described in detail in the README) implements a classroom-scale version of the all-in-one DL approach of \citet{maliar2021deep} on the Krusell--Smith benchmark with the parameters of \citet{krusell1998income}.  It uses a single policy network $\pi_\rho(k, \varepsilon, K, a)$ parameterized by TensorFlow/Keras and an explicit panel of $N$ agents as the distributional input; the loss is the squared Euler residual, augmented with a Fischer--Burmeister complementarity term at the borrowing constraint, and aggregate consistency is imposed by construction (next-period capital is the cross-sectional mean of the panel's savings choices) rather than through a separate market-clearing penalty.  This is a deliberate simplification of the full all-in-one formulation of \S\ref{sec:mmw_ks}, which also carries a value network and an explicit market-clearing residual.  The notebook is annotated cell-by-cell with the correspondence to the equations in this chapter, and is designed to converge in under ten minutes on a standard CPU.  For the production-scale counterpart (up to $N = 10^4$ agents, GPU acceleration, richer shock structure), we refer the reader to the replication repository of \citet{marcmaliar2022dlks}.
 
 \paragraph{Benchmarks and replication pointers.}  For readers who want to benchmark any of the deep-learning approaches against the traditional KS algorithm, the canonical reference implementation is \texttt{econ-ark/KrusellSmith} \citep{econark2020ks}, which implements the forecasting-rule-update algorithm of \citet{krusell1998income} and reports $R^2 > 0.9999$ within about 20 outer iterations under standard parameters ($\beta = 0.99$, $\alpha = 0.36$, log utility, two aggregate states).  Any deep-learning method must at least match that accuracy on the baseline model; the advantages are supposed to appear when the model is extended in directions KS cannot handle cleanly (more moments, many endogenous states, risky steady state).
 
@@ -5192,10 +5192,11 @@ The histogram-based DEQN above is transparent because it feeds a direct approxim
 \end{figure}
 
 \medskip\noindent\textbf{The sequence-space representation.}
-Let $z_t^T := (z_{t-T+1}, \ldots, z_t) \in \R^T$ denote the last $T$ realizations of the exogenous aggregate shock.  The key claim is that, in an ergodic economy, this history is an \emph{approximate sufficient statistic} for the endogenous aggregate state.  In the Brock--Mirman warm-up notebook, the network maps the shock history directly to next-period capital,
+Let $z_t^T := (z_{t-T+1}, \ldots, z_t) \in \R^T$ denote the last $T$ realizations of the exogenous aggregate shock.  The key claim is that, in an ergodic economy, this history is an \emph{approximate sufficient statistic} for the endogenous aggregate state.  In the Brock--Mirman warm-up notebook, the network maps the shock history to a bounded savings rate, from which next-period capital follows by the resource constraint,
 \[
-\mathcal{N}_\rho(z_t^T) \approx K_{t+1}.
+s_t = \sigma\!\bigl(\mathcal{N}_\rho(z_t^T)\bigr) \in (0,1), \qquad K_{t+1} = s_t\, z_t K_t^\alpha,
 \]
+where $\sigma$ is the logistic squashing that keeps $K_{t+1}$ feasible.
 In the richer heterogeneous-agent version, the network instead maps the same history to higher-level equilibrium objects such as policy-function coefficients or pricing objects.  This connects the method to the MIT-shock and sequence-space Jacobian literature of \citet{boppart2018exploiting} and \citet{auclert2021using}, but replaces local linear approximations with a global residual-based neural approximation.
 
 \begin{definitionbox}[State-space vs sequence-space: the equilibrium operator]
@@ -5254,7 +5255,7 @@ x_t^{\mathrm{state}} = (K_t, z_t), \qquad C_t = \mathcal{N}_\rho(K_t, z_t), \qqu
 \]
 In the sequence-space version, the \emph{economic model} is unchanged, but the network sees a different input:
 \[
-x_t^{\mathrm{seq}} = z_t^T = (z_{t-T+1}, \ldots, z_t), \qquad K_{t+1} = \mathcal{N}_\rho(z_t^T), \qquad C_t = z_t K_t^\alpha - K_{t+1}.
+x_t^{\mathrm{seq}} = z_t^T = (z_{t-T+1}, \ldots, z_t), \qquad s_t = \sigma\!\bigl(\mathcal{N}_\rho(z_t^T)\bigr), \qquad K_{t+1} = s_t\, z_t K_t^\alpha, \qquad C_t = (1-s_t)\, z_t K_t^\alpha.
 \]
 The Euler residual is the same object as before,
 \[
@@ -5263,7 +5264,7 @@ G_t = 1 - \beta \,\frac{C_t}{C_{t+1}} \,\alpha z_{t+1} K_{t+1}^{\alpha-1},
 so the economics are unchanged.  What changes is the computational representation:
 \begin{itemize}[itemsep=2pt]
 \item the \textbf{network input} changes from the current state $(K_t, z_t)$ to the recent history $z_t^T$;
-\item the \textbf{network output} changes from current consumption $C_t$ to next-period capital $K_{t+1}$ in the warm-up notebook;
+\item the \textbf{network output} changes from current consumption $C_t$ to a bounded savings rate $s_t\in(0,1)$ in the warm-up notebook, so that $K_{t+1}=s_t z_t K_t^\alpha$ is feasible by construction;
 \item the \textbf{current capital stock} is no longer fed directly into the network, but is generated recursively from the initial condition and previously predicted capital choices;
 \item the \textbf{training samples} are overlapping shock histories rather than pointwise states $(K_t, z_t)$.
 \end{itemize}
@@ -5272,7 +5273,7 @@ so the economics are unchanged.  What changes is the computational representatio
 \noindent This distinction is important conceptually.  For Brock--Mirman, sequence space is \emph{not} a dimensionality reduction, since $(K_t, z_t)$ is only two-dimensional whereas a history of length $T=25$ is larger.  The Brock--Mirman notebook is therefore a pedagogical demonstration of the idea that histories can stand in for endogenous states.  The dimensionality gain appears only in richer heterogeneous-agent models, where the relevant alternative is a large histogram or other high-dimensional distributional summary.
 
 \medskip
-\noindent\textbf{Intermediate bridge: sequence-space IRBC.}  Between the one-shock Brock--Mirman warm-up and the infinite-dimensional Krusell--Smith state, the companion notebook \tpath{lectures/lecture\_10\_sequence\_space\_deqns/code/lecture\_10\_05b\_SequenceSpace\_IRBC.ipynb} re-trains the two-country IRBC model of Chapter~\ref{ch:irbc} under sequence-space inputs: the policy network reads the last $T=80$ shock vectors (a $240$-dimensional history with $\rho_z^T \approx 1.7\times 10^{-2}$ truncation error) instead of the four-dimensional current state.  The $2N+1$ equilibrium residuals (Euler, ARC, Fischer--Burmeister), the Gauss--Hermite quadrature, and the cloud-method sampler are literally unchanged from nb~01; only the input domain changes.  Because the current capital stock is no longer an input, we parametrize the output head around the steady state, $k'_j = k_{ss}\exp(\tanh z^k_j)$ and $\lambda = \lambda_{ss}\exp(\tanh z^\lambda)$, which keeps gradients lively at the target policy and prevents the cold-start divergence that plagued a naive softplus head.  This notebook is a \emph{pedagogical bridge} rather than a computational win, at a four-dimensional state the history is much larger, not smaller, but it shows that the same template handles a multi-equation system with multiple independent shock channels before we hand the method over to Krusell--Smith, where the dimensionality gain is real.
+\noindent\textbf{Intermediate bridge: sequence-space IRBC.}  Between the one-shock Brock--Mirman warm-up and the infinite-dimensional Krusell--Smith state, the companion notebook \tpath{lectures/lecture_10_sequence_space_deqns/code/lecture_10_05b_SequenceSpace_IRBC.ipynb} re-trains the two-country IRBC model of Chapter~\ref{ch:irbc} under sequence-space inputs: the policy network reads the last $T=80$ shock vectors (a $240$-dimensional history with $\rho_z^T \approx 1.7\times 10^{-2}$ truncation error) instead of the four-dimensional current state.  The $2N+1$ equilibrium residuals (Euler, ARC, Fischer--Burmeister), the Gauss--Hermite quadrature, and the cloud-method sampler are literally unchanged from nb~01; only the input domain changes.  Because the current capital stock is no longer an input, we parametrize the output head around the steady state, $k'_j = k_{ss}\exp(\tanh z^k_j)$ and $\lambda = \lambda_{ss}\exp(\tanh z^\lambda)$, which keeps gradients lively at the target policy and prevents the cold-start divergence that plagued a naive softplus head.  This notebook is a \emph{pedagogical bridge} rather than a computational win, at a four-dimensional state the history is much larger, not smaller, but it shows that the same template handles a multi-equation system with multiple independent shock channels before we hand the method over to Krusell--Smith, where the dimensionality gain is real.
 
 \medskip\noindent\textbf{Training logic.}
 The computational pattern is also close to the rest of this chapter.  One samples an exogenous shock path, constructs overlapping history windows $z_t^T$, evaluates the network on those windows, and then uses the resulting decisions to simulate the endogenous economy forward.  In the Brock--Mirman warm-up this produces the capital sequence directly; in the Krusell--Smith tutorial it produces policy-function objects, while Young's method still propagates the cross-sectional distribution inside the simulator.  Residuals are then evaluated on the simulated path and backpropagated through the full pipeline.  Figure~\ref{fig:sequence_space_training} summarizes this workflow.
@@ -5430,7 +5431,7 @@ Four operational rules of thumb, distilled from \citet{azinovicyangzemlicka2025s
 The paper applies this framework to three demanding models: (i)~an OLG economy with portfolio choice and aggregate risk, (ii)~an economy with a continuum of heterogeneous firms and households featuring idiosyncratic and aggregate shocks, and (iii)~a lifecycle model with a discrete early-retirement choice that introduces local convexities.  Mean Euler equation errors are below 0.2\% in all cases.  The two TensorFlow~2 companion notebooks are intentionally complementary: \tpath{05_SequenceSpace_BrockMirman.ipynb} is a Brock--Mirman warm-up that isolates the history-to-policy logic in the simplest possible environment, while \tpath{06_SequenceSpace_KrusellSmith.ipynb} is a compact teaching implementation that combines sequence-space inputs, I-spline policies, and Young's method in a heterogeneous-agent setting.
 
 \medskip
-A third notebook, \tpath{KrusellSmith_Tutorial_CPU.ipynb}, is a JAX/optax port of the upstream pedagogical tutorial released by the paper's authors.  It exposes the same shape-preserving I-spline MPC parameterization, the same Young step inside the simulator, and the same Fischer--Burmeister KKT loss as the TensorFlow notebook, but in the original JAX form.  It is adapted from the upstream tutorial \texttt{01\_KrusellSmith\_Tutorial\_CPU.ipynb} in the companion code repository \citep{azinovicyangzemlicka2025sequencespacecode}, available at \url{https://github.com/azinoma/DeepLearningInTheSequenceSpace}; the local adaptation adds an explicit shape-guarantee diagnostic and additional inline commentary, leaving the algorithm unchanged.
+A third notebook, \tpath{KrusellSmith_Tutorial_CPU.ipynb}, is a JAX/optax port of the upstream pedagogical tutorial released by the paper's authors.  It exposes the same shape-preserving I-spline MPC parameterization, the same Young step inside the simulator, and the same Fischer--Burmeister KKT loss as the TensorFlow notebook, but in the original JAX form.  It is adapted from the upstream tutorial \tpath{01_KrusellSmith_Tutorial_CPU.ipynb} in the companion code repository \citep{azinovicyangzemlicka2025sequencespacecode}, available at \url{https://github.com/azinoma/DeepLearningInTheSequenceSpace}; the local adaptation adds an explicit shape-guarantee diagnostic and additional inline commentary, leaving the algorithm unchanged.
 
 \begin{definitionbox}[Math-to-code glossary for the KS sequence-space tutorial]
 \footnotesize
@@ -5485,7 +5486,7 @@ $\mathcal{B}$                           & Replay buffer of $(z^H, \mu)$ pairs   
 \item\label{ex:ch6:3} \textbf{[Core] Approximate aggregation, scope.}  Construct an example economy in which the KS log-linear forecasting rule fails (e.g.\ multiple assets with switching liquidity).  Why does adding higher moments not always rescue the rule?
 \item\label{ex:ch6:4} \textbf{[Computational] Sequence-space vs.\ histogram DEQN.}  Use Notebook~11 as the histogram-state baseline and compare it with the sequence-space implementation in Notebook~06 or the JAX tutorial.  In the sequence-space notebook, vary the history length $T$ (or $H$ in the code) and compare the residual after training.  Comment on which formulation generalizes better to a much longer test horizon and why.
 \item\label{ex:ch6:5} \textbf{[Core] DeepSets permutation invariance.}  Consider the DeepHAM aggregator from~\eqref{eq:deepham_moments}, $\bm{m}_t = \bigl(\sum_i g_\theta^1(s_t^i), \ldots, \sum_i g_\theta^M(s_t^i)\bigr)$.  (i)~Show that for any permutation $\pi$ of the agents, $\bm{m}_t(\pi \cdot s) = \bm{m}_t(s)$, so the encoder is permutation-invariant by construction.  (ii)~Show that the policy $\pi_\rho(s_t^i; \bm{m}_t, a_t)$ is consequently equivariant in the agent index $i$: if we permute the agents, each agent's policy moves with its own index but the dependence on the population through $\bm{m}_t$ is unchanged.  (iii)~State the converse (\citet{zaheer2017deep}): any continuous permutation-invariant function on $\mathbb{R}^d$-valued sets of fixed cardinality can be written in the form $\rho(\sum_i g(s^i))$.  Use this to argue why the DeepHAM architecture can in principle replace tracking the entire histogram with a finite vector $\bm{m}_t$ of learned moments, provided the dimension $M$ is large enough.
-\item\label{ex:ch6:6} \textbf{[Computational] Histogram noise vs.\ Monte Carlo sampling.}  In the Krusell--Smith tutorial notebook \texttt{KrusellSmith\_Tutorial\_CPU.ipynb}, fix one aggregate shock path and one initial distribution.  Run Young's histogram with $N_\mathrm{grid} = 100$ wealth grid points once, and run $R$ repeated Monte Carlo panels under the same aggregate path for $N \in \{100, 1000, 10\,000\}$ agents.  At each $t = 1, \dots, 200$, record aggregate capital $K_t^{(r)}$ for every Monte Carlo replication $r$ and the corresponding Young aggregate $K_t^Y$.  Plot the cross-replication standard deviation $\mathrm{sd}_r(K_t^{(r)})$ over time, or its time average, rather than the time-series standard deviation of $K_t$.  Verify (i)~Young's method has zero sampling variance conditional on the aggregate path, (ii)~MC sampling variance scales as $1/\sqrt{N}$, (iii)~at $N \approx N_\mathrm{grid}^2 = 10^4$, MC's stochastic noise becomes comparable to Young's discretization error on a smooth statistic like $K_t$.  Comment on why the discretization-error-vs-MC-error trade-off depends on which functional of $\mu_t$ is targeted (mean, variance, tail mass).
+\item\label{ex:ch6:6} \textbf{[Computational] Histogram noise vs.\ Monte Carlo sampling.}  In the Krusell--Smith tutorial notebook \tpath{KrusellSmith_Tutorial_CPU.ipynb}, fix one aggregate shock path and one initial distribution.  Run Young's histogram with $N_\mathrm{grid} = 100$ wealth grid points once, and run $R$ repeated Monte Carlo panels under the same aggregate path for $N \in \{100, 1000, 10\,000\}$ agents.  At each $t = 1, \dots, 200$, record aggregate capital $K_t^{(r)}$ for every Monte Carlo replication $r$ and the corresponding Young aggregate $K_t^Y$.  Plot the cross-replication standard deviation $\mathrm{sd}_r(K_t^{(r)})$ over time, or its time average, rather than the time-series standard deviation of $K_t$.  Verify (i)~Young's method has zero sampling variance conditional on the aggregate path, (ii)~MC sampling variance scales as $1/\sqrt{N}$, (iii)~at $N \approx N_\mathrm{grid}^2 = 10^4$, MC's stochastic noise becomes comparable to Young's discretization error on a smooth statistic like $K_t$.  Comment on why the discretization-error-vs-MC-error trade-off depends on which functional of $\mu_t$ is targeted (mean, variance, tail mass).
 \item\label{ex:ch6:7} \textbf{[Computational] Two-moment forecasting rule.}  In the same notebook, replace the Krusell--Smith log-linear forecasting rule $\log K_{t+1} = a_0 + a_1 \log K_t + a_2 \mathbb{1}[z_t = z_g]$ with a two-moment extension that also conditions on cross-sectional dispersion: $\log K_{t+1} = a_0 + a_1 \log K_t + a_2 \mathbb{1}[z_t = z_g] + a_3 \log V_t$, where $V_t = \mathrm{Var}_{\mu_t}(k)$.  Re-fit the rule and the network jointly.  Report (i)~the forecasting $R^2$ for $\log K_{t+1}$ before and after, (ii)~the maximum Euler residual after training, (iii)~by how much the second moment ``buys'' you in absolute residual terms.  Connect the result to the chapter's discussion of \emph{approximate aggregation}: in the standard Krusell--Smith calibration the marginal information in the second moment is small, but it becomes material once you introduce features (e.g., binding borrowing constraints in a non-trivial fraction of the population, multiple assets) that break aggregation.
 \end{enumerate}
 
@@ -5495,13 +5496,7 @@ $\mathcal{B}$                           & Replay buffer of $(z^H, \mu)$ pairs   
 \chapter{Physics-Informed Neural Networks}
 \label{ch:pinn}
 
-The companion agentic-programming workshop (taught as a separate hands-on module without an associated chapter in this script) introduces agentic programming as a tool for supervising and debugging research code at scale.  This chapter returns to numerical methods, this time applying neural networks to partial differential equations rather than equilibrium fixed-point conditions.  The PINN loss is structurally analogous to the DEQN loss of Chapter~\ref{ch:deqn}, but the equations are now in continuous time, which lets us solve a single PDE globally over the state space rather than time-step it.
-
-Chapters~\ref{ch:deqn}--\ref{ch:young} operated in discrete time, where the equilibrium conditions take the form of expectational equations (Euler equations).  We now shift to \emph{continuous time}, where the optimality conditions are partial differential equations, Hamilton--Jacobi--Bellman (HJB) equations and Kolmogorov forward equations.  Physics-Informed Neural Networks (PINNs) approximate the solution of these PDEs by minimizing the PDE residual at collocation points, using automatic differentiation to compute the required derivatives \citep{sirignano2018dgm, raissi2019physics}.  This chapter develops the PINN methodology from simple ODEs through boundary condition strategies to the HJB equation for consumption-savings problems, with applications to macro-finance.
-
-\begin{remarkbox}[Framework choice: PyTorch vs.\ TensorFlow]
-The PINN notebooks use PyTorch, whereas the DEQN code (Chapters~\ref{ch:deqn}--\ref{ch:irbc}) uses TensorFlow.  This is a practical implementation choice rather than a mathematical one: PINNs repeatedly differentiate the network with respect to its \emph{inputs} (e.g., $V_{SS}$ in the Black--Scholes PDE), and PyTorch's eager-mode \texttt{autograd} makes those higher-order derivatives easy to compose.  TensorFlow remains a natural fit for the DEQN training loop already used earlier in the course.  The underlying mathematics is identical in both frameworks: a PINN written here in PyTorch can be ported to TensorFlow line-for-line by replacing \texttt{torch.autograd.grad} with \texttt{tf.GradientTape} (one tape per derivative order, since TF tapes are by default not persistent), and \texttt{torch.compile} with \texttt{tf.function}.
-\end{remarkbox}
+Chapters~\ref{ch:deqn}--\ref{ch:young} operated in discrete time, where the equilibrium conditions take the form of expectational (Euler) equations.  We now shift to \emph{continuous time}, where the optimality conditions are partial differential equations -- Hamilton--Jacobi--Bellman (HJB) equations for optimal control and Kolmogorov forward equations for wealth distributions.  \emph{Physics-Informed Neural Networks} (PINNs) approximate the solution of such PDEs by minimizing the PDE residual at collocation points, using automatic differentiation to compute the required derivatives \citep{sirignano2018dgm, raissi2019physics}.  The PINN loss is structurally analogous to the DEQN loss of Chapter~\ref{ch:deqn}, but instead of time-stepping a fixed-point iteration we solve a single PDE globally over the state space.  This chapter develops the PINN methodology from simple ODEs through boundary-condition strategies to the HJB equation for consumption--savings problems, with applications to macro-finance.
 
 \section{From DEQNs to PINNs: Discrete vs.\ Continuous Time}
 
@@ -5563,18 +5558,22 @@ The derivatives appearing in $\mathcal{D}[\mathcal{N}_\rho]$ are computed algori
 
 \paragraph{Activation function requirements.}  The choice of activation function is particularly important for classical \emph{strong-form} PINNs that compute high-order derivatives via automatic differentiation.  If the PDE operator $\mathcal{D}$ involves $k$-th order derivatives, the network's activation function must be at least $C^k$ for the strong residual to be well-defined.  $\mathrm{ReLU}(z) = \max(0,z)$ is only $C^0$ and its second derivative is zero almost everywhere (and undefined at the kink), so a ReLU network is not suitable for the strong form of a second-order PDE.  For second-order PDEs (HJB, Black--Scholes, Poisson), one should use $C^\infty$ activations such as $\tanh$, Swish, or softplus.  This requirement stands in contrast to the supervised setting, where ReLU is the default.  The trade-off is real: smooth saturating activations propagate gradients more slowly than ReLU on the same architecture (the upper plateau of $\tanh$ has near-zero slope), so PINNs typically need wider networks or more iterations to reach the same training loss as a comparable supervised ReLU network.  In practice this is the price of having well-defined second derivatives.  Note that the limitation is specific to strong-form auto-differentiation PINNs: weak/variational formulations and methods that handle nonsmooth solutions explicitly can still use ReLU activations, since high-order derivatives never need to be differentiated point-wise.  More broadly, PINN optimization can suffer from gradient pathologies across loss terms, which is why adaptive loss balancing is often beneficial \citep{wang2021understanding, bischof2025relobralo}.
 
+\begin{remarkbox}[Framework choice: PyTorch vs.\ TensorFlow]
+The PINN notebooks use PyTorch, whereas the DEQN code (Chapters~\ref{ch:deqn}--\ref{ch:irbc}) uses TensorFlow.  This is a practical implementation choice rather than a mathematical one: PINNs repeatedly differentiate the network with respect to its \emph{inputs} (e.g., $V_{SS}$ in the Black--Scholes PDE), and PyTorch's eager-mode \texttt{autograd} makes those higher-order derivatives easy to compose.  TensorFlow remains a natural fit for the DEQN training loop already used earlier in the course.  The underlying mathematics is identical in both frameworks: a PINN written here in PyTorch can be ported to TensorFlow line-for-line by replacing \texttt{torch.autograd.grad} with \texttt{tf.GradientTape} (one tape per derivative order, since TF tapes are by default not persistent), and \texttt{torch.compile} with \texttt{tf.function}.
+\end{remarkbox}
+
 \subsection{A Concrete Example: Solving a 1D ODE with a PINN}
 
 To build intuition, consider the simple boundary value problem:
 \begin{equation}
 y''(x) + y(x) = 0, \quad x \in [0, \pi/2], \quad y(0) = 0, \quad y(\pi/2) = 1.
 \end{equation}
-The analytical solution is $y(x) = \sin(x)$.  Using a hard BC trial solution:
+The analytical solution is $y(x) = \sin(x)$.  Rather than penalising boundary errors in the loss, we build the boundary conditions directly into the network's output -- a \emph{hard} enforcement strategy, developed in full (alongside the soft-penalty alternative) in \S\ref{sec:bc_soft_hard}.  Concretely, take the trial form
 \begin{equation}
 \hat{y}(x) = \underbrace{\frac{2x}{\pi}}_{A(x)} + \underbrace{x\!\left(\frac{\pi}{2} - x\right)}_{B(x)} \cdot \mathcal{N}_\rho(x),
 \label{eq:1d_ode_trial}
 \end{equation}
-which satisfies $\hat{y}(0) = 0$ and $\hat{y}(\pi/2) = 1$ for any network output.  The loss function requires only the PDE residual:
+which splits as $\hat y = A(x) + B(x)\,\mathcal{N}_\rho(x)$ with $A$ matching the boundary data ($A(0)=0$, $A(\pi/2)=1$) and the mask $B$ vanishing at both endpoints; then $\hat{y}(0) = 0$ and $\hat{y}(\pi/2) = 1$ hold exactly for any network output, and the loss requires only the PDE residual:
 \begin{equation}
 \ell = \frac{1}{N}\sum_{i=1}^{N}\big(\hat{y}''(x_i) + \hat{y}(x_i)\big)^2,
 \end{equation}
@@ -5620,6 +5619,7 @@ Uniform random sampling is the simplest collocation strategy but not necessarily
 Figure~\ref{fig:pinn_1d_ode} shows the same calculation graphically.  This simple example illustrates the key ingredients of every PINN: (i)~a neural network that approximates the unknown function, (ii)~automatic differentiation to compute derivatives, (iii)~a loss function built from the PDE residual, and (iv)~collocation points sampled from the domain interior.  The same machinery extends directly to PDEs in two or more dimensions, as we demonstrate in the following applications.
 
 \section{Boundary Conditions: Soft vs.\ Hard Enforcement}
+\label{sec:bc_soft_hard}
 
 The treatment of boundary conditions is a critical design choice in PINNs.
 
@@ -5738,7 +5738,7 @@ where $A(x)$ is an anchor function satisfying the BCs exactly, and $B(x)$ is a m
 \label{fig:trial_solution_decomposition}
 \end{figure}
 
-Hard enforcement eliminates the boundary loss term entirely, reducing the number of hyperparameters and improving accuracy near the boundaries.  The trade-off is real, however: because $\hat y = A + B\cdot\mathcal{N}_\rho$ multiplies the network output by a mask $B$ that vanishes on $\partial\Omega$, the input-gradient $\partial\hat y/\partial x$ inherits a factor of $B$ near the boundary and is thus damped by construction.  When the true solution exhibits a steep boundary layer (e.g., a Hamilton--Jacobi--Bellman equation at the borrowing constraint, see \S\ref{sec:ct_hjb}), the network must compensate by making $\mathcal{N}_\rho$ itself locally large, which can slow convergence.  In short: hard BCs trade boundary-loss tunability for vanishing input gradients at $\partial\Omega$, and the trade is favorable for smooth Dirichlet problems but less obviously so for problems with sharp boundary features.
+Hard enforcement eliminates the boundary loss term entirely, reducing the number of hyperparameters and improving accuracy near the boundaries.  The trade-off is real, however: because $\hat y = A + B\cdot\mathcal{N}_\rho$ multiplies the network output by a mask $B$ that vanishes on $\partial\Omega$, the input-gradient $\partial\hat y/\partial x$ inherits a factor of $B$ near the boundary and is thus damped by construction.  When the true solution exhibits a steep boundary layer (e.g., a Hamilton--Jacobi--Bellman equation at the borrowing constraint, see \S\ref{sec:hjb_theory}), the network must compensate by making $\mathcal{N}_\rho$ itself locally large, which can slow convergence.  In short: hard BCs trade boundary-loss tunability for vanishing input gradients at $\partial\Omega$, and the trade is favorable for smooth Dirichlet problems but less obviously so for problems with sharp boundary features.
 
 \paragraph{Transfinite interpolation for 2D domains.}
 The 1D hard-enforcement idea ($\hat{y} = A + B \cdot \mathcal{N}_\rho$) extends naturally to rectangular 2D domains, but the anchor function $A$ must now interpolate prescribed boundary data along entire \emph{edges}, not just at two endpoints.  The classical technique for this is transfinite interpolation (also known as Gordon--Coons blending): it constructs a function over the rectangle that exactly matches given boundary curves, in much the same way that bilinear interpolation matches four corner values, except that here we match four continuous edge functions rather than four discrete values.
@@ -5858,6 +5858,7 @@ Note that this formulation uses two separate gates: $Z^{(l)}$ controls how much 
 The PINN framework applies uniformly to both \emph{stationary} PDEs, where the unknown depends only on state variables ($u = u(\mathbf{x})$), and \emph{evolutionary} PDEs, where time enters as an additional input ($u = u(\mathbf{x}, t)$).  The network architecture is identical in both cases: only the input dimension changes.  The HJB equation below is stationary: the value function $V(a)$ depends on a single state variable.  The Black--Scholes PDE of Section~\ref{sec:bs_pinn} is evolutionary: $V(S,t)$ depends on both the asset price and time to maturity.
 
 \section{Application: HJB Equation and the Cake-Eating Problem}
+\label{sec:cake_eating_hjb}
 
 \begin{remarkbox}[Notation: $\gamma$ as CRRA]
 In this section, $\gamma$ denotes the coefficient of relative risk aversion (CRRA), with utility $c^{1-\gamma}/(1-\gamma)$.  This convention differs from Chapter~\ref{ch:irbc}, where $\gamma_j$ denotes the intertemporal elasticity of substitution (IES $= 1/\text{CRRA}$).  Both conventions are standard in their respective literatures.
@@ -5973,124 +5974,9 @@ def pde_residual(model, a, gamma, rho, r):
 \section{Continuous-Time Heterogeneous Agent Models}
 \label{sec:ct_hank}
 
-Many frontier models in macroeconomics feature a continuum of agents who face idiosyncratic risk and interact through equilibrium prices.  In Chapter~\ref{ch:young}, we studied the discrete-time version of this problem using Young's histogram method.  In continuous time, the same economic question leads to a coupled PDE system: an HJB equation for individual optimization and a Kolmogorov forward equation (KFE; Fokker--Planck equation) for the cross-sectional distribution.  Following \citet{achdou2022income} for the model setup (their numerical solution uses finite differences), we present a PINN-based solver for the same coupled system.
+Many frontier models in macroeconomics feature a continuum of agents who face idiosyncratic risk and interact through equilibrium prices.  Chapter~\ref{ch:young} studied the discrete-time version with Young's histogram method inside a DEQN.  In continuous time the same economic question becomes a \emph{coupled PDE system}: a Hamilton--Jacobi--Bellman equation for individual optimization and a Kolmogorov forward (Fokker--Planck) equation for the stationary cross-sectional density, closed by a market-clearing condition that pins down prices.  This is the canonical example of a PINN applied to a \emph{system} of equilibrium PDEs, in contrast to the single HJB of the cake-eating problem (\S\ref{sec:cake_eating_hjb}) and the single Black--Scholes PDE (\S\ref{sec:bs_pinn}): a PINN parameterizes the value function and the density by two networks $\hat V_\rho(a,z)$, $\hat g_\psi(a,z)$ and minimizes a four-term loss -- the HJB residual, the KFE residual, the no-flux boundary residual at the borrowing constraint, and a mass-normalization residual -- with the loss-balancing and boundary-layer issues familiar from the rest of this chapter.
 
-\subsection{The Huggett/Aiyagari Economy in Continuous Time}
-\label{sec:ct_hank_setup}
-
-Consider a continuum of agents with CRRA utility $u(c) = c^{1-\gamma}/(1-\gamma)$, discount rate $\rho$, and two income states $z \in \{z_1, z_2\}$ that switch according to a Poisson process with intensity $\lambda_{zz'}$.  Agents hold a single asset $a \in [a_{\min}, a_{\max}]$ with return $r$ and face a borrowing constraint $a \geq a_{\min}$.  The wage is $w$, so an agent in state $z$ earns flow income $wz + ra$.
-
-\subsection{The HJB Equation}
-\label{sec:ct_hjb}
-
-Individual optimality is characterized by the Hamilton--Jacobi--Bellman equation.  For each income state $z$:
-\begin{equation}
-\rho V(a,z) = \max_c \left\{u(c) + V'(a,z)\big(w z + r a - c\big) + \sum_{z' \neq z}\lambda_{zz'}\big(V(a,z') - V(a,z)\big)\right\},
-\label{eq:hjb_hank}
-\end{equation}
-where $V'(a,z) \equiv \partial V / \partial a$ is the marginal value of wealth (we use the prime notation throughout this chapter and the next, consistent with the continuous-time HA literature; the subscript form $V_a$ is equivalent and used interchangeably in some sources).  The first-order condition for consumption gives:
-\begin{equation}
-c^\star(a,z) = \big(V'(a,z)\big)^{-1/\gamma}.
-\label{eq:ct_foc}
-\end{equation}
-Substituting back into~\eqref{eq:hjb_hank} eliminates the maximization, yielding a nonlinear PDE in $V(a,z)$.  At the borrowing constraint $a = a_{\min}$, the drift must be non-negative, which imposes a state-constraint boundary condition: economically, an agent at the constraint can do no better than to consume her flow income (so that $\dot a \ge 0$), which translates into the bound $V'(a_{\min}, z) \geq u'(wz + r a_{\min})$ on the marginal value at the constraint.  This is a Neumann-type condition on the value function, not a free boundary.
-
-\subsection{The Kolmogorov Forward Equation}
-\label{sec:ct_kfp}
-
-The stationary cross-sectional density $g(a,z)$ of agents over wealth and income states satisfies the Kolmogorov forward equation (KFE):
-\begin{equation}
-0 = -\partial_a\!\left[s(a,z)\,g(a,z)\right]
-    + \sum_{z' \neq z}\left[\lambda_{z'z}g(a,z') - \lambda_{zz'}g(a,z)\right],
-\label{eq:kfp_hank}
-\end{equation}
-where $s(a,z) = wz + ra - c^\star(a,z)$ is the savings (drift) function derived from the HJB solution.  Two conditions close the system:
-
-\paragraph{No-flux boundary conditions.}
-At the borrowing constraint, no mass can flow below $a_{\min}$:
-\begin{equation}
-s(a_{\min}, z)\, g(a_{\min}, z) = 0 \quad \text{for each } z.
-\label{eq:kfp_noflux}
-\end{equation}
-Similarly, at the upper boundary $a_{\max}$ (chosen large enough that it does not bind in equilibrium), we impose zero flux.
-
-\paragraph{Aggregate flux conservation.}
-Summing the stationary KFE~\eqref{eq:kfp_hank} across $z$ states gives, at each $a$ in the interior, the conservation law
-\begin{equation}
-\sum_{z}\, s(a,z)\, g(a,z) \;=\; 0 \qquad \text{for all } a \in (a_{\min}, a_{\max}),
-\label{eq:kfp_total_flux}
-\end{equation}
-since the income-process generator preserves total mass within each $a$-slice and the no-flux boundary~\eqref{eq:kfp_noflux} fixes the integration constant at zero.  This identity is a free consistency check at solution time, and is sometimes added as an auxiliary loss term during training.
-
-\paragraph{Mass normalization.}
-The total mass of agents across all income states equals one:
-\begin{equation}
-\sum_{z}\int_{a_{\min}}^{a_{\max}} g(a,z)\,da = 1.
-\label{eq:kfp_mass}
-\end{equation}
-
-\subsection{General Equilibrium: Market Clearing}
-\label{sec:ct_ge}
-
-In partial equilibrium, the interest rate $r$ and wage $w$ are exogenous.  In general equilibrium (Aiyagari-type), they are determined by aggregate capital supply and a production function.  Aggregate capital and effective labor are:
-\begin{equation}
-K = \sum_z \int_{a_{\min}}^{a_{\max}} a\, g(a,z)\, da,
-\qquad
-L = \sum_z z\int_{a_{\min}}^{a_{\max}} g(a,z)\, da,
-\end{equation}
-and with a Cobb--Douglas production function $Y = K^\alpha L^{1-\alpha}$, factor markets clear at:
-\begin{equation}
-r = \alpha K^{\alpha-1}L^{1-\alpha} - \delta, \qquad w = (1-\alpha)K^\alpha L^{-\alpha}.
-\label{eq:ct_prices}
-\end{equation}
-Finding the equilibrium requires jointly solving the HJB, the KFE, and the market clearing condition.  In the traditional approach this is done via fixed-point iteration over $r$ (or $K$); the PINN approach described below trains all components jointly.
-
-\subsection{PINN Implementation}
-\label{sec:ct_pinn}
-
-A PINN implementation uses two networks, trained jointly:
-\begin{itemize}[itemsep=2pt]
-\item $\hat{V}_\rho(a,z)$: approximates the value function.  Its derivative $\hat{V}_a$ is computed via automatic differentiation.
-\item $\hat{g}_\psi(a,z)$: approximates the stationary density, with a positivity transform (e.g., softplus or $\exp$) ensuring $\hat{g} > 0$.
-\end{itemize}
-
-The joint loss has four components:
-\begin{equation}
-\ell = w_{\mathrm{HJB}}\,\ell_{\mathrm{HJB}} + w_{\mathrm{KFE}}\,\ell_{\mathrm{KFE}} + w_{\mathrm{flux}}\,\ell_{\mathrm{flux}} + w_{\mathrm{mass}}\left(\sum_z\int \hat{g}_\psi(a,z)\,da - 1\right)^{\!2},
-\label{eq:ct_loss}
-\end{equation}
-where $\ell_{\mathrm{HJB}}$ and $\ell_{\mathrm{KFE}}$ are mean squared PDE residuals computed on collocation points, $\ell_{\mathrm{flux}}$ enforces the no-flux boundary conditions~\eqref{eq:kfp_noflux}, and the mass term enforces normalization~\eqref{eq:kfp_mass}.  The integral is evaluated numerically (quadrature or Monte Carlo on the collocation points).
-
-Balancing the four loss components is critical: the HJB and KFE residuals can differ by orders of magnitude, so adaptive loss balancing (ReLoBRaLo, Chapter~\ref{ch:nas}) is strongly recommended.  Practical considerations include using separate learning rate schedules for the two networks, concentrating collocation points near the borrowing constraint where the density can become sharply peaked, and verifying that the consumption policy $c^\star$ from~\eqref{eq:ct_foc} satisfies $c^\star > 0$ everywhere.  If the true stationary distribution contains an atom at the borrowing constraint, a continuous density network alone cannot represent it; one must add a separate boundary-mass variable or use a discretization that permits point mass.
-
-\begin{remarkbox}[Why a Fourier basis is a poor test-function set]
-A natural-looking alternative to pointwise (collocation) residuals is to project the KFE residual onto a set of test functions $\{\psi_n\}$ and minimize the resulting projection coefficients.  The pitfall is that for the obvious choice of a Fourier basis, $\psi_n(a) = e^{i 2\pi n a / L}$, the coefficients $c_n$ of any smooth $g$ decay to zero by the Riemann--Lebesgue lemma; the smoother $g$ is, and the more it vanishes near the boundary, the faster the decay.  In practice, beyond $n \approx 5$ the $c_n$ are essentially zero \emph{regardless} of how well the residual is solved: they no longer measure error, they only measure smoothness.  Hat functions, low-order polynomials on local patches, or learned neural test functions (the WAN, or weak-adversarial-networks, idea) probe the residual far more honestly.
-\end{remarkbox}
-
-\subsection{Connection to Discrete-Time Methods}
-\label{sec:ct_comparison}
-
-The continuous-time PINN approach and the discrete-time DEQN with Young's method (Chapter~\ref{ch:young}) address the \emph{same} economic question, namely how heterogeneous agents interact through prices when markets are incomplete, but differ in the mathematical formulation summarized in Table~\ref{tab:discrete_continuous_ha}.
-
-\begin{table}[ht]
-\centering
-\small
-\begin{tabular}{lll}
-\toprule
-& \textbf{Discrete time (Ch.~\ref{ch:young})} & \textbf{Continuous time (this section)} \\
-\midrule
-Distribution & Histogram $G_t(k_i, \varepsilon_j)$ & Density $g(a,z)$ \\
-Evolution & Young's redistribution & KFE PDE \\
-Individual opt. & Euler equation & HJB PDE \\
-Solver & DEQN (TensorFlow) & PINN (PyTorch) \\
-Key reference & \citet{krusell1998income} & \citet{achdou2022income} \\
-\bottomrule
-\end{tabular}
-\caption{Discrete- and continuous-time formulations of incomplete-markets heterogeneous-agent models.  The economic object is the same in both columns, but the numerical residual changes from a discrete-time law of motion plus Euler equation to a coupled HJB--KFE PDE system.}
-\label{tab:discrete_continuous_ha}
-\end{table}
-
-Both approaches can incorporate aggregate shocks, multiple assets, and general equilibrium; the choice between them depends primarily on whether the underlying economic model is formulated in discrete or continuous time.
+The full development -- the stochastic-calculus background, the formal HJB and KFE derivations, the Huggett and Aiyagari equilibria, the PINN solver for the stationary coupled system, the master equation that handles aggregate shocks, and the EMINN method -- is the subject of Chapter~\ref{ch:ct_theory}: see \S\ref{sec:ct_equilibrium} and \S\ref{sec:ct_pinn} for the stationary problem and \S\ref{sec:master_eq}--\S\ref{sec:eminn} for the aggregate-shock case.  Following \citet{achdou2022income} for the model setup (whose own numerical solution uses finite differences), that treatment replaces the traditional fixed-point iteration over $r$ with joint training of all components.
 
 \section{Application: Black--Scholes PDE}
 \label{sec:bs_pinn}
@@ -6196,8 +6082,8 @@ a' = a - c\,\Delta t,
 \beta_{\Delta t}=e^{-\rho\Delta t}.
 \]
 Show that as $\Delta t \to 0$ it formally yields the HJB $\rho V = \max_c [u(c) - V'(a)\,c]$.  (This is the pure cake-eating problem with $r=0$; including a return $r$ on wealth, $\dot a = ra - c$, recovers~\eqref{eq:cake_hjb}.)
-\item\label{ex:ch7:4} \textbf{[Computational] BC penalty weight $\lambda$ tuning.}  In notebook \texttt{02\_ODE\_PINN\_SoftVsHardBCs}, run the soft-BC variant with PDE residual $\ell_\mathrm{int}$ and BC residual $\ell_\mathrm{BC}$ combined as $\mathcal{L} = \ell_\mathrm{int} + \lambda\,\ell_\mathrm{BC}$ (the notebook exposes $\lambda$ as the \texttt{bc\_weight} hyperparameter dispatched from \texttt{RUN\_MODE}) for $\lambda \in \{10^{-1}, 10^0, 10^1, 10^2, 10^3,10^4\}$.  For each, train to a fixed budget of $5{,}000$ iterations and record (i)~the BC violation $|\hat y(0) - y_0|$ at convergence, (ii)~the maximum interior residual, and (iii)~training wall time.  Plot all three on log--log axes against $\lambda$, identify the elbow at which boundary fit stops improving cheaply, and compare against the hard-BC variant.
-\item\label{ex:ch7:5} \textbf{[Advanced/project] Collocation strategy comparison.}  In notebook \texttt{03\_PDE\_PINN\_Poisson2D} solving $\Delta u = f$ on $[0,1]^2$ with Dirichlet BCs, replace the default uniform-random collocation with (a)~Latin Hypercube sampling, (b)~a Sobol low-discrepancy sequence, (c)~residual-based adaptive sampling that draws each batch of collocation points proportional to the residual magnitude at the current iterate.  Train each variant to the same residual tolerance ($10^{-4}$) and report (i)~the number of collocation points needed, (ii)~the wall time, (iii)~the spatial distribution of final residuals (compute $\sup_x |\Delta u_\theta - f|$ on a fine $200\times 200$ test grid).  Discuss when each strategy is preferred: uniform for smooth problems, low-discrepancy for moderately rough, adaptive for problems with localized features (e.g., near boundary layers).
+\item\label{ex:ch7:4} \textbf{[Computational] BC penalty weight $\lambda$ tuning.}  In notebook \tpath{02_ODE_PINN_SoftVsHardBCs}, run the soft-BC variant with PDE residual $\ell_\mathrm{int}$ and BC residual $\ell_\mathrm{BC}$ combined as $\mathcal{L} = \ell_\mathrm{int} + \lambda\,\ell_\mathrm{BC}$ (the notebook exposes $\lambda$ as the \texttt{bc\_weight} hyperparameter dispatched from \texttt{RUN\_MODE}) for $\lambda \in \{10^{-1}, 10^0, 10^1, 10^2, 10^3,10^4\}$.  For each, train to a fixed budget of $5{,}000$ iterations and record (i)~the BC violation $|\hat y(0) - y_0|$ at convergence, (ii)~the maximum interior residual, and (iii)~training wall time.  Plot all three on log--log axes against $\lambda$, identify the elbow at which boundary fit stops improving cheaply, and compare against the hard-BC variant.
+\item\label{ex:ch7:5} \textbf{[Advanced/project] Collocation strategy comparison.}  In notebook \tpath{03_PDE_PINN_Poisson2D} solving $\Delta u = f$ on $[0,1]^2$ with Dirichlet BCs, replace the default uniform-random collocation with (a)~Latin Hypercube sampling, (b)~a Sobol low-discrepancy sequence, (c)~residual-based adaptive sampling that draws each batch of collocation points proportional to the residual magnitude at the current iterate.  Train each variant to the same residual tolerance ($10^{-4}$) and report (i)~the number of collocation points needed, (ii)~the wall time, (iii)~the spatial distribution of final residuals (compute $\sup_x |\Delta u_\theta - f|$ on a fine $200\times 200$ test grid).  Discuss when each strategy is preferred: uniform for smooth problems, low-discrepancy for moderately rough, adaptive for problems with localized features (e.g., near boundary layers).
 \item\label{ex:ch7:6} \textbf{[Advanced/project] Strong vs.\ weak forms.}  Extend the Black--Scholes notebook.  First compare the current strong-form $\tanh$ PINN with a ReLU version and explain why the second derivative term is problematic for ReLU.  Then derive a weak-form variant: multiply the residual by a smooth test function $\varphi$ supported inside $[0,S_\mathrm{max}]$, integrate by parts to move the second derivative onto $\varphi$, and state which derivatives of $V$ remain.  If you implement the weak-form ReLU variant, compare its held-out pricing error with the strong-form $\tanh$ baseline.  Connect the result to Exercise~\ref{ex:ch7:2}.
 \item\label{ex:ch7:7} \textbf{[Core] Operator learning vs.\ PINN.}  For an option pricing problem where the strike $K$ varies across $\{45,46,\ldots,55\}$, count the training cost of (a)~eleven independent PINN runs vs.\ (b)~one operator-learning or parametric-PINN run that takes $K$ as an input; see Section~\ref{sec:operator_learning_bridge} and Chapter~\ref{ch:outlook}.  At what cost ratio does amortized training win?
 \end{enumerate}
@@ -6379,7 +6265,7 @@ A small pointwise KFE residual $|R_{\text{KFE}}|$ is a necessary check, but poin
 \section{The Hamilton--Jacobi--Bellman Equation}
 \label{sec:hjb_theory}
 
-Individual optimality in continuous-time heterogeneous-agent models is characterized by the HJB equation.  This section gives the full five-step derivation from Itô's lemma; readers who have already worked through the application-driven HJB statement in \S\ref{sec:ct_hank} can treat the present section as the formal counterpart that justifies the equation used there.
+Individual optimality in continuous-time heterogeneous-agent models is characterized by the HJB equation.  This section gives the full five-step derivation from Itô's lemma; readers who saw the motivating overview of the continuous-time heterogeneous-agent setting in \S\ref{sec:ct_hank} can treat the present section as its formal counterpart.
 
 \paragraph{The agent's problem.}  Agent $i$ with state $x_t^i = (a_t^i, n_t^i)$ chooses consumption $c_t^i$ to maximize:
 \begin{equation}
@@ -6578,6 +6464,53 @@ Figure~\ref{fig:huggett_aiyagari_densities} contrasts the two stationary densiti
 \end{figure}
 
 \paragraph{Connection to HANK.}  These models are the building blocks of Heterogeneous Agent New Keynesian (HANK) models \citep{kaplan2018monetary}, which replace the representative agent in New Keynesian frameworks with an Aiyagari economy.  Adding nominal rigidities allows monetary policy to affect consumption \emph{heterogeneously}: agents near the borrowing constraint have high marginal propensities to consume and respond strongly to fiscal stimulus, while wealthy agents absorb shocks through savings.
+
+\section{A PINN Solver for the Stationary Huggett--Aiyagari System}
+\label{sec:ct_pinn}
+
+The stationary equilibrium of \S\ref{sec:ct_equilibrium} couples five conditions: the HJB equation for the value function $V(a,z)$, the consumption first-order condition $c^\star(a,z) = \big(V'(a,z)\big)^{-1/\gamma}$, the KFE for the stationary density $g(a,z)$ with savings drift $s(a,z) = wz + ra - c^\star(a,z)$, the no-flux boundary condition $s(\underline a, z)\,g(\underline a, z) = 0$ at the borrowing constraint $\underline a$, mass normalization $\sum_z\int g(a,z)\,da = 1$, and the market-clearing condition that pins down prices.  The traditional solver iterates a fixed point over $r$ (guess $r$ $\to$ solve HJB for $V, c^\star$ $\to$ solve KFE for $g$ $\to$ aggregate capital $\to$ update $r$ from the firm FOC); a PINN instead trains all of them jointly.
+
+A PINN implementation uses two networks, trained jointly:
+\begin{itemize}[itemsep=2pt]
+\item $\hat{V}_\rho(a,z)$: approximates the value function.  Its derivative $\hat{V}_a$ is computed via automatic differentiation, and the implied consumption policy is $\hat c^\star(a,z) = \big(\hat{V}_a(a,z)\big)^{-1/\gamma}$.
+\item $\hat{g}_\psi(a,z)$: approximates the stationary density, with a positivity transform (e.g., softplus or $\exp$) ensuring $\hat{g} > 0$.
+\end{itemize}
+
+The joint loss has four components:
+\begin{equation}
+\ell = w_{\mathrm{HJB}}\,\ell_{\mathrm{HJB}} + w_{\mathrm{KFE}}\,\ell_{\mathrm{KFE}} + w_{\mathrm{flux}}\,\ell_{\mathrm{flux}} + w_{\mathrm{mass}}\left(\sum_z\int \hat{g}_\psi(a,z)\,da - 1\right)^{\!2},
+\label{eq:ct_loss}
+\end{equation}
+where $\ell_{\mathrm{HJB}}$ and $\ell_{\mathrm{KFE}}$ are mean squared PDE residuals computed on collocation points, $\ell_{\mathrm{flux}}$ enforces the no-flux boundary conditions $s(\underline a, z)\,\hat g_\psi(\underline a, z) = 0$, and the mass term enforces normalization.  The integral is evaluated numerically (quadrature or Monte Carlo on the collocation points).  The aggregate-flux identity $\sum_z s(a,z)\,g(a,z) = 0$ at each interior $a$ -- which follows from the no-flux boundary and total-mass conservation within each $a$-slice -- is a free consistency check at solution time and is sometimes added as an auxiliary loss term.
+
+Balancing the four loss components is critical: the HJB and KFE residuals can differ by orders of magnitude, so adaptive loss balancing (ReLoBRaLo, Chapter~\ref{ch:nas}) is strongly recommended.  Practical considerations include using separate learning-rate schedules for the two networks, concentrating collocation points near the borrowing constraint where the density can become sharply peaked, and verifying that the consumption policy $\hat c^\star$ satisfies $\hat c^\star > 0$ everywhere.  If the true stationary distribution contains an atom at the borrowing constraint (as in both Huggett and Aiyagari, Figure~\ref{fig:huggett_aiyagari_densities}), a continuous density network alone cannot represent it; one must add a separate boundary-mass variable or use a discretization that permits a point mass.
+
+\begin{remarkbox}[Why a Fourier basis is a poor test-function set]
+A natural-looking alternative to pointwise (collocation) residuals is to project the KFE residual onto a set of test functions $\{\psi_n\}$ and minimize the resulting projection coefficients.  The pitfall is that for the obvious choice of a Fourier basis, $\psi_n(a) = e^{i 2\pi n a / L}$, the coefficients $c_n$ of any smooth $g$ decay to zero by the Riemann--Lebesgue lemma; the smoother $g$ is, and the more it vanishes near the boundary, the faster the decay.  In practice, beyond $n \approx 5$ the $c_n$ are essentially zero \emph{regardless} of how well the residual is solved: they no longer measure error, they only measure smoothness.  Hat functions, low-order polynomials on local patches, or learned neural test functions (the WAN, or weak-adversarial-networks, idea) probe the residual far more honestly.
+\end{remarkbox}
+
+This continuous-time PINN approach and the discrete-time DEQN with Young's method (Chapter~\ref{ch:young}) address the \emph{same} economic question -- how heterogeneous agents interact through prices when markets are incomplete -- but differ in the mathematical formulation summarized in Table~\ref{tab:discrete_continuous_ha}.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+& \textbf{Discrete time (Ch.~\ref{ch:young})} & \textbf{Continuous time (this chapter)} \\
+\midrule
+Distribution & Histogram $G_t(k_i, \varepsilon_j)$ & Density $g(a,z)$ \\
+Evolution & Young's redistribution & KFE PDE \\
+Individual opt. & Euler equation & HJB PDE \\
+Solver & DEQN (TensorFlow) & PINN (PyTorch) \\
+Key reference & \citet{krusell1998income} & \citet{achdou2022income} \\
+\bottomrule
+\end{tabular}
+\caption{Discrete- and continuous-time formulations of incomplete-markets heterogeneous-agent models.  The economic object is the same in both columns, but the numerical residual changes from a discrete-time law of motion plus Euler equation to a coupled HJB--KFE PDE system.}
+\label{tab:discrete_continuous_ha}
+\end{table}
+
+Both approaches can incorporate aggregate shocks, multiple assets, and general equilibrium; the choice between them depends primarily on whether the underlying economic model is formulated in discrete or continuous time.  For the aggregate-shock case the natural continuous-time object is the \emph{master equation} (\S\ref{sec:master_eq}), solved with EMINNs (\S\ref{sec:eminn}).
+
 
 \section{The Master Equation}
 \label{sec:master_eq}
@@ -7736,7 +7669,7 @@ Two simple examples highlight when DKL provides a qualitative advantage over sta
 \end{itemize}
 
 \begin{remarkbox}[Hands-on]
-The companion notebook \tpath{08\_Deep\_Kernel\_Learning.ipynb} implements a simplified DKL pipeline (a supervised feature extractor stacked with a scikit-learn GP head) and compares the learned deep kernel against standard RBF and Mat\'ern GPs on function approximation tasks; the full GPyTorch joint marginal-likelihood training of \eqref{eq:dkl_kernel} is left as an extension.
+The companion notebook \tpath{08_Deep_Kernel_Learning.ipynb} implements a simplified DKL pipeline (a supervised feature extractor stacked with a scikit-learn GP head) and compares the learned deep kernel against standard RBF and Mat\'ern GPs on function approximation tasks; the full GPyTorch joint marginal-likelihood training of \eqref{eq:dkl_kernel} is left as an extension.
 \end{remarkbox}
 
 \section{GPs Among Their Bayesian Cousins}

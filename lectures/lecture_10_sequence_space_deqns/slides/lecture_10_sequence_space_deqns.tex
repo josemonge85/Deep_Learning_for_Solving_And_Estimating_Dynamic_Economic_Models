@@ -368,7 +368,7 @@ The \emphc{economic model and Euler equation do not change}.  What changes is th
 \textbf{Smaller, exogenous network input}
 \begin{itemize}\itemsep2pt
     \item Histogram DEQN feeds a \emphc{$\sim$100-bin wealth histogram} into the network.
-    \item Sequence-space DEQN feeds a \emphc{shock history of $\sim$25 floats}.
+    \item Sequence-space DEQN feeds a \emphc{truncated shock history} ($\mathcal{O}(T)$ floats; $\sim$25 in the one-shock warm-up).
     \item Histogram input \emphc{moves with the policy}; shock history is fixed by primitives.
 \end{itemize}
 
