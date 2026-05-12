@@ -3122,12 +3122,13 @@ The exact Fischer--Burmeister map is the limiting case $\mathrm{FB}_0(\mu,I)=\mu
     {$\mathrm{FB}=0$: investing ($\mu=0$)};
 \node[font=\small, text=uzhblue, rotate=90, anchor=south] at (axis cs:0.35,1.5)
     {$\mathrm{FB}=0$: constrained ($I=0$)};
-% Gradient arrow
-\draw[-{Stealth[length=2mm]}, thick, darkgreen] (axis cs:2.2,0.8) -- (axis cs:2.2,0.08);
-\node[font=\small, darkgreen, anchor=south] at (axis cs:2.2,0.85) {$\nabla \mathrm{FB}$};
+% Loss-gradient (descent) arrow: in the infeasible interior FB_0>0, so -grad FB_0
+% points back toward the feasible axes.
+\draw[-{Stealth[length=2mm]}, thick, darkgreen] (axis cs:2.2,0.85) -- (axis cs:2.2,0.08);
+\node[font=\small, darkgreen, anchor=south] at (axis cs:2.2,0.9) {$-\nabla\mathrm{FB}_0$};
 \end{axis}
 \end{tikzpicture}
-\caption{Exact zero set of the Fischer--Burmeister function in the $(\mu, I)$-plane.  $\mathrm{FB}_0(\mu, I) = 0$ exactly on the positive $I$-axis (investing, multiplier slack) and the positive $\mu$-axis (constraint binding, $I = 0$).  The open first quadrant is infeasible: it violates complementarity.  The exact map is non-differentiable at the origin; the smoothed version $\mathrm{FB}_\varepsilon$ used in code rounds that corner while preserving the same complementarity intuition.}
+\caption{The Fischer--Burmeister complementarity function, drawn in the investment--multiplier plane: investment $I^j$ on the horizontal axis, the irreversibility multiplier $\mu^j$ on the vertical axis.  The exact map $\mathrm{FB}_0(\mu,I)=\mu+I-\sqrt{\mu^2+I^2}$ packs the three Karush--Kuhn--Tucker conditions $\mu\ge 0$, $I\ge 0$, $\mu I=0$ into a single smooth equation: $\mathrm{FB}_0=0$ holds \emph{exactly} on the two heavy blue half-axes and nowhere else.  The horizontal half-axis ($\mu=0$, $I>0$) is the \emph{investing} regime, where the country invests a strictly positive amount, the irreversibility constraint is slack, and its shadow price $\mu$ is therefore zero.  The vertical half-axis ($I=0$, $\mu>0$) is the \emph{constrained} regime, where the constraint binds, investment is pinned at zero, and $\mu>0$ measures how much the planner would pay to relax it; the origin is the knife-edge where both hold with equality.  The open interior of the first quadrant ($\mu>0$ \emph{and} $I>0$ together) is \emph{infeasible} because it violates complementarity, and there $\mathrm{FB}_0>0$ strictly (since $\mu+I>\sqrt{\mu^2+I^2}$ whenever both are positive).  This is exactly what makes the function useful as a loss term: when the network's predicted $(\mu^j,I^j)$ lands in that forbidden region, the squared residual $\mathrm{FB}_\varepsilon^2$ is positive and its negative gradient $-\nabla\mathrm{FB}_0$ (green arrow) pushes the iterate back toward the nearest feasible half-axis, so the network learns which regime applies at each state without any explicit regime switch.  The exact map has a single kink, at the origin; the smoothed version $\mathrm{FB}_\varepsilon(\mu,I)=\mu+I-\sqrt{\mu^2+I^2+\varepsilon^2}$ actually used in the code rounds that corner, restoring differentiability everywhere at the price of an $\mathcal{O}(\varepsilon)$ relaxation of exact complementarity.}
 \label{fig:fb_zeroset}
 \end{figure}
 
