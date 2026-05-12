@@ -272,7 +272,7 @@ Policy: $(k^{1\prime}, \ldots, k^{N\prime}, \lambda, \mu^1, \ldots, \mu^N) \in \
 \begin{frame}{Preferences}
 Each country $j$ has \emphc{CRRA utility} (with the standard log limit at $\gamma_j = 1$):
 \[
-u^j(c) \;=\; \begin{cases} \dfrac{c^{\,1 - 1/\gamma_j}}{1 - 1/\gamma_j}, & \gamma_j \neq 1, \\[4pt] \ln c, & \gamma_j = 1. \end{cases}
+u^j(c) \;=\; \begin{cases} \dfrac{c^{\,1 - 1/\gamma_j} - 1}{1 - 1/\gamma_j}, & \gamma_j \neq 1, \\[4pt] \ln c, & \gamma_j = 1. \end{cases}
 \]
 
 \vspace{0.3em}
@@ -416,7 +416,7 @@ Changing the capital stock is \emphc{costly} ($\kappa = 0.5$):
 \footnotesize
 \textbf{Primitives} (from the previous slides):
 \begin{align*}
-\text{Preferences:}   &\quad U^j(c) = \tfrac{c^{\,1 - 1/\gamma_j}}{1 - 1/\gamma_j} \\[1pt]
+\text{Preferences:}   &\quad U^j(c) = \tfrac{c^{\,1 - 1/\gamma_j} - 1}{1 - 1/\gamma_j} \\[1pt]
 \text{Production:}    &\quad Y_t^j = A_{\mathrm{tfp}}\,\exp(z_t^j)\,(k_t^j)^{\zeta} \\[1pt]
 \text{TFP process:}   &\quad z_{t+1}^j = \rho_z\, z_t^j + \sigma_e\bigl(\varepsilon_{t+1}^j + \varepsilon_{t+1}^{\mathrm{agg}}\bigr) \\[1pt]
 \text{Adjustment cost:}&\quad \Gamma_t^j = \tfrac{\kappa}{2}\, k_t^j \bigl(k_{t+1}^j/k_t^j - 1\bigr)^{2}
@@ -436,7 +436,7 @@ The planner chooses $\{c_t^j, k_{t+1}^j\}_{j,t}$ subject to these constraints.
 \begin{frame}{Planner's Problem (Dynamic Optimization)}
 \footnotesize
 \[
-\max_{\{c_t^j,\, k_{t+1}^j\}} \;\; \mathbb{E}_0\!\left[\sum_{t=0}^{\infty} \beta^{t} \sum_{j=1}^{N} \tau^j \, \frac{(c_t^j)^{1 - 1/\gamma_j}}{1 - 1/\gamma_j}\right]
+\max_{\{c_t^j,\, k_{t+1}^j\}} \;\; \mathbb{E}_0\!\left[\sum_{t=0}^{\infty} \beta^{t} \sum_{j=1}^{N} \tau^j \, \frac{(c_t^j)^{1 - 1/\gamma_j} - 1}{1 - 1/\gamma_j}\right]
 \]
 \textbf{subject to:}
 \begin{align*}
@@ -461,7 +461,7 @@ Attach one multiplier per active constraint of the planner's problem:
 
 \[
 \mathcal{L} \;=\; \mathbb{E}_0\!\left[\,\sum_{t=0}^{\infty} \beta^{t}\!\left(\,
-  \sum_{j} \tau^j \tfrac{(c_t^j)^{1-1/\gamma_j}}{1-1/\gamma_j}
+  \sum_{j} \tau^j \tfrac{(c_t^j)^{1-1/\gamma_j} - 1}{1-1/\gamma_j}
   + \lambda_t\!\sum_{j}\!\bigl(Y_t^j + (1-\delta) k_t^j - k_{t+1}^j - \Gamma_t^j - c_t^j\bigr)
   + \sum_{j}\! \mu_t^j \bigl(k_{t+1}^j - (1-\delta) k_t^j\bigr)
 \right)\,\right]
@@ -962,9 +962,9 @@ $N$ & \textbf{Shocks} & $Q$ & \textbf{Quad.\ nodes} \\
 \toprule
 $N$ & \textbf{States} & \textbf{Policies} & \textbf{NN params} & \textbf{Grid pts ($n\!=\!10$)} \\
 \midrule
-2 & 4 & 5 & $\sim$4.7K & $10^4$ \\
+2 & 4 & 5 & $\sim$4.8K & $10^4$ \\
 4 & 8 & 9 & $\sim$5.3K & $10^8$ \\
-10 & 20 & 21 & $\sim$6.7K & $10^{20}$ \\
+10 & 20 & 21 & $\sim$6.9K & $10^{20}$ \\
 50 & 100 & 101 & $\sim$17K & $10^{100}$ \\
 100 & 200 & 201 & $\sim$30K & $10^{200}$ \\
 \bottomrule
@@ -1453,7 +1453,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 % --- Bridge frame ---
 \begin{frame}[shrink=20]{Bridge: AutoDiff, Sequence Space, OLG}
-\textbf{What we leave with today.}  An IRBC DEQN that converges with NAS-tuned width and ReLoBRaLo-balanced loss components: the same recipe scales from $N=2$ to $N=10$ countries with no architectural change.
+\textbf{What we leave with today.}  An IRBC DEQN trained with a single persistent-simulation pipeline and equal loss weights: the same recipe scales from $N=2$ to $N=10$ countries with no architectural change.  NAS-tuned width and ReLoBRaLo-balanced loss components are optional refinements, introduced with the NAS / loss-normalization material.
 
 \vspace{0.4em}
 \begin{columns}[T]
