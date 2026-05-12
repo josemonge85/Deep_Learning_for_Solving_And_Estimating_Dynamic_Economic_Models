@@ -1824,7 +1824,7 @@ Open and work through: \textbf{lectures/lecture\_02\_intro\_deep\_learning/code/
 % --- Slide 37: Adaptive Optimizers ---
 \begin{frame}{Adaptive Optimizers}
 \begin{small}
-\renewcommand{\arraystretch}{1.5}
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{lp{9cm}}
 \toprule
 \textbf{Method} & \textbf{Update rule} \\
@@ -1840,8 +1840,8 @@ Open and work through: \textbf{lectures/lecture\_02\_intro\_deep\_learning/code/
 \end{tabular}
 \end{small}
 
-\vspace{0.4cm}
-{\small \textbf{Adam} (Kingma \& Ba, 2015) is the most widely used default optimizer.  Typical hyperparameters: $\beta_1=0.9$, $\beta_2=0.999$, $\varepsilon=10^{-8}$.  \textbf{AdamW} (Loshchilov \& Hutter, 2019) decouples the weight-decay term from the adaptive update; it is the default we use for PINN training in later chapters.}
+\vspace{0.2cm}
+{\footnotesize \textbf{Adam} (Kingma \& Ba, 2015) is the usual default ($\beta_1=0.9$, $\beta_2=0.999$, $\varepsilon=10^{-8}$).  \textbf{AdamW} (Loshchilov \& Hutter, 2019) decouples weight decay from the adaptive update, and is our default for PINN training in later chapters.}
 \end{frame}
 
 % --- Slide 38: Weight Initialization ---
@@ -1849,10 +1849,10 @@ Open and work through: \textbf{lectures/lecture\_02\_intro\_deep\_learning/code/
 \textbf{Why not initialize all weights to zero?}
 All neurons would compute the same output $\Rightarrow$ same gradient $\Rightarrow$ symmetry is never broken.
 
-\vspace{0.2cm}
+\vspace{0.12cm}
 \textbf{Random initialization:} draw weights from a distribution scaled to the layer width $n_\ell$ (the number of neurons in layer~$\ell$; $n_{\ell-1}$ is then the fan-in from the previous layer).
 
-\vspace{0.2cm}
+\vspace{0.12cm}
 \begin{columns}[T]
 \column{0.48\textwidth}
 \begin{block}{Xavier / Glorot (2010)}
@@ -1860,7 +1860,7 @@ For sigmoid or tanh activations:
 \[
     W_{ij}^{(\ell)} \sim \mathcal{N}\!\left(0,\; \frac{2}{n_{\ell-1} + n_{\ell}}\right)
 \]
-Keeps variance of activations approximately constant across layers.
+Keeps activation variance roughly constant across layers.
 \end{block}
 
 \column{0.48\textwidth}
@@ -1869,12 +1869,12 @@ For ReLU activations:
 \[
     W_{ij}^{(\ell)} \sim \mathcal{N}\!\left(0,\; \frac{2}{n_{\ell-1}}\right)
 \]
-Accounts for the fact that ReLU kills half the variance (negative inputs map to zero).
+Accounts for ReLU zeroing roughly half the variance.
 \end{block}
 \end{columns}
 
-\vspace{0.15cm}
-{\small Biases are typically initialized to zero. Proper initialization is critical for training deep networks.}
+\vspace{0.1cm}
+{\footnotesize Biases are typically initialized to zero. Proper initialization is critical for training deep networks.}
 \end{frame}
 
 % --- Slide 39: Vanishing and Exploding Gradients ---
@@ -1962,7 +1962,7 @@ where $\gamma$ and $\beta$ are \textbf{learnable} scale and shift parameters.
 
 \column{0.46\textwidth}
 \begin{center}
-{\small\textbf{Pre-activations $z$ at one hidden layer}}\\[0.05cm]
+{\small\textbf{Pre-activations $z$ at one hidden layer}}\\[0.16cm]
 
 \begin{tikzpicture}
 \begin{axis}[
@@ -1973,8 +1973,9 @@ where $\gamma$ and $\beta$ are \textbf{learnable} scale and shift parameters.
     ylabel={density}, ylabel style={font=\tiny},
     tick label style={font=\tiny},
     axis lines=left, samples=120, no markers,
-    legend style={font=\tiny, draw=none, fill=white, fill opacity=0.85,
-                  at={(0.98,0.98)}, anchor=north east, row sep=-2pt}
+    legend style={font=\tiny, draw=none, fill=none,
+                  at={(0.5,1.02)}, anchor=south, legend columns=-1,
+                  /tikz/every even column/.append style={column sep=5pt}}
 ]
     \addplot[very thick, softblue,   domain=-4:6] {1/sqrt(2*pi*0.4)*exp(-(x+1)^2/(2*0.4))};
     \addlegendentry{step 50}
@@ -2452,11 +2453,12 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \end{frame}
 
 % --- Slide 48a: Reinforcement Learning in Finance (outlook only) ---
-\begin{frame}{Outlook (not covered): Reinforcement Learning in Finance}
+\begin{frame}{Outlook (not covered): RL in Finance}
+\small
 \begin{columns}[T]
 \column{0.55\textwidth}
 \textbf{The RL Loop:}
-\begin{itemize}
+\begin{itemize}\itemsep1pt
     \item \textbf{Agent:} Portfolio manager / Algo trader
     \item \textbf{Environment:} The market (prices, order book)
     \item \textbf{State $s_t$:} Current prices, portfolio weights
@@ -2464,12 +2466,12 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
     \item \textbf{Reward $r_t$:} P\&L, Sharpe ratio, utility
 \end{itemize}
 
-\vspace{0.2cm}
+\vspace{0.15cm}
 \textbf{Why not in this course?}
-\begin{itemize}
+\begin{itemize}\itemsep1pt
     \item RL finds \emph{strategies} in a \emph{fixed} environment.
     \item We focus on \emph{finding the equilibrium} (the environment itself).
-    \item BUT: Critical for hedging \& execution.
+    \item BUT: critical for hedging \& execution.
 \end{itemize}
 
 \column{0.42\textwidth}
@@ -2631,15 +2633,15 @@ During training, randomly zero out each neuron with probability $p$ (typically 0
 \[
 \nabla_{\bm{h}_k}\mathcal{L}_T \;=\; \Bigl(\!\prod_{t=k+1}^{T} \underbrace{\frac{\partial \bm{h}_t}{\partial \bm{h}_{t-1}}}_{=\,\mathrm{diag}(\tanh')\,\W_{hh}}\!\Bigr)^{\!\!\top}\,\nabla_{\bm{h}_T}\mathcal{L}_T.
 \]
-{\scriptsize Standard Jacobian convention; the transpose lives on the chain-rule product (matches script Eq.~\eqref*{eq:bptt} in \S1.10). For details see script \S1.10 ``Vanishing and Exploding Gradients''.}\\[2pt]
+{\scriptsize Standard Jacobian convention; the transpose rides on the chain-rule product. Details in the script's \S1.10 ``Vanishing and Exploding Gradients''.}\\[1pt]
 A \emphc{long product of the same Jacobian}:
-\begin{itemize}\itemsep1pt
+\begin{itemize}\itemsep0pt
     \item If $\|\W_{hh}\|\!>\!1$: gradient \emphc{explodes} $\to$ NaN.
     \item If $\|\W_{hh}\|\!<\!1$: gradient \emphc{vanishes} $\to$ no learning of long-range structure.
 \end{itemize}
 
 \vspace{1pt}
-{\scriptsize\emphc{Remedies:} gradient clipping, orthogonal init, truncated BPTT, and, most importantly, \emphc{gated cells} (LSTM, GRU).}
+{\scriptsize\emphc{Remedies:} gradient clipping, orthogonal init, truncated BPTT, and above all \emphc{gated cells} (LSTM, GRU).}
 
 \column{0.42\textwidth}
 \centering
@@ -2786,25 +2788,26 @@ A \emphc{long product of the same Jacobian}:
 
 % --- Slide S7: Self-attention intuition ---
 \begin{frame}{Self-Attention: Search Inside the Sequence}
+\footnotesize
 \begin{columns}[T]
 \column{0.46\textwidth}
-{\footnotesize\textbf{Mental model.} Updating token $i$ is like running a search over the whole sequence.}
+\textbf{Mental model.} Updating a token is a search over the whole sequence.
 
-\vspace{0.08cm}
-{\small\textbf{Each token creates three vectors:}}
+\vspace{0.04cm}
+\textbf{Each token creates three vectors:}
 \begin{itemize}\itemsep0pt
-    \item[\textcolor{softblue}{$\blacktriangleright$}] {\footnotesize \textcolor{softblue}{\textbf{Query $q_i$}}: what am I looking for?}
-    \item[\textcolor{harvardcrimson}{$\blacktriangleright$}] {\footnotesize \textcolor{harvardcrimson}{\textbf{Key $k_j$}}: what does token $j$ advertise?}
-    \item[\textcolor{softgreen}{$\blacktriangleright$}] {\footnotesize \textcolor{softgreen}{\textbf{Value $v_j$}}: what information can token $j$ contribute?}
+    \item[\textcolor{softblue}{$\blacktriangleright$}] \textcolor{softblue}{\textbf{Query $q_i$}}: what am I looking for?
+    \item[\textcolor{harvardcrimson}{$\blacktriangleright$}] \textcolor{harvardcrimson}{\textbf{Key $k_j$}}: what does token $j$ advertise?
+    \item[\textcolor{softgreen}{$\blacktriangleright$}] \textcolor{softgreen}{\textbf{Value $v_j$}}: what can token $j$ contribute?
 \end{itemize}
 
-\vspace{0.08cm}
-{\small\textbf{Four-step recipe:}}
+\vspace{0.04cm}
+\textbf{Four-step recipe:}
 \begin{enumerate}\itemsep0pt
     \item Add position information.
-    \item Compare query $q_i$ with every key $k_j$.
-    \item Softmax the scores to get weights $\alpha_{ij}$.
-    \item Return a weighted average of the values.
+    \item Compare $q_i$ with every key $k_j$.
+    \item Softmax the scores into weights $\alpha_{ij}$.
+    \item Return the weighted average of the values.
 \end{enumerate}
 
 \column{0.52\textwidth}
@@ -2974,7 +2977,7 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
 \begin{center}
 \begin{tikzpicture}[
     fw/.style={rectangle, draw=uzhblue, fill=uzhblue!8, rounded corners=5pt,
-               minimum width=3.2cm, minimum height=1.8cm, align=center, font=\small}
+               minimum width=3.2cm, minimum height=1.5cm, align=center, font=\small}
 ]
     \node[fw, fill=softorange!15] (tf) at (0,0) {\textbf{\large TensorFlow}\\+ Keras\\{\scriptsize Google, 2015}};
     \node[fw, fill=darkred!8] (pt) at (5.5,0) {\textbf{\large PyTorch}\\{\scriptsize Meta AI, 2017}};
@@ -2982,7 +2985,7 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 \begin{itemize}
     \item \textbf{Keras} (\url{https://keras.io}) provides a high-level API that runs on top of TensorFlow, PyTorch, or JAX---write once, run anywhere.
     \item \textbf{Key resources:}
@@ -2993,8 +2996,8 @@ If the pattern is specialized and the history is moderate, an LSTM is still a st
     \end{itemize}
 \end{itemize}
 
-\vspace{0.3cm}
-{\footnotesize\emphc{This chapter intentionally exercises both stacks.} Notebooks 04, 05, 07 use \emphc{TensorFlow/Keras}; notebooks 06, 08, 09 use \emphc{PyTorch}. The chapter's later DEQN/PINN materials (Chs.~2--7) are TensorFlow-based; the heterogeneous-agent and sequence-space chapters add JAX (Chs.~6 and~8).}
+\vspace{0.2cm}
+{\footnotesize\emphc{This chapter exercises both stacks:} notebooks 04, 05, 07 use \emphc{TensorFlow/Keras}; notebooks 06, 08, 09 use \emphc{PyTorch}. Later DEQN/PINN material is TensorFlow-based; the heterogeneous-agent and sequence-space chapters add JAX.}
 \end{frame}
 
 % --- Slide 49b: Notation pact ---
