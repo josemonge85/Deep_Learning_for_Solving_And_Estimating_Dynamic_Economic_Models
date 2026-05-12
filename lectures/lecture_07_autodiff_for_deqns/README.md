@@ -50,6 +50,6 @@ Curated bibliography for this lecture: [`lecture_07.md`](../../readings/links_by
 
 | ← Previous | Next → |
 |---|---|
-| [**Lecture 06: Agentic programming**](../lecture_06_agentic_programming/README.md)<br><sub>Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, 12-exercise workshop</sub> | [**Lecture 08: Sequence-space DEQNs**](../lecture_08_sequence_space_deqns/README.md)<br><sub>Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs</sub> |
+| [**Lecture 06: Agentic programming**](../lecture_06_agentic_programming/README.md)<br><sub>Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, 12-exercise workshop</sub> | [**Lecture 08: OLG models with DEQNs**](../lecture_08_olg_models_deqns/README.md)<br><sub>Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints</sub> |
 
 [↑ Course map](../../COURSE_MAP.md)

@@ -1,18 +1,16 @@
-# Readings, Lecture 08: Sequence-space DEQNs
+# Readings, Lecture 08: OLG models with DEQNs
 
 Default policy: link only.
 
-## Sequence-space methods
+## OLG-DEQN application
 
-- **Auclert, Bardóczy, Rognlie, Straub (2021), "Using the sequence-space Jacobian to solve and estimate heterogeneous-agent models,"** *Econometrica*, 89(5). [DOI](https://doi.org/10.3982/ECTA17434). The sequence-space framework the lecture builds on.
+- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). Section on large-scale OLG with borrowing constraints.
+- **Kotlikoff, Kubler, Polbin, Scheidegger, "Pareto-improving carbon-risk taxation,"** working paper. An OLG-DEQN application that uses the same architecture for climate-economic policy.
 
-## Deep-learning analogue
+## Classical OLG references
 
-- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). DEQNs adapted to a shock-history input.
-
-## Krusell-Smith with deep learning (extension notebook)
-
-- **Han, Yang, E (2022), "DeepHAM: a global solution method for heterogeneous agent models with aggregate shocks,"** [arXiv](https://arxiv.org/abs/2112.14377). The Krusell-Smith deep-learning tutorial in this lecture's extensions is closely related.
+- **Diamond (1965), "National debt in a neoclassical growth model,"** *American Economic Review*, 55(5). The two-period OLG reference.
+- **Auerbach, Kotlikoff (1987),** *Dynamic Fiscal Policy*, Cambridge UP. The benchmark large-scale OLG model the 56-cohort experiment is calibrated against.
 
 ## Companion lecture script
 

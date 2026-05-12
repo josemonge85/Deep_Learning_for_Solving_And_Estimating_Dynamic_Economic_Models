@@ -1,20 +1,18 @@
-# Readings, Lecture 10: Heterogeneous agents and Young's method
+# Readings, Lecture 10: Sequence-space DEQNs
 
 Default policy: link only.
 
-## Heterogeneous-agent foundations
+## Sequence-space methods
 
-- **Aiyagari (1994), "Uninsured idiosyncratic risk and aggregate saving,"** *QJE*, 109(3). The benchmark stationary HA model.
-- **Huggett (1993), "The risk-free rate in heterogeneous-agent incomplete-insurance economies,"** *JEDC*, 17(5/6). The closed-economy companion.
-- **Krusell, Smith (1998), "Income and wealth heterogeneity in the macroeconomy,"** *JPE*, 106(5). Heterogeneous agents with aggregate shocks.
+- **Auclert, Bardóczy, Rognlie, Straub (2021), "Using the sequence-space Jacobian to solve and estimate heterogeneous-agent models,"** *Econometrica*, 89(5). [DOI](https://doi.org/10.3982/ECTA17434). The sequence-space framework the lecture builds on.
 
-## Young's method
+## Deep-learning analogue
 
-- **Young (2010), "Solving the incomplete-markets model with aggregate uncertainty using the Krusell-Smith algorithm and non-stochastic simulations,"** *JEDC*, 34(1). [DOI](https://doi.org/10.1016/j.jedc.2008.11.010). The histogram-based distribution evolution that the lecture replicates.
+- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). DEQNs adapted to a shock-history input.
 
-## Deep-learning approach to a continuum of agents
+## Krusell-Smith with deep learning (extension notebook)
 
-- **Han, Yang, E (2022), "DeepHAM,"** [arXiv](https://arxiv.org/abs/2112.14377). Deep-learning Krusell-Smith solver.
+- **Han, Yang, E (2022), "DeepHAM: a global solution method for heterogeneous agent models with aggregate shocks,"** [arXiv](https://arxiv.org/abs/2112.14377). The Krusell-Smith deep-learning tutorial in this lecture's extensions is closely related.
 
 ## Companion lecture script
 

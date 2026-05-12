@@ -46,15 +46,15 @@
 | Ch. 4 | [Lecture 05](../lectures/lecture_05_nas_loss_normalization/README.md) | Neural architecture search and loss normalization. |
 | (no script chapter) | [Lecture 06](../lectures/lecture_06_agentic_programming/README.md) | Agentic programming workshop, slides plus exercises. |
 
-## Part III — OLG, sequence space, heterogeneous agents (Ch. 5-6)
+## Part III — OLG, heterogeneous agents, sequence space (Ch. 5-6)
 
 | Script unit | Public lecture(s) | Notes |
 |---|---|---|
-| Ch. 5.1-5.5 | [Lecture 09](../lectures/lecture_09_olg_models_deqns/README.md) | OLG with DEQNs. |
-| Ch. 5.6 | [Lecture 09](../lectures/lecture_09_olg_models_deqns/README.md) | Large OLG benchmark with borrowing constraints. |
-| Ch. 6.1-6.3 | [Lecture 10](../lectures/lecture_10_heterogeneous_agents_youngs_method/README.md) | Heterogeneous agents I, Young's method. |
-| Ch. 6.4-6.6 | [Lecture 10](../lectures/lecture_10_heterogeneous_agents_youngs_method/README.md) | Heterogeneous agents II, continuum-of-agents DEQN. |
-| Ch. 6.7 | [Lecture 08](../lectures/lecture_08_sequence_space_deqns/README.md) | Sequence-space DEQNs. |
+| Ch. 5.1-5.5 | [Lecture 08](../lectures/lecture_08_olg_models_deqns/README.md) | OLG with DEQNs. |
+| Ch. 5.6 | [Lecture 08](../lectures/lecture_08_olg_models_deqns/README.md) | Large OLG benchmark with borrowing constraints. |
+| Ch. 6.1-6.3 | [Lecture 09](../lectures/lecture_09_heterogeneous_agents_youngs_method/README.md) | Heterogeneous agents I, Young's method. |
+| Ch. 6.4-6.6 | [Lecture 09](../lectures/lecture_09_heterogeneous_agents_youngs_method/README.md) | Heterogeneous agents II, continuum-of-agents DEQN. |
+| Ch. 6.7 | [Lecture 10](../lectures/lecture_10_sequence_space_deqns/README.md) | Sequence-space DEQNs. |
 
 ## Part IV — PINNs and continuous-time methods (Ch. 7-8)
 

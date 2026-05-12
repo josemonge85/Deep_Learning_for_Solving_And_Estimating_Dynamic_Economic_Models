@@ -23,12 +23,11 @@ flowchart LR
   L05[L05<br/>NAS / Loss bal.] --> L06
   L06[L06<br/>Agentic programming] --> L07
   L07[L07<br/>Autodiff] --> L08
-  L07 --> L09
   L07 --> L11
   L07 --> L16
-  L08[L08<br/>Sequence-space] --> L18
-  L09[L09<br/>OLG] --> L10
-  L10[L10<br/>Heterog. agents / Young] --> L18
+  L08[L08<br/>OLG] --> L09
+  L09[L09<br/>Heterog. agents / Young] --> L10
+  L10[L10<br/>Sequence-space] --> L18
   L11[L11<br/>PINNs] --> L12
   L12[L12<br/>CT-HA theory] --> L13
   L13[L13<br/>CT-HA numerics] --> L14
@@ -52,9 +51,9 @@ flowchart LR
 | 05 | Architecture search and loss balancing | gpu-recommended | long | L04 |
 | **06** | **Agentic programming** | **cpu-light** | **long** | **L05** |
 | 07 | Automatic differentiation for DEQNs | cpu-standard | standard | L03 |
-| 08 | Sequence-space DEQNs | gpu-recommended | long | L07 |
-| 09 | OLG models with DEQNs | gpu-recommended | long | L07 |
-| 10 | Heterogeneous agents and Young's method | gpu-recommended | long | L09 |
+| 08 | OLG models with DEQNs | gpu-recommended | long | L07 |
+| 09 | Heterogeneous agents and Young's method | gpu-recommended | long | L08 |
+| 10 | Sequence-space DEQNs | gpu-recommended | long | L09 |
 | 11 | Physics-informed neural networks | cpu-standard | long | L07 |
 | 12 | Continuous-time HA, theory | cpu-light | standard | L11 |
 | 13 | Continuous-time HA, numerics | gpu-recommended | long | L12 |

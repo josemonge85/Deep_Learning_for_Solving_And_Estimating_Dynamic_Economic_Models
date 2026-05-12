@@ -1,16 +1,20 @@
-# Readings, Lecture 09: OLG models with DEQNs
+# Readings, Lecture 09: Heterogeneous agents and Young's method
 
 Default policy: link only.
 
-## OLG-DEQN application
+## Heterogeneous-agent foundations
 
-- **Azinovic, Gaegauf, Scheidegger (2022), "Deep Equilibrium Nets,"** *IER*. [DOI](https://doi.org/10.1111/iere.12575). Section on large-scale OLG with borrowing constraints.
-- **Kotlikoff, Kubler, Polbin, Scheidegger, "Pareto-improving carbon-risk taxation,"** working paper. An OLG-DEQN application that uses the same architecture for climate-economic policy.
+- **Aiyagari (1994), "Uninsured idiosyncratic risk and aggregate saving,"** *QJE*, 109(3). The benchmark stationary HA model.
+- **Huggett (1993), "The risk-free rate in heterogeneous-agent incomplete-insurance economies,"** *JEDC*, 17(5/6). The closed-economy companion.
+- **Krusell, Smith (1998), "Income and wealth heterogeneity in the macroeconomy,"** *JPE*, 106(5). Heterogeneous agents with aggregate shocks.
 
-## Classical OLG references
+## Young's method
 
-- **Diamond (1965), "National debt in a neoclassical growth model,"** *American Economic Review*, 55(5). The two-period OLG reference.
-- **Auerbach, Kotlikoff (1987),** *Dynamic Fiscal Policy*, Cambridge UP. The benchmark large-scale OLG model the 56-cohort experiment is calibrated against.
+- **Young (2010), "Solving the incomplete-markets model with aggregate uncertainty using the Krusell-Smith algorithm and non-stochastic simulations,"** *JEDC*, 34(1). [DOI](https://doi.org/10.1016/j.jedc.2008.11.010). The histogram-based distribution evolution that the lecture replicates.
+
+## Deep-learning approach to a continuum of agents
+
+- **Han, Yang, E (2022), "DeepHAM,"** [arXiv](https://arxiv.org/abs/2112.14377). Deep-learning Krusell-Smith solver.
 
 ## Companion lecture script
 

@@ -208,9 +208,9 @@ notebook also fixes a `SEED` for reproducibility.
 | **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
 | **Agentic programming** (AI coding agents as research partners) | [Lecture 06](lectures/lecture_06_agentic_programming/README.md) | Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, plus a 12-exercise workshop |
 | **Automatic differentiation for DEQNs** | [Lecture 07](lectures/lecture_07_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
-| **Sequence-space DEQNs** | [Lecture 08](lectures/lecture_08_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
-| **OLG with DEQNs** | [Lecture 09](lectures/lecture_09_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
-| **Heterogeneous agents and Young's method** | [Lecture 10](lectures/lecture_10_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
+| **OLG with DEQNs** | [Lecture 08](lectures/lecture_08_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
+| **Heterogeneous agents and Young's method** | [Lecture 09](lectures/lecture_09_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
+| **Sequence-space DEQNs** | [Lecture 10](lectures/lecture_10_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
 | **Physics-informed neural networks (PINNs)** | [Lecture 11](lectures/lecture_11_pinns/README.md) | ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes |
 | ↳ **Continuous-time HA, theory** | [Lecture 12](lectures/lecture_12_continuous_time_ha_theory/README.md) | HJB, Kolmogorov-forward, master equation, Ito calculus |
 | ↳ **Continuous-time HA, numerics** | [Lecture 13](lectures/lecture_13_continuous_time_ha_numerics/README.md) | Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari |

@@ -52,6 +52,6 @@ Curated bibliography for this lecture: [`lecture_11.md`](../../readings/links_by
 
 | ← Previous | Next → |
 |---|---|
-| [**Lecture 10: Heterogeneous agents and Young's method**](../lecture_10_heterogeneous_agents_youngs_method/README.md)<br><sub>Young's histogram, Krusell-Smith, continuum-of-agents DEQN</sub> | [**Lecture 12: Continuous-time HA, theory**](../lecture_12_continuous_time_ha_theory/README.md)<br><sub>HJB, Kolmogorov-forward, master equation, Ito calculus</sub> |
+| [**Lecture 10: Sequence-space DEQNs**](../lecture_10_sequence_space_deqns/README.md)<br><sub>Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs</sub> | [**Lecture 12: Continuous-time HA, theory**](../lecture_12_continuous_time_ha_theory/README.md)<br><sub>HJB, Kolmogorov-forward, master equation, Ito calculus</sub> |
 
 [↑ Course map](../../COURSE_MAP.md)
