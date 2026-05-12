@@ -460,11 +460,13 @@ Attach one multiplier per active constraint of the planner's problem:
 \end{itemize}
 
 \[
-\mathcal{L} \;=\; \mathbb{E}_0\!\left[\,\sum_{t=0}^{\infty} \beta^{t}\!\left(\,
-  \sum_{j} \tau^j \tfrac{(c_t^j)^{1-1/\gamma_j} - 1}{1-1/\gamma_j}
-  + \lambda_t\!\sum_{j}\!\bigl(Y_t^j + (1-\delta) k_t^j - k_{t+1}^j - \Gamma_t^j - c_t^j\bigr)
-  + \sum_{j}\! \mu_t^j \bigl(k_{t+1}^j - (1-\delta) k_t^j\bigr)
-\right)\,\right]
+\begin{aligned}
+\mathcal{L} \;=\; \mathbb{E}_0\Bigl[\, \sum_{t=0}^{\infty} \beta^{t}\Bigl(\;
+  &\sum_{j} \tau^j \,\tfrac{(c_t^j)^{1-1/\gamma_j} - 1}{1-1/\gamma_j}\\[3pt]
+  &{}+\; \lambda_t\!\sum_{j}\!\bigl(Y_t^j + (1-\delta) k_t^j - k_{t+1}^j - \Gamma_t^j - c_t^j\bigr)
+   \;+\; \sum_{j}\! \mu_t^j \bigl(k_{t+1}^j - (1-\delta) k_t^j\bigr)
+\;\Bigr)\,\Bigr]
+\end{aligned}
 \]
 
 \smallskip
@@ -521,32 +523,33 @@ $\Rightarrow$ For $\varepsilon>0$, \emphc{differentiable} everywhere---compatibl
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[
-    width=7cm, height=5.5cm,
-    xlabel={$\mu$}, ylabel={$I$},
-    xlabel style={font=\small, at={(axis description cs:1.02,0.5)}, anchor=west},
-    ylabel style={font=\small, at={(axis description cs:0.5,1.04)}, anchor=south, rotate=-90},
+    width=6.8cm, height=5.0cm,
+    xlabel={$I$ (investment)}, ylabel={$\mu$ (multiplier)},
+    label style={font=\small},
     tick label style={font=\tiny},
-    xmin=-0.6, xmax=2.4, ymin=-0.6, ymax=2.4,
+    xmin=0, xmax=2.6, ymin=0, ymax=2.6,
+    xtick={0,1,2}, ytick={0,1,2},
     grid=major, grid style={gray!15},
-    axis lines=middle,
+    axis lines=left, clip=false,
+    every axis plot/.append style={ultra thick, no markers},
 ]
-    % Feasible quadrant shading
-    \fill[softblue!12] (axis cs:0,0) rectangle (axis cs:2.4,2.4);
-    % Zero set of FB: the two positive axes (L-shape)
-    \addplot[very thick, darkred, domain=0:2.3, samples=2] ({x},{0});
-    \addplot[very thick, darkred, domain=0:2.3, samples=2] ({0},{x});
-    % Origin marker
-    \fill[darkred] (axis cs:0,0) circle (2.4pt);
-    % Annotations on each arm (placed in feasible interior so they don't hit the axes)
-    \node[font=\tiny, darkred, anchor=south west] at (axis cs:0.55,0.20)
-        {binding: $I = 0$,\; $\mu > 0$};
-    \node[font=\tiny, darkred, anchor=south west] at (axis cs:0.18,1.6)
-        {slack: $\mu = 0$,\; $I > 0$};
-    \node[font=\tiny, darkred, anchor=west] at (axis cs:0.12,-0.30) {both slack};
-    \node[font=\tiny, gray] at (axis cs:-0.32,-0.42) {infeasible};
+    % FB_0 = 0 on the two positive half-axes
+    \addplot[uzhblue, domain=0:2.5, samples=2] {0};
+    \addplot[uzhblue, samples=2] coordinates {(0,0) (0,2.5)};
+    % Open first quadrant = infeasible (violates complementarity)
+    \node[font=\tiny, text=harvardcrimson, align=center] at (axis cs:1.5,2.05)
+        {$\mu>0,\ I>0$:\\ \emph{infeasible}};
+    % FB_0=0 labels on the half-axes
+    \node[font=\tiny, text=uzhblue, anchor=west] at (axis cs:0.55,0.28)
+        {$\mathrm{FB}_0{=}0$: investing ($\mu{=}0$)};
+    \node[font=\tiny, text=uzhblue, rotate=90, anchor=south] at (axis cs:0.28,1.3)
+        {$\mathrm{FB}_0{=}0$: constrained ($I{=}0$)};
+    % loss-descent direction: in the interior FB_0>0, so -grad FB_0 points back to an axis
+    \draw[-{Stealth[length=1.6mm]}, thick, darkgreen] (axis cs:2.0,0.78) -- (axis cs:2.0,0.06);
+    \node[font=\tiny, darkgreen, anchor=south] at (axis cs:2.0,0.82) {$-\nabla\mathrm{FB}_0$};
 \end{axis}
 \end{tikzpicture}\\[2pt]
-{\scriptsize Red ``L'' $=$ zero set of $\mathrm{FB}$. Every point on it satisfies KKT: one of $\mu, I$ is zero, the other is $\geq 0$. Off the L, $\mathrm{FB} \neq 0$ and the loss penalizes the deviation.}
+{\scriptsize $\mathrm{FB}_0{=}0$ exactly on the two blue half-axes (one of $\mu,I$ is zero, the other $\geq 0$). The open quadrant is infeasible; $-\nabla\mathrm{FB}_0$ (green) pushes a prediction there back to the nearest axis.}
 \end{center}
 \end{columns}
 \end{frame}
@@ -817,9 +820,10 @@ Consider the 2-country IRBC model. Suppose we \emphc{double} the capital depreci
 
 % --- Slide 24: DEQN Loss for IRBC ---
 \begin{frame}{DEQN Loss Function for the IRBC}
-The loss is the \emphc{sum of squared residuals} across all equilibrium conditions.
+\small
+The loss is the \emphc{sum of squared residuals} across all equilibrium conditions; $\ell_\rho = 0$ iff every condition holds exactly.
 
-\vspace{0.3em}
+\vspace{0.15em}
 \textbf{Smooth benchmark} (notebook 04a):
 \[
 \boxed{
@@ -827,22 +831,19 @@ The loss is the \emphc{sum of squared residuals} across all equilibrium conditio
 }
 \]
 
-\vspace{0.2em}
+\vspace{0.1em}
 \textbf{Irreversibility extension} (notebook 04b): add the Fischer--Burmeister block,
 \[
 \ell^{\mathrm{irrev}}_\rho = \ell^{\mathrm{smooth}}_\rho + \frac{1}{B}\sum_{i=1}^{B}\sum_{j=1}^{N}\bigl(\text{FB}_j^{(i)}\bigr)^2.
 \]
 
-\vspace{0.2em}
+\vspace{0.1em}
 where $B$ is the batch size and:
-\begin{itemize}
-    \item $\text{Euler}_j = \frac{\beta\,\E{\lambda' \text{MPK}' - (1-\delta)\mu'} + \mu}{\lambda(1+\Gamma_{k'})} - 1$ \quad (smooth: $\mu \equiv 0$)
+\begin{itemize}\itemsep1pt
+    \item $\text{Euler}_j = \dfrac{\beta\,\E{\lambda' \text{MPK}' - (1-\delta)\mu'} + \mu}{\lambda(1+\Gamma_{k'})} - 1$ \quad (smooth: $\mu \equiv 0$)
     \item $\text{ARC} = \sum_j [Y^j + (1-\delta)k^j - k^{j\prime} - \Gamma^j - c^j]$
     \item $\text{FB}_j = \mu^j + I^j - \sqrt{(\mu^j)^2 + (I^j)^2 + \varepsilon^2}$ \quad (\emph{04b only})
 \end{itemize}
-
-\vspace{0.2em}
-$\ell_\rho = 0$ iff all equilibrium conditions hold exactly.
 \end{frame}
 
 % --- Slide 25: Gauss-Hermite Quadrature ---
@@ -1051,36 +1052,32 @@ $\Rightarrow$ \textbf{Next:} implementation in TensorFlow/Keras and results.
 
 % --- Slide 33: Notebook Overview ---
 \begin{frame}{Notebook Overview}
-\textbf{Three notebooks accompany this lecture} (two in the L04 \texttt{code/} folder, one in the L05 folder):
+\footnotesize
+\textbf{Three notebooks accompany this lecture} (two in the L04 \texttt{code/} folder, one in the L05 folder; self-contained, all equations inline):
 
-\vspace{0.5em}
-\begin{enumerate}
+\vspace{0.3em}
+\begin{enumerate}\itemsep3pt
     \item \texttt{lecture\_04\_01\_IRBC\_DEQN\_smooth.ipynb} -- \emph{smooth benchmark, in-class walk-through (this lecture's \texttt{code/})}
-    \begin{itemize}\itemsep1pt\vspace{2pt}
+    \begin{itemize}\itemsep0pt
         \item Parameters \& steady state, monomial quadrature
         \item Keras network, production/consumption/adjustment-cost equations
         \item Cost function (Euler + ARC), persistent-simulation training loop
         \item Time-invariance check and zero-shock stochastic steady state
     \end{itemize}
 
-    \vspace{0.3em}
     \item \texttt{lecture\_04\_02\_IRBC\_DEQN\_irreversible.ipynb} -- \emph{irreversible-investment extension (this lecture's \texttt{code/})}
-    \begin{itemize}\itemsep1pt\vspace{2pt}
+    \begin{itemize}\itemsep0pt
         \item KKT multipliers $\mu^j$ and feasibility-by-construction policy
         \item Fischer--Burmeister complementarity loss
         \item Same training loop and diagnostics as the smooth benchmark
     \end{itemize}
 
-    \vspace{0.3em}
     \item \texttt{lecture\_05\_05\_IRBC\_Exercise.ipynb} -- \emph{hands-on exercise (lives in L05's \texttt{code/}, extends naturally into the NAS / loss-normalization material of Chapter~4)}
-    \begin{itemize}\itemsep1pt\vspace{2pt}
+    \begin{itemize}\itemsep0pt
         \item Task 1: comparative statics on the deterministic steady state
         \item Task 2: inverse-loss weighting for multi-component losses (preview of ReLoBRaLo)
     \end{itemize}
 \end{enumerate}
-
-\vspace{0.4em}
-{\small Self-contained: all equations implemented inline, no external imports.}
 \end{frame}
 
 % --- Slide 34: Parameters ---
@@ -1380,29 +1377,29 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 % --- Slide 46: Economic Diagnostics ---
 \begin{frame}{Economic Diagnostics}
+\small
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Consumption sharing:}
-\begin{itemize}
+\begin{itemize}\itemsep1pt
     \item Under complete markets, $c^1$ and $c^2$ should be \emphc{positively correlated}
     \item Perfect risk sharing: $c^1/c^2$ is constant
     \item With heterogeneous $\gamma$: ratio varies with $\lambda$
 \end{itemize}
 
 \vspace{0.2em}
-{\footnotesize Reconnects with the \emphc{consumption-correlation puzzle} flagged on slide~7 of this deck: complete markets predict $\rho(c^1,c^2)\!\approx\!1$, but the data give $\rho(c^1,c^2)<\rho(y^1,y^2)$.  Heterogeneous IES alone does \emph{not} resolve the puzzle; closing it with the data needs incomplete markets, frictions, or non-traded goods.}
+{\footnotesize Reconnects with the \emphc{consumption-correlation puzzle} from slide~7: complete markets predict $\rho(c^1,c^2)\!\approx\!1$, but in data $\rho(c^1,c^2)<\rho(y^1,y^2)$; closing the gap needs incomplete markets or frictions.}
 
-\vspace{0.5em}
+\vspace{0.2em}
 \textbf{Trade balance:}
-\begin{itemize}
-    \item $\text{TB}^j = Y^j - c^j - I^j - \Gamma^j$
-    \item Positive when country $j$ exports
-    \item Sum across countries $= 0$
+\begin{itemize}\itemsep1pt
+    \item $\text{TB}^j = Y^j - c^j - I^j - \Gamma^j$ ($>0$ when $j$ exports)
+    \item Sums to zero across countries
 \end{itemize}
 
 \column{0.48\textwidth}
 \textbf{Ergodic distribution:}
-\begin{itemize}
+\begin{itemize}\itemsep1pt
     \item Scatter plot of $(k^1, k^2)$ over long simulation
     \item Should concentrate near $(k_{ss}, k_{ss})$
     \item Correlation structure reveals risk-sharing patterns
@@ -1410,7 +1407,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 \vspace{0.5em}
 \textbf{Complementarity check:}
-\begin{itemize}
+\begin{itemize}\itemsep1pt
     \item Plot $\mu^j$ vs.\ $I^j$
     \item Should lie on the axes: $\mu = 0$ or $I = 0$
     \item Fraction of time constraint binds
@@ -1458,7 +1455,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \vspace{0.4em}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\textbf{In-class follow-up.}
+\textbf{Next lectures.}
 \begin{itemize}
     \item Reverse-mode automatic differentiation \emph{inside} the equilibrium loss (forward/reverse modes, JVP/VJP, AD pitfalls).
     \item \emph{Sequence-space} DEQNs: collapsing the recursion into a finite-horizon DAG (Brock--Mirman warm-up, then IRBC).
@@ -1466,10 +1463,10 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{Self-study extension.}
+\textbf{Further ahead in the course.}
 \begin{itemize}
     \item Heterogeneous-agent solvers via Young's method (continuum approximated as a histogram).
-    \item Continuum-of-agents DEQN.
+    \item Continuum-of-agents (continuous-time) DEQN.
     \item Krusell--Smith with deep learning.
 \end{itemize}
 \end{columns}
@@ -1494,8 +1491,8 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 \column{0.45\textwidth}
 \begin{center}
 \textbf{Next up:}\\[6pt]
-{\large AutoDiff $\to$ Sequence Space $\to$ OLG\\[2pt]
-(Heterogeneous Agents = self-study)}\\[12pt]
+{\large AutoDiff $\to$ Sequence Space $\to$\\[2pt]
+OLG $\to$ Heterogeneous Agents (Young's method)}\\[12pt]
 \end{center}
 \end{columns}
 \end{frame}
