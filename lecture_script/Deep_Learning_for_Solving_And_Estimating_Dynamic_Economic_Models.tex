@@ -7811,17 +7811,16 @@ C_t + K_{t+1} &= Y_t + (1-\delta)K_t, \\
 \end{align}
 We write $\varrho$ for TFP persistence to avoid overloading $\rho$, which elsewhere denotes neural-network parameters.  The Python notebooks still use the variable name \tpath{rho}; mathematically, that code variable corresponds to $\varrho$.
 
-The network outputs a savings rate.  In the single-parameter exercise,
+The network outputs a savings rate, the fraction of current output that is invested.  In the single-parameter exercise,
 \[
 s_t = \mathcal{N}_{\rho}(z_t,K_t,\varrho) \in (0,1),
 \]
-with $\beta$ calibrated to $0.96$.  In the joint exercise the input becomes $(z_t,K_t,\beta,\varrho)$.  In either case, define total resources $R_t = Y_t + (1-\delta)K_t$ and recover
+with $\beta$ calibrated to $0.96$.  In the joint exercise the input becomes $(z_t,K_t,\beta,\varrho)$.  In either case, recover
 \begin{align}
-K_{t+1} &= s_t R_t, \\
-C_t &= (1-s_t) R_t.
+K_{t+1} &= (1-\delta)K_t + s_t Y_t, \\
+C_t &= (1-s_t) Y_t.
 \end{align}
-This resource-based parameterization enforces $C_t > 0$, $K_{t+1} > 0$, and the resource constraint by construction.  It allows disinvestment relative to the depreciated stock, in the sense that gross investment $I_t = K_{t+1} - (1-\delta)K_t = s_t R_t - (1-\delta)K_t$ may be negative for sufficiently low $s_t$, so the unconstrained partial-depreciation Euler equation~\eqref{eq:smm_euler_residual} is valid as written without a non-negative-investment multiplier.  The alternative formulation, in which $K_{t+1} \ge (1-\delta)K_t$ is enforced via a Fischer--Burmeister term in the loss, is appropriate when the model is genuinely a constrained partial-depreciation growth model and is left as an extension; the SMM moments and notebook outputs in this chapter assume the unconstrained, resource-based form.%
-\footnote{Notebook follow-up: the SMM notebooks accompanying this chapter should be aligned to the resource-based parameterization in a future update; the ergodic distribution and target moments shift slightly when disinvestment is allowed, but the qualitative findings and the SMM workflow are unchanged.}
+Because $s_t \in (0,1)$ and $Y_t > 0$, this parameterization enforces $C_t > 0$, $K_{t+1} > (1-\delta)K_t > 0$, and gross investment $I_t = s_t Y_t \ge 0$ by construction, so the resource constraint and the non-negativity of investment hold automatically and the partial-depreciation Euler equation~\eqref{eq:smm_euler_residual} applies as written, with no extra multiplier.  (A resource-based variant in which the savings rate is applied to total resources $R_t = Y_t + (1-\delta)K_t$, allowing disinvestment relative to the depreciated stock, is a straightforward alternative; the SMM moments and notebook outputs in this chapter use the output-based savings rate above.)
 
 Training uses the same Euler equation as Chapter~\ref{ch:deqn}, but the residual is evaluated jointly over states and parameter draws.  With partial depreciation,
 \[
@@ -7838,7 +7837,7 @@ G_i(\theta_b)
 1,
 \label{eq:smm_euler_residual}
 \end{equation}
-where $R_i = z_i K_i^\alpha + (1-\delta)K_i$, $K_i' = s_i R_i$, $C_i = (1-s_i) R_i$, and $C_{i,t+1}$ is computed by feeding $(z_{i,t+1},K_i',\theta_b)$ back through the same network.  The expectation over $z_{i,t+1}$ is approximated by Gauss--Hermite quadrature (Section~\ref{sec:quadrature_rules}).  The relative form is preferred to the equivalent absolute residual $1-\beta_b C_i\,\E{\cdot}$ because dividing by the consumption ratio makes the loss scale-free across $(z,K,\theta)$ samples; the two forms share the same zero set but the relative form is better conditioned under FP32 forward passes.  A representative training loss is
+where $Y_i = z_i K_i^\alpha$, $K_i' = (1-\delta)K_i + s_i Y_i$, $C_i = (1-s_i) Y_i$, and $C_{i,t+1}$ is computed by feeding $(z_{i,t+1},K_i',\theta_b)$ back through the same network.  The expectation over $z_{i,t+1}$ is approximated by Gauss--Hermite quadrature (Section~\ref{sec:quadrature_rules}).  The relative form is preferred to the equivalent absolute residual $1-\beta_b C_i\,\E{\cdot}$ because dividing by the consumption ratio makes the loss scale-free across $(z,K,\theta)$ samples; the two forms share the same zero set but the relative form is better conditioned under FP32 forward passes.  A representative training loss is
 \begin{equation}
 \ell_\rho
 =
@@ -10117,9 +10116,6 @@ Mitigations: use a Mat\'ern kernel with $\nu = 1/2$ or $\nu = 3/2$ (heavier-tail
 
 \section{Chapter \ref{ch:estimation}: Structural Estimation via SMM}
 \label{sol:ch10}
-
-\paragraph{Note on the Brock--Mirman parameterization.}
-The chapter body uses the resource-based form $R_t = Y_t + (1-\delta)K_t$, $K_{t+1} = s_t R_t$, $C_t = (1-s_t) R_t$, which allows disinvestment relative to the depreciated stock and so does not impose an implicit non-negative-investment constraint.  All SMM moments and notebook outputs referenced in the exercises below are interpreted under this parameterization; the qualitative anchors in the solutions are unaffected by the parameterization choice, but the precise numerical moments shift slightly relative to the older $C_t = Y_t(1-s_t)$, $K_{t+1} = (1-\delta)K_t + Y_t s_t$ form, which silently imposed $I_t \ge 0$.
 
 \paragraph{Exercise~\ref{ex:ch10:1} (statement: p.~\pageref{ex:ch10:1}): Identification.}
 Let $m(\varrho)=\mathbb{E}_\varrho[h(C,I,Y)]$ be the simulated moment vector implied by the persistence parameter.  At the truth $\varrho^\star$, local identification is captured by the Jacobian

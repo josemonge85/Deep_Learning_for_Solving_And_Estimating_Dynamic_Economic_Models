@@ -7,15 +7,15 @@ Structural estimation by simulated method of moments (SMM), made tractable by re
 > 📑 **Slides:** [lecture_15_structural_estimation_smm.pdf](slides/lecture_15_structural_estimation_smm.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_15_03_Structural_Estimation_BM.ipynb) (2 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_15.md)  
-> 📖 **Script:** §Chapter 10 (Structural estimation via SMM)
+> 📖 **Script:** Chapter 10 (Structural estimation via SMM)
 
 ## What this lecture covers
 
 - **SMM in one slide.** The moment-matching condition, the asymptotic distribution of the estimator, and the role of the weighting matrix.
 - **Surrogate-based estimation.** Why the surrogate makes a brutal repeated re-solve into a cheap optimization.
 - **Single-parameter Brock-Mirman.** Estimating the productivity persistence rho on a deep surrogate of the model.
-- **Joint estimation.** Estimating (beta, rho) together; identification diagnostics, Jacobian rank, and asymptotic standard errors.
-- **Sensitivity to the surrogate.** What happens to the estimator when the surrogate is wrong; switching to a GP for comparison.
+- **Joint estimation.** Estimating (beta, rho) together; identification diagnostics, Jacobian rank, and the partial-identification ridge.
+- **Stacking a GP over the moment map.** A second surrogate layer — one Gaussian process per moment, fit on a small (active-learning) design — so downstream objective evaluations need no simulation at all.
 
 ## Learning objectives
 
@@ -24,7 +24,7 @@ After this lecture you can:
 - State the SMM moment condition and the asymptotic distribution of the estimator.
 - Run a single-parameter SMM (rho) on a deep surrogate of Brock-Mirman.
 - Run a joint (beta, rho) SMM and read off identification diagnostics.
-- Replace the surrogate with a GP and compare estimation behavior.
+- Stack a Gaussian-process layer over the moment map and reuse it for cheap objective evaluations.
 
 ## Slides
 
@@ -38,7 +38,7 @@ After this lecture you can:
 
 ## In the lecture script
 
-§Chapter 10 (Structural estimation via SMM). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+Chapter 10 (Structural estimation via SMM). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 

@@ -137,10 +137,10 @@ where $W$ is a positive-definite \emphc{weighting matrix}.
 % --- SMM primer 3: asymptotic distribution ---
 \begin{frame}{SMM Primer (3/3): Asymptotic Distribution}
 \small
-\textit{Notation bridge to the script: this deck uses $G=\partial m/\partial\theta^\top$, $\Sigma_g$, and $\tau=T/S$; the script uses $M$, $\Omega$, and $\tau_{\mathrm{script}}$ = relative simulation panel length. The two conventions are related by $\tau = 1/(S\tau_{\mathrm{script}})$ so $(1+\tau)\Sigma_g = (1+1/(\tau_{\mathrm{script}}S))\Sigma_m$ -- both give the same consistent estimator.}
+\textit{Notation bridge to the script: this deck writes $G=\partial m/\partial\theta^\top$ and $\Sigma_g$ for the moment Jacobian and long-run covariance; the script writes $M$, $\Omega$. The simulation-inflation factor is $\tau = 1/(\tau_{\mathrm{s}}S)$, with $S$ the number of simulated panels and $\tau_{\mathrm{s}}\ge 1$ their length relative to the data; the script's $\Omega = (1+1/(\tau_{\mathrm{s}}S))\Sigma_m$ is the same object as $(1+\tau)\Sigma_g$ here. With $S$ panels of the same length as the data ($\tau_{\mathrm{s}}=1$), $\tau = 1/S$, and $\tau\to 0$ as the simulation budget grows.}
 
 \smallskip
-Under standard regularity conditions (smoothness of $m$, stationarity, identification), as $T,S\to\infty$ with $T/S \to \tau \in [0,\infty)$,
+Under standard regularity conditions (smoothness of $m$, stationarity, identification), as the data length $T\to\infty$,
 \[
     \sqrt{T}\,(\widehat\theta_{\text{SMM}} - \theta_0)
     \;\xrightarrow{d}\; \mathcal{N}\bigl(0, V(W)\bigr),
@@ -219,9 +219,9 @@ Train $\mathcal{N}(z_t, K_t, \varrho) \to s_t \in (0,1)$, with $K_{t+1} = (1-\de
 \begin{enumerate}
   \itemsep1pt
   \item 3-input MLP $(z, K, \varrho) \to s$ with sigmoid output.
-  \item Euler residual loss with Gauss--Hermite quadrature; $\varrho$ enters the \emph{transition} as well as the policy. Under log utility, $u'(C) = 1/C$, so the Euler ratio simplifies to $u'(C_t)/u'(C_{t+1}) = C_{t+1}/C_t$, and dividing by $C_t$ gives:
+  \item Euler residual loss with Gauss--Hermite quadrature; $\varrho$ enters the \emph{transition} as well as the policy. Under log utility, $u'(C) = 1/C$; the notebooks minimize the \emph{relative} (scale-free) residual, which shares the zero set of $1 - \beta\,C_t\,\E{\cdot}$ but is better conditioned in FP32:
   {\small\[
-  \mathcal{L} = \frac{1}{N}\sum_i \!\left(1 - \beta\, C^{(i)}_t \sum_j w_j \frac{1-\delta + \alpha z^{(i)}_{t+1,j} K^{(i)\,\alpha-1}_{t+1}}{C^{(i)}_{t+1,j}}\right)^{\!2}
+  \mathcal{L} = \frac{1}{N}\sum_i \!\left(\left[\,\beta\, C^{(i)}_t \sum_j w_j \frac{1-\delta + \alpha z^{(i)}_{t+1,j} K^{(i)\,\alpha-1}_{t+1}}{C^{(i)}_{t+1,j}}\,\right]^{-1} - 1\right)^{\!2}
   \]}
   \vspace{-10pt}
   \item Two-phase training: (i) uniform sampling on $(z, K, \varrho)$ box, (ii) simulation-based refinement.
@@ -258,7 +258,7 @@ $m_0 = \mathrm{mean}(s_t)$ (\emph{diagnostic only}) & Should be flat in $\varrho
 \[\hat\varrho = \argmin_{\varrho}\; [m(\varrho) - \hat{m}^{\mathrm{data}}]^\top W \,[m(\varrho) - \hat{m}^{\mathrm{data}}], \quad W = I.\]
 \vspace{-8pt}
 
-{\scriptsize $W = I$ is the unweighted criterion -- the cleanest pedagogical default. The efficient choice is $W = S^{-1}$ where $S = \mathrm{Var}\bigl(\sqrt{T}\,\hat m^{\mathrm{data}}\bigr)$; with $W = I$ the asymptotic variance of $\hat\varrho$ is suboptimal but consistency and the interior-solution argument are unchanged.}
+{\scriptsize $W = I$ is the unweighted criterion -- the cleanest pedagogical default. The efficient choice is $W^\star = \widehat\Sigma_g^{-1}$, the inverse long-run covariance of the moment vector (the $\widehat\Sigma_g$ of the SMM-primer slides); with $W = I$ the asymptotic variance of $\hat\varrho$ is suboptimal but consistency and the interior-solution argument are unchanged.}
 \end{block}
 \begin{enumerate}
   \item Define one routine $\varrho \mapsto (C_t, I_t, Y_t) \mapsto m(\varrho)$ that reuses the trained surrogate.
@@ -378,7 +378,7 @@ $\hat\theta = \argmin_{\theta = (\beta,\varrho)}\; [m(\theta) - \hat{m}^{\mathrm
   \item 4-input MLP $(z, K, \beta, \varrho) \to s$. Train once on the whole rectangle.
   \item Forge synthetic data at $(\beta_{\text{true}}, \varrho_{\text{true}}) = (0.96, 0.90)$.
   \item Compute the SMM criterion on a $25\times 25$ grid in $(\beta, \varrho)$ -- visualize both moment subsets.
-  \item Refine with \texttt{scipy.optimize.minimize} (\texttt{L-BFGS-B}, which honours the box constraints natively, started from the grid argmin).
+  \item Refine with \texttt{scipy.optimize.minimize} (bounded \texttt{Nelder--Mead}, started from the grid argmin -- gradient-free, so no FP32 finite-difference issues).
   \item Verify the solution is interior; report distance to truth on each axis.
 \end{enumerate}
 \end{frame}
@@ -428,7 +428,7 @@ Left: the just-identified criterion shows a \emphc{ridge} along $\beta$ -- exact
 % --- New frame: GP surrogate of the SMM criterion ---
 \begin{frame}{GP Surrogate of the SMM Criterion}
 \begin{center}
-\includegraphics[width=0.72\textwidth]{fig/joint_gp_objective_surrogate.pdf}
+\includegraphics[width=0.72\textwidth]{joint_gp_objective_surrogate.pdf}
 \end{center}
 \vspace{-0.15cm}
 \scriptsize
