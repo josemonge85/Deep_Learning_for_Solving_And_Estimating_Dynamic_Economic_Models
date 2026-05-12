@@ -4,7 +4,7 @@ A toolkit of cheap, differentiable approximations for expensive simulators: deep
 
 `gpu-recommended` · `long` · builds on [Lecture 02](../lecture_02_intro_deep_learning/README.md)
 
-> 📑 **Slides:** [lecture_14_surrogates_and_gps.pdf](slides/lecture_14_surrogates_and_gps.pdf) and 1 more under [`slides/`](slides/)  
+> 📑 **Slides:** [lecture_14_surrogates_and_gps.pdf](slides/lecture_14_surrogates_and_gps.pdf) (figures under [`slides/fig/`](slides/fig/))  
 > 📓 **Notebooks:** [start here](code/lecture_14_01_Surrogate_Primer.ipynb) (9 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_14.md)  
 > 📖 **Script:** §9.1-9.2 (Deep surrogates), §9.3-9.6 (GPs and Bayesian active learning), §9.7 (Active subspaces), §9.8 (GP value-function iteration), §9.9 (Deep kernels), §9.10 (GPs among Bayesian cousins)
@@ -32,7 +32,7 @@ After this lecture you can:
 
 - [`slides/lecture_14_surrogates_and_gps.pdf`](slides/lecture_14_surrogates_and_gps.pdf)
 - [`slides/lecture_14_surrogates_and_gps.tex`](slides/lecture_14_surrogates_and_gps.tex)
-- [`slides/gp_active_learning.pdf`](slides/gp_active_learning.pdf)
+- [`slides/fig/gp_active_learning.pdf`](slides/fig/gp_active_learning.pdf)
 
 ## Code
 

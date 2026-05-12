@@ -1744,7 +1744,7 @@ At each VFI step $s$:
     \item Evaluate Bellman: $t_i^s = (TV^{s-1})(\x^{(i)})$
     \item Learn GP surrogate $V_{\text{surr}}$ from $\{\X, \bm{t}\}$
     \item Set $V^s = V_{\text{surr}}$ (posterior mean)
-    \item Error: $\eta^s = \|V^s - V^{s-1}\|_\infty/\Delta_V$
+    \item Error: $e^s = \|V^s - V^{s-1}\|_\infty/\Delta_V$
 \end{enumerate}
 
 \vspace{0.2em}
@@ -1776,14 +1776,14 @@ Same GP posterior from Part~II, now applied iteratively inside a DP algorithm.
 \begin{frame}[fragile]{Algorithm: ASGP Value Function Iteration}
 \tiny
 \begin{algorithmic}[1]
-\STATE \textbf{Input:} Initial guess $V_{\text{next}}$, tolerance $\bar{\eta}$
-\WHILE{$\eta > \bar{\eta}$}
+\STATE \textbf{Input:} Initial guess $V_{\text{next}}$, tolerance $\bar{e}$
+\WHILE{$e > \bar{e}$}
     \STATE Generate $n^s$ training inputs $\X = \{\x^{(i)}\} \in [\underline{\bm{k}}, \bar{\bm{k}}]^D$
     \FOR{$\x^{(i)} \in \X$}
         \STATE Bellman target: $t_i = (TV_{\text{next}})(\x^{(i)})$; \quad policy: $\xi_j(\x^{(i)}) \in \argmax TV(\x^{(i)})$
     \ENDFOR
     \STATE Learn surrogate $V_{\text{surr}}$ from $\{\X, \bm{t}\}$ via ASGP (Active-Subspace GP, defined two slides below) or a plain GP for low $D$
-    \STATE Error: $\eta = \|V_{\text{surr}} - V_{\text{next}}\|_\infty$; \quad $V_{\text{next}} \leftarrow V_{\text{surr}}$
+    \STATE Error: $e = \|V_{\text{surr}} - V_{\text{next}}\|_\infty$; \quad $V_{\text{next}} \leftarrow V_{\text{surr}}$
 \ENDWHILE
 \STATE \textbf{Output:} $V$, policy functions $\xi^* = (\xi_1^*, \ldots, \xi_{3D}^*)$ \quad ($3D$ controls $=(\bm c, \bm l, \bm i)$, one per sector)
 \end{algorithmic}
@@ -2276,7 +2276,7 @@ The same GP machinery, applied at \emphc{increasing levels of ambition}:
 
 \vspace{0.2em}
 \begin{block}{Hands-on}
-\small \textbf{Notebook:} \texttt{04\_GP\_Value\_Function\_Iteration.ipynb} (in \texttt{day7/code/}).
+\small \textbf{Notebook:} \texttt{04\_GP\_Value\_Function\_Iteration.ipynb} (in \texttt{lectures/lecture\_14\_surrogates\_and\_gps/code/}).
 \end{block}
 \end{frame}
 
