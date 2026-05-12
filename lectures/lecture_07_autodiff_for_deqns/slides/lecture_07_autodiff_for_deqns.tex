@@ -94,7 +94,7 @@
 \lstset{style=py}
 
 % ---------- Title ----------
-\title[Lecture 06]{Lecture 06: Automatic differentiation for DEQNs}
+\title[Lecture 07]{Lecture 07: Automatic differentiation for DEQNs}
 \subtitle{From the Lagrangian primitive to two-tape Euler residuals}
 \author{Simon Scheidegger}
 \institute[HEC Lausanne]{HEC, University of Lausanne}
@@ -124,7 +124,7 @@
   \item \textbf{How autodiff works} -- computational graph, forward vs reverse mode.
   \item \textbf{Analytical warm-ups.} CRRA utility, Cobb--Douglas, capital adjustment cost.
   \item \textbf{Brock--Mirman by hand.} Lagrangian, FOC, Bellman, envelope theorem.
-  \item \textbf{Brock--Mirman by autodiff.} The one-line Euler residual; notebooks 03, 04.
+  \item \textbf{Brock--Mirman by autodiff.} The one-line Euler residual; notebooks 02, 03.
   \item \textbf{Pitfalls of autodiff.} What it can (and cannot) do for you.
   \item \textbf{Takeaways.}
 \end{enumerate}
@@ -203,7 +203,7 @@ One typo $\Rightarrow$ wrong solver, silently.
 \end{frame}
 
 \begin{frame}{Preview: the pen-and-paper tax, visualised}
-\footnotesize The original Brock--Mirman notebook (\texttt{01\_Brock\_Mirman\_DEQN}; the autodiff version is \texttt{02\_Brock\_Mirman\_AutoDiff\_DEQN}) needed \emph{two pages} of algebra before we could code the loss:
+\footnotesize The original hand-derived Brock--Mirman notebook (\texttt{lecture\_03\_01\_Brock\_Mirman\_1972\_DEQN}; the autodiff version is \texttt{lecture\_07\_02\_Brock\_Mirman\_AutoDiff\_DEQN}) needed \emph{two pages} of algebra before we could code the loss:
 \begin{center}
 \begin{tikzpicture}[node distance=4mm]
 \node[draw, fill=red!10, rounded corners, minimum width=3.8cm, minimum height=0.9cm, font=\scriptsize, align=center] (a) {Write the Lagrangian};
@@ -217,7 +217,7 @@ One typo $\Rightarrow$ wrong solver, silently.
 \draw[-{Stealth[length=2mm]}] (d) -- (e);
 \end{tikzpicture}
 \end{center}
-Notebook~03 (same model, autodiff) collapses all four red boxes into one function:
+Notebook~02 (same model, autodiff) collapses all four red boxes into one function:
 \begin{center}
 \begin{tikzpicture}[node distance=4mm]
 \node[draw, fill=green!15, rounded corners, minimum width=5.6cm, minimum height=0.9cm, font=\scriptsize, align=center] (x) {Define $\Pi(K_t,K_{t+1}) = u\bigl(C(K_t,K_{t+1})\bigr)$};
@@ -809,7 +809,7 @@ u'(C_t) \;=\; \beta\, u'(C_{t+1}) \,(\,1 - \delta + r_{t+1}\,).
 \vspace{2pt}
 \begin{itemize}\itemsep2pt
 \item This is the \emph{consumption smoothing} condition. Marginal utility today = discounted, rate-adjusted marginal utility tomorrow.
-\item This is the equation that \texttt{compute\_cost} in notebook~01 minimises the squared residual of.
+\item This is the equation that \texttt{compute\_cost} in the hand-derived Brock--Mirman notebook (\texttt{lecture\_03\_01}) minimises the squared residual of.
 \end{itemize}
 \end{frame}
 
@@ -901,7 +901,7 @@ Substituting the envelope (at $K_{t+1}$) into the FOC:
 \small
 \begin{columns}[t]
 \column{0.49\textwidth}
-\textbf{Notebook 01 (hand)}
+\textbf{Hand-derived (\texttt{lecture\_03\_01})}
 \begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
 def compute_cost(X, nn):
     K_t = X
@@ -921,7 +921,7 @@ def compute_cost(X, nn):
 \end{lstlisting}
 {\tiny Encodes: $u'(C_t)$, $u'(C_{t+1})$, MPK, envelope -- all done by the author on paper first.}
 \column{0.49\textwidth}
-\textbf{Notebook 03 (autodiff)}
+\textbf{Autodiff (\texttt{lecture\_07\_02})}
 \begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
 def Pi(K_in, K_out):
     Y = K_in**alpha
@@ -949,7 +949,7 @@ def compute_cost(X, nn):
 \end{frame}
 
 \begin{frame}{Adding uncertainty: the stochastic case}
-\small The stochastic Brock--Mirman model of notebook~02 adds an AR(1) shock $z_t$:
+\small The stochastic Brock--Mirman model (autodiff version: notebook~03) adds an AR(1) shock $z_t$:
 \[
 Y_t = z_t K_t^\alpha, \qquad \log z_{t+1} = \rho \log z_t + \sigma \varepsilon_{t+1}, \quad \varepsilon_{t+1} \sim \mathcal{N}(0,1).
 \]
@@ -985,7 +985,7 @@ Trained policy vs $\alpha\beta z K^\alpha$ ($\delta\!=\!1$, $25^2$ grid) & max r
 \end{center}
 \vspace{4pt}
 \begin{block}{What this says}
-\footnotesize The autodiff loss is not an \emph{approximation} of the textbook Euler equation -- it \emph{is} the textbook Euler equation, computed by a different mechanism. Training works as well as notebook~01/02. We simply stopped writing algebra.
+\footnotesize The autodiff loss is not an \emph{approximation} of the textbook Euler equation -- it \emph{is} the textbook Euler equation, computed by a different mechanism. Training works as well as the hand-derived Brock--Mirman notebooks. We simply stopped writing algebra.
 \end{block}
 \end{frame}
 
@@ -1083,7 +1083,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \vspace{-4pt}
 \textbf{Cures that keep the math honest:}
 \begin{itemize}\itemsep1pt
-\item \emphc{Reparameterise} so $C > 0$ \emph{by architecture}. Notebook~01 uses sigmoid on the savings rate $s \in (0,1)$, guaranteeing $C > 0$ and $K' > 0$.
+\item \emphc{Reparameterise} so $C > 0$ \emph{by architecture}. The Brock--Mirman DEQN notebooks use a sigmoid on the savings rate $s \in (0,1)$, guaranteeing $C > 0$ and $K' > 0$.
 \item \emphc{Stable primitives}: \texttt{tf.math.log1p}, \texttt{tf.math.softplus}, \texttt{tf.math.xlogy}.
 \item \texttt{tf.clip\_by\_value} is a last resort, not a design choice.
 \end{itemize}
@@ -1111,7 +1111,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \end{itemize}
 \textbf{Mitigations.}
 \begin{itemize}\itemsep1pt
-\item \emphc{Path averaging / mini-batching} over trajectory segments (notebook~02).
+\item \emphc{Path averaging / mini-batching} over trajectory segments (the simulation-based Brock--Mirman notebook).
 \item \emphc{Gradient checkpointing}: recompute parts of the graph on the way back (\texttt{tf.recompute\_grad}).
 \item \emphc{Truncated back-prop-through-time} for long recurrences.
 \item \emphc{Forward mode} when $\#\text{inputs}$ is small.
@@ -1134,7 +1134,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \textbf{Practical advice}
 \begin{itemize}\itemsep2pt
 \item Do the hand derivation \emph{once} on a toy version, so you \emph{know} what the gradient should look like.
-\item Cross-check on a simple case: the autodiff number should agree with the closed-form formula to machine precision (this is exactly what notebooks~03 and~04 do).
+\item Cross-check on a simple case: the autodiff number should agree with the closed-form formula to machine precision (this is exactly what the autodiff Brock--Mirman notebooks~02 and~03 do).
 \item Use AD to scale, not to replace, economic understanding.
 \end{itemize}
 \end{columns}
@@ -1151,7 +1151,7 @@ print(tape.gradient(y, C))               # ~ 1e8   -->  NaN after a few steps
 \vspace{4pt}
 \textbf{At the optimum both coincide.} During training they differ; the second one is the one the hand derivation gives.
 \begin{exampleblock}{What the notebooks do}
-\small In notebooks~03 and~04 we \emph{compute gradients of $\Pi$ at values $K_{t+1}, K_{t+2}$ that are produced by the policy}. We do \emph{not} then additionally differentiate with respect to how the policy depends on $K_t$. Check: open the notebook and notice there is only one \texttt{GradientTape} per term, watching the \emph{variable} we differentiate with respect to. That is the \texttt{stop\_gradient} behavior, built in.
+\small In the autodiff Brock--Mirman notebooks~02 and~03 we \emph{compute gradients of $\Pi$ at values $K_{t+1}, K_{t+2}$ that are produced by the policy}. We do \emph{not} then additionally differentiate with respect to how the policy depends on $K_t$. Check: open the notebook and notice there is only one \texttt{GradientTape} per term, watching the \emph{variable} we differentiate with respect to. That is the \texttt{stop\_gradient} behavior, built in.
 \end{exampleblock}
 \end{frame}
 
