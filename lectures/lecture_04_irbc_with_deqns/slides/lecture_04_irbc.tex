@@ -270,24 +270,22 @@ Policy: $(k^{1\prime}, \ldots, k^{N\prime}, \lambda, \mu^1, \ldots, \mu^N) \in \
 
 % --- Slide 7: Preferences ---
 \begin{frame}{Preferences}
+\small
 Each country $j$ has \emphc{CRRA utility} (with the standard log limit at $\gamma_j = 1$):
 \[
 u^j(c) \;=\; \begin{cases} \dfrac{c^{\,1 - 1/\gamma_j} - 1}{1 - 1/\gamma_j}, & \gamma_j \neq 1, \\[4pt] \ln c, & \gamma_j = 1. \end{cases}
 \]
 
-\vspace{0.3em}
-\begin{itemize}
+\vspace{0.2em}
+\begin{itemize}\itemsep2pt
     \item $\gamma_j$: intertemporal elasticity of substitution for country $j$
-    \item \emphc{Heterogeneous} across countries: $\gamma_j$ linearly spaced in $[\gamma_{\min}, \gamma_{\max}]$
-    \item $\gamma_{\min} = 0.25$, $\gamma_{\max} = 1.0$ (risk aversion $= 1/\gamma_j$ ranges from 1 to 4; the notebook uses the $\ln c$ branch when $\gamma_j = 1$)
+    \item \emphc{Heterogeneous} across countries: $\gamma_j$ linearly spaced in $[0.25, 1.0]$ (so risk aversion $1/\gamma_j \in [1, 4]$; the $\ln c$ branch is used at $\gamma_j = 1$)
 \end{itemize}
 
-\vspace{0.3em}
-\begin{block}{Notation reminder}
-{\footnotesize In this chapter $\gamma$ is the \textbf{IES}.  Later chapters on continuous-time HA and climate-economics re-purpose $\gamma$ for CRRA risk aversion (with $\psi$ then standing for the IES).  The convention is restated at the top of each chapter.}
-\end{block}
+\vspace{0.2em}
+{\scriptsize \emphc{Notation:} in this chapter $\gamma$ is the \textbf{IES}; later chapters on continuous-time HA and climate re-purpose $\gamma$ for CRRA risk aversion (with $\psi$ then the IES). Restated at the top of each chapter.}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \textbf{Social planner} maximizes with Pareto weights $\tau^j$:
 \[
 \max \; \mathbb{E}_0\!\left[\sum_{t=0}^{\infty} \beta^t \sum_{j=1}^{N} \tau^j \, u^j(c_t^j)\right]
@@ -330,24 +328,24 @@ Log TFP follows an \emphc{AR(1)} with common and idiosyncratic shocks:
 z^{j\prime} = \rho_z \, z^j + \sigma_e \bigl(\varepsilon^j + \varepsilon^{\text{agg}}\bigr)
 \]
 
-\vspace{0.3em}
-\begin{itemize}
+\vspace{0.2em}
+\begin{itemize}\itemsep1pt
     \item $\varepsilon^j \sim \mathcal{N}(0,1)$: country-specific
     \item $\varepsilon^{\text{agg}} \sim \mathcal{N}(0,1)$: aggregate shock
     \item Total: $N+1$ independent shocks
 \end{itemize}
 
-\vspace{0.3em}
+\vspace{0.2em}
 {\small $\rho_z = 0.95$, $\sigma_e = 0.01$}
 
-\vspace{0.3em}
-{\footnotesize $\sigma_e$ is the \emph{per-component} std., so the per-country marginal innovation std.\ is $\sigma_e\sqrt{2}$ and the cross-country innovation correlation is $1/2$ (hard-wired by the equal-weighted decomposition).}
+\vspace{0.2em}
+{\footnotesize $\sigma_e$ is the \emph{per-component} std., so the per-country innovation std.\ is $\sigma_e\sqrt{2}$ and the cross-country innovation correlation is $1/2$.}
 
 \column{0.48\textwidth}
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[
-    width=7cm, height=5.5cm,
+    width=7cm, height=4.9cm,
     xlabel={$t$}, ylabel={$z^j_t$},
     xlabel style={font=\small},
     ylabel style={font=\small},
@@ -820,7 +818,7 @@ Consider the 2-country IRBC model. Suppose we \emphc{double} the capital depreci
 
 % --- Slide 24: DEQN Loss for IRBC ---
 \begin{frame}{DEQN Loss Function for the IRBC}
-\small
+\footnotesize
 The loss is the \emphc{sum of squared residuals} across all equilibrium conditions; $\ell_\rho = 0$ iff every condition holds exactly.
 
 \vspace{0.15em}
@@ -838,8 +836,8 @@ The loss is the \emphc{sum of squared residuals} across all equilibrium conditio
 \]
 
 \vspace{0.1em}
-where $B$ is the batch size and:
-\begin{itemize}\itemsep1pt
+with $B$ the batch size:
+\begin{itemize}\itemsep0pt
     \item $\text{Euler}_j = \dfrac{\beta\,\E{\lambda' \text{MPK}' - (1-\delta)\mu'} + \mu}{\lambda(1+\Gamma_{k'})} - 1$ \quad (smooth: $\mu \equiv 0$)
     \item $\text{ARC} = \sum_j [Y^j + (1-\delta)k^j - k^{j\prime} - \Gamma^j - c^j]$
     \item $\text{FB}_j = \mu^j + I^j - \sqrt{(\mu^j)^2 + (I^j)^2 + \varepsilon^2}$ \quad (\emph{04b only})
@@ -848,21 +846,19 @@ where $B$ is the batch size and:
 
 % --- Slide 25: Gauss-Hermite Quadrature ---
 \begin{frame}{Gauss--Hermite Quadrature}
+\footnotesize
 The Euler equation requires computing $\E{\cdot}$ over $N+1$ normal shocks.
 
-\vspace{0.3em}
 \textbf{Gauss--Hermite quadrature} in 1D:
 \[
 \E{f(\varepsilon)} = \int f(\varepsilon)\, \phi(\varepsilon)\,d\varepsilon \approx \sum_{q=1}^{Q} w_q \, f(\varepsilon_q)
 \]
 
-\vspace{0.3em}
 \textbf{Tensor product} for $N+1$ dimensions:
 \[
 \E{f(\varepsilon^1, \ldots, \varepsilon^N, \varepsilon^{\text{agg}})} \approx \sum_{q_1=1}^{Q}\cdots\sum_{q_{N+1}=1}^{Q} \left(\prod_{d} w_{q_d}\right) f(\varepsilon_{q_1}, \ldots, \varepsilon_{q_{N+1}})
 \]
 
-\vspace{0.3em}
 \begin{center}
 \begin{tabular}{rrrr}
 \toprule
@@ -875,10 +871,8 @@ $N$ & \textbf{Shocks} & $Q$ & \textbf{Quad.\ nodes} \\
 \end{tabular}
 \end{center}
 
-{\small For large $N$: use monomial rules or QMC instead of tensor product.}
-
-\vspace{0.3em}
-{\footnotesize \textbf{What the companion notebooks do.} Both 04a and 04b integrate the Euler expectation with the \emphc{Stroud-3 monomial rule} ($2(N+1)$ nodes; here $N=2$, so $6$ nodes), not the tensor-product Gauss--Hermite rule shown above. Gauss--Hermite is included here for pedagogical contrast and remains useful at very low $N$.}
+\vspace{0.2em}
+{\footnotesize \textbf{What the companion notebooks do.} Both 04a and 04b use the \emphc{Stroud-3 monomial rule} ($2(N+1)$ nodes; $6$ for $N=2$), not the tensor-product Gauss--Hermite above; the latter is shown for contrast and is practical only at very low $N$.}
 \end{frame}
 
 % --- Slide 26: Computing Euler Expectation ---
@@ -1055,24 +1049,22 @@ $\Rightarrow$ \textbf{Next:} implementation in TensorFlow/Keras and results.
 \footnotesize
 \textbf{Three notebooks accompany this lecture} (two in the L04 \texttt{code/} folder, one in the L05 folder; self-contained, all equations inline):
 
-\vspace{0.3em}
-\begin{enumerate}\itemsep3pt
+\vspace{0.2em}
+\begin{enumerate}\itemsep1pt
     \item \texttt{lecture\_04\_01\_IRBC\_DEQN\_smooth.ipynb} -- \emph{smooth benchmark, in-class walk-through (this lecture's \texttt{code/})}
     \begin{itemize}\itemsep0pt
-        \item Parameters \& steady state, monomial quadrature
-        \item Keras network, production/consumption/adjustment-cost equations
+        \item Parameters \& steady state, monomial quadrature; Keras network, production/consumption/adjustment-cost equations
         \item Cost function (Euler + ARC), persistent-simulation training loop
         \item Time-invariance check and zero-shock stochastic steady state
     \end{itemize}
 
     \item \texttt{lecture\_04\_02\_IRBC\_DEQN\_irreversible.ipynb} -- \emph{irreversible-investment extension (this lecture's \texttt{code/})}
     \begin{itemize}\itemsep0pt
-        \item KKT multipliers $\mu^j$ and feasibility-by-construction policy
-        \item Fischer--Burmeister complementarity loss
+        \item KKT multipliers $\mu^j$ and feasibility-by-construction policy; Fischer--Burmeister complementarity loss
         \item Same training loop and diagnostics as the smooth benchmark
     \end{itemize}
 
-    \item \texttt{lecture\_05\_05\_IRBC\_Exercise.ipynb} -- \emph{hands-on exercise (lives in L05's \texttt{code/}, extends naturally into the NAS / loss-normalization material of Chapter~4)}
+    \item \texttt{lecture\_05\_05\_IRBC\_Exercise.ipynb} -- \emph{hands-on exercise (lives in L05's \texttt{code/})}
     \begin{itemize}\itemsep0pt
         \item Task 1: comparative statics on the deterministic steady state
         \item Task 2: inverse-loss weighting for multi-component losses (preview of ReLoBRaLo)
@@ -1252,7 +1244,7 @@ def compute_cost(states, nn):
 \begin{frame}{Persistent-Simulation Training}
 The companion notebooks train on \emphc{one continuing trajectory ensemble} -- no Phase~1 / Phase~2 switch, no resets to steady state.
 
-\vspace{0.4em}
+\vspace{0.15em}
 \begin{itemize}
     \item Maintain $M = \texttt{N\_TRAJECTORIES}$ stochastic trajectory heads $\bm{X}^{(1)}, \ldots, \bm{X}^{(M)}$.
     \item Each \emphc{training segment}: simulate the heads forward for $T = \texttt{SIMULATION\_LENGTH}$ stochastic periods under the \emph{current} policy network; flatten into a training cloud of size $M\!\cdot\!T$; perform a fixed number of SGD passes.
@@ -1260,7 +1252,7 @@ The companion notebooks train on \emphc{one continuing trajectory ensemble} -- n
     \item A \texttt{SAMPLING\_MODE} switch (\texttt{simulation} vs \texttt{exogenous}) is available for ablations; the default \texttt{simulation} mode never sees a uniform burn-in.
 \end{itemize}
 
-\vspace{0.3em}
+\vspace{0.15em}
 \textbf{Why this works without a separate burn-in.}
 \begin{itemize}
     \item The policy parameterization is feasibility-bounded by construction:
@@ -1377,7 +1369,7 @@ FB (country 2) & $\sim 10^{-5}$ & $\sim 10^{-4}$ \\
 
 % --- Slide 46: Economic Diagnostics ---
 \begin{frame}{Economic Diagnostics}
-\small
+\footnotesize
 \begin{columns}[T]
 \column{0.48\textwidth}
 \textbf{Consumption sharing:}
