@@ -97,7 +97,7 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Companion notebooks: \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} / \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb} (analytic 6-agent), \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} / \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb} (benchmark 56-agent), and the student exercise notebook \texttt{11\_OLG\_Exercise.ipynb}.}\\[3pt]
+{\footnotesize Companion notebooks \texttt{lecture\_09\_07}\,--\,\texttt{lecture\_09\_11} (in \texttt{lecture\_09\_olg\_models\_deqns/code/}): \texttt{\_07}/\texttt{\_08} the analytic 6-agent model, \texttt{\_09}/\texttt{\_10} the 56-cohort benchmark, \texttt{\_11} the student exercise.  Full filenames appear on the Roadmap slide and in Parts II--III.}\\[3pt]
 {\footnotesize Based on Azinovic, Gaegauf \& Scheidegger (2022, \emph{IER} 63(4), 1471--1525) and Krueger \& K\"ubler (2004, \emph{JEDC}).}
 \end{center}
 \end{frame}
@@ -114,14 +114,14 @@
 \begin{block}{Part II --- The analytic 6-agent model (Krueger \& K\"ubler, 2004)}
 \vspace{-3pt}\begin{itemize}\itemsep0pt
     \item Model $\to$ equilibrium $\to$ cost $\to$ FREE $\to$ architecture $\to$ training $\to$ validation against the closed form.
-    \item Primary notebook: \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}; companion ablation \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}.
+    \item Primary notebook: \texttt{lecture\_09\_08\_OLG\_Analytic\_DEQN\_persistent.ipynb}; companion ablation \texttt{lecture\_09\_07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}.
 \end{itemize}
 \end{block}
 \vspace{-2pt}
 \begin{block}{Part III --- The leading example of AGS (2022): the 56-cohort benchmark}
 \vspace{-3pt}\begin{itemize}\itemsep0pt
     \item Same 9-step recipe at research scale: two assets, two borrowing constraints, capital adjustment costs, persistent shocks, hump-shaped labor.
-    \item Primary notebook: \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}; companion ablation \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb}.
+    \item Primary notebook: \texttt{lecture\_09\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}; companion ablation \texttt{lecture\_09\_09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb}.
 \end{itemize}
 \end{block}
 \end{frame}
@@ -523,7 +523,7 @@ G\!\left(\!\begin{bmatrix} z_t \\ \bm{k}_t\end{bmatrix},\; \N_\theta\!\left(\!\b
 % --- Hand-over to the analytic-model notebook -------------------------
 \begin{frame}{Companion Notebook Hand-over}
 \scriptsize
-\emphc{Open notebook \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}} (the persistent-simulation primary; the exogenous-sampling companion is \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}).  It implements the model, equilibrium conditions, loss, FREE map, architecture, training, and validation covered in Part II.
+\emphc{Open notebook \texttt{lecture\_09\_08\_OLG\_Analytic\_DEQN\_persistent.ipynb}} (the persistent-simulation primary; the exogenous-sampling companion is \texttt{lecture\_09\_07\_OLG\_Analytic\_DEQN\_exogenous.ipynb}).  It implements the model, equilibrium conditions, loss, FREE map, architecture, training, and validation covered in Part II.
 \vspace{-2pt}
 \begin{block}{Cell-to-slide map}
 \vspace{-4pt}
@@ -704,7 +704,7 @@ Cohort $h$ & Periods remaining ($A-h$) & Savings rate $\beta_h$\\
 The plotted points are the \emphc{exact closed form} from the finger-exercise solution slide.  The DEQN should reproduce this curve cohort-by-cohort.
 
 \vspace{2pt}
-The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram are produced by \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb} (\S 8).  Production target in AGS (2022): mean relative Euler error $\lesssim 10^{-3}$.
+The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram are produced by \texttt{lecture\_09\_08\_OLG\_Analytic\_DEQN\_persistent.ipynb} (\S 8).  Production target in AGS (2022): mean relative Euler error $\lesssim 10^{-3}$.
 \end{block}
 \end{frame}
 
@@ -722,7 +722,7 @@ The actual training run, DEQN-vs-analytic comparison, and Euler-error histogram 
 \end{block}
 
 \begin{block}{Hands-on}
-Open \texttt{08\_OLG\_Analytic\_DEQN\_persistent.ipynb}.  Set \texttt{RUN\_MODE = "teaching"} ($\sim 5$ min) for the classroom run; \texttt{"smoke"} (the default) is a $\sim$30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch (the persistent primary uses \texttt{"simulation"}, the companion \texttt{07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} uses \texttt{"exogenous"}); the model and loss are identical -- only the training cloud differs.
+Open \texttt{lecture\_09\_08\_OLG\_Analytic\_DEQN\_persistent.ipynb}.  Set \texttt{RUN\_MODE = "teaching"} ($\sim 5$ min) for the classroom run; \texttt{"smoke"} (the default) is a $\sim$30-s sanity check; \texttt{"production"} chases AGS Table~3 accuracy.  Both notebooks expose a \texttt{SAMPLING\_MODE = "simulation" / "exogenous"} switch (the persistent primary uses \texttt{"simulation"}, the companion \texttt{lecture\_09\_07\_OLG\_Analytic\_DEQN\_exogenous.ipynb} uses \texttt{"exogenous"}); the model and loss are identical -- only the training cloud differs.
 \end{block}
 \end{frame}
 
@@ -971,13 +971,12 @@ $\N_\theta:\;\R^{240} \to \R^{221}$
 \end{center}
 \vspace{-4pt}
 
-\begin{block}{Sizes from \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}}
+\begin{block}{Sizes from \texttt{lecture\_09\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}}
 \centering
 \begin{tabular}{ll}
 \toprule
 Notebook input   & $240$ (minimal state: $113$) \\
-Hidden layers    & $2 \times 128$ (teaching) \\
-                 & $2 \times 1000$ (production) \\
+Hidden layers    & $2{\times}128$ (teach.) / $2{\times}1000$ (prod.) \\
 Output dim       & $4(A{-}1) + 1 = 221$ \\
 Output layer     & softplus on every output \\
 Optimizer        & Adam, lr $10^{-5}$\\
@@ -993,8 +992,8 @@ Optimizer        & Adam, lr $10^{-5}$\\
 =
 \bigl(\hat k'^{1:A-1},\;\hat\lambda_b^{1:A-1},\;\hat q^{1:A-1},\;\hat\mu^{1:A-1},\;\hat p\bigr).
 \]
-\vspace{-9pt}
-Same MLP template as Part II, scaled up and augmented by a bond-price head.  Bond holdings are recovered from $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$.
+\vspace{-4pt}
+Same MLP template as Part II, plus a bond-price head; bonds recovered as $\hat b'^h=(\hat q^h-\hat k'^h)/\kappa$.
 \end{exampleblock}
 \end{frame}
 
@@ -1074,7 +1073,7 @@ Same MLP template as Part II, scaled up and augmented by a bond-price head.  Bon
 \footnotesize
 \begin{block}{What the notebook will plot}
 \vspace{-3pt}
-For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, evaluated on a long ergodic simulation from \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}.
+For each aggregate state $z \in \{1,2,3,4\}$ we obtain a lifecycle consumption profile $c^s(z)$ over ages $s=25,\ldots,80$, evaluated on a long ergodic simulation from \texttt{lecture\_09\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}.
 \end{block}
 
 \begin{block}{The four aggregate states}
@@ -1114,7 +1113,7 @@ Four distinct profiles, ordered as in the table; exact magnitudes and crossover 
 \end{block}
 
 \vspace{-2pt}
-\textbf{Hands-on: \texttt{10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}} (persistent-simulation primary; \texttt{09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} is the feedback-free ablation, same model and loss, different training cloud).  \S 1--4 match III.1--III.5; \S 5--7 = training and policy stability; \S 8 = plots and diagnostics of III.10--III.12.  Teaching runtime (128-wide, 2\,000 episodes): $\approx 30$ min on CPU.
+\textbf{Hands-on: \texttt{lecture\_09\_10\_OLG\_Benchmark\_DEQN\_persistent.ipynb}} (persistent-simulation primary; \texttt{lecture\_09\_09\_OLG\_Benchmark\_DEQN\_exogenous.ipynb} is the feedback-free ablation, same model and loss, different training cloud).  \S 1--4 match III.1--III.5; \S 5--7 = training and policy stability; \S 8 = plots and diagnostics of III.10--III.12.  Teaching runtime (128-wide, 2\,000 episodes): $\approx 30$ min on CPU.
 \end{frame}
 
 
