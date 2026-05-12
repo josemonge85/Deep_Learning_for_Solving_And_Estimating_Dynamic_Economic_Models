@@ -10,7 +10,7 @@ Default policy: link only.
 
 ## Economic PDE applications
 
-- **Duarte (2018), "Machine learning for continuous-time economics,"** WP. Black-Scholes and HJB via deep learning.
+- **Duarte, Duarte, Silva (2024), "Machine learning for continuous-time finance,"** *Review of Financial Studies*, 37(11), 3217-3271. Black-Scholes and HJB via deep learning.
 - **Fernández-Villaverde, Hurtado, Nuño (2023), "Financial frictions and the wealth distribution,"** *Econometrica*, 91(3). HJB-based HA model that motivates the L12-L13 sequence.
 
 ## Companion lecture script

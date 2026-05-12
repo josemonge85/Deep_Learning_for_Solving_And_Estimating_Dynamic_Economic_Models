@@ -7,7 +7,7 @@ Physics-Informed Neural Networks (PINNs) solve differential equations by minimiz
 > 📑 **Slides:** [lecture_11_pinns.pdf](slides/lecture_11_pinns.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_11_01_ODE_PINN_ZeroBCs.ipynb) (5 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_11.md)  
-> 📖 **Script:** §7.1-7.4 (PINN foundations), §7.5-7.9 (Economic PDEs (HJB, Black-Scholes))
+> 📖 **Script:** §7.1-7.4 (PINN foundations), §7.5-7.9 (economic PDEs: HJB, Black-Scholes)
 
 ## What this lecture covers
 
@@ -42,7 +42,7 @@ After this lecture you can:
 
 ## In the lecture script
 
-§7.1-7.4 (PINN foundations), §7.5-7.9 (Economic PDEs (HJB, Black-Scholes)). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+§7.1-7.4 (PINN foundations), §7.5-7.9 (economic PDEs: HJB, Black-Scholes). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 
