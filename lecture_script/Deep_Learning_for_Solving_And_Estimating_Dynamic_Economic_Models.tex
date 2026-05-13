@@ -8031,7 +8031,54 @@ We now stack a second surrogate on top of this:
 \widehat m_j(\theta) \;\sim\; \mathrm{GP}\bigl(0,\, k_j(\cdot, \cdot)\bigr), \qquad j = 1, \ldots, q,
 \label{eq:moment_gp}
 \end{equation}
-one independent GP per moment, with its own kernel and length-scale hyperparameters learned by maximising marginal likelihood on a small design $\{(\theta^{(i)},\, m(\theta^{(i)}))\}_{i=1}^n$.  Once trained, evaluating the SMM objective at any candidate $\theta$ is a single GP forward pass per moment, no simulation required.  Bootstrapped CIs and any subsequent Bayesian post-processing then run on the GP, not on the simulator.
+one independent GP per moment, with its own kernel and length-scale hyperparameters learned by maximising marginal likelihood on a small design $\{(\theta^{(i)},\, m(\theta^{(i)}))\}_{i=1}^n$.  Once trained, evaluating the SMM objective at any candidate $\theta$ is a single GP forward pass per moment, no simulation required.  Bootstrapped CIs and any subsequent Bayesian post-processing then run on the GP, not on the simulator.  Figure~\ref{fig:smm_two_layer_surrogate} reads the architecture top-to-bottom: a candidate $\theta$ is fed into the DEQN policy net of \S\ref{sec:smm_method}, that policy is rolled forward for $T$ periods to produce a simulated path and its moment vector $m(\theta)\in\R^q$, a small design $\{(\theta^{(i)},\,m(\theta^{(i)}))\}_{i=1}^n$ of those simulator labels trains the second layer of $q$ independent moment GPs, and the SMM criterion $Q(\theta)$ is then a closed-form quadratic in the GP posterior means; the right-hand column traces the per-$\theta$ cost cascade from seconds-to-hours down to microseconds.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw=uzhblue, fill=uzhgreylight,
+        text width=6.6cm, align=center, minimum height=0.55cm,
+        font=\scriptsize, rounded corners=2pt, thick, inner sep=2pt},
+    netbox/.style={rectangle, draw=uzhblue, fill=softblue!25,
+        text width=6.6cm, align=center, minimum height=0.7cm,
+        font=\scriptsize, rounded corners=2pt, thick, inner sep=2pt},
+    gpbox/.style={rectangle, draw=uzhblue, fill=softorange!30,
+        text width=6.6cm, align=center, minimum height=0.7cm,
+        font=\scriptsize, rounded corners=2pt, thick, inner sep=2pt},
+    outbox/.style={rectangle, draw=uzhblue, fill=softgreen!30,
+        text width=6.6cm, align=center, minimum height=0.55cm,
+        font=\scriptsize, rounded corners=2pt, thick, inner sep=2pt},
+    costlbl/.style={font=\tiny\itshape, text width=3.4cm, align=left, anchor=west},
+    >=Stealth, node distance=0.22cm
+]
+\node[box] (theta) {Candidate parameter vector $\theta$ \\[1pt] {\scriptsize (e.g.\ $\theta=(\beta,\varrho)$)}};
+\node[netbox, below=of theta] (deqn) {\textbf{Layer 1 (offline, once):}\\ DEQN policy net $\mathcal{N}_\rho(z, K, \theta)$ \\[1pt] {\scriptsize $\theta$ enters as a pseudo-state input; replaces one full DP re-solve per $\theta$}};
+\node[box, below=of deqn] (sim) {$T$-step forward simulation under $\mathcal{N}_\rho(\cdot,\cdot,\theta)$ \\[1pt] {\scriptsize $\Rightarrow$ path $\{C_t(\theta), I_t(\theta), Y_t(\theta)\}_{t=1}^T$}};
+\node[box, below=of sim] (mom) {Moment vector $m(\theta)\in\R^q$ \\[1pt] {\scriptsize means, std.\ devs., autocorrelations}};
+\node[gpbox, below=of mom] (gp) {\textbf{Layer 2 (per design):}\\ $q$ independent GPs \quad $\widehat m_j(\theta)\sim\mathrm{GP}(0,k_j)$\\[1pt] {\scriptsize trained on small design $\{(\theta^{(i)}, m(\theta^{(i)}))\}_{i=1}^n$; replaces forward simulation per $\theta$}};
+\node[outbox, below=of gp] (Q) {SMM objective\quad $Q(\theta)=\bigl(\widehat m(\theta)-m_\mathrm{data}\bigr)^{\!\top}\!W\bigl(\widehat m(\theta)-m_\mathrm{data}\bigr)$\\[1pt] {\scriptsize closed-form, differentiable, $\sim$\,microseconds per call}};
+\draw[->, thick] (theta) -- (deqn);
+\draw[->, thick] (deqn)  -- (sim);
+\draw[->, thick] (sim)   -- (mom);
+\draw[->, thick] (mom)   -- (gp);
+\draw[->, thick] (gp)    -- (Q);
+% ---- right-hand cost cascade ----
+\node[costlbl, right=0.6cm of theta]
+    (clab0) {\textbf{per-$\theta$ cost}};
+\node[costlbl, right=0.6cm of deqn, harvardcrimson]
+    (clab1) {without surrogates:\\ seconds-to-hours \\ (full DP re-solve)};
+\node[costlbl, right=0.6cm of sim, softorange!85!black]
+    (clab2) {with Layer 1:\\ milliseconds\\ (one $T$-step simulation)};
+\node[costlbl, right=0.6cm of gp, darkgreen]
+    (clab3) {with Layer 1 + 2:\\ microseconds\\ (closed-form GP eval)};
+% bracket the three cost stages
+\draw[decorate, decoration={brace, amplitude=4pt}, gray]
+    ([xshift=-3pt]clab1.north west) -- node[gray, font=\tiny, right=2pt]{}
+    ([xshift=-3pt]clab3.south west);
+\end{tikzpicture}
+\caption{The two-layer surrogate architecture for surrogate-based SMM, read top-to-bottom along the chain $\theta \to \mathcal{N}_\rho \to$ simulated path $\to m(\theta) \to$ moment GPs $\to Q(\theta)$.  \emph{Layer~1} is the pseudo-state DEQN policy net of \S\ref{sec:smm_method}: trained once with $\theta$ as an additional input, it replaces the inner Bellman / fixed-point re-solve that direct SMM would require at every candidate parameter, leaving only a $T$-step forward simulation per $\theta$.  \emph{Layer~2} is the moment-map GP regression of this section: $q$ independent Gaussian processes are fitted to the simulator's $(\theta^{(i)}, m(\theta^{(i)}))$ pairs on a small design, after which evaluating the SMM criterion $Q(\theta)$ at any new $\theta$ requires only a closed-form GP posterior-mean call per moment.  The right-hand annotation traces the per-$\theta$ cost cascade: the direct re-solve costs seconds-to-hours, Layer~1 brings the cost down to milliseconds (one DEQN-driven simulation), and Layer~2 down to microseconds (one differentiable regression call per moment).  This is the same supervised-learning-on-an-expensive-oracle pattern as GP-VFI in \S\ref{sec:gp_dp_supervised_view}, with the moment vector $m(\theta)$ playing the role the Bellman label $TV(\x)$ plays there; the saving compounds because the high-throughput downstream workflows of SMM, bootstrap, profile likelihood, and simulation-based inference, all live in the bottom box.}
+\label{fig:smm_two_layer_surrogate}
+\end{figure}
 
 \paragraph{Same expensive-oracle structure as VFI.}
 This is structurally identical to the GP-VFI setup of \S\ref{sec:gp_dp}.  There, one design point cost one Bellman maximisation; here, one design point costs one $T$-step forward simulation plus a moment computation.  In both cases the regressor sees a small but high-quality training set generated by an expensive numerical procedure, and the GP machinery, marginal-likelihood Occam's razor for hyperparameters, leave-one-out diagnostics for surrogate health, and Bayesian active learning for adaptive design, applies verbatim.
