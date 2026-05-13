@@ -237,6 +237,26 @@
 \end{titlepage}
 
 % ============================================================================
+% ABSTRACT — single page, before the epigraph
+% ============================================================================
+\thispagestyle{empty}
+\vspace*{2cm}
+\begin{center}
+{\Large\bfseries\color{uzhblue} Abstract\par}
+\end{center}
+\vspace{1.0cm}
+\begin{quote}
+This script offers an implementation-oriented introduction to deep learning methods for solving and estimating high-dimensional dynamic stochastic models in economics and finance.  Its starting point is the curse of dimensionality: heterogeneous-agent economies, overlapping-generations models with aggregate risk, continuous-time models with occasionally binding constraints, climate-economy models, and macro-finance environments with many assets and frictions all generate state and parameter spaces that strain classical tensor-product grid methods.
+
+The exposition is organized around four complementary methodologies.  Deep Equilibrium Nets embed discrete-time equilibrium conditions directly into neural-network loss functions.  Physics-Informed Neural Networks approximate continuous-time Hamilton--Jacobi--Bellman, Kolmogorov forward, and related partial differential equations.  Deep surrogate models provide fast, differentiable approximations to expensive structural models, while Gaussian processes add a probabilistic layer that quantifies approximation uncertainty; together they support estimation, sensitivity analysis, and constrained policy design.  Gaussian-process-based dynamic programming, combined with active learning and dimension reduction, extends value-function iteration to settings with very large continuous state spaces.
+
+Applications range from representative-agent and international real business cycle models to overlapping-generations and heterogeneous-agent economies, continuous-time macro-finance, structural estimation by simulated method of moments, and climate economics under uncertainty.  The emphasis throughout is practical: economic restrictions are translated into trainable residuals, algorithms are paired with diagnostics, and companion notebooks in TensorFlow and PyTorch invite students to experiment, modify, and learn by doing.
+
+These notes are not intended as an exhaustive textbook.  They are a deliberately subjective and inevitably incomplete snapshot of a rapidly evolving field.  The selection of architectures, references, and case studies reflects one researcher's judgment about useful entry points at the time of writing.  Their purpose is to equip PhD students and researchers with enough conceptual and computational machinery to engage with this frontier hands-on.
+\end{quote}
+\clearpage
+
+% ============================================================================
 % EPIGRAPH
 % ============================================================================
 \thispagestyle{empty}
@@ -301,9 +321,8 @@ This script is a living document.  Corrections, suggestions, and pull requests a
 I am grateful to the many seminar and course participants whose questions and comments have shaped this material.  I also thank Marlon Azinovic, Johannes Brumm, Christopher Carroll, Hui Chen, Antoine Didisheim, Richard Evans, Jes\'us Fern\'andez-Villaverde, Aleksandra Friedl, Luca Gaegauf, Kenneth Gillingham, Pavel Ievlev, Mitsuru Igami, Felix K\"ubler, Gianni Lombardo, Maria Pia Lombardo, Marko Mlikota, Galo Nu\~no, Jonathan Payne, Philipp Renner, Andreas Schaab, Frank Schorfheide, Anna Smirnova, Oliver Surbek, Fabio Trojani, Yucheng Yang, and Jan {\v Z}emli{\v c}ka for the research and discussions that underpin this work.  Part of this manuscript was written while visiting the Bank for International Settlements (BIS); I thank the BIS for its hospitality.  This script also benefitted substantially from Anthropic's Claude as a writing and coding assistant, in particular for polishing earlier drafts of the manuscript and for modernising the companion code examples that had aged across several previous iterations of the course.  Most importantly, I want to thank my wife, Michaela, and my daughter, Kira, for making this work possible through their unwavering support.  The responsibility for any remaining errors of course rests with the author.
 
 \vspace{1em}
-\noindent\textit{Simon Scheidegger}\\
-\textit{HEC, University of Lausanne}\\
-\textit{2026}
+\noindent\textit{Simon Scheidegger}\\*
+\textit{HEC, University of Lausanne, 2026}
 
 % ============================================================================
 % HOW TO USE THIS SCRIPT
@@ -7657,9 +7676,18 @@ A practical implementation, used in notebook \tpath{04_GP_Value_Function_Iterati
 A UCB-style acquisition would bias the design toward states with high \emph{value}, which is not what we want when the surrogate is a building block of an iteration.  We want the GP posterior to be uniformly tight wherever the Bellman operator might be evaluated, so that the contraction modulus of the \emph{approximate} operator stays close to $\beta$.  This is structurally different from the optimisation setting of Bayesian optimisation, where exploitation is a feature.
 
 \paragraph{Empirical impact.}
-Notebook 04 compares an active-learning design (starting from $n^s=6$ points and growing to $n^s=10$) against a naive uniform Latin-hypercube design at the same final budget $n^s = 10$.  At convergence, the active design achieves a smaller maximum Bellman residual on a fine validation grid \emph{and} a smaller LOO-RMSE, confirming that the points placed by \eqref{eq:bal_vfi} are doing their job.  Figure~\ref{fig:gp_vfi_2d_active} shows the corresponding behaviour on the 2D separable benchmark.
+The companion notebook compares a same-budget fixed Latin-hypercube design with an active design inside the one-dimensional GP-VFI loop.  Both designs use Bellman labels; the active design starts from a small initial set and adds states by maximising the GP posterior standard deviation \eqref{eq:bal_vfi} subject to a spacing rule.  At the same final number of labels, the active design lowers posterior uncertainty and achieves a comparable or smaller dense-grid Bellman residual (Figure~\ref{fig:gp_vfi_active_1d}).  The figure is one-dimensional by design: the goal is to show active enrichment inside a genuine Bellman iteration, not to use a separable interpolation toy as a proxy for multidimensional dynamic programming.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{gp_vfi_active_learning_1d.png}
+\caption{Same-budget active enrichment inside one-dimensional GP value-function iteration.  The left panel compares the GP posterior means from a fixed Latin-hypercube design and an active design against a reference GP-VFI solution.  The middle panel shows the posterior standard deviation and the states added by the active rule \eqref{eq:bal_vfi}, marked as triangles on the horizontal axis.  The right panel reports the dense-grid Bellman residual.  Unlike the previously used two-dimensional separable interpolation benchmark, every plotted training value here is generated by a Bellman maximization.  Generated by notebook \tpath{lecture_14_04_GP_Value_Function_Iteration.ipynb}.}
+\label{fig:gp_vfi_active_1d}
+\end{figure}
 
 \subsection{Results: From One to 500 Dimensions}
+
+The companion notebook deliberately stops at the one-dimensional Bellman problem, where every numerical object can be inspected directly.  The high-dimensional claims below come from the ASGP implementation of \citet{SCHEIDEGGER201968}, where the GP operates on an active subspace rather than on the full tensor-product state space; we report their findings as a literature summary, not as something the notebook itself demonstrates.
 
 \citet{SCHEIDEGGER201968} apply the ASGP-VFI algorithm to the stochastic optimal growth model~\eqref{eq:growth_bellman} across a range of dimensions, from $D = 1$ (the textbook Brock--Mirman case) to $D = 500$ continuous state variables.  The key findings are:
 \begin{enumerate}[itemsep=2pt]
@@ -7668,13 +7696,6 @@ Notebook 04 compares an active-learning design (starting from $n^s=6$ points and
 \item \textbf{Sub-exponential scaling:} CPU time grows sub-exponentially with $D$ (concave on a log scale when parallelized across compute nodes); on the benchmarks reported in \citet{SCHEIDEGGER201968}, $D = 500$ is solved at sub-exponential cost in $D$ when distributed across a compute cluster.  This avoids the explicit grid-based curse but does not eliminate all high-dimensional sample/optimization costs.
 \item \textbf{Beyond the reach of grids:} grid-based methods such as Smolyak sparse grids cannot handle $D > 100$, making ASGP one demonstrated grid-free approach for models at this scale; neural residual methods such as DEQNs are complementary alternatives when the equilibrium conditions are easier to express directly.
 \end{enumerate}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.92\linewidth]{gp_vfi_2d_active_benchmark.pdf}
-\caption{Comparison of GP design strategies on a smooth 2D test target $V(k_1, k_2)$ used to isolate the role of design geometry in two dimensions.  The GP posterior mean (left panel of each row) and the absolute error against the analytical solution (right panel) are shown for a naive uniform Latin-hypercube design (top row) and an active-learning design (bottom row) at the same budget.  Active design points (red) are placed by maximising the posterior standard deviation \eqref{eq:bal_vfi} subject to a minimum-spacing constraint, and concentrate where the GP is most uncertain; this halves the maximum absolute error relative to the naive design.  Generated by notebook \texttt{04\_GP\_Value\_Function\_Iteration.ipynb}, cell~25.}
-\label{fig:gp_vfi_2d_active}
-\end{figure}
 
 \subsection{Uncertainty Quantification and Ergodic Sets}
 
@@ -7714,7 +7735,7 @@ Convergence diagnostics & Exact Bellman operator is a contraction; GP interpolat
 \noindent \textbf{When to use which:} GPs when the effective dimension is moderate ($D \lesssim 15$, or a few hundred only when active-subspace structure is strong) and uncertainty quantification or sensitivity analysis is required; DEQNs when $D$ is very large, GPU hardware is available, or the model involves complicated market-clearing conditions that are more naturally expressed as Euler equation residuals than as Bellman maximization.
 
 \begin{remarkbox}[Hands-on]
-Notebook \tpath{04_GP_Value_Function_Iteration.ipynb} implements GP-based VFI for the 1D Brock--Mirman model with cheap-BAL active-learning design \eqref{eq:bal_vfi} and Cholesky-trick LOO diagnostics \eqref{eq:gp_loo}, demonstrating convergence, value-function 95\% credible bands, a verification run against the $\delta = 1$ analytical solution, and a 2D separable benchmark (Figure~\ref{fig:gp_vfi_2d_active}).  The active-subspace notebooks, \tpath{05_Active_Subspace_2D.ipynb}, \tpath{06_Active_Subspace_10D.ipynb}, and \tpath{07_Active_Subspace_Nonlinear.ipynb}, illustrate the same pipeline on 2D, 10D, and nonlinear test functions.
+Notebook \tpath{04_GP_Value_Function_Iteration.ipynb} implements GP-based VFI for the one-dimensional stochastic growth model.  It shows convergence of the GP-VFI outer loop, posterior credible bands for the value-function interpolant, Cholesky-based LOO-RMSE \eqref{eq:gp_loo}, dense-grid Bellman residuals, active enrichment of the Bellman design \eqref{eq:bal_vfi}, policy recovery, and a deterministic full-depreciation verification ($\delta = 1$ and $\sigma = 0$) against the closed-form Brock--Mirman solution.  The multidimensional ASGP extension is discussed in the literature summary above and illustrated separately by the active-subspace notebooks, \tpath{05_Active_Subspace_2D.ipynb}, \tpath{06_Active_Subspace_10D.ipynb}, and \tpath{07_Active_Subspace_Nonlinear.ipynb}, on 2D, 10D, and nonlinear test functions.
 \end{remarkbox}
 
 % ============================================================================
@@ -7835,7 +7856,7 @@ Reference              & \citet{Rasmussen:2005:GPM:1162254} & \citet{gal2016drop
 \chapter{Structural Estimation via SMM}
 \label{ch:estimation}
 
-With the surrogate machinery of Chapter~\ref{ch:gp} in hand, we now turn to one of its most important applications: \emph{structural estimation}.  The chapter's companion notebooks use the Brock--Mirman growth model to estimate first the productivity persistence parameter $\varrho$, and then the pair $\theta=(\beta,\varrho)$, by Simulated Method of Moments (SMM).  The key computational idea is the same in both cases: train one policy surrogate with the structural parameter as an additional input, then reuse that trained network inside the estimator instead of re-solving the dynamic program at every candidate parameter value.  The econometric foundations are \citet{mcfadden1989method}, \citet{pakes1989simulation}, \citet{lee1991simulation}, \citet{duffie1993simulated}, and \citet{gourieroux1993indirect}; the surrogate logic follows the deep-surrogate and GP-surrogate pipelines in \citet{chen2026Deep} and \citet{SCHEIDEGGER201968}.
+With the surrogate machinery of Chapter~\ref{ch:gp} in hand, we now turn to one of its most important applications: \emph{structural estimation}.  The chapter's companion notebooks use the Brock--Mirman growth model to estimate first the productivity persistence parameter $\varrho$, and then the pair $\theta=(\beta,\varrho)$, by Simulated Method of Moments (SMM).  The key computational idea is the same in both cases: train one policy surrogate with the structural parameter as an additional input, then reuse that trained network inside the estimator instead of re-solving the dynamic program at every candidate parameter value.  The econometric foundations are \citet{mcfadden1989method}, \citet{pakes1989simulation}, \citet{lee1991simulation}, \citet{duffie1993simulated}, and \citet{gourieroux1993indirect}; the surrogate logic follows the deep-surrogate and GP-surrogate pipelines in \citet{chen2026Deep} and \citet{SCHEIDEGGER201968}.  Recent applications of the same surrogate-then-estimate move include heterogeneous-agent estimation \citep{kase2022estimating}, search-and-matching \citep{payne2025deepsam}, and climate-economy policy design and uncertainty quantification \citep{kubler2025using, friedlDeep2023}.
 
 \section{Brock--Mirman with Parameters as Pseudo-States}
 
@@ -7857,7 +7878,7 @@ with $\beta$ calibrated to $0.96$.  In the joint exercise the input becomes $(z_
 K_{t+1} &= (1-\delta)K_t + s_t Y_t, \\
 C_t &= (1-s_t) Y_t.
 \end{align}
-Because $s_t \in (0,1)$ and $Y_t > 0$, this parameterization enforces $C_t > 0$, $K_{t+1} > (1-\delta)K_t > 0$, and gross investment $I_t = s_t Y_t \ge 0$ by construction, so the resource constraint and the non-negativity of investment hold automatically and the partial-depreciation Euler equation~\eqref{eq:smm_euler_residual} applies as written, with no extra multiplier.  (A resource-based variant in which the savings rate is applied to total resources $R_t = Y_t + (1-\delta)K_t$, allowing disinvestment relative to the depreciated stock, is a straightforward alternative; the SMM moments and notebook outputs in this chapter use the output-based savings rate above.)
+Because $s_t \in (0,1)$ and $Y_t > 0$, this parameterization enforces $C_t > 0$, $K_{t+1} > (1-\delta)K_t > 0$, and gross investment $I_t = s_t Y_t \ge 0$ by construction, so the resource constraint and the non-negativity of investment hold automatically and the partial-depreciation Euler equation~\eqref{eq:smm_euler_residual} applies as written, with no extra multiplier.\footnote{A resource-based variant in which the savings rate is applied to total resources $R_t = Y_t + (1-\delta)K_t$, allowing disinvestment relative to the depreciated stock, is a straightforward alternative; the SMM moments and notebook outputs in this chapter use the output-based savings rate above.}
 
 Training uses the same Euler equation as Chapter~\ref{ch:deqn}, but the residual is evaluated jointly over states and parameter draws.  With partial depreciation,
 \[
@@ -7903,7 +7924,7 @@ Let $\hat{m}^\mathrm{data} \in \R^q$ denote a vector of $q$ sample moments compu
 \underbrace{\bigl(m(\theta)-\hat m^\mathrm{data}\bigr)}_{q\times 1},
 \label{eq:smm_objective}
 \end{equation}
-where $W \in \R^{q \times q}$ is a symmetric positive definite weighting matrix.  In code, this objective is simply the weighted inner product \texttt{(m\_sim - m\_data) @ W @ (m\_sim - m\_data)} of the moment deviations, with \texttt{m\_sim = simulate\_moments(theta)} the model-implied moments and \texttt{m\_data} the empirical ones.  Since $W$ is symmetric, this NumPy expression is exactly the quadratic form $(m-\hat m)^\top W(m-\hat m)$; for the special case $W=I$ it reduces to \texttt{diff @ diff}.
+where $W \in \R^{q \times q}$ is a symmetric positive definite weighting matrix.
 
 \paragraph{The role of the weighting matrix $W$.}
 The matrix $W$ controls how much weight each moment (and each pair of moments) receives in the objective.  To build intuition, consider three common choices:
@@ -7911,12 +7932,12 @@ The matrix $W$ controls how much weight each moment (and each pair of moments) r
 \begin{enumerate}[itemsep=3pt]
 \item \textbf{Identity weighting} ($W = I_q$): all moments receive equal weight.  The objective reduces to the unweighted sum of squared deviations, $\sum_{j=1}^q (m_j(\theta) - \hat{m}_j^\mathrm{data})^2$.  This is simple but inefficient: moments measured with high precision receive the same weight as noisy moments.
 
-\item \textbf{Diagonal weighting} ($W = \mathrm{diag}(1/\hat{\sigma}_1^2, \ldots, 1/\hat{\sigma}_q^2)$): each moment is scaled by the inverse of its estimated variance.  This corrects for differing units and precision.  In code: \texttt{W = np.diag(1.0 / np.var(m\_bootstrap, axis=0))}.
+\item \textbf{Diagonal weighting} ($W = \mathrm{diag}(1/\hat{\sigma}_1^2, \ldots, 1/\hat{\sigma}_q^2)$): each moment is scaled by the inverse of its estimated variance.  This corrects for differing units and precision.
 
 \item \textbf{Optimal weighting}: the inverse of the covariance matrix of the \emph{moment discrepancy} $\hat g(\theta)=m(\theta)-\hat m^\mathrm{data}$.  If the simulation noise is negligible, this is well approximated by the inverse covariance of the empirical moments.  With independent simulated panels of the same length as the data and $S$ replications, the covariance is approximately $(1+1/S)\Sigma_m$, so the optimal weight is proportional to $\Sigma_m^{-1}$ but the scale matters for the $J$-statistic below.
 \end{enumerate}
 
-\noindent With identity weighting, the criterion is simply \texttt{diff @ diff}.  With inverse discrepancy-covariance weighting, it is the squared Mahalanobis distance between simulated and empirical moments.
+\noindent With identity weighting, the criterion is the sum of squared moment deviations; with inverse discrepancy-covariance weighting, it is the squared Mahalanobis distance between simulated and empirical moments.
 
 \paragraph{Consistency and efficiency.}  Under standard regularity conditions, the SMM estimator is consistent: $\hat{\theta}_\mathrm{SMM} \xrightarrow{p} \theta_0$ as the data sample size $T \to \infty$.  Identification requires more than the usual $q \geq p$ moment count: locally, the moment Jacobian must satisfy the rank condition
 \begin{equation}
@@ -7950,7 +7971,7 @@ The output autocorrelation is the most direct persistence moment.  The volatilit
 \qquad
 \mathrm{Var}(\Delta\log z_t)=2\,\mathrm{Var}(\log z_t)\,(1-\varrho)=\frac{2\sigma_z^2}{1+\varrho},
 \]
-so the familiar $1/(1-\varrho^2)$ amplification applies to the \emph{level} of log productivity, not to first differences.  The notebook also reports the mean savings rate as a diagnostic and correctly treats it as nearly uninformative for $\varrho$.
+so the familiar $1/(1-\varrho^2)$ amplification applies to the \emph{level} of log productivity, not to first differences.  The notebook also reports the mean savings rate as a diagnostic and correctly treats it as nearly uninformative for $\varrho$; it is masked out of the SMM criterion in the scalar exercise and used only for visual identification checks.
 
 \paragraph{Joint exercise.}
 Notebook \tpath{03b_Structural_Estimation_BM_Joint.ipynb} estimates $\theta=(\beta,\varrho)$, with $\beta\in[0.92,0.99]$ and $\varrho\in[0.50,0.99]$.  It uses mean savings, growth volatility, consumption-growth autocorrelation, and output autocorrelation.  The just-identified specification uses mean savings and consumption-growth autocorrelation to make the partial-identification ridge visible; the over-identified specification uses all four moments and collapses the ridge around the synthetic truth.
@@ -7962,30 +7983,9 @@ Because the same initial condition and random seed are used for every candidate 
 The single-parameter estimation routine proceeds in two steps:
 \begin{enumerate}[itemsep=3pt]
 \item Evaluate the SMM objective on a coarse grid over $\varrho \in [0.52,0.99]$ (matching the notebook's grid bounds) to verify that the criterion is well behaved and to visualize identification.
-\item Refine the minimizer with a bounded scalar optimizer such as \texttt{minimize\_scalar}.
+\item Refine the minimizer with a bounded scalar optimizer (e.g.\ Brent's method).
 \end{enumerate}
-Listing~\ref{lst:smm_rho} shows the resulting Python recipe.  The joint notebook maps the 2D criterion on a grid, then refines from the grid minimizer using bounded Nelder--Mead.  Since the policy surrogate has already been trained, each evaluation of $m(\theta)$ requires only a forward simulation, not a full re-solution of the dynamic program.
-
-\begin{lstlisting}[caption={Direct SMM estimation of TFP persistence in the Brock--Mirman exercise.  \texttt{moment\_used} masks the diagnostic mean-savings moment out of the criterion (it is nearly flat in~$\varrho$).},label={lst:smm_rho}]
-moment_used = np.array([True, True, True, False])  # last moment is diagnostic only
-
-def smm_objective(rho, policy, m_data, seed=SEED + 123):
-    C, I, Y = simulate_economy(policy, rho, T_burn=200, T_sim=1000, seed=seed)
-    m_sim = compute_moments(C, I, Y)
-    diff = (m_sim - m_data)[moment_used]
-    return diff @ diff
-
-rho_grid = np.linspace(0.52, 0.99, 41)
-obj_grid = np.array([smm_objective(r, policy, m_data) for r in rho_grid])
-
-result = minimize_scalar(
-    lambda r: smm_objective(r, policy, m_data),
-    bounds=(0.52, 0.99),
-    method="bounded",
-    options={"xatol": 1e-5},
-)
-rho_hat = result.x
-\end{lstlisting}
+The joint notebook maps the 2D criterion on a grid, then refines from the grid minimizer using bounded Nelder--Mead.  Since the policy surrogate has already been trained, each evaluation of $m(\theta)$ requires only a forward simulation, not a full re-solution of the dynamic program.
 
 \paragraph{Interpretation.}
 If the moments are informative about $\theta$, the objective should be minimized close to the synthetic truth.  In the scalar notebook, $\hat\varrho$ is very close to $0.90$ and the fitted policy functions at $\varrho_{\mathrm{true}}$ and $\hat\varrho$ nearly overlap.  The joint notebook shows the additional lesson: point estimates can be accurate while the criterion still has weak curvature along one parameter direction, which is why contour plots and Jacobian diagnostics matter.
@@ -8015,8 +8015,6 @@ where $\hat{M}$ and $\hat{\Sigma}$ are estimated at $\hat{\theta}$ under the equ
 
 \paragraph{Weak-identification workflow.}  If the smallest singular values of $\hat{M}$ are close to zero, inference based purely on local curvature is fragile.  In that case, complement Hessian-based standard errors with profile-criterion diagnostics: vary one parameter at a time (or along weak singular vectors), re-optimize the remaining parameters, and report objective-function contour sets in addition to pointwise intervals.
 
-\paragraph{Why the surrogate still matters.}  Even though the estimation step is standard SMM, the pseudo-state surrogate changes the computational bottleneck.  Without it, each candidate $\theta$ would require re-solving the dynamic program.  With it, the optimization reduces to repeated forward simulations under an already-trained policy rule.  This is the same computational leverage exploited in recent applications of deep surrogates and neural surrogates more broadly to dynamic structural models: heterogeneous-agent estimation \citep{kase2022estimating}, search-and-matching \citep{payne2025deepsam}, finance and asset pricing \citep{chen2026Deep}, and climate-economy policy design and uncertainty quantification \citep{kubler2025using, friedlDeep2023}.
-
 \section{GP Surrogate over the Moment Map}
 \label{sec:smm_gp_moments}
 
@@ -8031,7 +8029,7 @@ We now stack a second surrogate on top of this:
 \widehat m_j(\theta) \;\sim\; \mathrm{GP}\bigl(0,\, k_j(\cdot, \cdot)\bigr), \qquad j = 1, \ldots, q,
 \label{eq:moment_gp}
 \end{equation}
-one independent GP per moment, with its own kernel and length-scale hyperparameters learned by maximising marginal likelihood on a small design $\{(\theta^{(i)},\, m(\theta^{(i)}))\}_{i=1}^n$.  Once trained, evaluating the SMM objective at any candidate $\theta$ is a single GP forward pass per moment, no simulation required.  Bootstrapped CIs and any subsequent Bayesian post-processing then run on the GP, not on the simulator.  Figure~\ref{fig:smm_two_layer_surrogate} reads the architecture top-to-bottom: a candidate $\theta$ is fed into the DEQN policy net of \S\ref{sec:smm_method}, that policy is rolled forward for $T$ periods to produce a simulated path and its moment vector $m(\theta)\in\R^q$, a small design $\{(\theta^{(i)},\,m(\theta^{(i)}))\}_{i=1}^n$ of those simulator labels trains the second layer of $q$ independent moment GPs, and the SMM criterion $Q(\theta)$ is then a closed-form quadratic in the GP posterior means; the right-hand column traces the per-$\theta$ cost cascade from seconds-to-hours down to microseconds.
+one independent GP per moment, with its own kernel and length-scale hyperparameters learned by maximising marginal likelihood on a small design $\{(\theta^{(i)},\, m(\theta^{(i)}))\}_{i=1}^n$.  Once trained, evaluating the SMM objective at any candidate $\theta$ is a single GP forward pass per moment, no simulation required.  Bootstrapped CIs and any subsequent Bayesian post-processing then run on the GP, not on the simulator.  Figure~\ref{fig:smm_two_layer_surrogate} reads the architecture top-to-bottom.  A candidate $\theta$ is fed into the DEQN policy net of \S\ref{sec:smm_method}, which is rolled forward for $T$ periods to produce a simulated path and its moment vector $m(\theta)\in\R^q$; a small design $\{(\theta^{(i)},\,m(\theta^{(i)}))\}_{i=1}^n$ of those simulator labels then trains the second layer of $q$ independent moment GPs, after which the SMM criterion $Q(\theta)$ is a closed-form quadratic in the GP posterior means.  The right-hand column traces the per-$\theta$ cost cascade from seconds-to-hours down to microseconds.
 
 \begin{figure}[H]
 \centering
@@ -8118,9 +8116,9 @@ Here $\widetilde{\mathrm{UCB}}_{\widetilde Q}$ denotes the quantile-scaled and c
 
 Figure~\ref{fig:smm_2d_criterion} shows the direct SMM criterion on the joint rectangle.  Two features are visible.
 
-First, the criterion has a long, shallow ridge along the $\beta$ direction in the just-identified specification: the data are nearly uninformative about $\beta$ once $\varrho$ is fixed, so a wide range of $\beta$-values fits almost equally well.  This is partial identification, in textbook form, visualised on the criterion surface.
+First, the criterion has a long, shallow ridge along the $\beta$ direction in the just-identified specification: the data are nearly uninformative about $\beta$ once $\varrho$ is fixed, so a wide range of $\beta$-values fits almost equally well.  This is partial identification, in textbook form, visualised on the criterion surface.  Economically, $\beta$ and $\varrho$ both shift the consumption-smoothing motive in similar directions on long horizons: raising patience and raising persistence each raise the mean savings rate and dampen consumption-growth autocorrelation, so a two-moment specification built from those two moments leaves the $(\beta,\varrho)$ ratio under-determined and produces the ridge.
 
-Second, the ridge collapses to a localized minimum in the over-identified specification.  In the synthetic CRN run, the recovered estimate sits very close to $(\beta_{\mathrm{true}},\varrho_{\mathrm{true}})=(0.96,0.90)$.  This makes a useful pedagogical point: identification is a property of the moment selection, not of the estimator.
+Second, the ridge collapses to a localized minimum in the over-identified specification.  In the synthetic CRN run, the recovered estimate sits very close to $(\beta_{\mathrm{true}},\varrho_{\mathrm{true}})=(0.96,0.90)$.  This makes a useful pedagogical point: identification is a property of the moment selection, not of the estimator.  The over-identified specification breaks the redundancy by adding growth volatility, which is sensitive to $\varrho$ through the shock-persistence channel but only weakly to $\beta$, and output autocorrelation, which is sensitive to $\varrho$ directly.
 
 \begin{figure}[ht]
 \centering
