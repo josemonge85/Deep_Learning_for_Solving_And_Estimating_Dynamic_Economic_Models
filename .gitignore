@@ -57,6 +57,9 @@ codex_results/
 .codex/
 .claude/
 
+# Lecture 17 code lives in an external research repo; see the lecture README
+lectures/lecture_17_deep_uq_pareto_improving_policy/code/
+
 # Audit and prompt-kit working files (kept locally, never pushed)
 audit_reports/
 chapter_reports/

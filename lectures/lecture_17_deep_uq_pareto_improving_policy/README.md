@@ -5,7 +5,7 @@ Stochastic IAMs depend on parameters whose true values are deeply uncertain. Plu
 `gpu-recommended` · `long` · builds on [Lecture 16](../lecture_16_climate_economics_iams/README.md)
 
 > 📑 **Slides:** [lecture_17_deep_uq_pareto_policy.pdf](slides/lecture_17_deep_uq_pareto_policy.pdf)  
-> 📓 **Notebooks:** [`code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb`](code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb)  
+> 💻 **Code:** maintained in the external research repository [`sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules`](https://github.com/sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_17.md)  
 > 📖 **Script:** §11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy)
 
@@ -33,8 +33,11 @@ After this lecture you can:
 
 ## Code
 
-- [`code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb`](code/lecture_17_09_DICE_2P_UQ_Analysis.ipynb) -- Sobol indices and univariate effects on $(\rho, \pi_2)$ from 25 reference DICE solutions cached under [`code/_pt_solutions/2p/`](code/_pt_solutions/2p/). Runs end-to-end on CPU in about a minute.
-- Supporting pipeline: [`dice_2p_surrogate_lib.py`](code/dice_2p_surrogate_lib.py), [`train_dice_2p_pointsolutions.py`](code/train_dice_2p_pointsolutions.py), [`train_dice_2p_surrogate.py`](code/train_dice_2p_surrogate.py), [`compute_dice_2p_gp_anchors.py`](code/compute_dice_2p_gp_anchors.py), [`run_dice_2p_pipeline.sh`](code/run_dice_2p_pipeline.sh).
+The code that supports this lecture, the full deep-UQ + Pareto-improving carbon-tax pipeline, lives in a separate research repository:
+
+<https://github.com/sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules>
+
+That repository contains the stochastic CDICE-DEQN solver, the GP surrogate over the uncertain-parameter space with Bayesian active learning, the Sobol and Shapley sensitivity-analysis tooling, and the constrained Pareto-improving carbon-tax search. It is the artifact behind the corresponding paper and is maintained there to keep this teaching repository light.
 
 ## In the lecture script
 
