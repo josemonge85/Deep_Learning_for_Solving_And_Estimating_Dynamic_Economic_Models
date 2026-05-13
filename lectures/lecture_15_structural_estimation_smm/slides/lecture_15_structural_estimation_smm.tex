@@ -53,8 +53,8 @@
 \vspace{-0.3cm}
 \begin{center}
 {\footnotesize Solution notebooks:}\\[1pt]
-{\footnotesize \texttt{03\_Structural\_Estimation\_BM.ipynb} (single $\varrho$)}\\
-{\footnotesize \texttt{03b\_Structural\_Estimation\_BM\_Joint.ipynb} (joint $\beta,\varrho$)}\\[2pt]
+{\footnotesize \texttt{lecture\_15\_03\_Structural\_Estimation\_BM.ipynb} (single $\varrho$)}\\
+{\footnotesize \texttt{lecture\_15\_03b\_Structural\_Estimation\_BM\_Joint.ipynb} (joint $\beta,\varrho$)}\\[2pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -137,7 +137,7 @@ where $W$ is a positive-definite \emphc{weighting matrix}.
 % --- SMM primer 3: asymptotic distribution ---
 \begin{frame}{SMM Primer (3/3): Asymptotic Distribution}
 \small
-\textit{Notation bridge to the script: this deck writes $G=\partial m/\partial\theta^\top$ and $\Sigma_g$ for the moment Jacobian and long-run covariance; the script writes $M$, $\Omega$. The simulation-inflation factor is $\tau = 1/(\tau_{\mathrm{s}}S)$, with $S$ the number of simulated panels and $\tau_{\mathrm{s}}\ge 1$ their length relative to the data; the script's $\Omega = (1+1/(\tau_{\mathrm{s}}S))\Sigma_m$ is the same object as $(1+\tau)\Sigma_g$ here. With $S$ panels of the same length as the data ($\tau_{\mathrm{s}}=1$), $\tau = 1/S$, and $\tau\to 0$ as the simulation budget grows.}
+Notation follows the script: $M = \partial m(\theta_0)/\partial\theta^\top$ is the moment Jacobian, $\Sigma_m$ the long-run covariance of the moment vector, and $\Omega = \bigl(1 + 1/(\tau S)\bigr)\Sigma_m$ the asymptotic covariance of $\sqrt{T}\hat g(\theta_0)$ under $S$ independent simulated panels of length $\tau T$ relative to the data ($\tau \ge 1$).  With $S$ panels of the same length as the data ($\tau = 1$), $\Omega = (1+1/S)\Sigma_m$; as $\tau S \to \infty$, $\Omega \to \Sigma_m$.
 
 \smallskip
 Under standard regularity conditions (smoothness of $m$, stationarity, identification), as the data length $T\to\infty$,
@@ -146,21 +146,20 @@ Under standard regularity conditions (smoothness of $m$, stationarity, identific
     \;\xrightarrow{d}\; \mathcal{N}\bigl(0, V(W)\bigr),
 \]
 \[
-    V(W) \;=\; \bigl(G^\top W G\bigr)^{-1} G^\top W \bigl(1 + \tau\bigr)\Sigma_g\, W G \bigl(G^\top W G\bigr)^{-1},
+    V(W) \;=\; \bigl(M^\top W M\bigr)^{-1} M^\top W \,\Omega\, W M \bigl(M^\top W M\bigr)^{-1}.
 \]
-where $G = \partial m(\theta_0)/\partial\theta^\top$ is the moment Jacobian and $\Sigma_g$ is the long-run covariance.
 
 \vspace{0.3em}
-\textbf{Optimal weighting.} With $W = W^\star = \Sigma_g^{-1}$,
+\textbf{Optimal weighting.} With $W = W^\star = \Omega^{-1}$,
 \[
-    V(W^\star) \;=\; (1+\tau)\,\bigl(G^\top \Sigma_g^{-1} G\bigr)^{-1}.
+    V(W^\star) \;=\; \bigl(M^\top \Omega^{-1} M\bigr)^{-1}.
 \]
 
 \vspace{0.3em}
-\textbf{Identification, geometrically.} $G$ has full column rank $\Rightarrow$ the moment surface bends sharply along every parameter direction. A flat direction = an \emph{identification ridge} (Task 4 visualizes one).
+\textbf{Identification, geometrically.} $M$ has full column rank $\Rightarrow$ the moment surface bends sharply along every parameter direction. A flat direction = an \emph{identification ridge} (Task 4 visualizes one).
 
 \vspace{0.3em}
-\textbf{Why the surrogate?} $G$ and $m$ require simulating the model. With a deep surrogate the inner loop is differentiable and three orders of magnitude cheaper.
+\textbf{Why the surrogate?} $M$ and $m$ require simulating the model. With a deep surrogate the inner loop is differentiable and three orders of magnitude cheaper.
 \end{frame}
 
 % --- Slide: model ---
@@ -271,32 +270,6 @@ Re-seed the simulator \emph{to the same seed} on every evaluation, so the candid
 \end{alertblock}
 \end{frame}
 
-% --- New frame: Stacking a GP over the moment map (forward-references the joint exercise) ---
-\begin{frame}{Stacking a GP over the Moment Map (used in Part B)}
-\textbf{Forward reference.} Task 4 only needs the single-$\varrho$ surrogate; the construction below is what Notebook \texttt{03b} adds for the \emph{joint} $(\beta,\varrho)$ exercise.
-
-\medskip
-\textbf{Two-layer surrogate} for high-throughput SMM:
-
-\smallskip
-\begin{itemize}\itemsep0pt
-  \item \textbf{Layer 1.} Pseudo-state DEQN $\mathcal{N}_\rho(z, K, \theta) \mapsto $ savings rate
-  \item \textbf{Layer 2.} One Gaussian process per moment, $\widehat m_j(\theta) \sim \mathrm{GP}(0, k_j)$, fit on a small design $\{(\theta^{(i)}, m(\theta^{(i)}))\}_{i=1}^n$
-\end{itemize}
-
-\smallskip
-\textbf{Cost of one design point.} One $T$-step forward simulation under $\mathcal{N}_\rho$ + a moment computation $\Rightarrow$ expensive but parallel.
-
-\smallskip
-\textbf{Cost of one objective evaluation after training.} One GP posterior call per moment, no simulation. Bootstrap/SBI workflows then run on the GP.
-
-\smallskip
-\textbf{Diagnostic.} Cholesky-trick LOO on each moment GP (free, see deck~07). Notebook 03: 8 grid + 6 BAL points, fresh holdout for sanity.
-
-\medskip
-{\scriptsize Same expensive-oracle / supervised-learning logic as GP-VFI in deck~07.}
-\end{frame}
-
 % --- Task 4 ---
 \begin{frame}{Task 4: Diagnose the Fit (Single-Parameter)}
 \begin{itemize}
@@ -350,7 +323,7 @@ The estimated policy at $\hat\varrho$ overlaps the true policy at $\varrho_{\tex
 % =====================================================================
 % PART B: joint (beta, persistence) exercise
 % =====================================================================
-\begin{frame}{Bridge: From Just-Identified to Joint}
+\begin{frame}{Bridge: From Scalar to Joint Estimation}
 \small
 The single-parameter exercise is the cleanest version of the SMM workflow. But two real lessons remain:
 \begin{itemize}
@@ -364,8 +337,8 @@ Notebook \texttt{03b} re-trains the surrogate on the rectangle $\beta \in [0.92,
 \vspace{0.2cm}
 Two moment subsets:
 \begin{itemize}
-  \item \emphc{Just-identified} (2 moments): $\{$ mean savings, $\mathrm{Corr}(\Delta\log C)\}$.
-  \item \emphc{Over-identified} (4 moments): adds $\mathrm{Std}(\Delta\log C)$ and $\mathrm{Corr}(\log Y)$.
+  \item \emphc{Weak two-moment} (2 moments): $\{\mathrm{Std}(\Delta\log C),\,\mathrm{Corr}(\Delta\log C)\}$ -- chosen to expose a shallow direction in the criterion.
+  \item \emphc{Over-identified} (4 moments): adds mean savings and $\mathrm{Corr}(\log Y)$.
 \end{itemize}
 \end{frame}
 
@@ -383,30 +356,6 @@ $\hat\theta = \argmin_{\theta = (\beta,\varrho)}\; [m(\theta) - \hat{m}^{\mathrm
 \end{enumerate}
 \end{frame}
 
-% --- New frame: BoTorch UCB acquisition ---
-\begin{frame}{BoTorch UCB Acquisition for Joint Estimation}
-\textbf{Why active learning here.} On the 2D rectangle, most of the area sits far from the SMM minimiser -- pure exploration is wasteful. We want a design that hits both the basin of attraction \emphc{and} regions where the moment GP is uncertain.
-
-\smallskip
-\textbf{Acquisition function} (notebook 03b):
-\[
-a(\theta) \;=\; \bigl[\,0.25 + \widetilde{\mathrm{UCB}}_{g}(\theta)\,\bigr] \cdot \Bigl\|\boldsymbol\sigma_m(\theta) / \widehat{\mathrm{sd}}(m)\Bigr\|_2.
-\]
-
-{\scriptsize
-\begin{itemize}\itemsep0pt
-  \item $g(\theta) = -\log_{10}(Q(\theta) + \epsilon)$ is the negative log-criterion (a GP is fit to $g$); $\widetilde{\mathrm{UCB}}_g$ is BoTorch's standard $\mu_g + \kappa\sigma_g$ rescaled to $[0,1]$ over the grid.
-  \item $\boldsymbol\sigma_m(\theta) \in \mathbb{R}^{n_m}$ stacks the moment-GP posterior std-deviations; $\widehat{\mathrm{sd}}(m)$ is the empirical std-deviation of each moment in the design (a unit-normaliser).
-  \item $0.25$: a small floor on the exploit factor so candidates with low UCB on $g$ but high moment-GP uncertainty still enter the design.
-\end{itemize}}
-
-\smallskip
-{\small\textbf{Roles.} First factor = \emph{exploit} (basin of small $Q$); second factor = \emph{explore} (where moment GPs are uncertain). Pure UCB on $g$ alone would over-collapse to the basin; pure moment-uncertainty would ignore the criterion shape.}
-
-\medskip
-{\scriptsize Built on BoTorch \texttt{SingleTaskGP} + \texttt{UpperConfidenceBound}; the multiplicative form is custom (not a stock BoTorch acquisition).}
-\end{frame}
-
 \begin{frame}{Expected Result: Surrogate Slices on $(\beta, \varrho)$}
 \begin{center}
 \includegraphics[width=0.95\textwidth]{joint_surrogate_with_estimates.pdf}
@@ -422,21 +371,7 @@ Two slices of the same 4-input network. White dashed = truth, orange dotted = ov
 \end{center}
 \vspace{-0.15cm}
 \small
-Left: the just-identified criterion shows a \emphc{ridge} along $\beta$ -- exactly the partial-identification problem that motivates calibrating $\beta$ in practice. Right: adding two persistence moments collapses the ridge to a localized minimum.
-\end{frame}
-
-% --- New frame: GP surrogate of the SMM criterion ---
-\begin{frame}{GP Surrogate of the SMM Criterion}
-\begin{center}
-\includegraphics[width=0.72\textwidth]{joint_gp_objective_surrogate.pdf}
-\end{center}
-\vspace{-0.15cm}
-\scriptsize
-\begin{itemize}\itemsep0pt
-\item Left: GP posterior mean of $\log_{10} Q(\beta,\varrho)$; right: standardized moment uncertainty.
-\item White dots = training design; orange squares = active additions; red stars = holdouts/truth.
-\item White circle = direct SMM; black cross = GP-SMM. Later objective calls need only one GP posterior evaluation.
-\end{itemize}
+Left: the weak two-moment criterion shows a \emphc{ridge} -- the partial-identification problem that motivates calibrating $\beta$ in practice. Right: adding mean savings and output autocorrelation collapses the ridge to a localized minimum.
 \end{frame}
 
 \begin{frame}{Expected Result: Estimates on Top of Criterion}
@@ -466,6 +401,7 @@ What the two notebooks teach together:
   \item For a well-identified parameter ($\varrho$), SMM under CRN gives a sharp 1D identification picture.
   \item For \emphc{joint} estimation, the contour plot makes the partial-identification ridge visible. Adding moments collapses it.
   \item The \emphc{interior-solution} check is part of the standard pipeline, needed for the asymptotic distribution theory of the SMM estimator.
+  \item \emphc{Synthetic-data caveat.} Exact recovery in both notebooks reflects self-consistency: the data are generated by the same surrogate at the true parameter, and every candidate evaluation reuses the same shock path. Real-data SMM does not produce a zero criterion.
 \end{itemize}
 \vspace{0.10cm}
 {\footnotesize \textbf{Formal identification machinery} (moment Jacobian $M = \partial m/\partial\theta$, rank condition, $J$-statistic, weak-identification diagnostics): see lecture script Sec. 10.4 (Practical Considerations).}
