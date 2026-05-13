@@ -280,7 +280,7 @@ The exposition is organized around four complementary methodologies:
 The unifying thesis is that economic structure drives the learning problem rather than being separated from it.  In DEQNs, PINNs, and EMINNs the structure is embedded directly into a neural-network loss as residual terms (equilibrium conditions, PDEs, Bellman equations), making the training objective itself unsupervised; in the surrogate and GP-based estimation chapters the structure instead appears upstream, in the model that generates the (input, output) training pairs the surrogate then learns in a standard supervised regression.  Either way, the four methodologies above are different surfaces for the same idea.
 
 \paragraph{How these notes are organized.}
-At a high level, Chapters~1--6 build the discrete-time toolkit (foundations, DEQNs, IRBC, architecture search and loss normalization, OLG, heterogeneous agents). Chapters~7--8 turn to continuous-time methods (PINNs, HJB--KFE for heterogeneous agents). Chapters~9--10 cover surrogate-based estimation and Gaussian processes. Chapter~11 applies the toolbox to climate economics under deep uncertainty, and Chapter~12 closes by comparing methods and highlighting open problems. The next chapter, \emph{How to Read This Script}, expands this overview into a full reading guide: cover-to-cover and selective paths, notation and cross-references, the role of the companion notebooks, and the visual conventions used throughout.
+At a high level, Chapters~1--6 build the discrete-time toolkit (foundations, DEQNs, IRBC, architecture search and loss normalization, OLG, heterogeneous agents). Chapters~7--8 turn to continuous-time methods (PINNs, HJB--KFE for heterogeneous agents). Chapter~9 develops the deep-surrogate and Gaussian-process toolkit and deploys it on two distinct oracles: surrogates of the structural model itself, used downstream for estimation, uncertainty quantification, and policy search, and surrogates of the Bellman operator, used inside GP value-function iteration to solve high-dimensional dynamic programs.  Chapter~10 then uses these surrogates for structural estimation via SMM. Chapter~11 applies the toolbox to climate economics under deep uncertainty, and Chapter~12 closes by comparing methods and highlighting open problems. The next chapter, \emph{How to Read This Script}, expands this overview into a full reading guide: cover-to-cover and selective paths, notation and cross-references, the role of the companion notebooks, and the visual conventions used throughout.
 
 \paragraph{Audience and prerequisites.}
 These notes are aimed at PhD students in economics, finance, and computational social science, as well as researchers at central banks and policy institutions who wish to apply these methods to their own models.  We assume familiarity with basic econometrics, Python programming, and undergraduate-level calculus and probability.  For readers who need a refresher on these foundations, we recommend \citet{goodfellow2016deep} for deep learning, \citet{judd1998numerical} for numerical methods in economics, the open-source QuantEcon lectures (\url{https://quantecon.org}) for Python programming and quantitative economics, and the Econ-ARK toolkit (\url{https://econ-ark.org}) for heterogeneous-agent modeling.
@@ -6755,13 +6755,56 @@ For stationary, low-dimensional problems, finite differences remain fast and rel
 \chapter{Deep Surrogate Models and Gaussian Processes}
 \label{ch:gp}
 
-The DEQNs and PINNs of previous chapters solve a single model configuration at a time, to high accuracy; this chapter instead solves a \emph{family} of configurations cheaply.  Surrogates produce thousands of evaluations per second, enabling parametric estimation, sensitivity analysis, and uncertainty quantification that would be infeasible if every evaluation required a full numerical solve.  In many applications (structural estimation, uncertainty quantification, optimal policy design) one needs to evaluate the model at thousands or millions of parameter configurations.  This chapter develops two complementary \emph{surrogate} strategies that replace the expensive model with a cheap-to-evaluate approximation: deep neural network surrogates for high-dimensional settings \citep{chen2026Deep}, and Gaussian process surrogates for moderate-dimensional settings where data efficiency matters.  The methodological foundations are the GP textbook of \citet{Rasmussen:2005:GPM:1162254} and the Bayesian-active-learning ideas dating back to \citet{mackay1992information} and \citet{krause2008near}.  Embedding GPs inside dynamic programming was pioneered by \citet{deisenroth2009gaussian} (GPDP) and \citet{engel2005reinforcement} (GP temporal-difference learning); within economics, applications include high-dimensional growth models \citep{SCHEIDEGGER201968}, dynamic incentive problems \citep{rennerscheidegger_2018}, and deep uncertainty quantification for integrated assessment models \citep{friedlDeep2023}.  We also cover Bayesian active learning for optimal training-point selection, sparse approximations \citep{titsias2009variational, hensman2013gaussian} that extend GPs beyond their cubic scaling limit, active subspaces for dimensionality reduction, GP-based value function iteration for dynamic programming, and deep kernel learning for combining neural network feature extraction with GP inference.
+The DEQNs and PINNs of previous chapters solve a single model configuration at a time, to high accuracy.  This chapter takes a different angle: every method developed below is \emph{supervised regression on the output of an expensive numerical oracle}, where the oracle is queried at modestly many designed inputs and the fitted surrogate then stands in for it everywhere else.  The script uses that move on two distinct oracles.  The first is the structural model itself, evaluated across many parameter or scenario vectors $\theta$ for downstream estimation, uncertainty quantification, and optimal policy design (Chapter~\ref{ch:estimation}, Chapter~\ref{ch:climate}).  The second is the Bellman operator $TV$ at a fixed model, evaluated at many state-space points inside a value-function-iteration loop, for solving high-dimensional dynamic programs (\S\ref{sec:gp_dp}).  Both settings call for the same GP machinery, the same diagnostics, and the same active-learning logic; only the labels change.  A \emph{surrogate} is, in effect, a twenty-first-century lookup table: not a static grid of precomputed answers, but a trained, smooth, differentiable function that interpolates the oracle's output across a high-dimensional space of states and parameters and can be queried in microseconds \citep{chen2026Deep}.  Surrogates produce thousands of evaluations per second, enabling parametric estimation, sensitivity analysis, and uncertainty quantification that would be infeasible if every evaluation required a full numerical solve.  The methodological foundations are the GP textbook of \citet{Rasmussen:2005:GPM:1162254} and the Bayesian-active-learning ideas dating back to \citet{mackay1992information} and \citet{krause2008near}.  Embedding GPs inside dynamic programming was pioneered by \citet{deisenroth2009gaussian} (GPDP) and \citet{engel2005reinforcement} (GP temporal-difference learning); within economics, applications include high-dimensional growth models \citep{SCHEIDEGGER201968}, dynamic incentive problems \citep{rennerscheidegger_2018}, and deep uncertainty quantification for integrated assessment models \citep{friedlDeep2023}.  We also cover Bayesian active learning for optimal training-point selection, sparse approximations \citep{titsias2009variational, hensman2013gaussian} that extend GPs beyond their cubic scaling limit, active subspaces for dimensionality reduction, GP-based value function iteration for dynamic programming, and deep kernel learning for combining neural network feature extraction with GP inference.
 
 \section{Motivation: The Computational Bottleneck}
 
-Many tasks in quantitative economics and finance, such as structural estimation, uncertainty quantification, and optimal policy design, require evaluating a structural model at thousands or millions of parameter configurations.  When each model evaluation involves solving a Bellman equation, a PDE, or running a Monte Carlo simulation, the total computational cost can be prohibitive.
+Every workflow this chapter targets puts an expensive numerical solve inside an outer loop.  For estimation, uncertainty quantification, and optimal policy design, the outer loop runs over a parameter or scenario vector $\theta$ and the inner solve is a full model solution, a Bellman fixed point, a PDE solve, or a Monte Carlo run that costs seconds to hours, repeated at the $10^3$ to $10^6$ outer iterations these tasks demand.
+
+For dynamic programming, the outer loop is the Bellman iteration itself: at iteration $s$ the inner ``solve'' is one evaluation of the operator $(TV^{s-1})(\x)$ at a state $\x$, which itself requires a constrained nonlinear program over controls plus a quadrature over the next-period shock, then a global fit of $V^s$ to those labels (\S\ref{sec:gp_dp_supervised_view}).  In both cases the obstacle is the same: the per-inner-solve cost times the per-outer-iteration count.
 
 The key insight is that since we \emph{own} the structural model, we can generate training data by solving the model on a carefully chosen set of input configurations (a \emph{design of experiments}).  A cheap-to-evaluate function approximator trained on this synthetic dataset, a \emph{surrogate model}, then replaces the expensive original model for all downstream tasks.  Any suitable function approximator can serve as the surrogate; the right choice depends on the dimensionality of the input space and the cost of generating each training point.
+
+\paragraph{Cutting out the outer loop.}  The point of a surrogate is to break this nesting.  One pays a one-time offline cost: pick a design of experiments $\theta^{(1)},\dots,\theta^{(N)}$, solve the model at those $N$ configurations, and fit a surrogate $\phi(s,\theta)$ to the results.  From then on the expensive inner solve is gone, and the estimation, uncertainty-quantification, or policy-search outer loop evaluates a function that costs microseconds and returns exact gradients, so it can run at the $10^3$ to $10^6$ scale those tasks need.  The model is solved at a handful of configurations and the surrogate \emph{interpolates between them}, which is almost always far cheaper than re-solving at every new $\theta$; Figure~\ref{fig:surrogate_outer_loop} contrasts the two workflows.  The surrogate-based SMM estimation of Chapter~\ref{ch:estimation} and the surrogate-then-optimize policy search of Chapter~\ref{ch:climate} are both instances of this move, as is the GP value-function iteration of \S\ref{sec:gp_dp}, where the ``outer loop'' is the Bellman iteration itself.  In the GP-VFI variant the surrogate is refit every Bellman step and the ``offline'' phase becomes a per-iteration update; that is the second of the two oracles announced at the start of the chapter.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw=uzhblue, fill=uzhgreylight,
+        text width=3.0cm, align=center, minimum height=0.85cm,
+        font=\footnotesize, rounded corners=2pt, thick},
+    sbox/.style={rectangle, draw=uzhblue, fill=softblue!25,
+        text width=3.0cm, align=center, minimum height=0.7cm,
+        font=\footnotesize, rounded corners=2pt, thick},
+    obox/.style={rectangle, draw=uzhblue, fill=softorange!30,
+        text width=3.0cm, align=center, minimum height=0.7cm,
+        font=\footnotesize, rounded corners=2pt, thick},
+    >=Stealth
+]
+% ---- left panel: direct, nested re-solve ----
+\node[font=\footnotesize\bfseries] (titleL) {Direct: nested re-solve};
+\node[obox, below=0.4cm of titleL] (outerL) {Outer loop: estimation / UQ / policy search};
+\node[box, below=1.15cm of outerL] (solveL) {Solve model: Bellman / PDE / Monte Carlo\\[1pt]{\scriptsize $\sim$\,seconds to hours}};
+\draw[->, thick] (outerL.south) -- node[right=1pt, font=\scriptsize] {for each $\theta$} (solveL.north);
+\draw[->, thick] (solveL.west) to[out=170, in=190] node[left=1pt, font=\scriptsize] {moment / value} (outerL.west);
+\node[below=0.55cm of solveL, font=\scriptsize, text width=3.6cm, align=center] {$10^3$--$10^6$ solves $\Rightarrow$ infeasible};
+% ---- right panel: surrogate, solve once then interpolate ----
+\node[font=\footnotesize\bfseries, right=3.2cm of titleL] (titleR) {Surrogate: solve once, then interpolate};
+\node[font=\scriptsize\itshape, below=0.18cm of titleR] (offl) {offline phase, once:};
+\node[sbox, below=0.18cm of offl] (doe) {Design of experiments $\theta^{(1)},\dots,\theta^{(N)}$};
+\node[sbox, below=0.32cm of doe] (solveN) {Solve model at the $N$ points};
+\node[sbox, below=0.32cm of solveN] (train) {Train surrogate $\phi(s,\theta)$};
+\draw[->, thick] (doe) -- (solveN);
+\draw[->, thick] (solveN) -- (train);
+\node[obox, below=0.7cm of train] (outerR) {Outer loop: estimation / UQ / policy search};
+\node[sbox, below=1.15cm of outerR] (queryR) {Query $\phi(s,\theta)$\\[1pt]{\scriptsize $\sim$\,microseconds, differentiable}};
+\draw[->, thick] (outerR.south) -- node[right=1pt, font=\scriptsize] {for each $\theta$} (queryR.north);
+\draw[->, thick] (queryR.west) to[out=170, in=190] node[left=1pt, font=\scriptsize] {value / loss} (outerR.west);
+\node[below=0.5cm of queryR, font=\scriptsize, text width=3.9cm, align=center] {$\phi$ interpolates between the $N$ solved configurations; downstream cost $\approx 0$};
+\end{tikzpicture}
+\caption{Why surrogates help. \emph{Left}: structural estimation, uncertainty quantification, and optimal policy design are outer loops over a parameter vector $\theta$, and the direct implementation re-solves the full model inside the loop, so the cost scales with the number of outer iterations times the per-solve cost. \emph{Right}: a surrogate moves that solve into a one-time offline phase, solving the model only at a design of experiments and fitting $\phi(s,\theta)$; the outer loop then queries a cheap, differentiable interpolant. The saving grows with both the number of outer iterations and the per-solve cost.  The same picture applies to GP value-function iteration with the outer loop relabeled as the Bellman iteration and the inner solve as one $TV$ evaluation; the offline phase is then replaced by a per-iteration GP refit at modest design size.}
+\label{fig:surrogate_outer_loop}
+\end{figure}
 
 \paragraph{Two surrogate strategies.}  This course covers two complementary approaches:
 
@@ -6779,7 +6822,7 @@ The key insight is that since we \emph{own} the structural model, we can generat
 & \textbf{DNN surrogate} & \textbf{GP surrogate} \\
 \midrule
 Best for & high-dim.\ ($d \gg 10$), large $N$ & moderate-dim.\ ($d \lesssim 15$), small $N$ \\
-Data efficiency & needs $10^4$--$10^6$ points & effective with $10^1$--$10^3$ points \\
+Data efficiency & data-hungry; wants a large training set & data-efficient; informative from a small one \\
 Key advantage & scales to very high $d$ via SGD & built-in UQ and active learning \\
 \bottomrule
 \end{tabular}
@@ -6789,13 +6832,9 @@ Key advantage & scales to very high $d$ via SGD & built-in UQ and active learnin
 
 Table~\ref{tab:surrogate_strategy_comparison} summarizes the main trade-off.  The two approaches are not mutually exclusive: one can use a GP to build an initial low-data surrogate with uncertainty estimates, and later switch to a DNN when more training data becomes available.  A detailed comparison covering computational cost, gradient access, and further trade-offs is given in Section~\ref{sec:gp_vs_dnn} after the GP methodology has been introduced.
 
-\paragraph{Speed gains.}  Regardless of whether a DNN or GP is used, once the surrogate is trained (a one-time cost), downstream tasks such as estimation, sensitivity analysis, and optimal policy design become computationally trivial.  \citet{chen2026Deep} report speedups of several orders of magnitude for option pricing, where evaluating the DNN surrogate replaces expensive FFT-based Fourier inversion (their Bates-model benchmark documents two-to-three orders of magnitude over the numerical pricing baseline).  As a rough rule of thumb, the gain scales with the cost of the underlying pricing routine: the orders-of-magnitude gains arise for models requiring a PDE solve (roughly $1$\,ms/eval $\to$ $1$\,$\mu$s/eval through a surrogate) or high-dimensional Monte Carlo, regimes in which $10^3$--$10^4\times$ speedups are typical.  The gains are even larger for gradient computations: while finite-difference gradients require $d+1$ model evaluations (one per parameter), the gradient through the surrogate (autograd for DNNs, closed-form for GPs) requires only a single pass, regardless of the number of parameters.
+\paragraph{Speed gains.}  This is the payoff sketched in Figure~\ref{fig:surrogate_outer_loop}: regardless of whether a DNN or GP is used, once the surrogate is trained the per-iteration cost of the downstream outer loop, estimation, sensitivity analysis, or optimal policy design, collapses to a function evaluation.  \citet{chen2026Deep} report speedups of several orders of magnitude for option pricing, where evaluating the DNN surrogate replaces expensive FFT-based Fourier inversion (their Bates-model benchmark documents two-to-three orders of magnitude over the numerical pricing baseline).  As a rough rule of thumb, the gain scales with the cost of the underlying pricing routine: the orders-of-magnitude gains arise for models requiring a PDE solve (roughly $1$\,ms/eval $\to$ $1$\,$\mu$s/eval through a surrogate) or high-dimensional Monte Carlo, regimes in which $10^3$--$10^4\times$ speedups are typical.  The gains are even larger for gradient computations: while finite-difference gradients require $d+1$ model evaluations (one per parameter), the gradient through the surrogate (autograd for DNNs, closed-form for GPs) requires only a single pass, regardless of the number of parameters.
 
-\paragraph{Historical lineage: from adaptive sparse grids to learned surrogates.}  Before neural-network surrogates, the same surrogate philosophy already drove an earlier econ-finance literature based on \emph{adaptive sparse grids}: replace an object that depends on a state vector or parameter vector by a fast functional approximant that can be evaluated repeatedly without re-solving the underlying problem.  \citet{ECTA:ECTA1716} construct adaptive sparse-grid approximants of the equilibrium policy as a function of the high-dimensional state, eliminating the curse of dimensionality of tensor-product grids.  \citet{scheideggertreccani_2018} carry the same idea into derivative pricing: they build adaptive sparse-grid \emph{surrogates of the conditional-expectation function} (the expected value as a function of the underlying state) and call this a \emph{precomputation}, so that one offline construction replaces repeated online evaluation in the recursive American-option pricing step.  The point worth holding onto is that in both cases the surrogate object \emph{is a function of the state or parameter vector}: the GP and DEQN approaches developed in this script inherit exactly the same blueprint, and only swap grid-based hierarchical refinement for sample-based learning.
-
-\paragraph{Economics and finance applications.}  In economics, GPs and active learning are especially useful when each model solve is expensive and the geometry is irregular: value-function iteration with GPs \citep{SCHEIDEGGER201968}, dynamic incentive problems on irregular state spaces \citep{rennerscheidegger_2018}, and surrogate-based structural estimation (Chapter~\ref{ch:estimation}).  For uncertainty quantification and uncertainty propagation with GP surrogates, the general methodological reference is \citet{Bilionis:2016wc}; for deep-network surrogates with active subspaces, see \citet{tripathy2018deep}; for integrated assessment models specifically, the relevant deep-UQ reference is \citet{friedlDeep2023}.  For global sensitivity analysis of economic models via polynomial chaos expansion and Sobol' indices, see \citet{harenberg2019uncertainty}.  In finance, the same logic applies to derivative pricing and calibration \citep{hutchinson1994nonparametric}; in sovereign default and incomplete-markets models, surrogate-based estimation is attractive because the equilibrium mapping is highly nonlinear \citep{arellano2008default}.
-
-\section{Pseudo-States: Parameters as Network Inputs}
+\section{Pseudo-States: Parameters as ``State'' Variables}
 
 The central innovation of the deep surrogate framework is to treat model parameters $\theta$ as additional ``pseudo-state'' variables:
 \begin{equation}
@@ -7021,9 +7060,9 @@ where $K_y = K + \sigma_y^2 I$ and $\bm{\mu}_X$ is the prior mean evaluated on t
 \addplot[softgreen, ultra thick]
         {-3*exp(-7*x) - 2.4*x - 0.8};                  \addlegendentry{evidence (sum)}
 \addplot[mark=*, mark size=2pt, only marks, softgreen]
-       coordinates {(0.21,-3.34)};
+       coordinates {(0.31,-1.89)};
 \node[font=\scriptsize, anchor=south, softgreen]
-       at (axis cs:0.21, -3.34) {optimum};
+       at (axis cs:0.31, -1.89) {optimum};
 \node[font=\scriptsize, gray, anchor=west] at (axis cs:0.02, -5.6) {too simple};
 \node[font=\scriptsize, gray, anchor=east] at (axis cs:0.98, -3.6) {too flexible};
 \end{axis}
@@ -7058,7 +7097,7 @@ For economic applications where the target function may have kinks (e.g., due to
 \section{Bayesian Active Learning for Sample-Efficient Training}
 \label{sec:bal}
 
-When model evaluations are expensive, we wish to select training points that provide maximal information.  Bayesian Active Learning (BAL) uses the GP posterior variance to guide this selection.  The information-theoretic foundations go back to \citet{mackay1992information}, with submodular guarantees for variance-based sensor placement established by \citet{krause2008near} and the now-standard upper-confidence-bound formulation by \citet{srinivas2010gaussian}.
+When model evaluations are expensive, we wish to select training points that provide maximal information.  Bayesian Active Learning (BAL) uses the GP posterior variance to guide this selection.  The information-theoretic foundations go back to \citet{mackay1992information}, with submodular guarantees for variance-based sensor placement established by \citet{krause2008near} and the widely used upper-confidence-bound formulation of \citet{srinivas2010gaussian}.
 
 \paragraph{Connection to Bayesian optimization (Chapter~\ref{ch:nas}).}  BAL is the active-learning twin of the Bayesian-optimization (BO) recipe introduced in Chapter~\ref{ch:nas}: same GP surrogate, same acquisition-function machinery.  The difference is the target.  BO seeks a \emph{scalar optimum} of the surrogate (e.g.\ Expected Improvement steers samples toward $\argmax \hat f$), so its acquisition trades exploration against the chance of beating the current best.  BAL instead targets \emph{global function approximation}: it allocates samples wherever posterior variance is largest, irrespective of the predicted value.  Both reduce to the same primitive (fit GP, maximise acquisition, evaluate, refit), but the choice of acquisition reflects whether one wants the best point or the best surrogate.
 
@@ -7066,7 +7105,7 @@ When model evaluations are expensive, we wish to select training points that pro
 \begin{equation}
 U(\x) = w_{\mathrm{obj}} \cdot \mu(\x) + \frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x),
 \end{equation}
-where $\mu(\x)$ and $\sigma^2(\x)$ are the GP posterior mean and variance, $w_{\mathrm{obj}}$ is the objective-following (or Bayesian-optimization) weight, and $w_{\mathrm{var}}$ controls exploration.  This logarithmic-variance form is the one used by \citet{rennerscheidegger_2018} and \citet{SCHEIDEGGER201968} in economic applications; it is a non-standard relative of GP-UCB \citep{srinivas2010gaussian}.  When the goal is global surrogate accuracy rather than optimization, integrated posterior variance or expected error reduction can be more natural objectives.  The weights $w_{\mathrm{obj}}$ and $w_{\mathrm{var}}$ are local to the BAL context and distinct from the discount factor $\beta$ and shock-persistence notation used elsewhere in the script.
+where $\mu(\x)$ and $\sigma^2(\x)$ are the GP posterior mean and variance, $w_{\mathrm{obj}}$ is the objective-following (or Bayesian-optimization) weight, and $w_{\mathrm{var}}$ controls exploration.  This logarithmic-variance form is the one used by \citet{rennerscheidegger_2018} in economic applications; it is a non-standard relative of GP-UCB \citep{srinivas2010gaussian}.  When the goal is global surrogate accuracy rather than optimization, integrated posterior variance or expected error reduction can be more natural objectives.  The weights $w_{\mathrm{obj}}$ and $w_{\mathrm{var}}$ are local to the BAL context and distinct from the discount factor $\beta$ and shock-persistence notation used elsewhere in the script.
 \end{definitionbox}
 
 \begin{definitionbox}[Algorithm: Bayesian Active Learning]
@@ -7085,7 +7124,7 @@ where $\mu(\x)$ and $\sigma^2(\x)$ are the GP posterior mean and variance, $w_{\
 \end{algorithmic}
 \end{definitionbox}
 
-The BAL algorithm concentrates training points near kinks, boundary layers, and other regions where the function is hardest to approximate, achieving the same accuracy as uniform sampling with far fewer evaluations \citep{rennerscheidegger_2018, SCHEIDEGGER201968}.  The exploration--exploitation trade-off controlled by $(w_{\mathrm{obj}}, w_{\mathrm{var}})$ ensures that the algorithm balances refining the approximation in already well-sampled regions against exploring uncharted territory.
+The BAL algorithm concentrates training points near kinks, boundary layers, and other regions where the function is hardest to approximate, achieving the same accuracy as uniform sampling with far fewer evaluations \citep{rennerscheidegger_2018}.  The exploration--exploitation trade-off controlled by $(w_{\mathrm{obj}}, w_{\mathrm{var}})$ ensures that the algorithm balances refining the approximation in already well-sampled regions against exploring uncharted territory.
 
 The intuition behind the acquisition function is as follows.  The first term $w_{\mathrm{obj}} \cdot \mu(\x)$ favors regions where the predicted function value is large (exploitation: sample where the function is interesting).  The second term $\frac{w_{\mathrm{var}}}{2}\log\sigma^2(\x)$ favors regions of high uncertainty (exploration: sample where we know least).  This acquisition function belongs to the Upper Confidence Bound (UCB) family \citep{srinivas2010gaussian}: with $w_{\mathrm{obj}} = 0$ it has the same maximizers as pure posterior-variance sampling, while the logarithmic variance weighting provides a more conservative exploration bonus than the standard-deviation weighting used in GP-UCB when it is combined with exploitation.  By adjusting $w_{\mathrm{obj}}$ and $w_{\mathrm{var}}$, the practitioner can control the balance.  For economic applications where the entire domain is relevant (e.g., approximating a policy function), a pure exploration strategy ($w_{\mathrm{obj}} = 0$, $w_{\mathrm{var}} > 0$) is often appropriate, reducing BAL to an uncertainty sampling scheme that minimizes the integrated posterior variance.  Figure~\ref{fig:bal-iterations} illustrates two BAL iterations on a 1D toy.
 
@@ -7188,14 +7227,14 @@ The \emph{inducing-point} idea (Figure~\ref{fig:inducing_points}) is simple: ins
    - 0.035*sin(deg(3.2*x))*exp(-0.18*(x-2.1)*(x-2.1))};
 \addlegendentry{sparse GP mean}
 
-% data sample as small gray dots
+% data sample as small gray dots: noisy draws from sin(1.4 x) * exp(-0.06 x^2)
 \addplot[only marks, mark=*, mark size=1.4pt, gray!65]
   coordinates {
-   (-3.0,-0.32) (-2.7,-0.66) (-2.4,-0.85) (-2.1,-0.83) (-1.8,-0.62)
-   (-1.5,-0.30) (-1.2,0.12) (-0.9,0.62) (-0.6,0.85) (-0.3,0.78)
-   (0.0,0.50) (0.3,0.18) (0.6,-0.30) (0.9,-0.65) (1.2,-0.83)
-   (1.5,-0.78) (1.8,-0.50) (2.1,-0.10) (2.4,0.20) (2.7,0.42)
-   (3.0,0.45)};
+   (-3.0,0.55) (-2.7,0.34) (-2.4,0.18) (-2.1,-0.12) (-1.8,-0.45)
+   (-1.5,-0.78) (-1.2,-0.93) (-0.9,-0.88) (-0.6,-0.75) (-0.3,-0.38)
+   (0.0,0.03) (0.3,0.42) (0.6,0.70) (0.9,0.93) (1.2,0.88)
+   (1.5,0.78) (1.8,0.46) (2.1,0.18) (2.4,-0.12) (2.7,-0.40)
+   (3.0,-0.48)};
 \addlegendentry{$n=21$ data}
 
 % inducing inputs as pseudo-input locations, not observed y-values
@@ -7353,16 +7392,14 @@ Figure~\ref{fig:active_subspace_pipeline} summarizes the linear active-subspace 
 \end{itemize}
 
 \paragraph{Anchor on the multi-sector growth benchmark.}
-In the multi-sector neoclassical growth benchmark of \citet{SCHEIDEGGER201968}, the active-subspace dimension collapses to $m = 1$ even at $D = 500$, so the entire ASGP pipeline operates on a one-dimensional projected coordinate.  Models with non-separable production or heterogeneous depreciation can have larger $m$; the spectral-gap test is what decides.
-
-\paragraph{Further applications.}  The GP framework with active learning has been applied to a range of economic settings.  \citet{rennerscheidegger_2018} develop GP-based methods for dynamic incentive problems in mechanism design, where the policy function exhibits kinks due to incentive compatibility constraints, and demonstrate that the Mat\'ern-3/2 kernel combined with BAL provides accurate approximations even at these non-smooth features.  \citet{gaegauf2023portfolio} apply Gaussian processes with Bayesian active learning inside value function iteration to dynamic portfolio choice with transaction costs, showing that the combination of GP regression, dynamic programming, and BAL can handle the non-smooth value functions that arise from no-trade regions.
+In the multi-sector neoclassical growth benchmark of \citet{SCHEIDEGGER201968}, the active-subspace dimension collapses to $m = 1$ even at $D = 500$, so the entire ASGP pipeline operates on a one-dimensional projected coordinate.  On models with other configurations the active subspace can be larger; the spectral-gap test is what decides.
 
 \subsection{Nonlinear Generalization: Deep Active Subspaces}
 \label{sec:deep_as}
 
 The linear pipeline of the previous section assumes that the important directions are \emph{linear} combinations of the input variables.  That is an inductive bias: the first $m$ columns of $U$ always span a linear subspace of $\R^d$, so if the response $f$ actually varies along a \emph{curved} low-dimensional manifold (a ridge, a product of two linear features, a radial coordinate, a hidden regime indicator), the linear projection has to carry enough directions to cover the whole manifold, not the manifold itself.  Concretely, if $f(\xi) = \varphi\!\bigl((w_1^\top \xi)^2 + (w_2^\top \xi)^2\bigr)$ is a radial function of two linear features, the gradient $\nabla f = 2\,\varphi'(\cdot)\,(s_1 w_1 + s_2 w_2)$ spans a \emph{two}-dimensional space when averaged over $\xi$, so linear AS returns $m = 2$; yet the intrinsic ``interesting'' coordinate is the scalar aggregate $r^2 = s_1^2 + s_2^2$, which is one-dimensional.  \citet{tripathy2018deep} remove the linearity bias by replacing the linear projection with a learned nonlinear encoder and thereby recover the one-dimensional structure.
 
-\paragraph{The deep-UQ ansatz.}
+\paragraph{The deep active-subspace ansatz.}
 Tripathy and Bilionis parametrize the surrogate as a composition of two small neural networks,
 \begin{equation}
 \hat f(\xi) \;=\; g\bigl(h(\xi)\bigr),
@@ -7420,9 +7457,9 @@ The spectral gap of $C$ is no longer available -- the encoder is nonlinear -- so
 \addplot[color=uzhblue, mark=square*, mark size=3pt, thick, densely dashed]
   coordinates {(1,1.6e-1) (2,1.5e-1) (3,1.0e-4) (4,1.0e-4) (5,1.0e-4)};
 \addlegendentry{linear AS: eigenvalue $\lambda_d$}
-% Deep AS validation MSE: elbow at d=1
+% Deep AS validation MSE: elbow at d=1 (plateau within a factor of ~1.5)
 \addplot[color=harvardcrimson, mark=*, mark size=3pt, thick]
-  coordinates {(1,1.0e-4) (2,3.0e-5) (3,6.0e-5) (4,3.0e-5) (5,3.0e-5)};
+  coordinates {(1,1.0e-4) (2,8.0e-5) (3,7.0e-5) (4,6.5e-5) (5,6.5e-5)};
 \addlegendentry{deep AS: validation MSE}
 % Vertical annotation lines + rotated labels along the y-axis
 \draw[dashed, darkgreen, thick]
@@ -7437,7 +7474,7 @@ The spectral gap of $C$ is no longer available -- the encoder is nonlinear -- so
   at (axis cs:2.5, 1.5e-3) {spectral gap ($d=2$)};
 \end{axis}
 \end{tikzpicture}
-\caption{Stylized comparison of the two selection criteria for the radial-ridge target $y(\xi) = \exp(-[(w_1^\top\xi)^2 + (w_2^\top\xi)^2])$ in $D = 20$ (see notebook~\texttt{09}).  The linear-AS eigenvalue spectrum has two dominant directions, so the spectral-gap criterion picks $d = 2$ (right green dashed line).  The deep-AS validation MSE, by contrast, is already at its plateau at $d = 1$ (left green dashed line): the learned encoder $h_\theta$ represents the nonlinear aggregate $r^2 = s_1^2 + s_2^2$ as a \emph{scalar}.  Numbers match those produced by the notebook (linear-AS eigenvalues $\approx 0.16$ for $i = 1, 2$; deep-AS validation MSE $\approx 10^{-4}$ at $d = 1$).}
+\caption{Stylized comparison of the two selection criteria for the radial-ridge target $y(\xi) = \exp(-[(w_1^\top\xi)^2 + (w_2^\top\xi)^2])$ in $D = 20$ (see notebook~\texttt{09}).  The linear-AS eigenvalue spectrum has two dominant directions, so the spectral-gap criterion picks $d = 2$ (right green dashed line).  The deep-AS validation MSE, by contrast, is already at its plateau at $d = 1$ (left green dashed line): the learned encoder $h_\theta$ represents the nonlinear aggregate $r^2 = s_1^2 + s_2^2$ as a \emph{scalar}.  The curves are stylized; the orders of magnitude track the notebook (linear-AS eigenvalues $\approx 0.16$ for $i = 1, 2$ then a sharp drop; deep-AS validation MSE $\approx 10^{-4}$ at $d = 1$ and roughly flat thereafter), and the elbow-at-$d=1$ versus spectral-gap-at-$d=2$ contrast is reproduced.}
 \label{fig:deep_as_elbow}
 \end{figure}
 
@@ -7483,7 +7520,7 @@ Figure~\ref{fig:deep_as_pipeline} should be compared with the linear pipeline in
 Deep AS pays off when (i) no gradient samples are available (e.g., black-box simulators, noisy observations from a lab experiment, or calibration targets returned by a proprietary solver), (ii) the spectral gap of $C$ is ambiguous or the response surface genuinely depends on \emph{nonlinear} aggregates of the inputs (ridges, radial coordinates, thresholded features, piecewise regimes), or (iii) the input dimension is large ($D \gg 10$) and a linear projection is too restrictive to capture the active manifold.  When none of these conditions apply, linear AS plus a polynomial or a GP link is usually more data-efficient and should be fit first as a baseline.  The borehole experiment in notebook~\texttt{10} is the honest diagnostic: on a function this close to a $d = 2$ ridge, the two curves \emph{cross}, and a cubic polynomial on two linear features beats the deep encoder at all $d \ge 2$.  Deep AS's advantage materializes precisely at $d = 1$, where a single linear feature cannot span the active direction.  This perspective also connects naturally to deep kernel learning (Section~\ref{sec:dkl}), which composes a learned feature map with a GP head; deep AS is the same idea for the feature map, with an MLP link in place of the GP.
 
 \paragraph{Applications in economics and finance.}
-The deep-AS architecture is particularly attractive in settings where the state variable is high-dimensional but the economic mechanism acts through a few aggregate quantities that are not linear in the state.  Examples include (i) heterogeneous-agent models whose cross-sectional distribution of wealth enters the equilibrium law of motion only through a few \emph{moments} (mean, dispersion, tail mass) -- the Krusell-Smith aggregation logic of Chapter~\ref{ch:young} -- where the map from the raw distribution to those moments is a learned, nonlinear encoder; (ii) multi-region climate-economy integrated assessment models with hundreds of regional capital stocks, in which damages and optimal carbon taxes depend on nonlinear aggregates of the underlying state (total radiative forcing, regional inequality indices); and (iii) dynamic games and mean-field games in which the relevant action depends on a curved functional of the opponent distribution.  In each case the original space is too large for a direct GP and the linear active subspace is too rigid, while the deep encoder provides a trainable compromise.  \citet{Bilionis:2016wc} and \citet{tripathy2018deep} provide the general UQ and deep-active-subspace methodology; for integrated assessment models specifically, \citet{friedlDeep2023} is the economics-side reference used in this course.
+The deep-AS architecture is particularly attractive in settings where the state variable is high-dimensional but the economic mechanism acts through a few aggregate quantities that are not linear in the state.  Examples include (i) heterogeneous-agent models whose cross-sectional distribution of wealth enters the equilibrium law of motion only through a few \emph{moments} (mean, dispersion, tail mass), the Krusell-Smith aggregation logic of Chapter~\ref{ch:young}, where the map from the raw distribution to those moments is a learned, nonlinear encoder; (ii) multi-region climate-economy integrated assessment models with hundreds of regional capital stocks, in which damages and optimal carbon taxes depend on nonlinear aggregates of the underlying state (total radiative forcing, regional inequality indices); and (iii) dynamic games and mean-field games in which the relevant action depends on a curved functional of the opponent distribution.  In each case the original space is too large for a direct GP and the linear active subspace is too rigid, while the deep encoder provides a trainable compromise.  \citet{Bilionis:2016wc} and \citet{tripathy2018deep} provide the general UQ and deep-active-subspace methodology; for integrated assessment models specifically, \citet{friedlDeep2023} is the economics-side reference used in this course.
 
 % ============================================================================
 % NEW SECTION: DYNAMIC PROGRAMMING WITH GAUSSIAN PROCESSES
@@ -7492,7 +7529,7 @@ The deep-AS architecture is particularly attractive in settings where the state 
 \section{Dynamic Programming with Gaussian Processes}
 \label{sec:gp_dp}
 
-We now show how the GP and active subspace machinery developed above can be embedded into a \emph{value function iteration} (VFI) algorithm to solve high-dimensional dynamic stochastic models.
+Returning to the second oracle announced at the start of this chapter and developed formally in \S\ref{sec:gp_dp_supervised_view} below, we now embed the GP and active-subspace machinery developed above into a \emph{value function iteration} (VFI) algorithm, with the Bellman operator $TV$ playing the role of the expensive label generator.
 
 The idea of representing the value function as a GP inside a DP recursion was introduced under the name \emph{Gaussian process dynamic programming} (GPDP) by \citet{deisenroth2009gaussian}, who used it for continuous-state, continuous-action optimal control problems and combined it with a variance-based active selection of support points.  Closely related work \citep{engel2005reinforcement} embeds GPs into temporal-difference learning, replacing tabular value functions with a GP posterior.  These ideas later inspired model-based policy search methods such as PILCO \citep{deisenroth2011pilco}, which propagate GP uncertainty through long horizons.  In economics, \citet{SCHEIDEGGER201968} show that pairing this paradigm with active subspaces and Bayesian Gaussian mixture models for the ergodic set scales the framework to economies with up to 500 continuous state variables; \citet{rennerscheidegger_2018} apply it to dynamic incentive problems, \citet{gaegauf2023portfolio} to dynamic portfolio choice, and \citet{chen2025private} to dynamic private asset allocation.  The remainder of this section presents the algorithm in this combined form.
 
@@ -7645,7 +7682,7 @@ Notebook 04 compares an active-learning design (starting from $n^s=6$ points and
 Because the value function at each VFI iteration is a GP, the posterior variance $\sigma^2(\x)$ provides a built-in measure of approximation uncertainty.  This gives pointwise credible bands for the interpolated value function essentially for free.  Policy uncertainty is not automatic in the same sense: it must be propagated through the Bellman maximization, for example by evaluating policies under posterior draws or local approximations to the GP posterior.
 
 \paragraph{Parameter uncertainty propagation.}
-Uncertain model parameters can be treated as additional pseudo-states.  For example, extending the state to $\tilde{S} = (\bm{k}, \gamma)$ where $\gamma \in [\underline{\gamma}, \bar{\gamma}]$ is the risk aversion parameter allows solving the model once on the extended state space and then extracting univariate effects and global sensitivity indices \emph{in a single computation}, avoiding the traditional approach of re-solving the model for each parameter value.
+Uncertain model parameters can be treated as additional pseudo-states.  For example, extending the state to $\tilde{S} = (\bm{k}, \gamma)$ where $\gamma \in [\underline{\gamma}, \bar{\gamma}]$ is the risk aversion parameter allows solving the model once on the extended state space and then extracting univariate effects and global sensitivity indices \emph{in a single computation}, avoiding the traditional approach of re-solving the model for each parameter value.  \citet{harenberg2019uncertainty} give a general introduction to uncertainty quantification for economic models, covering univariate-effect plots and Sobol' sensitivity indices.
 
 \paragraph{Learning ergodic sets.}
 Many economic models have irregularly shaped ergodic sets (ellipsoids or manifolds, not hypercubes).  \citet{SCHEIDEGGER201968} propose learning the ergodic distribution via Bayesian Gaussian mixture models: (i)~solve the model on a large initial domain; (ii)~simulate the economy forward to generate capital paths $\{\bm{k}_t^+\}$; (iii)~fit a mixture of Gaussians $\hat{\rho}_\mathrm{ergodic}$ to the simulated paths; (iv)~re-solve on the ergodic set by sampling training points from $\hat{\rho}_\mathrm{ergodic}$ instead of the full hypercube.  GPs handle this naturally because they require no grid structure.
@@ -7716,7 +7753,7 @@ DKL is most beneficial when:
 \item Sufficient training data is available to train the feature extractor without overfitting (DKL has more parameters than a standard GP).
 \item Uncertainty quantification is important, but a standard GP kernel is insufficiently expressive to capture the true function's covariance structure.
 \end{itemize}
-The trade-off relative to a standard GP is clear: DKL offers greater expressiveness at the cost of more parameters and the risk of overfitting with very small datasets.  For the moderate-data regimes typical of economic surrogate models ($N \sim 100$--$1000$), DKL can offer significant improvements over standard kernels, particularly when the target function has complex multi-scale behavior.  In the course's economics and finance applications, this is especially appealing for structural estimation, climate-policy surrogates, and nonlinear pricing problems \citep{barnett2020pricing, friedlDeep2023, kubler2025using}.  \citet{chen2025private} apply learned-feature-map GP architectures in a dynamic model of private asset allocation, where the feature map captures the complex nonlinear interactions between illiquidity, portfolio composition, and optimal rebalancing.
+The trade-off relative to a standard GP is clear: DKL offers greater expressiveness at the cost of more parameters and the risk of overfitting with very small datasets.  For the moderate-data regimes typical of economic surrogate models ($N \sim 100$--$1000$), DKL can offer significant improvements over standard kernels, particularly when the target function has complex multi-scale behavior.  \citet{chen2025private} apply learned-feature-map GP architectures in a dynamic model of private asset allocation, where the feature map captures the complex nonlinear interactions between illiquidity, portfolio composition, and optimal rebalancing.
 
 \paragraph{Illustrative examples.}
 Two simple examples highlight when DKL provides a qualitative advantage over standard kernels:
