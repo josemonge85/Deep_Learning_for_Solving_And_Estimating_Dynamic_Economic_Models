@@ -12,7 +12,7 @@ Integrated assessment models (IAMs), the canonical climate-economy framework: DI
 ## What this lecture covers
 
 - **The IAM building blocks.** A macro-growth block, a carbon cycle, temperature dynamics, and a damage function that ties climate back to output.
-- **DICE and CDICE.** The Nordhaus DICE benchmark and the calibrated CDICE extension (Folini et al. 2024).
+- **DICE and CDICE.** The Nordhaus DICE benchmark and the calibrated CDICE extension (Folini et al. 2025, *Review of Economic Studies*).
 - **Carbon-cycle simulation.** Business-as-usual and a mitigation scenario; reading off the social cost of carbon.
 - **Deterministic CDICE-DEQN.** Solve CDICE with a DEQN and verify against the production-code reference.
 - **Stochastic CDICE-DEQN.** Add AR(1) productivity shocks and use Gauss-Hermite quadrature for the conditional expectations.

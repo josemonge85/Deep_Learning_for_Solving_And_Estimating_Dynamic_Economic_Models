@@ -96,8 +96,8 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Based on: K\"ubler, Scheidegger, Surbek (2025, arXiv:2507.01704)}\\[2pt]
-{\footnotesize Reading: \texttt{JPE\_Macro.pdf}; public draft: arXiv:2507.01704}\\[4pt]
+{\footnotesize Based on: K\"ubler, Scheidegger \& Surbek (2026, forthcoming, \textit{JPE: Macroeconomics}; arXiv:2507.01704)}\\[2pt]
+{\footnotesize Public draft: arXiv:2507.01704; companion code: \texttt{sischei/JPE\_Macro\_Using\_ML\_...}}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -136,7 +136,7 @@
 \textbf{Part V: Results}
 
 \vspace{0.4em}
-\begin{alertblock}{Bridge from Lecture 08}
+\begin{alertblock}{Bridge from Lecture 16}
 From RA $\rightarrow$ \emphc{heterogeneous agents} (OLG) and UQ $\rightarrow$ \emphc{optimal policy search}.
 \end{alertblock}
 \end{columns}
@@ -573,7 +573,7 @@ Firm FOCs + household Euler equations + market clearing + climate laws of motion
 
 % --- Frame 21: KEY SLIDE --- Nonstationarity reprise ---
 \begin{frame}{Nonstationarity and Time as State Variable (Reprise)}
-\begin{alertblock}{Same lesson as Lecture 08 --- now in OLG}
+\begin{alertblock}{Same lesson as Lecture 16 --- now in OLG}
 The OLG-IAM is \emphc{nonstationary}: carbon intensity $\kappa_t$, abatement cost $\theta_{1,t}$, population, and TFP are all time-indexed exogenous sequences.
 \end{alertblock}
 
@@ -841,7 +841,7 @@ Full constrained policy search in minutes, not days/weeks.
 
 \vspace{0.1cm}
 \footnotesize
-Emissions and temperature paths under no climate policy, compared with RCP scenarios.  Source: Kübler, Scheidegger, Surbek (2025).
+Emissions and temperature paths under no climate policy, compared with RCP scenarios.  Source: Kübler, Scheidegger \& Surbek (2026, forthcoming).
 \end{frame}
 
 % --- Frame 32: Welfare surface ---
@@ -877,7 +877,7 @@ Emissions and temperature paths under no climate policy, compared with RCP scena
 \end{itemize}
 \end{columns}
 \vspace{0.05cm}
-{\footnotesize Source: Kübler, Scheidegger, Surbek (2025).}
+{\footnotesize Source: Kübler, Scheidegger \& Surbek (2026, forthcoming).}
 \end{frame}
 
 % --- Frame 34: Scenario 2 --- Pareto frontier ---
@@ -892,7 +892,7 @@ Emissions and temperature paths under no climate policy, compared with RCP scena
 
 \vspace{0.15cm}
 \footnotesize
-Left: Pareto frontier in $(\vartheta_0, \vartheta_E)$-space. Right: welfare gains by cohort --- \emphc{all non-negative} under Pareto-improving policy.  Source: Kübler, Scheidegger, Surbek (2025).
+Left: Pareto frontier in $(\vartheta_0, \vartheta_E)$-space. Right: welfare gains by cohort --- \emphc{all non-negative} under Pareto-improving policy.  Source: Kübler, Scheidegger \& Surbek (2026, forthcoming).
 \end{frame}
 
 % --- Frame 35: Scenario 2 --- emissions ---
@@ -925,13 +925,13 @@ Transfers preserve non-negative welfare effects for transition cohorts while tru
 \vspace{0.05cm}
 \footnotesize
 $\tau_t = \vartheta_0 + \vartheta_E E_t + \vartheta_\kappa \kappa_t + \vartheta_{TP}(1-D_{TP})$:
-the tax responds to carbon intensity and tipping proximity, providing tipping-risk insurance.  Source: Kübler, Scheidegger, Surbek (2025).
+the tax responds to carbon intensity and tipping proximity, providing tipping-risk insurance.  Source: Kübler, Scheidegger \& Surbek (2026, forthcoming).
 \end{frame}
 
 % --- Frame 37: Key economic insight ---
 \begin{frame}{The Key Economic Insight}
 \begin{block}{Main result}
-Pareto-improving policies work through \emphc{disaster-risk reduction} (tail insurance), not maximum mean abatement \\ (empirical result from K\"ubler, Scheidegger, Surbek 2025; not proven here).
+Pareto-improving policies work through \emphc{disaster-risk reduction} (tail insurance), not maximum mean abatement \\ (empirical result from K\"ubler, Scheidegger \& Surbek 2026, forthcoming; not proven here).
 \end{block}
 
 \vspace{0.3cm}
@@ -957,7 +957,7 @@ Pareto-improving policies work through \emphc{disaster-risk reduction} (tail ins
 \end{frame}
 
 % --- Frame 38: Key takeaways ---
-\begin{frame}{Key Takeaways from Lecture 09}
+\begin{frame}{Key Takeaways from Lecture 17}
 \begin{enumerate}
     \item \textbf{OLG climate models are tractable with DEQNs}: 12 generations + climate + stochastic tipping solved globally.
     \item \textbf{Pseudo-states enable policy search}: tax parameters + transfer shares as inputs $\rightarrow$ solve once, optimize everywhere.
@@ -973,15 +973,16 @@ Final wrap-up: course synthesis, decision guide, and research frontier.
 \end{frame}
 
 % --- Frame 38b: Notebook roadmap ---
-\begin{frame}{Notebook Roadmap for Lecture 09}
+\begin{frame}{Notebook Roadmap for Lecture 17}
 \small
-The slides here build on the deterministic CDICE-DEQN solver developed in Lecture 08; the natural notebook to revisit and extend is:
+The slides here build on the deterministic CDICE-DEQN solver developed in Lecture 16.  Two notebooks are relevant:
 \vspace{0.2cm}
 \begin{itemize}
-    \item \texttt{lectures/lecture\_16\_climate\_economics\_iams/code/lecture\_16\_03\_Stochastic\_DICE\_DEQN.ipynb} -- adds an AR(1) productivity shock to the Lecture-08 deterministic CDICE-DEQN, evaluates the Euler expectation with Gauss--Hermite quadrature, and produces the SCC fan charts that motivate today's UQ discussion (parameter, stochastic, and epistemic uncertainty).
+    \item \texttt{lectures/lecture\_17\_deep\_uq\_pareto\_improving\_policy/code/lecture\_17\_09\_DICE\_2P\_UQ\_Analysis.ipynb} -- this lecture's classroom notebook: the deep-UQ pipeline (per-year GP emulators over $(\rho,\pi_2)$, leave-one-out diagnostics, Saltelli Sobol indices, univariate effects, an SCC contour) on a 2-parameter DICE example, run on cached reference solutions.  CPU, $\sim$1 minute.
+    \item \texttt{lectures/lecture\_16\_climate\_economics\_iams/code/lecture\_16\_03\_Stochastic\_DICE\_DEQN.ipynb} -- the upstream building block: an AR(1) productivity shock on the Lecture-16 deterministic CDICE-DEQN, Gauss--Hermite quadrature on the Euler expectation, Monte-Carlo SCC fan charts (parameter, stochastic, and epistemic uncertainty).
 \end{itemize}
 \vspace{0.2cm}
-The full OLG-IAM with constrained Pareto-improving tax rules (K\"ubler, Scheidegger, Surbek 2025, arXiv:2507.01704) is implemented in production code that is not part of the classroom repository.  The paper is in the readings folder (\texttt{JPE\_Macro.pdf}); the classroom notebook focuses on the upstream stochastic CDICE-DEQN building block.
+The full OLG-IAM with constrained Pareto-improving tax rules (K\"ubler, Scheidegger \& Surbek 2026, forthcoming, \textit{JPE: Macroeconomics}; arXiv:2507.01704) is implemented in production code that is not part of the classroom repository --- see the companion repository \texttt{sischei/JPE\_Macro\_Using\_ML\_to\_compute\_constrained\_optimal\_carbon\_tax\_rules}.
 \end{frame}
 
 % --- Frame 39: References ---
@@ -989,7 +990,7 @@ The full OLG-IAM with constrained Pareto-improving tax rules (K\"ubler, Scheideg
 \small
 \textbf{Core references for this lecture}
 \begin{itemize}
-    \item K\"ubler, Scheidegger, Surbek (2025). \emph{Using Machine Learning to Compute Constrained Optimal Carbon Tax Rules.} arXiv:2507.01704.
+    \item K\"ubler, Scheidegger \& Surbek (2026, forthcoming, \textit{JPE: Macroeconomics}). \emph{Using Machine Learning to Compute Constrained Optimal Carbon Tax Rules.} arXiv:2507.01704.
     \item Kotlikoff, Kubler, Polbin, Sachs, Scheidegger (2021): OLG with carbon-risk taxation.
     \item Dietz (2024), van der Ploeg and Rezai (2026), Hassler, Krusell, Smith (2016): broader climate-economics background.
     \item Azinovic, Gaegauf, Scheidegger (2022): DEQN methodology.

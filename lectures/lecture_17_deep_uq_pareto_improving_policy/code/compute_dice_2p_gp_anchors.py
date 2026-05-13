@@ -59,7 +59,7 @@ def fit_gp_per_year(points: list[dict]):
     gps = {}
     for year in YEAR_INDEX.keys():
         y = np.array([p[f'scc_{year}'] for p in points])
-        # Log-SCC for the GP target (Section 9 of instructions_unsupervised.md).
+        # Log-SCC for the GP target: the SCC is right-skewed, so log is closer to homoscedastic.
         y_log = np.log(np.maximum(y, 1e-12))
         y_mean = y_log.mean(); y_std = y_log.std()
         y_z = (y_log - y_mean) / y_std

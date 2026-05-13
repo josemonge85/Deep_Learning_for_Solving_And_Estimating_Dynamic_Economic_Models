@@ -96,9 +96,9 @@
 \titlepage
 \vspace{-0.4cm}
 \begin{center}
-{\footnotesize Based on: Nordhaus (2017), Folini, Friedl, K\"ubler, Scheidegger (2024, \textit{Restud}),}\\[1pt]
+{\footnotesize Based on: Nordhaus (2017), Folini, Friedl, K\"ubler, Scheidegger (2025, \textit{Restud}),}\\[1pt]
 {\footnotesize Friedl, K\"ubler, Scheidegger, Usui (2023)}\\[4pt]
-{\footnotesize Readings: \texttt{CDICE\_Restud\_production.pdf}, \texttt{DeepUQ\_with\_an\_application\_to\_IAM.pdf}}\\[4pt]
+{\footnotesize Readings: see \texttt{readings/links\_by\_lecture/lecture\_16.md}}\\[4pt]
 {\footnotesize Materials: \url{https://github.com/sischei/Deep_Learning_for_Solving_And_Estimating_Dynamic_Economic_Models}}
 \end{center}
 \end{frame}
@@ -429,7 +429,7 @@ $\lambda = F_{\mathrm{2\times CO_2}}/\Delta T_{\mathrm{AT},\times 2}$ where $\De
 \end{frame}
 
 % --- Frame 15: Four-test framework ---
-\begin{frame}{Four-Test Framework (Folini et al., 2024)}
+\begin{frame}{Four-Test Framework (Folini et al., 2025)}
 \scriptsize
 \begin{center}
 \begin{tabular}{lll}
@@ -809,7 +809,7 @@ Outputs & $k', \mu$, multipliers \\
 \end{frame}
 
 % --- Frame 29b: Notebook-04 EZ + iid weather formulation ---
-\begin{frame}{Notebook 04: EZ + iid weather --- model ingredients}
+\begin{frame}{Epstein--Zin + i.i.d.\ weather: model ingredients}
 \small
 \textbf{State (8-D):} $\X_t = [k_t, M_{\mathrm{AT},t}, M_{\mathrm{UO},t}, M_{\mathrm{LO},t}, T^{\mathrm{AT}}_t, T^{\mathrm{OC}}_t, \tau_t, w_t]$
 \begin{itemize}\setlength\itemsep{0pt}
@@ -828,7 +828,7 @@ Shadow values $\nu, \eta$ are network outputs, not derivatives of $V$. This give
 \end{frame}
 
 % --- Frame 29c: The 9-residual EZ loss with v_+/v normalization ---
-\begin{frame}{Notebook 04: the 9-residual EZ loss}
+\begin{frame}{Epstein--Zin: the 9-residual loss}
 \footnotesize
 With $\hat\beta = e^{-\rho}$, $e_1 = \frac{1-\gamma}{1-1/\psi}$, $e_2 = \frac{\gamma - 1/\psi}{1-\gamma}$, $e_3 = \frac{1/\psi - \gamma}{1-1/\psi}$:
 
@@ -881,7 +881,7 @@ Freeze high-power $V$-corrections in the FOCs; train $V$ \emphc{only} via the Be
 \end{frame}
 
 % --- Frame 29e: γ-curriculum + training diagnostics ---
-\begin{frame}{$\gamma$-curriculum and training diagnostics (notebook 04)}
+\begin{frame}{$\gamma$-curriculum and training diagnostics}
 \footnotesize
 \textbf{Curriculum} (200 episodes in the reference run):
 \begin{center}
@@ -906,7 +906,7 @@ At $\gamma = 1/\psi$ all EZ exponents collapse ($e_2 = e_3 = 0$, corrections $\e
 \end{itemize}
 
 \begin{exampleblock}{Economic punchline}
-Symmetric iid Gaussian weather $\Rightarrow$ EZ precautionary tilt on SCC is small (a few \%). The Cai--Lontzek ``EZ triples SCC'' result needs \emph{skewed} risk (tipping points), next notebook.
+Symmetric iid Gaussian weather $\Rightarrow$ EZ precautionary tilt on SCC is small (a few \%). The Cai--Lontzek ``EZ triples SCC'' result needs \emph{skewed} risk (tipping points) --- see the OLG-IAM with stochastic tipping in the next lecture.
 \end{exampleblock}
 \vspace{-0.1cm}
 \end{frame}
@@ -1076,7 +1076,7 @@ Typically: ECS uncertainty and damage specification dominate SCC variability.
 \end{frame}
 
 % --- Frame 38: Key takeaways ---
-\begin{frame}{Key Takeaways from Lecture 08}
+\begin{frame}{Key Takeaways from Lecture 16}
 \begin{enumerate}
     \item \textbf{Climate calibration matters}: CDICE-style tests anchor the climate block in science benchmarks.
     \item \textbf{DEQNs scale nonstationary IAMs}: full Lagrangian $\rightarrow$ FOCs $\rightarrow$ envelope $\rightarrow$ Euler $\rightarrow$ residual loss.
@@ -1086,12 +1086,12 @@ Typically: ECS uncertainty and damage specification dominate SCC variability.
 
 \vspace{0.3cm}
 \begin{block}{Next}
-Lecture 09: extend from representative-agent IAM to \emphc{OLG with heterogeneous agents} $\rightarrow$ constrained Pareto-improving carbon tax rules.
+Lecture 17: extend from representative-agent IAM to \emphc{OLG with heterogeneous agents} $\rightarrow$ constrained Pareto-improving carbon tax rules.
 \end{block}
 \end{frame}
 
 % --- Frame 38b: Notebook roadmap ---
-\begin{frame}{Notebook Roadmap for Lecture 08}
+\begin{frame}{Notebook Roadmap for Lecture 16}
 \small
 The companion notebooks for this lecture sit in \texttt{lectures/lecture\_16\_climate\_economics\_iams/code/} and are intended to be opened in this order:
 \vspace{0.2cm}
@@ -1108,7 +1108,7 @@ The companion notebooks for this lecture sit in \texttt{lectures/lecture\_16\_cl
 \textbf{Core references for this lecture}
 \begin{itemize}
     \item Nordhaus (2017): DICE architecture and SCC framework.
-    \item Folini, Friedl, K\"ubler, Scheidegger (2024, \textit{Restud}): CDICE calibration and tests.
+    \item Folini, Friedl, K\"ubler, Scheidegger (2025, \textit{Restud}): CDICE calibration and tests.
     \item Friedl, K\"ubler, Scheidegger, Usui (2023): deep UQ for stochastic IAMs.
     \item Dietz (2024), van der Ploeg and Rezai (2026), Hassler, Krusell, Smith (2016): climate-economics and IAM reviews.
     \item Azinovic, Gaegauf, Scheidegger (2022): DEQN methodology.
@@ -1116,7 +1116,7 @@ The companion notebooks for this lecture sit in \texttt{lectures/lecture\_16\_cl
 
 \vspace{0.3cm}
 \begin{center}
-{\LARGE \emphc{Questions before Lecture 09?}}
+{\LARGE \emphc{Questions before Lecture 17?}}
 \end{center}
 \end{frame}
 

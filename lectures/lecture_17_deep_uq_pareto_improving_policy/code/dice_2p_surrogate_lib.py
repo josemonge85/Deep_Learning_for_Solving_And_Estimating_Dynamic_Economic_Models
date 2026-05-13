@@ -328,7 +328,7 @@ def make_loss_fn(model: tf.keras.Model, augmented: bool, cvar_alpha: float = 1.0
     theta space. Computed via tf.autodiff.ForwardAccumulator; normalized by
     scale_sq for consistency with the relative residual form. Directly attacks
     the basin-selection failure at low-pi2 where multiple FOC-zero policies
-    locally exist (Section 13 of instructions_unsupervised.md).
+    locally exist.
     """
     cvar_alpha = float(cvar_alpha)
     use_relative = (loss_form == 'relative')
@@ -626,8 +626,7 @@ def build_replay_buffer(n_traj_per_corner: int = 64, n_steps: int = 300,
     corner theta. The resulting (state, theta) pairs are the *true* state
     distribution induced by the correct policy at each corner.
 
-    Mixing these into Stage B training fixes the v1 root cause documented in
-    memory/project_day8_surrogate_v1_v2_status.md: surrogate-generated
+    Mixing these into Stage B training fixes a known failure mode: surrogate-generated
     trajectories are too smooth in theta and fail to cover corner state
     distributions, so corner FOC residuals are evaluated on the *wrong*
     states and never get pushed down. Replay forces the surrogate to be

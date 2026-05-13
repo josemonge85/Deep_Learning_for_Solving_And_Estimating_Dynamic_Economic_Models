@@ -5,8 +5,8 @@ Default policy: link only.
 ## DICE and DICE-DEQN
 
 - **Nordhaus (2017), "Revisiting the social cost of carbon,"** *PNAS*, 114(7). The DICE model the lecture uses as a baseline.
-- **Folini, Friedl, Kübler, Scheidegger (2024), "The climate in climate economics,"** *Review of Economic Studies*. Reviews and reframes the climate-module choices that go into modern DICE/CDICE.
-- **Eftekhari, Folini, Friedl, Kübler, Scheidegger, Schenk, "Curse-of-dimensionality-free deep learning for climate-economic models,"** working paper. The DICE-DEQN solver used in the notebooks.
+- **Folini, Friedl, Kübler, Scheidegger (2025), "The climate in climate economics,"** *Review of Economic Studies*, 92(1). [DOI](https://doi.org/10.1093/restud/rdae011). Recalibrates the reduced-form climate module of DICE (CDICE); the model solved in this lecture's notebooks.
+- **Eftekhari, Folini, Friedl, Kübler, Scheidegger, Schenk, "Curse-of-dimensionality-free deep learning for climate-economic models,"** working paper. A deep-learning solver for climate-economic models in the same spirit as the CDICE-DEQN port in this lecture's notebooks.
 
 ## Survey
 
