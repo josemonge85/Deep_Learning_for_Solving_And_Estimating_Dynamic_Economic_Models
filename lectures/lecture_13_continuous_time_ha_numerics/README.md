@@ -7,7 +7,7 @@ Two methods to solve the HJB-KFE system numerically: a finite-difference scheme 
 > 📑 **Slides:** [lecture_13_continuous_time_ha_numerics.pdf](slides/lecture_13_continuous_time_ha_numerics.pdf)  
 > 📓 **Notebook:** [Aiyagari: FD benchmark + PINN](code/lecture_13_08_Aiyagari_Continuous_Time_FD_and_PINN_PyTorch.ipynb) (1 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_13.md)  
-> 📖 **Script:** Chapter 8 (continuous-time HA; the stationary HJB-KFE PINN solver is §8.5)
+> 📖 **Script:** Chapter 8 (continuous-time HA; the stationary HJB-KFE PINN solver is §8.6, the master equation and EMINNs are §§8.7-8.8)
 
 ## What this lecture covers
 
@@ -39,7 +39,7 @@ After this lecture you can:
 
 ## In the lecture script
 
-Chapter 8 (heterogeneous agent models in continuous time): the stationary HJB-KFE PINN solver is §8.5, and §8.7 covers the master equation and EMINNs. The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+Chapter 8 (heterogeneous agent models in continuous time): the stationary HJB-KFE PINN solver is §8.6, and §§8.7-8.8 cover the master equation and EMINNs. The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 

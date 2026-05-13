@@ -62,8 +62,9 @@
 |---|---|---|
 | Ch. 7.1-7.4 | [Lecture 11](../lectures/lecture_11_pinns/README.md) | PINN foundations. |
 | Ch. 7.5-7.9 | [Lecture 11](../lectures/lecture_11_pinns/README.md) | Economic PDEs (HJB, Black-Scholes); Ch. 7.7 previews Ch. 8. |
-| Ch. 8.1-8.6 | [Lecture 12](../lectures/lecture_12_continuous_time_ha_theory/README.md) | HJB, KFE, master equation, Ito calculus. |
-| Ch. 8.7 | [Lecture 13](../lectures/lecture_13_continuous_time_ha_numerics/README.md) | Numerical methods for continuous-time HA. |
+| Ch. 8.1-8.5 | [Lecture 12](../lectures/lecture_12_continuous_time_ha_theory/README.md) | Why continuous time, Ito calculus, the Kolmogorov forward equation, the HJB equation, Huggett/Aiyagari competitive equilibrium. |
+| Ch. 8.6 | [Lecture 13](../lectures/lecture_13_continuous_time_ha_numerics/README.md) | The PINN solver for the stationary HJB-KFE Aiyagari system. Lecture 13 ships one companion notebook — the upwind-finite-difference + PINN Aiyagari solver (`lecture_13_08_...`); the single-PDE HJB warm-ups that used to accompany it are PINN exercises and belong with [Lecture 11](../lectures/lecture_11_pinns/README.md). |
+| Ch. 8.7-8.8 | [Lecture 12](../lectures/lecture_12_continuous_time_ha_theory/README.md); [Lecture 13](../lectures/lecture_13_continuous_time_ha_numerics/README.md) | The master equation (derived in Lecture 12) and EMINNs (the deep-learning master-equation solver, in Lecture 13). |
 
 ## Part V — Surrogates, estimation, applications (Ch. 9-11)
 
