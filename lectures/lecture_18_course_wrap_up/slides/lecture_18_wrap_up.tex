@@ -142,9 +142,9 @@ but share the same core optimization logic.
 \textbf{Day} & \textbf{Core step in the pipeline} \\
 \midrule
 1 & Deep learning foundations and optimization diagnostics \\
-2--4 & DEQNs for discrete-time equilibrium (RA, IRBC, OLG, heterogeneity) \\
-5 & PINNs for continuous-time PDE problems \\
-6 & Heterogeneous agents, OLG, and Young's method (sequence space, Krusell--Smith) \\
+2--4 & DEQNs for discrete-time equilibrium (RA, IRBC) \\
+5 & Heterogeneous agents, OLG, and Young's method (sequence space, Krusell--Smith) \\
+6 & PINNs for continuous-time PDE problems \\
 7 & Deep surrogates and GP/BAL for fast policy/estimation loops \\
 8 & Climate IAMs, deep UQ, constrained policy design \\
 \bottomrule
@@ -241,7 +241,7 @@ One model, four lenses. The economic content is identical; the methodology deter
 \begin{itemize}
     \item \textbf{Convergence theory.}  Rates as a function of width, depth, and training budget.
     \item \textbf{Hybrid global/local.}  GPs near kinks/boundary layers + DNNs for global approximation.
-    \item \textbf{Real-time policy analysis.}  Substantial speedups of full DSGE counterfactuals; carbon-tax surrogates (K\"ubler--Scheidegger--Surbek 2025).
+    \item \textbf{Real-time policy analysis.}  Substantial speedups of full DSGE counterfactuals; carbon-tax surrogates (K\"ubler--Scheidegger--Surbek 2026 forthcoming, \emph{JPE: Macroeconomics}).
     \item \textbf{Estimation of rich structural models.}  DEQN/PINN $+$ surrogate-based estimation pipelines (Friedl et al.\ 2023; Chen--Didisheim--Scheidegger 2026; Kase et al.\ 2022).
     \item \textbf{Climate--economy IAMs.}  Tipping points, regional heterogeneity, multiple risks (Fern\'andez-Villaverde--Gillingham--Scheidegger 2025).
     \item \textbf{Heterogeneous-agent models with aggregate shocks.}  DeepHAM (Han--Yang--E 2024); DeepSAM (Payne--Rebei--Yang 2025); structural-RL price-only state (Yang--Wang--Schaab--Moll 2025).
@@ -299,7 +299,7 @@ Script Tbl.~12.3 lists the complementary \emph{training-time} failure modes (los
 
 \vspace{0.15cm}
 \footnotesize
-Left: SCC uncertainty decomposition (Friedl et al., 2023). Right: constrained policy frontier (K\"ubler, Scheidegger, and Surbek, 2025, arXiv:2507.01704).
+Left: SCC uncertainty decomposition (Friedl et al., 2023). Right: constrained policy frontier (K\"ubler, Scheidegger \& Surbek, 2026 forthcoming, \emph{J. Political Economy: Macroeconomics}; arXiv:2507.01704).
 \end{frame}
 
 % --- Slide 8: Reproducibility checklist ---
@@ -331,8 +331,8 @@ Left: SCC uncertainty decomposition (Friedl et al., 2023). Right: constrained po
 \small
 \textbf{Climate readings}
 \begin{itemize}
-    \item \texttt{readings/links\_by\_lecture/lecture\_17.md} \hfill (Deep UQ + DICE-2P)
-    \item \texttt{readings/links\_by\_lecture/lecture\_18.md} \hfill (CDICE production + JPE Macro)
+    \item \texttt{readings/links\_by\_lecture/lecture\_16.md} \hfill (CDICE; Folini et al.\ 2025, \emph{Restud})
+    \item \texttt{readings/links\_by\_lecture/lecture\_17.md} \hfill (Deep UQ + Pareto carbon tax; KSS 2026 forthcoming, JPE: Macro)
 \end{itemize}
 
 \vspace{0.2cm}
