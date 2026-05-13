@@ -47,9 +47,9 @@ Equilibrium Nets or Physics-Informed Neural Networks (an unsupervised
 setup), or they shape the simulator that generates the (input, output)
 pairs a deep surrogate or Gaussian process then learns in the standard
 supervised way. You will build each method from scratch on benchmarks
-where the answer is known (Brock-Mirman, cake-eating, Black-Scholes)
+where the answer is known (Brock–Mirman, cake-eating, Black–Scholes)
 before applying them to models where it is not (IRBC, OLG with 56
-cohorts, Krusell-Smith with a continuum, continuous-time heterogeneous
+cohorts, Krusell–Smith with a continuum, continuous-time heterogeneous
 agents, climate-economic coupling). The course is hands-on by design:
 every method is paired with runnable Jupyter notebooks that put the
 principles in plain sight, so you see exactly how each loss is
@@ -203,19 +203,19 @@ notebook also fixes a `SEED` for reproducibility.
 |---|---|---|
 | **Python warm-up** (skip if you write Python every day) | [Lecture 01](lectures/lecture_01_python_primer/README.md) | Jupyter, basic data structures, NumPy, plotting, classes |
 | **Deep-learning fundamentals** (training, generalization, sequence models) | [Lecture 02](lectures/lecture_02_intro_deep_learning/README.md) | MLP, LSTM, Transformer on Edgeworth cycles, double descent, Genz approximations |
-| **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_deep_equilibrium_nets/README.md) | Brock-Mirman (deterministic, stochastic), Fischer-Burmeister constraints, six loss kernels |
+| **Deep Equilibrium Nets (DEQNs)**, the central method | [Lecture 03](lectures/lecture_03_deep_equilibrium_nets/README.md) | Brock–Mirman (deterministic, stochastic), Fischer–Burmeister constraints, six loss kernels |
 | **Large-scale nonlinear DSGE** (IRBC) | [Lecture 04](lectures/lecture_04_irbc_with_deqns/README.md) | International real business cycle with DEQNs |
 | **Architecture search and loss balancing** (NAS, ReLoBRaLo) | [Lecture 05](lectures/lecture_05_nas_loss_normalization/README.md) | Random search, Hyperband, ReLoBRaLo, SoftAdapt, GradNorm |
 | **Agentic programming** (AI coding agents as research partners) | [Lecture 06](lectures/lecture_06_agentic_programming/README.md) | Claude Code workflow, prompts, project memory, custom skills, subagents, hooks, plus a 12-exercise workshop |
 | **Automatic differentiation for DEQNs** | [Lecture 07](lectures/lecture_07_autodiff_for_deqns/README.md) | Lagrangian primitives, two-tape gradients, IRBC autodiff |
-| **OLG with DEQNs** | [Lecture 08](lectures/lecture_08_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer-Burmeister borrowing constraints |
-| **Heterogeneous agents and Young's method** | [Lecture 09](lectures/lecture_09_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell-Smith, continuum-of-agents DEQN |
-| **Sequence-space DEQNs** | [Lecture 10](lectures/lecture_10_sequence_space_deqns/README.md) | Brock-Mirman, IRBC, Krusell-Smith with shock-history inputs |
-| **Physics-informed neural networks (PINNs)** | [Lecture 11](lectures/lecture_11_pinns/README.md) | ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black-Scholes |
+| **OLG with DEQNs** | [Lecture 08](lectures/lecture_08_olg_models_deqns/README.md) | Analytic OLG, 56-cohort benchmark, Fischer–Burmeister borrowing constraints |
+| **Heterogeneous agents and Young's method** | [Lecture 09](lectures/lecture_09_heterogeneous_agents_youngs_method/README.md) | Young's histogram, Krusell–Smith, continuum-of-agents DEQN |
+| **Sequence-space DEQNs** | [Lecture 10](lectures/lecture_10_sequence_space_deqns/README.md) | Brock–Mirman, IRBC, Krusell–Smith with shock-history inputs |
+| **Physics-informed neural networks (PINNs)** | [Lecture 11](lectures/lecture_11_pinns/README.md) | ODE / PDE PINNs, soft vs hard BCs, cake-eating HJB, Black–Scholes |
 | ↳ **Continuous-time HA, theory** | [Lecture 12](lectures/lecture_12_continuous_time_ha_theory/README.md) | HJB, Kolmogorov-forward, master equation, Ito calculus |
-| ↳ **Continuous-time HA, numerics** | [Lecture 13](lectures/lecture_13_continuous_time_ha_numerics/README.md) | Achdou-Han-Lasry-Lions-Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari |
+| ↳ **Continuous-time HA, numerics** | [Lecture 13](lectures/lecture_13_continuous_time_ha_numerics/README.md) | Achdou–Han–Lasry–Lions–Moll finite-difference scheme, PINN for HJB-KFE, continuous-time Aiyagari |
 | **Surrogates, Gaussian processes, deep kernels** | [Lecture 14](lectures/lecture_14_surrogates_and_gps/README.md) | Surrogate primer, GP regression, BAL, active subspaces, deep kernel learning, GP-VFI |
-| **Structural estimation via SMM** | [Lecture 15](lectures/lecture_15_structural_estimation_smm/README.md) | Brock-Mirman SMM (single- and joint-parameter) on a deep surrogate |
+| **Structural estimation via SMM** | [Lecture 15](lectures/lecture_15_structural_estimation_smm/README.md) | Brock–Mirman SMM (single- and joint-parameter) on a deep surrogate |
 | **Climate economics and IAMs (DICE, CDICE)** | [Lecture 16](lectures/lecture_16_climate_economics_iams/README.md) | DICE / CDICE simulation, deterministic and stochastic CDICE-DEQN |
 | ↳ **Deep UQ and Pareto-improving carbon-tax design** | [Lecture 17](lectures/lecture_17_deep_uq_pareto_improving_policy/README.md) | GP surrogates, Bayesian active learning, Sobol / Shapley, constrained Pareto-improving carbon-tax rules |
 | **Synthesis, when to use which method** | [Lecture 18](lectures/lecture_18_course_wrap_up/README.md) | Decision guide and outlook |
