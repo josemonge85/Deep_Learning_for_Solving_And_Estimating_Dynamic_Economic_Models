@@ -78,8 +78,8 @@
 | Ch. 9.10 | [Lecture 14](../lectures/lecture_14_surrogates_and_gps/README.md) | GPs among Bayesian cousins. |
 | Ch. 10 | [Lecture 15](../lectures/lecture_15_structural_estimation_smm/README.md) | Structural estimation via SMM. |
 | Ch. 11.1-11.2 | [Lecture 16](../lectures/lecture_16_climate_economics_iams/README.md) | IAMs and DICE. |
-| Ch. 11.3 | [Lecture 16](../lectures/lecture_16_climate_economics_iams/README.md) | DICE with DEQNs. |
-| Ch. 11.4-11.6 | [Lecture 17](../lectures/lecture_17_deep_uq_pareto_improving_policy/README.md) | Deep UQ for IAMs and constrained Pareto-improving policy. |
+| Ch. 11.3-11.8 | [Lecture 16](../lectures/lecture_16_climate_economics_iams/README.md) | CDICE-DEQN: non-stationary setup, deterministic solver, AR(1) productivity extension. |
+| Ch. 11.9-11.12 | [Lecture 17](../lectures/lecture_17_deep_uq_pareto_improving_policy/README.md) | Bayesian learning, Epstein-Zin, deep UQ surrogates, constrained Pareto-improving carbon tax. |
 
 ## Part VI — Wrap-up and appendices (Ch. 12, App. A-E)
 

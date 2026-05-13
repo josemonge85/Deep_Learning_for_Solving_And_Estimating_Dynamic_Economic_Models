@@ -7,7 +7,7 @@ Integrated assessment models (IAMs), the canonical climate-economy framework: DI
 > 📑 **Slides:** [lecture_16_climate_economics_iams.pdf](slides/lecture_16_climate_economics_iams.pdf)  
 > 📓 **Notebooks:** [start here](code/lecture_16_01_Climate_Exercise.ipynb) (3 in [`code/`](code/))  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_16.md)  
-> 📖 **Script:** §11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs)
+> 📖 **Script:** §11.1-11.2 (IAMs and DICE), §11.3-11.8 (CDICE-DEQN, deterministic and stochastic)
 
 ## What this lecture covers
 
@@ -39,7 +39,7 @@ After this lecture you can:
 
 ## In the lecture script
 
-§11.1-11.2 (IAMs and DICE), §11.3 (DICE with DEQNs). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+§11.1-11.2 (IAMs and DICE), §11.3-11.8 (CDICE-DEQN, deterministic and stochastic). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 

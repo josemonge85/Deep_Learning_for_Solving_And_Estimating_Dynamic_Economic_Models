@@ -7,7 +7,7 @@ Stochastic IAMs depend on parameters whose true values are deeply uncertain. Plu
 > 📑 **Slides:** [lecture_17_deep_uq_pareto_policy.pdf](slides/lecture_17_deep_uq_pareto_policy.pdf)  
 > 💻 **Code:** maintained in the external research repository [`sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules`](https://github.com/sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules)  
 > 📚 **Further reading:** [curated list](../../readings/links_by_lecture/lecture_17.md)  
-> 📖 **Script:** §11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy)
+> 📖 **Script:** §11.9-11.12 (Bayesian learning, Epstein-Zin, deep UQ, constrained Pareto-improving carbon tax)
 
 ## What this lecture covers
 
@@ -41,7 +41,7 @@ That repository contains the stochastic CDICE-DEQN solver, the GP surrogate over
 
 ## In the lecture script
 
-§11.4-11.6 (Deep UQ for IAMs and constrained Pareto-improving policy). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
+§11.9-11.12 (Bayesian learning, Epstein-Zin, deep UQ, constrained Pareto-improving carbon tax). The full chapter map is in [`script_to_lectures.md`](../../lecture_script/script_to_lectures.md).
 
 ## Readings
 

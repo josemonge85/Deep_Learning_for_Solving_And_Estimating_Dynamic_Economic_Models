@@ -12,7 +12,7 @@ Open an issue on [GitHub](https://github.com/sischei/Deep_Learning_for_Solving_A
 
 ## Pull requests
 
-Pull requests are welcome but optional. Keep changes focused, one logical change per PR. Use American English in student-facing files. Borrowed material keeps its upstream notice verbatim, see [`NOTICE.md`](NOTICE.md).
+Pull requests are welcome but optional. Keep changes focused, one logical change per PR. Use American English in student-facing files.
 
 ## License
 
