@@ -8222,7 +8222,13 @@ The central output of an IAM is the \textbf{social cost of carbon} (SCC): the ma
 \mathrm{SCC}_t = -\frac{\partial V_t / \partial E_t}{\partial V_t / \partial C_t},
 \label{eq:scc}
 \end{equation}
-where $V_t$ is the value function, $E_t$ denotes a marginal pulse of contemporaneous emissions (interpreted as a one-unit shift in next-period atmospheric carbon $M^{\mathrm{AT}}_{t+1}$ via the carbon-cycle transition), and $C_t$ is consumption.  The closely related stock-based form $\mathrm{SCC}^M_t = -(\partial V_t/\partial M^{\mathrm{AT}}_t)/(\partial V_t/\partial C_t)$, derived in Section~\ref{sec:dice_deqn}, prices the existing carbon stock; the two definitions differ by the marginal loading of emissions into $M^{\mathrm{AT}}$ and the carbon-to-CO$_2$ unit conversion.  In a first-best allocation, the optimal carbon tax equals the SCC \citep{golosov2014optimal}.  The SCC is high when climate damages are steep, the climate response is strong, discounting is low, and tipping risks are material \citep{caiSocialCostCarbon2019, DIETZ20241}.
+where $V_t$ is the value function, $E_t$ is contemporaneous emissions, and $C_t$ is consumption.  The flow form is linked to the stock-based form $\mathrm{SCC}^M_t = -(\partial V_t/\partial M^{\mathrm{AT}}_t)/(\partial V_t/\partial C_t)$, derived in Section~\ref{sec:dice_deqn}, by the chain rule
+\begin{equation*}
+\frac{\partial V_t}{\partial E_t}
+\;=\;
+\frac{\partial V_{t+1}}{\partial M^{\mathrm{AT}}_{t+1}}\,\frac{\partial M^{\mathrm{AT}}_{t+1}}{\partial E_t}
+\end{equation*}
+together with the carbon-to-CO$_2$ unit conversion noted above.  In a first-best allocation, the optimal carbon tax equals the SCC \citep{golosov2014optimal}.  The SCC is high when climate damages are steep, the climate response is strong, discounting is low, and tipping risks are material \citep{caiSocialCostCarbon2019, DIETZ20241}.
 
 \paragraph{From surrogates to climate IAMs.}
 Chapter~\ref{ch:gp} introduced surrogates and Bayesian active learning as fast approximators for repeated model evaluations.  Climate IAMs are the natural application: each parameter configuration (climate sensitivity, damage curvature, discount rate) is expensive to solve, yet policy questions require evaluating thousands of configurations to map out tail risks and Pareto-improving rules.  The DEQN approach of Chapters~\ref{ch:deqn}--\ref{ch:irbc}, combined with the GP and active-learning toolkit of Chapter~\ref{ch:gp}, is therefore the natural workhorse for climate-policy uncertainty quantification.
@@ -8238,7 +8244,7 @@ Solving IAMs globally, as opposed to linearization or certainty equivalence, is 
 The deep learning toolkit developed in this course (DEQNs, deep surrogates, and GP-based uncertainty quantification) is therefore particularly well suited to climate economics.
 
 \paragraph{The three movements of this chapter.}
-The remainder of this chapter has three movements.  Movement~1 (\S\ref{sec:iam_nonstationarity}--\S\ref{sec:nsdeqn_algo}) makes precise what changes when we ask the Deep Equilibrium Network of Chapter~\ref{ch:deqn} to solve a non-stationary IAM, and presents the modified training algorithm in one labeled box.  Movement~2 (\S\ref{sec:dice_lagrangian}--\S\ref{sec:movement3_roadmap}) puts that algorithm to work on a concrete stochastic DICE economy.  Movement~3 (\S\ref{sec:bayesian_learning}--\S\ref{sec:pareto_carbon_tax}) sketches the four extensions that matter for serious climate-finance research: Bayesian learning on the climate sensitivity, recursive Epstein--Zin preferences, global uncertainty quantification of the social cost of carbon, and constrained Pareto-improving carbon-tax design in a heterogeneous-agent IAM.
+The remainder of this chapter has three movements.  Movement~1 (\S\ref{sec:iam_nonstationarity}--\S\ref{sec:nsdeqn_algo}) makes precise what changes when we ask the Deep Equilibrium Network of Chapter~\ref{ch:deqn} to solve a non-stationary IAM, and presents the modified training algorithm in one labeled box.  Movement~2 (\S\ref{sec:dice_lagrangian}--\S\ref{sec:dice_to_stochastic_iam}) puts that algorithm to work on a concrete stochastic DICE economy.  Movement~3 (\S\ref{sec:bayesian_learning}--\S\ref{sec:pareto_carbon_tax}) sketches the four extensions that matter for serious climate-finance research: Bayesian learning on the climate sensitivity, recursive Epstein--Zin preferences, global uncertainty quantification of the social cost of carbon, and constrained Pareto-improving carbon-tax design in a heterogeneous-agent IAM.
 
 \section{The DICE Model}
 \label{sec:dice}
@@ -8250,7 +8256,7 @@ DICE is the workhorse of this chapter, but it is one of several integrated asses
 
 \begin{description}[itemsep=4pt, leftmargin=2.6em]
 \item[DICE.]  Global aggregate; 3-box carbon cycle and 2-layer energy-balance model; one-sector Ramsey planner.  The standard benchmark for SCC and integrated policy analysis \citep{nordhausRevisitingSocialCost2017}.
-\item[RICE.]  Twelve-region extension of DICE with trade.  Used for regional SCC and equity questions.
+\item[RICE.]  Twelve-region extension of DICE with trade \citep{nordhaus1996regional}.  Used for regional SCC and equity questions.
 \item[CDICE.]  A global DICE-2016 recalibration tailored to deep-learning solution methods, with Epstein--Zin preferences and OLG variants.  The model used in \S\ref{sec:dice_deqn} below \citep{Folini_2021}.
 \item[ACE.]  Analytic Climate Economy: log-linear approximations to the carbon cycle, temperature dynamics, and damages yield a \emph{closed-form} optimal carbon tax \citep{traeger2018ace}.  Acts as an analytic benchmark for the numerical SCC computed below.
 \item[FaIR / MAGICC.]  Reduced-complexity climate emulators that take emissions as input and produce temperature responses; widely used to translate IPCC scenarios to economic models.
@@ -8385,6 +8391,37 @@ where radiative forcing is
 F_t = F_{\mathrm{2\times CO_2}} \frac{\log(M^{\mathrm{AT}}_t / M^{\mathrm{AT}}_{\mathrm{PI}})}{\log 2} + F^{\mathrm{EX}}_t.
 \label{eq:forcing}
 \end{equation}
+Figure~\ref{fig:cdice_climate_topology} summarises the full topology of the climate side: industrial emissions enter the atmospheric carbon stock, leak into the upper and lower ocean reservoirs at calibrated rates, raise radiative forcing through the logarithmic CO$_2$ term, and warm the atmospheric and ocean temperature layers through the two-layer energy balance.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=stealth, node distance=2.4cm,
+    reservoir/.style={rectangle, draw=uzhblue, fill=uzhblue!8, rounded corners=4pt,
+                      minimum width=2.5cm, minimum height=1.0cm, align=center, font=\small},
+    temp/.style={rectangle, draw=harvardcrimson, fill=harvardcrimson!8, rounded corners=4pt,
+                 minimum width=2.5cm, minimum height=1.0cm, align=center, font=\small},
+    src/.style={rectangle, draw=darkgreen, fill=darkgreen!10, rounded corners=4pt,
+                minimum width=2.0cm, minimum height=0.8cm, align=center, font=\small},
+    edgelab/.style={font=\scriptsize, fill=white, inner sep=1pt}]
+    \node[src] (E) at (-3.5, 0.5) {$E_t$};
+    \node[reservoir] (Mat) at (0,1) {$M^{\mathrm{AT}}_t$};
+    \node[reservoir] (Muo) at (0,-0.5) {$M^{\mathrm{UO}}_t$};
+    \node[reservoir] (Mlo) at (0,-2.0) {$M^{\mathrm{LO}}_t$};
+    \node[temp] (F) at (3.4,1) {$F_t$};
+    \node[temp] (Tat) at (6.4,1) {$T^{\mathrm{AT}}_t$};
+    \node[temp] (Toc) at (6.4,-0.5) {$T^{\mathrm{OC}}_t$};
+    \draw[->, thick] (E) -- (Mat);
+    \draw[<->, thick] (Mat) -- node[edgelab] {$b_{12}$} (Muo);
+    \draw[<->, thick] (Muo) -- node[edgelab] {$b_{23}$} (Mlo);
+    \draw[->, thick] (Mat) -- node[edgelab] {$F_{2\times}\log_2(M^{\mathrm{AT}}/M^{\mathrm{AT}}_{\mathrm{PI}})$} (F);
+    \draw[->, thick] (F) -- node[edgelab] {$c_1$} (Tat);
+    \draw[<->, thick] (Tat) -- node[edgelab] {$c_3,c_4$} (Toc);
+    \draw[->, thick, dashed] (Tat) to[bend left=35] node[edgelab, above] {damage $\Omega(T^{\mathrm{AT}})$} (-3.5, 2.0);
+\end{tikzpicture}
+\caption{Topology of the CDICE climate side.  Total emissions $E_t$ enter the atmospheric carbon box $M^{\mathrm{AT}}_t$, leak into the upper- and lower-ocean carbon boxes at exchange rates $b_{12}$ and $b_{23}$, and drive radiative forcing $F_t$ through the logarithmic CO$_2$ relation.  The two-layer energy balance maps $F_t$ into the atmospheric temperature $T^{\mathrm{AT}}_t$ via $c_1$, with $c_3, c_4$ governing the heat exchange between atmosphere and ocean.  The dashed arrow closes the loop through the damage function back into output (developed in \S\ref{sec:dice_damages}).  Five climate states $(M^{\mathrm{AT}}, M^{\mathrm{UO}}, M^{\mathrm{LO}}, T^{\mathrm{AT}}, T^{\mathrm{OC}})$ form the climate-side block of the DEQN state vector \eqref{eq:iam_state}.}
+\label{fig:cdice_climate_topology}
+\end{figure}
+
 The parameter $\lambda = F_{\mathrm{2\times CO_2}} / \Delta T_{\mathrm{AT},\times 2}$ is determined by the \emph{equilibrium climate sensitivity} (ECS), defined as the long-run atmospheric warming from a doubling of CO$_2$ concentration.  We treat $\lambda$ as a deterministic constant in the baseline model; \S\ref{sec:bayesian_learning} promotes it to a learnable Gaussian parameter, with the additive feedback term $\varphi_{1C}\tilde f_{t+1} T^{\mathrm{AT}}_t$ entering the right-hand side of~\eqref{eq:temp_at} and the coefficient $\varphi_{1C}$ defined in that subsection.  ECS is one of the most consequential and uncertain parameters in climate science \citep{roe2007climate, knutti2017beyond}.  Observational and model-based estimates place ECS in a \emph{likely} (66\,\%) range of 2.5\textdegree C--4\textdegree C and a \emph{very likely} (90\,\%) range of 2\textdegree C--5\textdegree C, with a best estimate of approximately 3\textdegree C \citep[IPCC AR6 Synthesis Report;][]{calvinIPCC2023Climate2023a}; ECS uncertainty is one of the largest single sources of variance in the SCC.
 
 \subsection{Damage function: closing the climate--economy loop}
@@ -8527,66 +8564,40 @@ This is the technical pivot of the chapter.  The stationary DEQN of Chapter~\ref
 The endogenous state of a stationary DSGE is the projection of a recurrent Markov chain onto a finite-dimensional vector; the policy function lives on its stationary distribution.  In an IAM the analogue object does not exist within the planning horizon.  Atmospheric carbon $M^{\mathrm{AT}}_t$ rises from a pre-industrial baseline of $\sim 600$\,GtC to a peak of $\sim 1500$\,GtC over a century, then decays over millennia; atmospheric temperature $T^{\mathrm{AT}}_t$ follows with a multi-decade lag and a multi-century relaxation.  Within the 300 years the planner cares about, neither variable ever returns to a state it has been in before.  The state visited at $t = 100$ is therefore not exchangeable with the state visited at $t = 200$, and a time-invariant policy function $\bm p(\bm X_t)$ that depends only on the endogenous state misses the whole point of the exercise: the optimal mitigation effort at a given $(M^{\mathrm{AT}}, T^{\mathrm{AT}})$ depends on whether that state was reached on the way up or on the way down.  Cf.\ the curse-of-dimensionality discussion in \S\ref{sec:curse_of_dim}: it is not the size of the state space that breaks the DEQN here, it is the lack of recurrence.
 
 \paragraph{Deterministic drift through exogenous trends.}
-Even setting the carbon and temperature stocks aside, the IAM is drifting deterministically.  Total factor productivity $A_t$ trends up at a calibrated, time-varying rate; population $L_t$ follows the demographic projection of \citet{nordhausRevisitingSocialCost2017}; carbon intensity $\sigma_t$ falls along the closed-form decay~\eqref{eq:sigma_decay}; land-use emissions $E_{\mathrm{Land},t}$ decay smoothly~\eqref{eq:land_emissions}; the backstop price $p^{\mathrm{back}}_t$ falls~\eqref{eq:backstop_price}; the exogenous non-CO$_2$ forcing $F^{\mathrm{EX}}_t$ follows a fitted RCP trajectory; and the abatement-cost level $\theta_{1,t}$ inherits the time dependence of $\sigma_t$ and $p^{\mathrm{back}}_t$ through~\eqref{eq:theta1_calibration}.  Eight exogenous trends drive the model even before a shock is introduced.  A time-invariant policy can never see them, and replacing them with their long-run averages is exactly the certainty-equivalence move that defeats the purpose of solving the model globally.
+Even setting the carbon and temperature stocks aside, the IAM is drifting deterministically.  Total factor productivity $A_t$ trends up at a calibrated, time-varying rate; population $L_t$ follows the demographic projection of \citet{nordhausRevisitingSocialCost2017}; carbon intensity $\sigma_t$ falls along the closed-form decay~\eqref{eq:sigma_decay}; land-use emissions $E_{\mathrm{Land},t}$ decay smoothly~\eqref{eq:land_emissions}; the backstop price $p^{\mathrm{back}}_t$ falls~\eqref{eq:backstop_price}; the exogenous non-CO$_2$ forcing $F^{\mathrm{EX}}_t$ follows a fitted RCP trajectory; and the abatement-cost level $\theta_{1,t}$ inherits the time dependence of $\sigma_t$ and $p^{\mathrm{back}}_t$ through~\eqref{eq:theta1_calibration}.  Seven exogenous trends drive the model even before a shock is introduced.  A time-invariant policy can never see them, and replacing them with their long-run averages is exactly the certainty-equivalence move that defeats the purpose of solving the model globally.
 
-\paragraph{Finite calendar-time horizon with a terminal condition.}
-A stationary DEQN trains under a transversality condition: as $t \to \infty$, the discounted shadow price of capital goes to zero, and the iterative-projection loss inherits that fixed-point structure for free.  An IAM is not solved on $[0, \infty)$.  The planning horizon $T_{\max}$ is a finite calendar date (typically 2300 or 2400), and what disciplines the policy at the right end is not transversality but an explicit terminal condition: either a damped continuation-value penalty $P_T$ on the value function at $T_{\max}$, or a hard fade-out of the climate-state Lagrange multipliers as $t \to T_{\max}$.  Without that boundary term the network has nothing to anchor the late-horizon shadow prices, and the loss is minimized by an unphysical solution that builds up carbon debt right at the end of the simulation.
+\paragraph{Finite calendar-time horizon.}
+A stationary DEQN trains under a transversality condition: as $t \to \infty$, the discounted shadow price of capital goes to zero, and the iterative-projection loss inherits that fixed-point structure for free.  An IAM is not solved on $[0, \infty)$.  The planning horizon is a finite calendar date (the notebooks of \S\ref{sec:iam_dequ_loss} run roughly three centuries from a 2015 start), so transversality is not available and the policy is solved over a finite forward sweep instead.
 
 \paragraph{Putting it together.}
-These three features compound.  No ergodicity means no fixed training distribution; deterministic drift means time must enter as a state; a finite horizon means the loss needs an extra boundary term.  The next two sections operationalize each piece in turn: \S\ref{sec:nsdeqn_setup} reorganizes the network inputs and the training distribution, and \S\ref{sec:nsdeqn_algo} states the resulting training algorithm as a labeled diff against the stationary DEQN box of \S\ref{sec:deqn_algo}.
+These features compound and explain why a time-invariant DEQN of Chapter~\ref{ch:deqn} cannot be used here without modification.  The next two sections operationalize the response: \S\ref{sec:nsdeqn_setup} reorganizes the network inputs to include calendar time, and \S\ref{sec:nsdeqn_algo} states the resulting training algorithm as a labeled diff against the stationary DEQN box of \S\ref{sec:deqn_algo}.
 
 \section{What Changes in the DEQN Setup}
 \label{sec:nsdeqn_setup}
 
-We now translate the three obstacles of \S\ref{sec:iam_nonstationarity} into three concrete design choices for the network, the training data, and the loss.  None of them touches the autodiff machinery or the squared-residual structure; this is a refactor of the inputs, the sampler, and the loss, not a new solver.
+We now translate this into one concrete design choice for the network inputs.  The autodiff machinery, the squared-residual structure, and the rest of the training loop of Chapter~\ref{ch:deqn} carry over unchanged; this is a refactor of what the network sees, not a new solver.
 
 \subsection{Time and trends as states}
 \label{sec:nsdeqn_setup_time}
 
-Variables that grow with the productivity--population product $A_t L_t$ are rescaled to per-effective-capita units (Eq.~\eqref{eq:iam_detrend}), and calendar time itself enters as a state.  Because neural networks prefer bounded inputs, we use the monotone time rescaling $\tau_t = 1 - \exp(-\vartheta\, t) \in [0, 1)$ of Eq.~\eqref{eq:time_transform}.  Every exogenous trend ($A_t, L_t, \sigma_t, E_{\mathrm{Land},t}, F^{\mathrm{EX}}_t, p^{\mathrm{back}}_t, \theta_{1,t}$) is then a deterministic function of $\tau_t$, so passing $\tau_t$ to the network is informationally equivalent to passing the entire trend bundle.  The choice of $\vartheta$ controls how the network's effective resolution is allocated across calendar time: small $\vartheta$ leaves the late-horizon dynamics under-resolved, large $\vartheta$ wastes capacity on early years that change little.
-
-Cohort or age dimensions, when present, follow the same logic: a discrete age index enters as a categorical state input.  In the OLG-IAM of \S\ref{sec:pareto_carbon_tax} the 12 cohorts of households contribute one extra age-state per agent block, but the principle is identical to the time-state treatment here.
-
-\subsection{Training distribution without ergodicity}
-\label{sec:nsdeqn_setup_distribution}
-
-The on-trajectory sampling rule of Chapter~\ref{ch:deqn}, draw $\bm x_t$ from the simulated forward path of the current policy, breaks down when no stationary set exists for the path to settle into.  Three pragmatic substitutes have been tried in the IAM-DEQN literature, each with a different bias--variance trade-off:
-
-\textit{Forward simulation from a distribution of initial conditions.}  Sample $K$ initial states from a prior $\mathcal I$ that brackets the calibrated 2015 state, simulate each forward to $T_{\max}$, union the resulting time-stamped trajectories into the training pool.  Variance is high in early episodes (the policy is poor); bias is low (every visited state is on a feasible path).
-
-\textit{Calendar-time tiling.}  Partition $[0, T_{\max}]$ into bins, sample states inside each bin from the simulated cloud, and stratify the mini-batch over bins so that early and late years are equally represented.  Without stratification, the simulated cloud has a duration-density bias: states near the start are visited once per trajectory, states near the end are visited only by trajectories that survive that long.
-
-\textit{Boundary-aware resampling.}  Up-weight states close to $t = T_{\max}$ in the mini-batch, especially in the first half of training, so that the network sees the terminal region often enough to fit the boundary term in the loss.
-
-In practice all three are used together: forward simulation supplies the states, calendar-time tiling controls the marginal mass over $\tau$, and boundary-aware resampling guards against under-fitting near $T_{\max}$.
-
-\subsection{Terminal-condition handling}
-\label{sec:nsdeqn_setup_terminal}
-
-The terminal condition replaces transversality.  Three options are available, listed in order of increasing intrusiveness:
-
-\textit{Continuation-value penalty.}  Add a soft penalty $P_T(\mathcal N_\rho) = \lambda_T \, \| V(\bm x_{T_{\max}}) - \bar V_{\mathrm{cont}}(\bm x_{T_{\max}}) \|^2$ to the loss, where $\bar V_{\mathrm{cont}}$ is a fitted analytic continuation value (e.g., the ACE closed form of \citealp{traeger2018ace} evaluated at the terminal state).  This is the lightest-touch option and the default in the CDICE-DEQN library.
-
-\textit{Hard fade-out of climate multipliers.}  Multiply each climate-envelope multiplier by a smooth window $w(t) = \min(1, (T_{\max} - t)/\Delta_{\mathrm{fade}})$ that drives the shadow prices to zero over the last $\Delta_{\mathrm{fade}}$ years.  Cheaper than a continuation value (no auxiliary fit), at the cost of some distortion in the last decade of the planning horizon.
-
-\textit{Rolling-window solves.}  Solve the model on a moving window of length $T_{\max}$ that retreats with calendar time, using the previous window's terminal state as the next window's starting point.  Most accurate, most expensive; rarely needed in classroom-scale CDICE applications.
+Calendar time itself enters as a state.  Because neural networks prefer bounded inputs, we use the monotone time rescaling $\tau_t = 1 - \exp(-\vartheta\, t) \in [0, 1)$ of Eq.~\eqref{eq:time_transform}.  Every exogenous trend ($A_t, L_t, \sigma_t, E_{\mathrm{Land},t}, F^{\mathrm{EX}}_t, p^{\mathrm{back}}_t, \theta_{1,t}$) is then a deterministic function of $\tau_t$, so passing $\tau_t$ to the network is informationally equivalent to passing the entire trend bundle.  Training trajectories begin from the calibrated 2015 state and run forward over the planner's horizon.
 
 \section{The Non-Stationary DEQN Algorithm}
 \label{sec:nsdeqn_algo}
 
-The three design choices of \S\ref{sec:nsdeqn_setup} combine into a single training algorithm.  The body below is a literal diff against the stationary DEQN of \S\ref{sec:deqn_algo}: unchanged lines are greyed, new or modified lines are bolded.  A reader who internalized the Chapter~\ref{ch:deqn} box should see exactly three deltas.
+The design choice of \S\ref{sec:nsdeqn_setup} translates into a single training algorithm.  The body below is a literal diff against the stationary DEQN of \S\ref{sec:deqn_algo}: unchanged lines are greyed, new or modified lines are bolded.
 
 \begin{definitionbox}[Algorithm: Non-Stationary DEQN Training]
 \label{alg:nsdeqn}
 \begin{algorithmic}
 \small
 \STATE \textbf{Input:} \textcolor{uzhgreydark!70}{Network $\mathcal{N}_\rho$, learning rate $\eta$, episodes $E$, training steps $T_{\mathrm{train}}$;} \\
-\hspace{1.05em}\textbf{[NEW]} initial-state distribution $\mathcal I$, terminal time $T_{\max}$, sampling scheme $\mathcal S$ over $[0, T_{\max}]$, optional terminal penalty $P_T$
+\hspace{1.05em}\textbf{[NEW]} calibrated initial state $\bm x_0$ (e.g., the 2015 state) and a planning horizon $T_{\max}$
 \FOR{episode $e = 1, \ldots, E$}
-    \STATE \textbf{[CHANGED] Simulate $K$ forward trajectories from $\mathcal I$, each of length $T_{\max}/\Delta_t$, and union the time-stamped states into $\mathcal D$}
+    \STATE \textbf{[CHANGED] Simulate $K$ forward trajectories from $\bm x_0$ over $[0, T_{\max}]$ under the current policy, and collect the time-stamped states $(\tau_t, \bm x_t)$ into $\mathcal D$}
     \FOR{gradient step $t = 1, \ldots, T_{\mathrm{train}}$}
-        \STATE \textbf{[CHANGED] Draw stratified mini-batch $\mathcal B \subset \mathcal D$ over calendar-time bins of $[0, T_{\max}]$ per scheme $\mathcal S$}
-        \STATE \textbf{[CHANGED] Compute loss:~$\ell_\rho = \frac{1}{|\mathcal B|}\sum_{\bm x_i \in \mathcal B}\|G(\bm x_i, \mathcal N_\rho(\bm x_i))\|^2 + P_T(\mathcal N_\rho)$}
+        \STATE \textcolor{uzhgreydark!70}{Draw mini-batch $\mathcal B \subset \mathcal D$}
+        \STATE \textcolor{uzhgreydark!70}{Compute loss:~$\ell_\rho = \frac{1}{|\mathcal B|}\sum_{\bm x_i \in \mathcal B}\|G(\bm x_i, \mathcal N_\rho(\bm x_i))\|^2$}
         \STATE \textcolor{uzhgreydark!70}{Update:~$\rho \leftarrow \rho - \eta \cdot \nabla_\rho \ell_\rho$}
     \ENDFOR
 \ENDFOR
@@ -8594,10 +8605,13 @@ The three design choices of \S\ref{sec:nsdeqn_setup} combine into a single train
 \end{algorithmic}
 \end{definitionbox}
 
-Three deltas, in order.  First, the simulation step now draws from a distribution of initial conditions $\mathcal I$ rather than a single $\bm x_0$, and integrates each trajectory to the calendar terminal $T_{\max}$ rather than to a fixed simulation horizon $T_{\mathrm{sim}}$; the resulting pool $\mathcal D$ contains time-stamped states that cover the full planning horizon by construction.  Second, the mini-batch is drawn from $\mathcal D$ under a stratification scheme $\mathcal S$ that equalizes mass across calendar-time bins, so that early and late years receive equal training weight regardless of the simulation duration density.  Third, the per-batch loss adds an explicit terminal term $P_T(\mathcal N_\rho)$ that disciplines the network's behaviour near $T_{\max}$, supplying the boundary information that transversality provided in the stationary case.
+One delta against the stationary DEQN box.  The simulation step starts from a calibrated initial state $\bm x_0$ and integrates $K$ trajectories forward through calendar time, so the pool $\mathcal D$ contains time-stamped states $(\tau_t, \bm x_t)$ along finite-horizon trajectories rather than draws from an ergodic distribution.  With $\tau_t$ in the input the network learns a time-dependent policy; every other line of the box is the stationary DEQN of \S\ref{sec:deqn_algo} unchanged.
+
+\paragraph{What replaces transversality.}
+Because the pool $\mathcal D$ is built from $K$ forward simulations of length $T_{\max}$ that all start at the same $\bm x_0$, every trajectory visits the full calendar window $[0, T_{\max}]$ and a uniform mini-batch draw from $\mathcal D$ is therefore stratified across calendar time by construction.  The missing transversality condition of \S\ref{sec:iam_nonstationarity} is absorbed numerically by choosing the horizon long enough that the discounted contribution of the terminal state falls below the training-noise floor: at the CDICE calibration $\rho = 0.015$/yr and the notebooks' default $T_{\max} = 300$ years, $\hat\beta_t^{\,T_{\max}} \approx \exp(-\rho\,T_{\max}) \approx 0.011$, which is one to two orders of magnitude below the achievable residual root-mean-square at convergence.  When the horizon must be short (e.g., the 1D toy of Exercise~\ref{ex:ch11:10}), one instead adds an explicit terminal residual $\lambda_T\,\|\bm x_{T_{\max}} - \bm x^{\mathrm{ref}}_{T_{\max}}\|^2$ to the loss; both options are standard in the finite-horizon DEQN literature.
 
 \begin{keyinsightbox}[The non-stationary DEQN in one line]
-Three modifications, one solver: time as a state, stratified mini-batches over the planning horizon, and an explicit terminal term in the loss.  The autodiff backbone, the residual structure, and the update rule are unchanged.
+One modification, one solver: time enters as a state.  The autodiff backbone, the residual structure, the sampling rule, and the update rule carry over from the stationary DEQN of Chapter~\ref{ch:deqn}.
 \end{keyinsightbox}
 
 % ----------------------------------------------------------------------------
@@ -8608,7 +8622,7 @@ Three modifications, one solver: time as a state, stratified mini-batches over t
 \label{sec:dice_deqn}
 \label{sec:dice_lagrangian}
 
-Movement~2 puts the non-stationary DEQN of \S\ref{sec:nsdeqn_algo} to work on the deterministic CDICE economy of \S\ref{sec:dice}.  Solving this system with the algorithm of \S\ref{sec:nsdeqn_algo} amounts to writing the planner's Lagrangian, deriving the first-order and envelope conditions, normalizing them, treating each FOC as a residual, and minimizing the sum of squared residuals on the time-stamped state pool of \S\ref{sec:nsdeqn_setup_distribution}.  This section follows \citet{friedlDeep2023} and Online Appendix~D of \citet{Folini_2021}.
+Movement~2 puts the non-stationary DEQN of \S\ref{sec:nsdeqn_algo} to work on the deterministic CDICE economy of \S\ref{sec:dice}.  Solving this system with the algorithm of \S\ref{sec:nsdeqn_algo} amounts to writing the planner's Lagrangian, deriving the first-order and envelope conditions, normalizing them, treating each FOC as a residual, and minimizing the sum of squared residuals on the time-stamped state pool generated by the forward simulation of \S\ref{sec:nsdeqn_algo}.  This section follows \citet{friedlDeep2023} and Online Appendix~D of \citet{Folini_2021}.
 
 \paragraph{Detrending and state vector, in compact form.}
 The model-rendering choices already named in \S\ref{sec:nsdeqn_setup_time} carry over verbatim.  Variables that grow with the productivity--population product $A_t L_t$ are rescaled to per-effective-capita units:
@@ -8676,6 +8690,30 @@ where $g^A_t := \ln(A_{t+1}/A_t)$ and $g^L_t := \ln(L_{t+1}/L_t)$ are annual log
 \paragraph{Sign convention for the climate multipliers.}
 We adopt the value-derivative convention throughout the script: each climate multiplier $\hat{\nu}^{\mathrm{AT}}_t,\, \hat{\nu}^{\mathrm{UO}}_t,\, \hat{\nu}^{\mathrm{LO}}_t,\, \hat{\eta}^{\mathrm{AT}}_t,\, \hat{\eta}^{\mathrm{OC}}_t$ is the (normalized) partial derivative of the value function with respect to the corresponding climate state.  Because extra atmospheric carbon lowers welfare, $\hat{\nu}^{\mathrm{AT}}_t$ is non-positive at the optimum, which is why the stock SCC carries a minus sign, $\mathrm{SCC}^M_t = -\hat{\nu}^{\mathrm{AT}}_t/\hat{\lambda}_t$.  The companion implementation in \texttt{dice\_2p\_surrogate\_lib.py} stores the \emph{positive marginal damage} $-\hat{\nu}^{\mathrm{AT}}_t$ as a network output for numerical conditioning and flips the sign explicitly inside each residual; the algebra below uses the script convention, so the reader who compares the equations to the code will see one extra sign flip per carbon-multiplier term.
 
+\paragraph{Symbol cheat-sheet for the multipliers.}
+Before writing the FOCs and the loss, Table~\ref{tab:cdice_multipliers} collects the multipliers that the DEQN learns and their role; subsequent equations use the hat-normalized form throughout.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{$}l<{$} l c >{\raggedright\arraybackslash}p{4.0cm}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Multiplier on} & \textbf{Sign at optimum} & \textbf{Network output?} \\
+\midrule
+\hat\lambda_t              & Budget constraint $C_t + I_t = Y^{\mathrm{net}}_t$               & $> 0$ & yes (softplus) \\
+\hat\lambda^\mu_t          & Abatement upper bound $\mu_t \le 1$                              & $\ge 0$ & no (implied, Eq.~\ref{eq:iam_lambdamu_implied}) \\
+\hat\nu^{\mathrm{AT}}_t    & Atmospheric carbon transition $M^{\mathrm{AT}}_{t+1}=\ldots$     & $\le 0$ & yes (stored as $-\hat\nu^{\mathrm{AT}}_t > 0$ via softplus) \\
+\hat\nu^{\mathrm{UO}}_t    & Upper-ocean carbon transition                                    & $\le 0$ & yes (linear) \\
+\hat\nu^{\mathrm{LO}}_t    & Lower-ocean carbon transition                                    & $\le 0$ & yes (linear) \\
+\hat\eta^{\mathrm{AT}}_t   & Atmospheric temperature transition                               & $\le 0$ & yes (linear) \\
+\hat\eta^{\mathrm{OC}}_t   & Ocean temperature transition                                     & $\le 0$ & yes (linear) \\
+\bottomrule
+\end{tabular}
+\caption{Normalised Lagrange multipliers in the CDICE--DEQN.  All values are divided by $A_t^{1-1/\psi}\,L_t$ relative to the raw multipliers, so the hatted versions inherit the per-effective-capita scale that the network outputs see.  The atmospheric carbon multiplier carries the SCC up to the marginal-utility denominator: $\mathrm{SCC}^M_t = -\hat\nu^{\mathrm{AT}}_t / \hat\lambda_t$.}
+\label{tab:cdice_multipliers}
+\end{table}
+
 \paragraph{Key FOCs in normalized form.}
 After normalization, the most important first-order conditions become (see Online Appendix~D of \citet{Folini_2021} for the complete set of 14 equations):
 \begin{align}
@@ -8715,7 +8753,7 @@ which is non-smooth at $\mu_t = 1$.  As in the borrowing-constraint treatment of
 \;=\; \hat{\lambda}^\mu_t + (1-\mu_t) - \sqrt{(\hat{\lambda}^\mu_t)^2 + (1-\mu_t)^2 + \varepsilon_{\mathrm{FB}}} \;=\; 0,
 \label{eq:iam_fb}
 \end{equation}
-with the same regularization parameter $\varepsilon_{\mathrm{FB}} \geq 0$ used in Chapters~\ref{ch:irbc}--\ref{ch:olg}.  At $\varepsilon_{\mathrm{FB}} = 0$ the zero set of $\Psi^{\mathrm{FB}}$ coincides with the positive axes in the $(\hat{\lambda}^\mu_t,\, 1-\mu_t)$-plane, enforcing the original complementarity exactly but the function is non-differentiable at the origin; with $\varepsilon_{\mathrm{FB}} > 0$ the function is differentiable everywhere at the cost of a slight relaxation of exact complementarity.
+with the same regularization parameter $\varepsilon_{\mathrm{FB}} \geq 0$ used in Chapters~\ref{ch:irbc}--\ref{ch:olg}.  In CDICE-DEQN we take $\varepsilon_{\mathrm{FB}} = 10^{-6}$, equivalent to the IRBC chapter's $\varepsilon = 10^{-3}$ under its $\varepsilon^2$ convention; the trained policy is insensitive to the choice in the range $10^{-10}$ to $10^{-4}$.  At $\varepsilon_{\mathrm{FB}} = 0$ the zero set of $\Psi^{\mathrm{FB}}$ coincides with the positive axes in the $(\hat{\lambda}^\mu_t,\, 1-\mu_t)$-plane, enforcing the original complementarity exactly but the function is non-differentiable at the origin; with $\varepsilon_{\mathrm{FB}} > 0$ the function is differentiable everywhere at the cost of a slight relaxation of exact complementarity.
 
 \section{From FOCs to a Single Loss}
 \label{sec:iam_dequ_loss}
@@ -8816,6 +8854,41 @@ All deterministic transitions are differentiable; stochastic shock draws are han
 
 This is the deterministic CDICE-DEQN solver in its entirety.  Companion notebook \tpath{02_DICE_DEQN_Library_Port.ipynb} trains it against the CDICE library reference solution of \citet{Folini_2021}; the verification gate inside that notebook is the natural stopping point for a reader who wants only the deterministic core.
 
+\section{From CDICE to Stochastic IAMs}
+\label{sec:dice_to_stochastic_iam}
+
+The deterministic CDICE-DEQN of \S\ref{sec:iam_dequ_loss}, together with the AR(1) productivity extension developed in the remarkbox below, is the right pedagogical anchor because it contains every mechanical component of an integrated assessment model: capital accumulation, emissions, carbon diffusion, temperature dynamics, damages, abatement costs, and the SCC as a shadow price.  It is not yet the object one wants for quantitative climate-policy research.  Three features are still missing.
+
+First, climate policy is an intrinsically stochastic problem.  Productivity, carbon intensity, damages, climate feedbacks, and tipping thresholds are not known constants.  Once they are stochastic, a carbon tax is not a path but a state-contingent policy.  Second, long-run climate risk makes time-additive CRRA preferences too restrictive: the intertemporal elasticity of substitution and risk aversion should be separate parameters.  Third, climate policy is distributional.  The representative-agent SCC answers a marginal pricing question, but an implementable policy also asks which cohorts pay the tax and which cohorts receive the transfers.  This is the point at which the chapter moves from representative-agent DICE to stochastic overlapping-generations IAMs.
+
+The transition is smooth if one keeps the computational object fixed.  In every case the neural network approximates a policy map
+\begin{equation}
+\begin{aligned}
+    u_t &= \mathcal N_\rho(\tilde{\bm x}_t), \\
+    \tilde{\bm x}_t &= (\text{economic states},\ \text{climate states},\ \text{beliefs},\ \text{parameters},\ \text{policy-rule coefficients}),
+\end{aligned}
+\end{equation}
+and the loss is still a sum of normalized equilibrium residuals.  The only changes are the variables appended to $\tilde{\bm x}_t$ and the conditional expectations appearing in the residuals.  Table~\ref{tab:climate_frontier_map} summarizes the sequence.
+
+\begin{table}[H]
+\centering
+\small
+\caption{The layers of the climate-economy pipeline used in the remainder of the chapter.  Each layer is a small extension of the previous one; no new numerical paradigm is introduced after the deterministic CDICE-DEQN.}
+\label{tab:climate_frontier_map}
+\begin{tabular}{@{}p{3.4cm}p{4.4cm}p{5.4cm}@{}}
+\toprule
+\textbf{Layer} & \textbf{Economic question} & \textbf{Computational change} \\
+\midrule
+Deterministic CDICE (\S\ref{sec:iam_dequ_loss}) & What is the globally optimal abatement path and SCC at the baseline calibration? & Time-stamped DEQN; eight residuals; horizon $T_{\max}$ chosen so discounting absorbs transversality. \\
+Stochastic DICE (AR(1) + GH quadrature, see the productivity-shock remarkbox below) & How do shocks alter the SCC distribution? & Add shock states; replace future terms by Gauss--Hermite expectations. \\
+Bayesian learning on ECS (\S\ref{sec:bayesian_learning}) & How does learning about climate sensitivity alter the SCC distribution? & Add belief mean and belief variance as states; one signal equation; conjugate Gaussian update. \\
+Epstein--Zin DICE (\S\ref{sec:ez_layer}) & How do risk aversion and IES separately price climate tails? & Add the value level as a network output; add one recursion residual and an EZ continuation-value weight. \\
+Deep UQ (\S\ref{sec:deep_uq}) & Which uncertain parameters drive SCC variation? & Treat parameters as pseudo-states; fit a GP surrogate for the QoI; compute Sobol, Shapley, and univariate effects. \\
+Stochastic OLG-IAM (\S\ref{sec:pareto_carbon_tax}) & Can carbon taxes be welfare improving and Pareto improving across cohorts? & Treat tax coefficients and transfer shares as pseudo-states; fit GP surrogates for cohort welfare; solve constrained policy design on the surrogate. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{remarkbox}[Adding aggregate shocks: AR(1) productivity and Gauss--Hermite quadrature]
 Real climate--economy interactions are shot through with stochastic shocks.  The minimal stochastic extension that already lets us reproduce the qualitative SCC fan-chart structure of \citet{caiSocialCostCarbon2019} on a laptop adds an AR(1) shock to log TFP:
 \begin{equation}
@@ -8846,24 +8919,11 @@ and each residual is replaced by its stochastic counterpart
 l_m^{\mathrm{stoch}}(\tilde{\bm{x}}_t,\, \mathcal{N}_\rho) \;=\; \frac{1}{\sqrt{\pi}}\sum_{q=1}^{Q} w_q\, l_m\bigl(\tilde{\bm{x}}_t,\, \mathcal{N}_\rho;\, \varepsilon_{t+1} = \sqrt{2}\,\xi_q\bigr),
 \label{eq:loss_gh}
 \end{equation}
-which the total loss~\eqref{eq:iam_loss} then aggregates as before.  In practice $Q = 5$ nodes drive the quadrature error well below the training-noise floor; the GH evaluation is fully differentiable, so the autodiff backward pass is unchanged.  Forward-simulating $N_{\mathrm{MC}}$ trajectories of the AR(1) shock produces a Monte-Carlo SCC fan chart whose right-tail mass is the channel of \citeauthor{caiSocialCostCarbon2019}'s headline result.
+which the total loss~\eqref{eq:iam_loss} then aggregates as before.  In practice $Q = 5$ nodes drive the quadrature error well below the training-noise floor; the GH evaluation is fully differentiable, so the autodiff backward pass is unchanged.  When several independent shock dimensions appear simultaneously (productivity shock $\varepsilon_{t+1}$, learning innovation $\tilde\epsilon_{T,t+1}$, and the EZ certainty-equivalent integrand of \S\ref{sec:ez_layer}), each conditional expectation is taken under a tensor product of one-dimensional GH rules at $Q$ nodes per dimension, i.e.\ $Q^d$ total nodes for $d$ shock dimensions; the autodiff backward pass traverses the quadrature unchanged.  Forward-simulating $N_{\mathrm{MC}}$ trajectories of the AR(1) shock produces a Monte-Carlo SCC fan chart whose right-tail mass is the channel of \citeauthor{caiSocialCostCarbon2019}'s headline result.  Companion notebook \tpath{03_Stochastic_DICE_DEQN.ipynb} trains this stochastic extension end-to-end and is the natural anchor for Exercise~\ref{ex:ch11:7}.
 \end{remarkbox}
 
-\section{What Stays, What Extends: A Roadmap to Movement~3}
-\label{sec:movement3_roadmap}
-
-The deterministic CDICE-DEQN of \S\ref{sec:iam_dequ_loss}, together with the AR(1) extension just sketched, gives a complete stochastic-IAM solver.  Four features that matter for serious climate-finance research are still missing.  Each is a small structural delta on top of the eight-residual spine, and each occupies one section of Movement~3.
-
-Bayesian learning on the equilibrium climate sensitivity (\S\ref{sec:bayesian_learning}) lets the planner update her posterior on the climate's response to forcing as temperature realizations arrive.  This adds two states to the network (a belief mean and a belief variance), one signal equation, and one prior on the feedback parameter; the loss structure is unchanged.
-
-Recursive Epstein--Zin preferences (\S\ref{sec:ez_layer}) decouple risk aversion from the intertemporal elasticity of substitution.  This promotes the value level $V_t$ to a network output and adds one ninth residual that enforces the Kreps--Porteus recursion; the eight original residuals carry over with one extra Bansal--Yaron certainty-equivalent factor inside each conditional expectation.
-
-Global uncertainty quantification of the SCC (\S\ref{sec:deep_uq}) treats uncertain parameters as additional inputs to the network (pseudo-states).  One training run then approximates the SCC for every parameter draw; Sobol, Shapley, and univariate-effect attributions follow from a GP surrogate fitted on top of the network's output.
-
-Constrained Pareto-improving carbon-tax design (\S\ref{sec:pareto_carbon_tax}) reuses the same pseudo-state trick for an OLG-IAM whose policy parameters become network inputs.  The GP surrogate then carries the welfare surface, and a final constrained optimization picks a tax-and-transfer rule that lifts every cohort weakly above the BAU baseline.
-
-\begin{keyinsightbox}[Movement~3 in one line]
-The methodological cost of these extensions is small.  Each adds at most one state and one term in the loss; the algorithm of \S\ref{sec:nsdeqn_algo} is unchanged.
+\begin{keyinsightbox}[The unifying trick]
+The same pseudo-state idea appears three times: uncertain structural parameters are pseudo-states for UQ, policy-rule coefficients are pseudo-states for constrained optimal policy, and Bayesian posterior beliefs are endogenous pseudo-states for learning.  The network does not care which interpretation is attached to an input coordinate; it only learns a differentiable equilibrium map on the enlarged domain.  The methodological cost of each layer is small: at most one additional state or output and one additional term in the loss; the algorithm of \S\ref{sec:nsdeqn_algo} is unchanged.
 \end{keyinsightbox}
 
 % ----------------------------------------------------------------------------
@@ -8877,7 +8937,7 @@ The methodological cost of these extensions is small.  Each adds at most one sta
 The equilibrium climate sensitivity (ECS), defined as the long-run atmospheric warming from a doubling of CO$_2$, is the single most consequential and most uncertain parameter in the climate side of an IAM.  Observational, paleoclimate, and model-based estimates place ECS in a \emph{likely} (66\%) range of roughly 2.5--4\textdegree C and a \emph{very-likely} (90\%) range of 2--5\textdegree C \citep{sherwood2020assessment, knutti2017beyond, roe2007climate}, and ECS uncertainty is the largest single contributor to SCC dispersion across model variants.  Crucially, ECS is partially identified from temperature realizations conditional on emissions and forcing: a Bayesian planner who observes temperature paths can therefore update her posterior period by period, and the policy that maximizes ex-ante welfare conditions on the current posterior rather than on a fixed point estimate.
 
 \paragraph{How learning enters the state.}
-Promote the climate-feedback parameter $\lambda$ in~\eqref{eq:temp_at} to a stochastic object by adding the feedback term $\varphi_{1C}\,\tilde f_{t+1}\,T^{\mathrm{AT}}_t$ to the right-hand side, where $\varphi_{1C}$ is a calibrated coupling coefficient and $\tilde f_{t+1} \sim \mathcal N(\mu_{f,t}, S_{f,t})$ is the planner's current Gaussian prior.  The planner observes the temperature-residual signal
+Promote the climate-feedback parameter $\lambda$ in~\eqref{eq:temp_at} to a stochastic object by adding the feedback term $\varphi_{1C}\,\tilde f_{t+1}\,T^{\mathrm{AT}}_t$ to the right-hand side, where $\varphi_{1C}$ is a calibrated coupling coefficient (taken from \citet{friedlDeep2023}) and $\tilde f_{t+1} \sim \mathcal N(\mu_{f,t}, S_{f,t})$ is a per-period draw under the planner's posterior over the unknown climate-feedback deviation.  The unknown itself is time-invariant; the subscript $t{+}1$ indexes the period in which the subjective draw enters the temperature equation, and the planner's posterior moments $(\mu_{f,t}, S_{f,t})$ shift over time as new temperature observations arrive.  The planner observes the temperature-residual signal
 \begin{equation}
 y_{t+1} \;:=\; \varphi_{1C}\,T^{\mathrm{AT}}_t\,\tilde f_{t+1} \;+\; \tilde\epsilon_{T,t+1},\qquad \tilde\epsilon_{T,t+1} \sim \mathcal N(0, S_{\epsilon_T}),
 \label{eq:bayes_signal}
@@ -8890,37 +8950,87 @@ S_{f,t+1} &= \frac{S_{\epsilon_T} \cdot S_{f,t}}{S_{\epsilon_T} + (\varphi_{1C}\
 which the planner takes as two additional laws of motion for the belief states $(\mu_{f,t}, S_{f,t})$.  These two states occupy the slots already reserved in the augmented state vector~\eqref{eq:iam_state}.  Equations~\eqref{eq:bayes_mean}--\eqref{eq:bayes_var} are the Kalman update for a scalar linear-Gaussian state-space model with observation gain $\varphi_{1C}\,T^{\mathrm{AT}}_t$ and noise variance $S_{\epsilon_T}$; cf.\ \citet[\S~13.3]{bishop2006} for the generic derivation.  The DEQN algorithm of \S\ref{sec:nsdeqn_algo} is unchanged: the network simply receives two more inputs and learns a richer policy.
 
 \paragraph{Where this sits in the literature.}
-Bayesian learning about climate parameters in an integrated assessment frame has a long pedigree.  \citet{kellyBayesianLearningGrowth1999} and \citet{kellyLearningClimateFeedbacks2015} establish the basic Kelly--Kolstad result that learning takes decades to centuries in calibrated DICE-like settings, and that the tradeoff between mitigation (which lowers temperature variance) and information (which requires informative temperature paths) is sharp.  \citet{leachClimateChangeLearning2007} and \citet{websterLearningClimateChange2008} sharpen the slow-learning result and quantify the policy errors induced by treating uncertainty as resolved too quickly.  On the dynamic-programming side, \citet{caiSocialCostCarbon2019}, \citet{lontzek2015Stochastic}, and \citet{lontzek2016Stochastic} solve stochastic-DICE variants with tipping-point hazards and recursive preferences.  The robust-control program of \citet{anderson2014Uncertainty}, \citet{barnett2023climate}, \citet{barnett2023deep}, and \citet{Barnett2020} addresses a complementary question (planner ambiguity over the data-generating process), and modern deep-learning solutions are the natural computational companion because tensor-product grids over belief states are infeasible at realistic state-vector sizes.
+Bayesian learning about climate parameters in an integrated assessment frame has a long pedigree.  \citet{kellyBayesianLearningGrowth1999} and \citet{kellyLearningClimateFeedbacks2015} establish the basic Kelly--Kolstad result that learning takes decades to centuries in calibrated DICE-like settings, and that the tradeoff between mitigation (which lowers temperature variance) and information (which requires informative temperature paths) is sharp.  \citet{leachClimateChangeLearning2007} and \citet{websterLearningClimateChange2008} sharpen the slow-learning result and quantify the policy errors induced by treating uncertainty as resolved too quickly.  On the dynamic-programming side, \citet{caiSocialCostCarbon2019} solve a stochastic-DICE variant with tipping-point hazards and recursive preferences.  The robust-control program of \citet{anderson2014Uncertainty}, \citet{barnett2023climate}, \citet{barnett2023deep}, and \citet{Barnett2020} addresses a complementary question (planner ambiguity over the data-generating process), and modern deep-learning solutions are the natural computational companion because tensor-product grids over belief states are infeasible at realistic state-vector sizes.
 
 \paragraph{Headline result from the UQ literature.}
-\citet{friedlDeep2023} solve the joint stochastic-DICE--Bayesian-learning DEQN with the methodology of this chapter and find two qualitative features that survive across the calibration cloud.  First, ECS uncertainty is largely resolved within roughly ten years of optimal policy: the posterior variance $S_{f,t}$ shrinks by an order of magnitude over the first decade of the planner's horizon, even though the absolute posterior mean takes longer to settle.  Second, the SCC under learning is roughly half the no-learning SCC for moderate true ECS values, and roughly the same as the no-learning SCC at the upper tail of the ECS distribution; learning is a strong substitute for precautionary mitigation in the moderate-ECS regime, and a weak substitute in the tail-ECS regime.  The asymmetry is policy-relevant: the value of waiting to learn falls sharply once the planner suspects she is in the tail.
+\citet{friedlDeep2023} solve the joint stochastic-DICE--Bayesian-learning DEQN with the methodology of this chapter and find two qualitative features that survive across the calibration cloud.\footnote{The numerical claims in this paragraph quote the headline results of \citet{friedlDeep2023}; consult that paper for the precise figures and the underlying calibration grid.}  First, ECS uncertainty is largely resolved within roughly ten years of optimal policy: the posterior variance $S_{f,t}$ shrinks by an order of magnitude over the first decade of the planner's horizon, even though the absolute posterior mean takes longer to settle.  Second, the SCC under learning is roughly half the no-learning SCC for moderate true ECS values, and roughly the same as the no-learning SCC at the upper tail of the ECS distribution; learning is a strong substitute for precautionary mitigation in the moderate-ECS regime, and a weak substitute in the tail-ECS regime.  The asymmetry is policy-relevant: the value of waiting to learn falls sharply once the planner suspects she is in the tail.  The broader teaching point is that uncertainty is not automatically a reason to abate more: its policy effect depends on whether the uncertainty is static, learnable, or associated with irreversible tail risk.
 
 \section{Epstein--Zin Preferences}
 \label{sec:ez_layer}
 
 \paragraph{Why recursive preferences for climate.}
-The CRRA-IES aggregator~\eqref{eq:planner_obj_crra} bundles the coefficient of relative risk aversion (RRA) and the intertemporal elasticity of substitution (IES) into a single parameter.  In a climate IAM the bundling is uncomfortable: the planner wants both consumption smoothing across decades (high IES) and aversion to catastrophic tail risk (high RRA), and these are conceptually distinct margins.  The recursive Kreps--Porteus--Epstein--Zin aggregator of \citet{epstein1989Substitution} and \citet{weil1989Equity} delivers exactly that decoupling.\footnote{\textbf{Notation note.}  We follow the lecture-script convention that $\gamma$ denotes the IES and the coefficient of relative risk aversion is $1/\gamma$, in line with the deterministic CDICE block of \S\ref{sec:dice}.  Several papers cited below, including \citet{friedlDeep2023}, use the opposite convention $\psi = \text{IES}$ and $\gamma = \text{RRA}$; readers comparing equations should swap the two symbols accordingly.}  Using the normalized Bansal--Yaron convention and writing $\beta^{\mathrm{EZ}}_t := \exp(-\rho\,\Delta_t)$ for the one-period discount factor, the planner solves
+The time-additive CRRA-IES aggregator~\eqref{eq:planner_obj_crra} ties risk aversion and intertemporal substitution together.  Climate policy is exactly the environment in which this restriction is least attractive.  A planner may want a high IES $\psi$ to govern intertemporal substitution across long horizons, and a separate high coefficient of relative risk aversion $\gamma_u$ to price low-probability climate disasters.  Recursive Kreps--Porteus preferences, following \citet{epstein1989Substitution} and \citet{weil1989Equity}, implement this separation.\footnote{\textbf{Notation note.}  We use $\psi$ for the IES and $\gamma_u$ for risk aversion throughout this section, following \citet{friedlDeep2023}.  The IRBC chapter (Chapter~\ref{ch:irbc}) used $\gamma$ for the IES under the bundled CRRA-IES convention; here in the Epstein--Zin block we deliberately decouple the two parameters, so the symbol switch is intentional.  The CRRA limit is recovered at $\gamma_u = 1/\psi$.}
+
+Working with the normalized per-capita value $v_t$ and per-capita consumption $c_t = C_t/L_t$, and writing $\beta^{\mathrm{EZ}}_t := \exp(-\rho\,\Delta_t)$ for the one-period Epstein--Zin discount factor, the recursion is
 \begin{equation}
-V(\bm X_t)^{1-1/\psi} = \max_{C_t, K_{t+1}, \mu_t}\!\left\{(1-\beta^{\mathrm{EZ}}_t)\!\left(\frac{C_t}{L_t}\right)^{1-1/\psi}\! L_t + \beta^{\mathrm{EZ}}_t\,\mathbb E_t\!\left[V(\bm X_{t+1})^{1-\gamma}\right]^{\frac{1-1/\psi}{1-\gamma}}\right\},
+    v_t
+    =
+    \left[
+    (1-\beta^{\mathrm{EZ}}_t)\, c_t^{1-1/\psi}
+    +
+    \beta^{\mathrm{EZ}}_t
+    \left(\mathbb E_t\!\left[v_{t+1}^{1-\gamma_u}\right]\right)^{\frac{1-1/\psi}{1-\gamma_u}}
+    \right]^{\frac{1}{1-1/\psi}},
 \label{eq:ez_iam}
 \end{equation}
-subject to the same budget constraint, capital-accumulation law, and climate dynamics as before.  Risk aversion is now governed by $\gamma$ and the IES by $\psi$, with the CRRA limit recovered at $\gamma = 1/\psi$.
+with the usual logarithmic limits when $\psi = 1$ or $\gamma_u = 1$, subject to the same budget constraint, capital-accumulation law, and climate dynamics as before.
 
 \paragraph{What changes in the DEQN loss.}
-The FOCs of \S\ref{sec:dice_lagrangian} acquire a Bansal--Yaron certainty-equivalent weighting term $\bigl(V_{t+1}/[\mathbb E_t V_{t+1}^{1-\gamma}]^{1/(1-\gamma)}\bigr)^{1/\psi-\gamma}$ inside each conditional expectation, but the eight-residual structure is unchanged.  The value level $V_t$ becomes a ninth network output, paired with a ninth residual that enforces the recursion~\eqref{eq:ez_iam}; in the deterministic CRRA-IES core of \S\ref{sec:iam_dequ_loss} $V_t$ never appears explicitly, which is why eight residuals suffice there.  The effective discount factor $\hat\beta_t$ in~\eqref{eq:iam_eff_beta} is now the Epstein--Zin discount factor.  Practically, the certainty-equivalent operator inside the Kreps--Porteus aggregator becomes a second nested expectation: the DEQN loss inherits one extra Gauss--Hermite quadrature step but no new algorithmic ingredient.
+The value level $v_t$ becomes an additional network output, paired with a ninth residual that enforces the recursion~\eqref{eq:ez_iam}:
+\begin{equation}
+    \mathcal R^{\mathrm{EZ}}_t
+    =
+    v_t
+    -
+    \left[
+    (1-\beta^{\mathrm{EZ}}_t)\, c_t^{1-1/\psi}
+    +
+    \beta^{\mathrm{EZ}}_t
+    \left(\mathbb E_t\!\left[v_{t+1}^{1-\gamma_u}\right]\right)^{\frac{1-1/\psi}{1-\gamma_u}}
+    \right]^{\frac{1}{1-1/\psi}}.
+\label{eq:ez_residual}
+\end{equation}
+In the deterministic CRRA-IES core of \S\ref{sec:iam_dequ_loss}, $v_t$ never appears explicitly, which is why eight residuals suffice there.  The Euler and costate residuals of \S\ref{sec:dice_lagrangian} keep their deterministic form but receive a Bansal--Yaron certainty-equivalent weighting inside each conditional expectation.  It is convenient to write the one-step recursive-pricing kernel as
+\begin{equation}
+    \mathcal M^{\mathrm{EZ}}_{t,t+1}
+    =
+    \hat\beta_t
+    \left(
+    \frac{v_{t+1}}{\left(\mathbb E_t[v_{t+1}^{1-\gamma_u}]\right)^{1/(1-\gamma_u)}}
+    \right)^{1/\psi - \gamma_u}
+    \left(\frac{c_{t+1}}{c_t}\right)^{-1/\psi},
+\label{eq:ez_kernel}
+\end{equation}
+where $\hat\beta_t$ inherits the deterministic growth normalisation of~\eqref{eq:iam_eff_beta}.  In the code, \eqref{eq:ez_kernel} is just a multiplicative weight on next-period marginal-value terms; the certainty-equivalent operator inside the Kreps--Porteus aggregator becomes a second nested expectation.  The DEQN loss inherits one extra Gauss--Hermite quadrature step and one extra network output, but no new algorithmic ingredient.
 
-\paragraph{SCC under Epstein--Zin.}
-\citet{crost2013Optimal} and \citet{crost2014Optimal} establish the analytic baseline: in a deterministic IAM, decoupling RRA from IES changes the optimal carbon tax only when stochastic risk is present, but the change can be quantitatively large.  \citet{jensenOptimalClimateChange2014} and \citet{traeger2018ace, traeger2021ACE} extend the result to closed-form ACE-class settings and show that for reasonable RRA above $1/\text{IES}$, the SCC roughly doubles relative to CRRA; \citet{caiSocialCostCarbon2019} reach the same conclusion in a fully stochastic DICE variant.  The sign of the IES effect depends on which shock dominates: in TFP-driven economies higher IES dampens the SCC (consumption smoothing absorbs the productivity risk), whereas in temperature-driven economies higher IES amplifies the SCC (the planner cares more about late-horizon consumption losses).  \citet{bansalKikuOchoa2016} make the asset-pricing case for the same channel: long-run temperature shifts price into expected returns through the EZ aggregator, and ignoring them understates the welfare cost of carbon emissions.
+\paragraph{Interpretation for the SCC.}
+\citet{crost2013Optimal} and \citet{crost2014Optimal} establish the analytic baseline: in a deterministic IAM, decoupling risk aversion from the IES changes the optimal carbon tax only when stochastic risk is present, but the change can be quantitatively large once it is.  \citet{jensenOptimalClimateChange2014} and \citet{traeger2018ace, traeger2021ACE} extend the result to closed-form ACE-class settings and show that for reasonable risk aversion above $1/\psi$, the SCC roughly doubles relative to CRRA; \citet{caiSocialCostCarbon2019} reach the same conclusion in a fully stochastic DICE variant.  Intuitively, recursive preferences change the SCC because carbon emissions affect the distribution of long-run consumption, not only its mean: if damages create low-consumption tail states, a high $\gamma_u$ raises the SCC through the disaster-insurance channel.  The sign of the IES effect depends on which shock dominates: in TFP-driven economies higher $\psi$ dampens the SCC because consumption smoothing absorbs the productivity risk, whereas in temperature-driven economies higher $\psi$ amplifies the SCC because the planner cares more about late-horizon consumption losses.  \citet{bansalKikuOchoa2016} make the asset-pricing case for the same channel: long-run temperature shifts price into expected returns through the EZ aggregator, and ignoring them understates the welfare cost of carbon emissions.  This is why stochastic DICE with Epstein--Zin preferences is a better teaching object than deterministic DICE for climate-finance questions: it connects welfare, tail risk, and asset-pricing logic in a single equilibrium loss.
 
 \section{Deep Uncertainty Quantification via Surrogates}
 \label{sec:deep_uq}
 
-The SCC depends sensitively on parameters that are themselves deeply uncertain: the ECS, the curvature of the damage function, the pure rate of time preference, the coefficient of relative risk aversion.  Direct Monte Carlo over the structural model is infeasible because each parameter configuration would require its own stochastic-DICE-DEQN training.  The pseudo-state trick of \citet{friedlDeep2023} collapses that outer loop into a single DEQN training pass: uncertain parameters $\theta$ are appended to the network's input,
+Deep UQ answers a different question from solving one stochastic IAM.  The object is now a scalar quantity of interest,
+\begin{equation}
+    q(\theta) = \mathrm{SCC}_{2100}(\theta), \qquad \theta\in\Theta\subset\mathbb R^{d_\theta},
+\label{eq:uq_qoi}
+\end{equation}
+where $\theta$ collects uncertain structural parameters: the ECS or its prior mean $\mu_{f,0}$, the prior variance $S_{f,0}$, the pure rate of time preference $\rho$, the IES $\psi$, risk aversion $\gamma_u$, the damage curvature $\pi_2$, and any tipping parameters included in the experiment.  Direct global sensitivity analysis would require solving the IAM thousands of times.  Deep UQ replaces this infeasible outer loop by two amortisations.
+
+\paragraph{Amortisation 1: parameters as pseudo-states.}
+The pseudo-state trick of \citet{friedlDeep2023} collapses the outer loop into a single DEQN training pass.  Uncertain parameters $\theta$ are appended to the network's input,
 \begin{equation}
 \tilde{\bm{x}}_t = \bigl(\underbrace{\bm x_t}_{\text{economic + climate states}},\; \underbrace{\theta}_{\text{uncertain parameters}}\bigr),\qquad u_t = \mathcal N_\rho(\tilde{\bm x}_t),
 \label{eq:pseudo_state}
 \end{equation}
-held fixed within each simulation episode and re-sampled across episodes.  One training run approximates the policy function for every $\theta$ in the design distribution; evaluating any new $\theta$ requires only a forward pass.  A Gaussian-process surrogate is then fitted on top of the network's scalar outputs (the SCC at a given date, or a welfare functional) for the global sensitivity analysis that follows.  For very large pseudo-state dimensions the active-subspace methods of \S\ref{sec:active_subspaces} compress $\theta$ before the surrogate is fitted; cf.\ Chapter~\ref{ch:gp} for the GP-and-active-learning toolkit on which this rests.
+held fixed within each simulation episode and re-sampled across episodes from a design distribution $\mathcal D_\theta$.  One trained network therefore approximates the policy function for every $\theta$ in $\mathcal D_\theta$; evaluating any new $\theta$ requires only a forward pass.  For very large pseudo-state dimensions the active-subspace methods of \S\ref{sec:active_subspaces} compress $\theta$ before the next step.  This is the same idea as the parameterized policy networks in Chapter~\ref{ch:estimation}; here the target is not an SMM criterion but an SCC distribution.
+
+\paragraph{Amortisation 2: a GP for the quantity of interest.}
+After training, the DEQN is evaluated at a design set $\{\theta_i\}_{i=1}^n$ and the corresponding QoI values $q_i = q(\theta_i)$ are computed by forward simulation.  Fit a Gaussian-process surrogate
+\begin{equation}
+    q(\theta) = m(\theta) + \varepsilon(\theta), \qquad m(\theta)\mid \{(\theta_i,q_i)\}_{i=1}^n \sim \mathcal{GP}\bigl(\mu_n(\theta),\, k_n(\theta,\theta')\bigr).
+\label{eq:uq_gp}
+\end{equation}
+The GP is cheap enough to evaluate millions of times, so the expensive IAM is no longer called inside Sobol, Shapley, or univariate-effect estimators.  Bayesian active learning improves the design by adding points where the GP posterior uncertainty is largest or where integrated posterior variance is most reduced, following the toolkit of Chapter~\ref{ch:gp} (see Figure~\ref{fig:surrogate_outer_loop} and Table~\ref{tab:surrogate_strategy_comparison}).
 
 \paragraph{Sobol, Shapley, univariate effects.}
 Three complementary global sensitivity indices answer different questions about how $\theta$ drives the SCC.  The first-order Sobol index $S_i$ of \citet{sobolGlobalSensitivityIndices2001} measures the share of output variance explained by $\theta_i$ alone,
@@ -8935,11 +9045,20 @@ S_i^{\mathrm{tot}} = 1 - \frac{\mathrm{Var}\bigl(\mathbb E[q(\theta)\mid\theta_{
 \end{equation}
 For independent inputs the $\{S_i\}$ sum to at most one, while the $\{S_i^{\mathrm{tot}}\}$ can exceed one in the presence of interactions; equality $\sum_i S_i^{\mathrm{tot}} = 1$ characterises additive models.  Shapley effects, introduced into sensitivity analysis by \citet{owen2014sobol} and developed further by \citet{songShapleyEffectsGlobal2016} and \citet{ioossShapleyEffectsSensitivity2019}, allocate $\mathrm{Var}(q)$ across parameters via cooperative-game averaging over all subsets of other parameters \citep{shapley1953value}, sum exactly to $\mathrm{Var}(q)$ (raw) or one (normalised), and handle correlated inputs cleanly.  Univariate-effect plots show the conditional mean $\mathbb E[q(\theta)\mid\theta_i]$ as $\theta_i$ varies and capture the directional response that Sobol indices average over.  \citet{saltelli2010Sensitivity} and \citet{saltelli2008global} give the standard estimators and best-practice warnings.
 
-\paragraph{Why surrogates.}
-Direct Monte Carlo on Sobol or Shapley indices requires $O(10^4)$ to $O(10^6)$ evaluations of the structural model at fresh $\theta$ draws.  Even at one DEQN solve per parameter vector, that price tag is several core-decades; the DEQN-with-pseudo-states already amortises one of the two loops, and the GP surrogate on top of the network amortises the second.  Concretely, after the DEQN is trained we evaluate it at $\sim 10^3$ design points to construct training data for a GP regressor mapping $\theta \mapsto \mathrm{SCC}(\theta)$, and the sensitivity indices are computed on the GP rather than on the structural model.  This is the natural composition of the GP-and-Bayesian-active-learning machinery of Chapter~\ref{ch:gp} (see Figure~\ref{fig:surrogate_outer_loop} and Table~\ref{tab:surrogate_strategy_comparison}) with the climate stack of this chapter.
+\begin{remarkbox}[Deep UQ implementation recipe]
+\begin{enumerate}[itemsep=2pt,leftmargin=*]
+\item Choose a parameter domain $\Theta$ and a sampling law $\mathcal D_\theta$ for the uncertain climate, damage, and preference parameters.
+\item Train the stochastic CDICE-DEQN on $(\bm x_t, z_t, \mu_{f,t}, S_{f,t}, \theta)$, resampling $\theta$ across episodes and holding it fixed within an episode.
+\item Generate $n$ design evaluations $\{(\theta_i, q_i)\}_{i=1}^n$ from the trained network, where $q_i$ is typically $\mathrm{SCC}_{2100}$ or an expected welfare functional.
+\item Fit a GP surrogate $\theta \mapsto q(\theta)$, validate by leave-one-out cross-validation (target: LOO~$R^2 \ge 0.95$ or LOO RMSE below $5\%$ of the QoI standard deviation), and enrich the design with Bayesian active learning if the threshold is not met.
+\item Compute Sobol, Shapley, and univariate effects on the GP surrogate, not on the structural model.
+\end{enumerate}
+\end{remarkbox}
+
+The reason this pipeline is the only feasible route is computational: direct Monte Carlo on Sobol or Shapley indices requires $O(10^4)$ to $O(10^6)$ evaluations of the structural model at fresh $\theta$ draws.  Even at one DEQN solve per parameter vector, that price tag is several core-decades.  The DEQN-with-pseudo-states amortises one loop, and the GP surrogate amortises the other; the sensitivity indices are then computed on the GP rather than on the IAM.
 
 \paragraph{Empirical headline.}
-\citet{friedlDeep2023} apply the pipeline to a stochastic DICE variant with Epstein--Zin preferences and Bayesian learning, and find that two ingredients dominate the SCC variance across 2020--2100: the mean of the ECS belief (roughly 50--70\% of the total-effect Sobol share) and the curvature parameter of the damage function (roughly 15--25\%).  Together these account for 70--90\% of the SCC variance.  Risk aversion contributes a few percentage points; the pure rate of time preference and the IES contribute negligibly once damage curvature is conditioned on.  The policy lesson is that under deep uncertainty the SCC should be reported as a distribution, not a point estimate, and that climate-policy design should target tail insurance against the upper ECS--damage corner rather than precision over the central calibration.
+\citet{friedlDeep2023} apply the pipeline to a stochastic DICE variant with Epstein--Zin preferences and Bayesian learning, and find that two ingredients dominate the SCC variance across 2020--2100: the mean of the ECS belief (roughly 50--70\% of the total-effect Sobol share) and the curvature parameter of the damage function (roughly 15--25\%).\footnote{Variance-share ranges quoted from \citet{friedlDeep2023}; the spread reflects different points along the planner's horizon and different damage-function specifications.}  Together these account for 70--90\% of the SCC variance.  Risk aversion contributes a few percentage points; the pure rate of time preference and the IES contribute negligibly once damage curvature is conditioned on.  The policy lesson is that under deep uncertainty the SCC should be reported as a distribution, not a point estimate, and that climate-policy design should target tail insurance against the upper ECS--damage corner rather than precision over the central calibration.
 
 \section{Constrained Pareto-Improving Carbon Tax in OLG-IAMs}
 \label{sec:pareto_carbon_tax}
@@ -8949,7 +9068,7 @@ The SCC analysis of \S\ref{sec:deep_uq} is still the marginal welfare cost of on
 
 \paragraph{Notation reset for this section.}
 \begin{sloppypar}
-The OLG-IAM uses different conventions than the representative-agent CDICE block of \S\ref{sec:dice}, following \citet{kubler2025using}, and we summarize the differences here so the reader is not surprised.  $\Omega_t(T_t)$ now denotes the \emph{retained-output} factor, so net output is $\Omega_t \Phi K^\alpha L^{1-\alpha}$ rather than $(1-\Omega-\Theta)Y^{\mathrm{gross}}$.  $\tau_t$ is the carbon tax (a per-tCO$_2$ price), \emph{not} the transformed-time variable of \S\ref{sec:iam_nonstationarity}.  $e_t$ denotes the per-period emissions \emph{flow} (in GtC), and $E_t = \sum_{s\le t} e_s$ is \emph{cumulative} emissions through date $t$; this is the convention of the climate-emulator literature \citep{dietz2019cumulative} and of the companion paper, and it is the source of the section's frequent ``cumulative-emissions tax'' phrasing.  Finally, the policy vector that the planner ultimately optimizes over is $\vartheta = (\vartheta_{\mathrm{tax}}, \omega)$, the joint vector of tax-rule coefficients and cohort transfer shares defined in Step~1 below.
+The OLG-IAM uses different conventions than the representative-agent CDICE block of \S\ref{sec:dice}, following \citet{kubler2025using}, and we summarize the differences here so the reader is not surprised.  $\Omega_t(T_t)$ now denotes the \emph{retained-output} factor, so net output is $\Omega_t \Phi K^\alpha L^{1-\alpha}$ rather than $(1-\Omega-\Theta)Y^{\mathrm{gross}}$.  $p^{\mathrm{tax}}_t$ is the carbon tax (a per-tCO$_2$ price); to avoid clashing with the transformed-time variable $\tau_t$ of \S\ref{sec:iam_nonstationarity}, this section uses $p^{\mathrm{tax}}_t$ for the tax throughout, in line with the price-level interpretation.  $e_t$ denotes the per-period emissions \emph{flow} (in GtC), and $E_t = \sum_{s\le t} e_s$ is \emph{cumulative} emissions through date $t$; this is the convention of the climate-emulator literature \citep{dietz2019cumulative} and of the companion paper, and it is the source of the section's frequent ``cumulative-emissions tax'' phrasing.  Finally, the policy vector that the planner ultimately optimizes over is $\vartheta = (\vartheta_{\mathrm{tax}}, \omega)$, the joint vector of tax-rule coefficients and cohort transfer shares defined in Step~1 below.
 \end{sloppypar}
 
 \paragraph{From CDICE to a TCRE emulator.}
@@ -8965,7 +9084,14 @@ The model features $A=12$ overlapping generations of selfish agents (ages 20--80
 \item \textbf{Climate:} The climate emulator imposes a near-linear relationship between cumulative emissions and atmospheric temperature, $T^{\mathrm{AT}}_t \approx \sigma_{\mathrm{CCR}}\,E_t$ where $E_t = \sum_{s\le t} e_s$ is cumulative carbon, augmented by a stochastic tipping mechanism: damages depend on $T^{\mathrm{AT}}_t$ relative to a threshold $TP_t$ via a Weitzman-type retained-output factor that becomes steeply convex once $T^{\mathrm{AT}}_t$ approaches $TP_t$.
 \item \textbf{Stochastic shocks:} Carbon intensity $\kappa_t$ follows an AR(1) with time-varying persistence; the tipping threshold $TP_t$ follows a bounded random walk that becomes absorbing once it has been crossed.
 \end{itemize}
-The household Euler equation takes the standard form $C_{t,j}^{-\sigma_u} = \beta\,\mathbb{E}_t[(1+r_{t+1})\,C_{t+1,j+1}^{-\sigma_u}]$ for $j = 1,\ldots,A-1$, and market clearing requires that aggregate savings equal the capital stock: $\sum_j a_{t,j} = K_t$.
+The household Euler equation takes the standard form $C_{t,j}^{-\sigma_u} = \beta\,\mathbb{E}_t[(1+r_{t+1})\,C_{t+1,j+1}^{-\sigma_u}]$ for $j = 1,\ldots,A-1$, and market clearing requires that aggregate savings equal the capital stock: $\sum_j a_{t,j} = K_t$.  Figure~\ref{fig:bau_olg_baseline} simulates this model without policy intervention; it fixes the business-as-usual (BAU) baseline against which every Pareto-improving policy below is benchmarked, and supplies the cohort-by-cohort participation constraints for the constrained policy search.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{jpe_bau_baseline.png}
+\caption{Business-as-usual baseline for the 12-cohort stochastic OLG-IAM of \citet{kubler2025using}.  Without policy intervention the median warming reaches roughly $3\,^\circ$C over the 150-year horizon, and the upper tail of damages is substantially larger than the mean.  Every Pareto-improving policy below is benchmarked against this baseline, which also supplies the participation constraints for the constrained policy search.  Figure extracted from \citet{kubler2025using}.}
+\label{fig:bau_olg_baseline}
+\end{figure}
 
 \subsection{The 3-Step ML Pipeline}
 
@@ -8988,10 +9114,17 @@ Finding an optimal carbon tax rule in this OLG economy is a bilevel optimization
 \end{figure}
 
 \paragraph{Step 1: DEQN with pseudo-states.}
-The tax-rule coefficients $\vartheta_{\mathrm{tax}}$ and the $A=12$ transfer shares $\omega = (\omega_1,\ldots,\omega_{12})$ are appended to the state of the neural network as pseudo-states.  The transfer shares are non-negative weights satisfying $\sum_{j=1}^{A} \omega_j = 1$, with cohort $j$'s lump-sum transfer given by $\mathbb{T}_{t,j} = \omega_j\,\tau_t\,e_t$ from the government's resource constraint $\sum_j \mathbb{T}_{t,j} = \tau_t\,e_t$.  All cohorts alive at $t$, including the newborn cohort, receive a transfer.  The number of tax parameters depends on the rule: a simple linear rule on cumulative emissions has $\vartheta_{\mathrm{tax}} = (\vartheta_0,\vartheta_E) \in \mathbb{R}^2$ (so a 14-dimensional pseudo-state vector together with the 12 transfer shares), and a richer rule that adds dependence on carbon intensity and tipping has $\vartheta_{\mathrm{tax}} \in \mathbb{R}^4$ (a 16-dimensional pseudo-state vector with the 12 shares).  The DEQN learns the equilibrium for \emph{all} candidate tax-and-transfer configurations at once, so that simulating any $(\vartheta_{\mathrm{tax}}, \omega)$ requires only a forward pass.
+The tax-rule coefficients $\vartheta_{\mathrm{tax}}$ and the $A=12$ transfer shares $\omega = (\omega_1,\ldots,\omega_{12})$ are appended to the state of the neural network as pseudo-states.  The transfer shares are non-negative weights satisfying $\sum_{j=1}^{A} \omega_j = 1$, with cohort $j$'s lump-sum transfer given by $\mathbb{T}_{t,j} = \omega_j\,p^{\mathrm{tax}}_t\,e_t$ from the government's resource constraint $\sum_j \mathbb{T}_{t,j} = p^{\mathrm{tax}}_t\,e_t$.  The simplex constraint $\omega \in \Delta^{A-1}$ is enforced by sampling unconstrained logits and applying a softmax before feeding $\omega$ into the network, so the DEQN never sees an infeasible transfer profile.  All cohorts alive at $t$, including the newborn cohort, receive a transfer.  The number of tax parameters depends on the rule: a simple linear rule on cumulative emissions has $\vartheta_{\mathrm{tax}} = (\vartheta_0,\vartheta_E) \in \mathbb{R}^2$ (so a 14-dimensional pseudo-state vector together with the 12 transfer shares), and a richer rule that adds dependence on carbon intensity and tipping has $\vartheta_{\mathrm{tax}} \in \mathbb{R}^4$ (a 16-dimensional pseudo-state vector with the 12 shares).  The DEQN learns the equilibrium for \emph{all} candidate tax-and-transfer configurations at once, so that simulating any $(\vartheta_{\mathrm{tax}}, \omega)$ requires only a forward pass.  The network architecture, optimizer schedule, and training-pool design follow \citet{kubler2025using} verbatim; the exact configuration is documented in the companion repository linked at the end of this section.
 
 \paragraph{Step 2: GP surrogate.}
-At each design point $\vartheta = (\vartheta_{\mathrm{tax}}, \omega)$, the trained DEQN is simulated to obtain Monte-Carlo estimates of expected lifetime utility for the 40 tracked cohorts (12 alive at $t=0$ plus 28 future cohorts born during the planner's 150-year horizon).  Independent GPs are then fitted to map $\vartheta$ to expected aggregate welfare $\mathcal{W}(\vartheta)$ and to each of the 40 cohort welfares $\tilde{U}_t(\vartheta)$.  The design itself uses Latin-hypercube sampling augmented with Bayesian active learning: the size scales with the dimension of $\vartheta$, with roughly 500 points sufficient for the 14-dimensional ``linear-in-$E$ + transfers'' specification (Section 5.3 of \citet{kubler2025using}) and roughly 800 points for the 16-dimensional ``richer rule + transfers'' specification (Section 5.4).
+At each design point $\vartheta = (\vartheta_{\mathrm{tax}}, \omega)$, the trained DEQN is simulated to obtain Monte-Carlo estimates of expected lifetime utility for the 40 tracked cohorts (12 alive at $t=0$ plus 28 future cohorts born during the planner's 150-year horizon).  Independent GPs are then fitted to map $\vartheta$ to expected aggregate welfare $\mathcal{W}(\vartheta)$ and to each of the 40 cohort welfares $\tilde{U}_t(\vartheta)$.  The design itself uses Latin-hypercube sampling augmented with Bayesian active learning: the size scales with the dimension of $\vartheta$, with roughly 500 points sufficient for the 14-dimensional ``linear-in-$E$ + transfers'' specification (Section 5.3 of \citet{kubler2025using}) and roughly 800 points for the 16-dimensional ``richer rule + transfers'' specification (Section 5.4).  Figure~\ref{fig:gp_welfare_contour} shows the resulting welfare surface for the two-parameter linear-in-cumulative-emissions rule, with transfer shares held at the Pareto-optimal solution: the contour exposes the low-dimensional ridge along which intercept and slope trade off cleanly, and on which the Step-3 optimiser searches.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\linewidth]{jpe_gp_welfare_contour.png}
+\caption{Gaussian-process welfare surrogate over the two-dimensional tax-parameter slice $(\vartheta_0, \vartheta_E)$ of the linear-in-cumulative-emissions rule, with transfer shares $\omega$ held at the Pareto-optimal solution.  The contour exposes the low-dimensional welfare surface on which the constrained optimiser of Eq.~\eqref{eq:pareto_opt} searches once the DEQN has amortised the equilibrium solve.  Figure extracted from \citet{kubler2025using}.}
+\label{fig:gp_welfare_contour}
+\end{figure}
 
 \paragraph{Step 3: Constrained optimization.}
 The planner solves
@@ -9001,14 +9134,57 @@ The planner solves
 \end{equation}
 where $U_t$ is the business-as-usual (BAU) welfare of cohort $t$ and $\Delta^{A-1}$ is the standard simplex on $A=12$ shares.  The Pareto constraint ensures that \emph{no generation is worse off}; whenever the welfare-maximising $\vartheta^\ast$ lies strictly inside the feasible polytope (which is the case in every scenario reported below) it is also strictly Pareto-improving for at least one cohort, so the weak constraint $\tilde U_t \ge U_t$ and the textbook strict-improvement requirement coincide at the optimum.  Because each evaluation of $\mathcal{W}$ and $\tilde U_t$ is a forward pass through the trained GP rather than a fresh DEQN simulation, the constrained search reduces to a sequence of small SLSQP problems (the paper uses 500 random restarts of \texttt{scipy.optimize.minimize}) that complete in seconds.  By contrast, replacing the surrogate with brute-force re-solves of the full SOLG IAM at every candidate $\vartheta$ would require on the order of tens of thousands of core-hours per candidate, which is the comparison the paper draws against traditional methods.
 
-\subsection{Results}
+\subsection{Results: Why Transfers Matter}
 
-Three policy scenarios illustrate the power of the approach:
-\begin{enumerate}[itemsep=2pt]
-\item \textbf{Unconstrained welfare maximum with exogenous transfers:}  a linear tax rule $\tau_t = \vartheta_0 + \vartheta_E \cdot E_t$ on cumulative emissions, with a fixed declining transfer scheme $\omega = \bar\omega$.  This achieves strong emission reduction but creates losers among current cohorts (welfare losses up to $\sim$5\% for transition generations).
-\item \textbf{Pareto-improving with optimized transfers:}  the same tax rule with endogenous transfer shares $\omega \in \Delta^{A-1}$.  The Pareto constraint binds for current generations, but all cohorts are weakly better off than under BAU.
-\item \textbf{Richer tax function:}  $\tau_t = \vartheta_0 + \vartheta_E\,E_t + \vartheta_\kappa\,\kappa_t + \vartheta_{TP}\,(1 - D_t)$ on cumulative emissions, carbon intensity, and a tipping-related state $D_t$.  In \citet{kubler2025using}, $D_t$ is the climate-tipping state of the model (built from the proximity of $T^{\mathrm{AT}}_t$ to the stochastic threshold $TP_t$ and the absorbed-tipping flag); the term $\vartheta_{TP}(1-D_t)$ raises the carbon price preemptively as the system approaches the threshold and relaxes after a tipping event has been absorbed.  The exact functional form is given in the paper; the key point for the surrogate pipeline is that $D_t$ is a deterministic function of variables already in the SOLG state, so it can be evaluated inside each forward pass.
-\end{enumerate}
+The unconstrained welfare-maximising cumulative-emissions tax is the natural benchmark.  With a linear rule $p^{\mathrm{tax}}_t = \vartheta_0 + \vartheta_E\,E_t$ and a fixed declining transfer scheme $\omega = \bar\omega$, the policy cuts emissions aggressively, stabilises mean warming around $2.7\,^{\circ}\mathrm C$, and raises aggregate social welfare by about $1.6\%$ in consumption-equivalent terms.  But it imposes losses of up to roughly $5\%$ on initial generations: it is therefore welfare-improving in the social-welfare-function sense, but \emph{not} Pareto improving.  Figure~\ref{fig:unconstrained_linear_tax} shows the failure: the welfare-gains panel records the losses for transition generations that the social-welfare-function aggregate hides.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{jpe_unconstrained_linear_tax.png}
+\caption{Welfare-improving but not Pareto-improving cumulative-emissions tax with a fixed exogenous transfer scheme.  The policy strongly reduces climate risk and raises aggregate welfare by about $1.6\%$ in consumption-equivalent terms, but the welfare-gains panel shows losses for transition generations.  Figure extracted from \citet{kubler2025using}.}
+\label{fig:unconstrained_linear_tax}
+\end{figure}
+
+Endogenising the transfer shares changes the conclusion.  With the same simple tax base and an optimised transfer simplex, \citet{kubler2025using} report the optimised coefficients\footnote{All numerical coefficients, welfare gains, and damage-quantile values in this subsection are quoted from \citet{kubler2025using}; consult the paper for the source tables and figures.}
+\begin{equation}
+    p^{\mathrm{tax}}_t = \vartheta_0 + \vartheta_E\,E_t,
+    \qquad
+    (\vartheta_0,\, \vartheta_E) = (-0.186,\, 0.225),
+\label{eq:pareto_linear_tax_coefficients}
+\end{equation}
+together with transfer shares
+\begin{equation}
+\omega
+=
+(0.128,\, 0.051,\, 0.058,\, 0.089,\, 0.149,\, 0.090,\, 0.066,\, 0.143,\, 0.076,\, 0.048,\, 0.039,\, 0.061),
+\label{eq:pareto_linear_transfer_shares}
+\end{equation}
+which sum to one up to rounding.  The negative intercept $\vartheta_0 = -0.186$ is not a subsidy in practice: the planner's horizon starts well into the industrial era at a strictly positive cumulative-emissions stock $E_0 > 0$, so the effective tax $\vartheta_0 + \vartheta_E\,E_t$ is positive for every relevant $E_t$ along the optimum.  The negative intercept simply registers that the linear-in-$E$ rule undershoots a constant carbon price near $E = 0$ and ramps up roughly proportionally to cumulative emissions thereafter.  The combined policy makes every tracked cohort weakly better off than under BAU.  The aggregate welfare gain is more modest than under the unconstrained optimum, at about $0.42\%$ in consumption-equivalent terms, but the right tail of damages is truncated: the 99th percentile of damages falls to roughly $7\%$ of output rather than about $9\%$ under BAU.  Figure~\ref{fig:pareto_tax_main} reports the full result.  Comparing its welfare-gains panel with that of Figure~\ref{fig:unconstrained_linear_tax} is the section's headline: a lower, simpler tax combined with an optimised transfer system shifts every cohort weakly into the gains region.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{jpe_pareto_linear_tax.png}
+\caption{Pareto-improving cumulative-emissions tax with optimised intergenerational transfers, at the coefficients of \eqref{eq:pareto_linear_tax_coefficients}--\eqref{eq:pareto_linear_transfer_shares}.  The tax is less aggressive than the unconstrained rule, but the optimised transfer system shields current cohorts while preserving climate-risk reduction for future cohorts.  Aggregate welfare rises by about $0.42\%$.  Figure extracted from \citet{kubler2025using}.}
+\label{fig:pareto_tax_main}
+\end{figure}
+
+The richer rule of \S\ref{sec:pareto_carbon_tax} adds carbon intensity and a tipping-state statistic,
+\begin{equation}
+    p^{\mathrm{tax}}_t = \vartheta_0 + \vartheta_E\,E_t + \vartheta_\kappa\,\kappa_t + \vartheta_{TP}(1-D_t),
+\end{equation}
+where $D_t$ is the climate-tipping state of the model (built from the proximity of $T^{\mathrm{AT}}_t$ to the stochastic threshold $TP_t$ and the absorbed-tipping flag).  Its optimised coefficients are
+\begin{equation}
+    (\vartheta_0,\, \vartheta_E,\, \vartheta_\kappa,\, \vartheta_{TP}) = (-0.237,\, 0.203,\, 0.037,\, 0.012),
+\label{eq:pareto_full_tax_coefficients}
+\end{equation}
+with the associated aggregate welfare gain rising only from about $0.42\%$ to about $0.45\%$.  Figure~\ref{fig:pareto_full_tax} shows the corresponding cohort-by-cohort welfare profile: every cohort remains weakly above its BAU baseline, just like under the linear rule of Figure~\ref{fig:pareto_tax_main}, and the marginal welfare improvement from the extra two policy-state coefficients is small.  This is the substantive headline of \citet{kubler2025using}: once intergenerational transfers are optimised, the simple cumulative-emissions tax captures most of the feasible Pareto-improving welfare gain.  More policy-state variables improve the fit to climate risk, but the participation constraints bind tightly enough that the marginal welfare benefit of policy complexity is small.  $D_t$ is a deterministic function of variables already in the SOLG state, so it can be evaluated inside each forward pass; the exact functional form is in the paper.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{jpe_pareto_full_tax.png}
+\caption{Pareto-improving cumulative-emissions tax under the richer four-parameter rule $p^{\mathrm{tax}}_t = \vartheta_0 + \vartheta_E E_t + \vartheta_\kappa \kappa_t + \vartheta_{TP}(1-D_t)$ at the coefficients of \eqref{eq:pareto_full_tax_coefficients}.  Every cohort remains weakly above its BAU baseline; aggregate welfare rises by about $0.45\%$, only a few basis points beyond the linear-in-$E$ rule of Figure~\ref{fig:pareto_tax_main}.  Figure extracted from \citet{kubler2025using}.}
+\label{fig:pareto_full_tax}
+\end{figure}
 
 \paragraph{Runtime in numbers.}
 On a standard laptop (Apple M1), the OLG DEQN trains in roughly four wall-clock hours; on a high-end accelerator such as an NVIDIA GH200, training drops to the order of minutes \citep{kubler2025using}.  Adding the GP fits over 500 (resp.\ 800) design points and the constrained Step-3 optimization keeps the entire pipeline within the same order of magnitude, while the comparable brute-force re-solve of the SOLG model at \emph{every} candidate $\vartheta$ would dominate by orders of magnitude (the paper reports tens of thousands of core-hours for one fixed-parameter calibration, which would have to be repeated for every Step-3 candidate vector).
@@ -9016,56 +9192,9 @@ On a standard laptop (Apple M1), the OLG DEQN trains in roughly four wall-clock 
 \paragraph{Companion code.}
 The full production OLG-IAM solver, including the DEQN training loop with $(\vartheta_{\mathrm{tax}}, \omega)$ pseudo-states and the bilevel policy search, is hosted in the companion repository \href{https://github.com/sischei/JPE_Macro_Using_ML_to_compute_constrained_optimal_carbon_tax_rules}{\texttt{sischei/JPE\_Macro\_Using\_ML\_to\_compute\_constrained\_optimal\_carbon\_tax\_rules}}, which accompanies \citet{kubler2025using}.  The classroom notebook in Lecture~17 of this course exposes a reduced surrogate-only version that loads pre-trained GP surrogates and reproduces the constrained-optimization step (Step~3) interactively, but does not retrain the OLG DEQN end-to-end; readers who want the full pipeline should clone the companion repository.
 
-\begin{keyinsightbox}[Pareto improvement through tail insurance]
-The main welfare channel of constrained optimal policy is \emph{disaster-risk reduction} (tail insurance), not maximal average abatement.  Transfers resolve the intergenerational conflict, and even simple linear rules capture most of the achievable welfare gain.  Richer rules add further tipping-risk insurance.
+\begin{keyinsightbox}[The policy-design message]
+Deep learning is used here not because a neural network is fashionable, but because the relevant object is a high-dimensional map from states and policy-rule coefficients to equilibrium allocations and cohort welfare.  Once that map is learned, constrained optimal policy becomes a small optimisation problem on a surrogate.  The economic result is equally important: carbon taxes need transfers.  Without transfers, the welfare-maximising tax creates transition losers; with optimised transfers, a simpler and lower tax can be Pareto improving.  The main welfare channel is disaster-risk reduction (tail insurance), not maximal average abatement.
 \end{keyinsightbox}
-
-\paragraph{Visualising the four results.}
-The figures that follow accompany the four scenarios just enumerated.  Figure~\ref{fig:bau_olg_baseline} fixes the BAU baseline that every policy is benchmarked against; Figure~\ref{fig:gp_welfare_contour} exposes the welfare surface that the GP surrogate makes available to the constrained optimiser; Figure~\ref{fig:pareto_tax_main} reports the Pareto-improving linear-in-cumulative-emissions tax with optimised intergenerational transfers; and Figure~\ref{fig:pareto_full_tax} compares the simple two-parameter tax to the richer four-parameter rule, illustrating the diminishing-returns message of the section.
-
-\begin{figure}[H]
-\centering
-% figure copied from climate_materials/jpe/figures/bau/BAU_emissions_dist.pdf
-\subfloat[Industrial emissions]{\includegraphics[width=0.48\textwidth]{bau_emissions.pdf}}\hfill
-% figure copied from climate_materials/jpe/figures/bau/BAU_temperature_dist.pdf
-\subfloat[Atmospheric temperature]{\includegraphics[width=0.48\textwidth]{bau_temperature.pdf}}\\[2pt]
-% figure copied from climate_materials/jpe/figures/bau/BAU_damages_dist.pdf
-\subfloat[GDP damages]{\includegraphics[width=0.48\textwidth]{bau_damages.pdf}}\hfill
-% figure copied from climate_materials/jpe/figures/bau/BAU_S_dist.pdf
-\subfloat[Atmospheric carbon stock]{\includegraphics[width=0.48\textwidth]{bau_carbon_stock.pdf}}
-\caption{Business-as-usual baseline for the 12-cohort stochastic OLG-IAM of \citet{kubler2025using}.  Solid lines are simulated medians, shaded bands are 5\%--95\% percentiles across Monte Carlo paths.  Without policy intervention the median warming reaches roughly $3\,^\circ$C by 2100 and damages settle near 4\% of gross output, with a heavy upper tail.  Every Pareto-improving policy below is benchmarked against the distributions in this figure.}
-\label{fig:bau_olg_baseline}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-% figure copied from climate_materials/jpe/figures/lin_S/contour_welfare_E.pdf
-\includegraphics[width=0.72\textwidth]{gp_welfare_surrogate_contour.pdf}
-\caption{Gaussian-process welfare surrogate over the two-dimensional tax-parameter slice $(\vartheta_0, \vartheta_E)$ of the linear-in-cumulative-emissions rule, with transfer shares $\omega$ held at the Pareto-optimal solution.  The contour shows the welfare functional $\mathcal W(\vartheta)$ that the constrained search of Eq.~\eqref{eq:pareto_opt} maximises; the surrogate exposes a single ridge along which intercept and slope trade off cleanly.}
-\label{fig:gp_welfare_contour}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-% figure copied from climate_materials/jpe/figures/lin_S_transfers/lin_S_trans_emissions_dist.pdf
-\subfloat[Industrial emissions]{\includegraphics[width=0.48\textwidth]{pareto_tax_emissions.pdf}}\hfill
-% figure copied from climate_materials/jpe/figures/lin_S_transfers/welfare_gains_lin_S_trans.pdf
-\subfloat[Per-cohort welfare gains]{\includegraphics[width=0.48\textwidth]{pareto_tax_welfare_gains.pdf}}\\[2pt]
-% figure copied from climate_materials/jpe/figures/lin_S_transfers/lin_S_trans_temp_dist.pdf
-\subfloat[Atmospheric temperature]{\includegraphics[width=0.48\textwidth]{pareto_tax_temperature.pdf}}\hfill
-% figure copied from climate_materials/jpe/figures/lin_S_transfers/linear_S_transfer_tax_dist.pdf
-\subfloat[Carbon-tax rate]{\includegraphics[width=0.48\textwidth]{pareto_tax_rate.pdf}}
-\caption{Pareto-improving linear-in-cumulative-emissions tax with optimised intergenerational transfers.  Aggregate welfare rises by $\approx 0.42\%$ in consumption equivalents, no cohort is worse off than under BAU (panel b), warming stabilises below $3\,^\circ$C (panel c), and the carbon-tax path traces the cumulative-emissions accumulation.  Compare panels (a) and (c) against Figure~\ref{fig:bau_olg_baseline}.}
-\label{fig:pareto_tax_main}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-% figure copied from climate_materials/jpe/figures/linear_transfers/welfare_gains_linear_trans.pdf
-\includegraphics[width=0.65\textwidth]{pareto_full_tax_welfare_gains.pdf}
-\caption{Diminishing returns to a richer tax base.  Per-cohort welfare gains under the four-parameter rule $\tau_t = \vartheta_0 + \vartheta_E\,E_t + \vartheta_\kappa\,\kappa_t + \vartheta_{TP}\,(1 - D_t)$.  Aggregate welfare gain rises modestly to $\approx 0.45\%$ relative to the $\approx 0.42\%$ of the two-parameter rule in Figure~\ref{fig:pareto_tax_main}: simplicity captures most of the achievable gain once the Pareto constraint binds.}
-\label{fig:pareto_full_tax}
-\end{figure}
 
 \section{Discussion and Outlook}
 \label{sec:climate_discussion}
@@ -9082,7 +9211,7 @@ Several limitations should be noted.  First, the CDICE climate module, while cal
 Active research frontiers include: multi-region IAMs with trade and carbon leakage \citep{nordhaus1996regional}; richer damage specifications including tipping cascades; endogenous technical change in abatement technology; and embedding climate modules in continuous-time heterogeneous-agent models (Chapter~\ref{ch:ct_theory}) to study the joint dynamics of climate risk and wealth inequality.  The methodological toolkit developed in this course (DEQNs for equilibrium computation, PINNs for continuous-time PDEs, deep surrogates for uncertainty quantification, and Young's method for distribution tracking) provides the computational infrastructure for these extensions.
 
 \paragraph{The three movements, in one synthesis.}
-Movement~1 established that solving an IAM by DEQN requires three modifications relative to the stationary toolkit of Chapter~\ref{ch:deqn}: time enters as a state, the training pool is stratified over a finite calendar horizon, and the loss carries an explicit terminal term in place of transversality.  Movement~2 put that algorithm to work on a worked stochastic DICE economy, producing the eight-residual loss whose minimisation delivers the deterministic policy and, with one extra Gauss--Hermite layer, the AR(1) SCC fan chart.  Movement~3 layered four extensions onto the same spine: Bayesian learning over the climate sensitivity, recursive Epstein--Zin preferences, global UQ of the SCC via pseudo-states and GP surrogates, and constrained Pareto-improving carbon-tax design in a heterogeneous-agent OLG-IAM.  Chapter~\ref{ch:outlook} threads these into the broader synthesis with the rest of the course.
+Movement~1 established that solving an IAM by DEQN requires three modifications relative to the stationary toolkit of Chapter~\ref{ch:deqn}: time enters as a state, the training pool is built by simulating $K$ forward trajectories from a calibrated initial state rather than by sampling an ergodic distribution, and the missing transversality is absorbed numerically by choosing the horizon $T_{\max}$ long enough that discounting suffices (or, on short horizons, by adding an explicit terminal residual).  Movement~2 put that algorithm to work on a worked stochastic DICE economy, producing the eight-residual loss whose minimisation delivers the deterministic policy and, with one extra Gauss--Hermite layer, the AR(1) SCC fan chart.  Movement~3 layered four extensions onto the same spine: Bayesian learning over the climate sensitivity, recursive Epstein--Zin preferences, global UQ of the SCC via pseudo-states and GP surrogates, and constrained Pareto-improving carbon-tax design in a heterogeneous-agent OLG-IAM.  Chapter~\ref{ch:outlook} threads these into the broader synthesis with the rest of the course.
 
 \begin{keyinsightbox}[Chapter Summary]
 \begin{itemize}[itemsep=2pt, leftmargin=*]
@@ -9115,7 +9244,7 @@ Movement~1 established that solving an IAM by DEQN requires three modifications 
 \item\label{ex:ch11:5} \textbf{[Computational] Carbon-cycle warm-up.}  Run notebook \tpath{01_Climate_Exercise.ipynb} end-to-end.  (a) Report the avoided warming and avoided damages at year 2100 under a 50\% mitigation rule relative to BAU.  (b) Inspect the carbon-cycle transition matrix and identify which reservoir (atmospheric, upper ocean, lower ocean) has the longest timescale.  (c) Explain in two sentences why a quadratic damage-loss function $D(T) = \pi_2 T^2$ is insufficient for tail-risk assessment.
 \item\label{ex:ch11:6} \textbf{[Advanced/project] Deterministic CDICE-DEQN reproduction.}  Open notebook \tpath{02_DICE_DEQN_Library_Port.ipynb} and train the deterministic solver to convergence.  Verify the following quantities against the reference solution, using the tolerances stated in the notebook's verification gate: $T^{\mathrm{AT}}(2100)$, $M^{\mathrm{AT}}(2100)$, $\mu(2100)$, and the SCC at 2015, 2100, and 2300.
 \item\label{ex:ch11:7} \textbf{[Advanced/project] Stochastic SCC fan chart.}  In notebook \tpath{03_Stochastic_DICE_DEQN.ipynb}, vary the AR(1) productivity volatility $\sigma_z$ over $\{0.005, 0.01, 0.02\}$ and plot the resulting SCC fan charts.  How does the right-tail of the SCC distribution at 2100 scale with $\sigma_z$?  Compare your finding with the qualitative message of \citet{caiSocialCostCarbon2019}.  State your classical baseline (e.g., a deterministic-DICE SCC at the same calibration, or a certainty-equivalent SCC) before reaching for the DEQN.
-\item\label{ex:ch11:8} \textbf{[Advanced/project] Tipping-point regime-switching damages.}  This exercise temporarily switches from the additive damage-fraction convention $\Omega^N(T) = \pi_1 T + \pi_2 T^2$ used in the chapter body and in notebook 02 (Eq.~\ref{eq:damage_nordhaus}) to the multiplicative \emph{retained-output} convention $\Omega^{\mathrm{ret}}(T) = 1/(1 + \pi_2 T^2)$, the form discussed in \S\ref{sec:dice_damages} as an alternative, so that the regime-switching modification below has a single multiplicative knob.  First make this substitution in notebook \tpath{02_DICE_DEQN_Library_Port.ipynb} (which ships with the additive form $\Omega^N$) and re-calibrate $\pi_2$ accordingly.  Then replace the smooth retained-output factor $\Omega^{\mathrm{ret}}(T) = 1/(1 + \pi_2 T^2)$ with a regime-switching specification.  At each step, with hazard rate $\lambda_\mathrm{TP}(T) = \lambda_0 + \lambda_1\max(0, T - T_\mathrm{thresh})$, an irreversible tipping event occurs.  If the event has occurred, multiply the damage term in the denominator by $D_\mathrm{TP}=1.5$, so retained output becomes $\Omega^{\mathrm{TP}}(T)=1/(1+D_\mathrm{TP}\pi_2T^2)$.  Calibrate $\lambda_0 = 0.001$, $\lambda_1 = 0.05$, $T_\mathrm{thresh} = 2.0\,^\circ\mathrm{C}$.  Retrain the DEQN solver and report (i)~SCC at $t = 0$ under the regime-switching specification vs.\ the smooth baseline; (ii)~the time path of optimal abatement $\mu_t$ in both cases; (iii)~the unconditional probability of a tipping event by 2100.  Sweep $T_\mathrm{thresh}$ over $\{1.5, 2.0, 2.5\}\,^\circ\mathrm{C}$ and plot the SCC against the threshold.  Discuss the policy implications: a lower threshold raises the SCC by what factor, and what does this imply for near-term tax design under deep uncertainty about $T_\mathrm{thresh}$ itself?
+\item\label{ex:ch11:8} \textbf{[Advanced/project] Tipping-point regime-switching damages.}  This exercise temporarily switches from the additive damage-fraction convention $\Omega^N(T) = \pi_1 T + \pi_2 T^2$ used in the chapter body and in notebook 02 (Eq.~\ref{eq:damage_nordhaus}) to the multiplicative \emph{retained-output} convention $\Omega^{\mathrm{ret}}(T) = 1/(1 + \pi_2 T^2)$, the form discussed in \S\ref{sec:dice_damages} as an alternative, so that the regime-switching modification below has a single multiplicative knob.  First make this substitution in notebook \tpath{02_DICE_DEQN_Library_Port.ipynb} (which ships with the additive form $\Omega^N$) and re-calibrate $\pi_2$ so that the retained-output form matches the additive baseline at $T = 2.5\,^\circ\mathrm{C}$, i.e.\ choose $\pi_2$ such that $1 - 1/(1+\pi_2 T^2) = \pi_2^{N} T^2$ at $T = 2.5\,^\circ\mathrm{C}$ with $\pi_2^N = 0.00236$ from Table~\ref{tab:dice_calibration}.  Then replace the smooth retained-output factor $\Omega^{\mathrm{ret}}(T) = 1/(1 + \pi_2 T^2)$ with a regime-switching specification.  At each step, with hazard rate $\lambda_\mathrm{TP}(T) = \lambda_0 + \lambda_1\max(0, T - T_\mathrm{thresh})$, an irreversible tipping event occurs.  If the event has occurred, multiply the damage term in the denominator by $D_\mathrm{TP}=1.5$, so retained output becomes $\Omega^{\mathrm{TP}}(T)=1/(1+D_\mathrm{TP}\pi_2T^2)$.  Calibrate $\lambda_0 = 0.001$, $\lambda_1 = 0.05$, $T_\mathrm{thresh} = 2.0\,^\circ\mathrm{C}$.  Retrain the DEQN solver and report (i)~SCC at $t = 0$ under the regime-switching specification vs.\ the smooth baseline; (ii)~the time path of optimal abatement $\mu_t$ in both cases; (iii)~the unconditional probability of a tipping event by 2100.  Sweep $T_\mathrm{thresh}$ over $\{1.5, 2.0, 2.5\}\,^\circ\mathrm{C}$ and plot the SCC against the threshold.  Discuss the policy implications: a lower threshold raises the SCC by what factor, and what does this imply for near-term tax design under deep uncertainty about $T_\mathrm{thresh}$ itself?
 \item\label{ex:ch11:9} \textbf{[Advanced/project] Real options value of waiting.}  Consider a stylized two-period climate--policy decision.  At $t = 0$ the planner does not know the equilibrium climate sensitivity $\mathrm{ECS}$, with prior $\mathrm{ECS} \sim \mathcal{U}([\mathrm{ECS}_L, \mathrm{ECS}_H])$ where $\mathrm{ECS}_L = 2$, $\mathrm{ECS}_H = 5$\,$^\circ\mathrm{C}$.  Two choices: (a)~\textbf{act now}, abate at level $\mu \in [0,1]$ with cost $\Theta(\mu) = \theta\mu^2$; (b)~\textbf{wait}, abate at $t=1$ after observing a noisy signal $\widehat{\mathrm{ECS}} = \mathrm{ECS} + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, \sigma_\varepsilon^2)$.  Damages are $D(\mu, \mathrm{ECS}) = \alpha\,\mathrm{ECS}\cdot(1 - \mu)$.  The planner minimizes expected total cost.  (i)~Derive closed-form expressions for the optimal $\mu^\star$ and the expected total cost under each strategy.  (ii)~Define the \emph{value of waiting} as the cost difference: $\mathrm{VoW} = \mathbb{E}[\mathrm{cost}_\mathrm{wait}] - \mathbb{E}[\mathrm{cost}_\mathrm{now}]$.  Show that as the signal becomes informative ($\sigma_\varepsilon \to 0$), $\mathrm{VoW}$ becomes negative (waiting is preferred): more information allows better decisions.  (iii)~Now add an irreversibility wedge $\eta\,\mu_1^2$ paid only on the wait branch, penalizing deferred action (e.g., capital stock accumulates carbon faster while waiting, so the wait-period abatement is more costly than an equivalent abatement at $t = 0$).  Show that for sufficiently large $\eta$, $\mathrm{VoW}$ is positive (act now is preferred), even with substantial learning.  Connect this trade-off to the Bayesian-learning section of the chapter and to the broader literature on real options in climate policy.
 \item\label{ex:ch11:10} \textbf{[Core] Non-stationary DEQN on a 1D toy.}  Implement the three modifications of \S\ref{sec:nsdeqn_algo} on a one-dimensional non-stationary problem.  The toy economy: a planner picks $u_t \in \mathbb R$ to minimise $\sum_{t=0}^{T_{\max}-1} \bigl[(x_t - x^\ast_t)^2 + r u_t^2\bigr] + \lambda_T (x_{T_{\max}} - x^\ast_{T_{\max}})^2$ subject to the linear-Gaussian law of motion $x_{t+1} = \alpha\,x_t + u_t + g_t + \sigma\,\varepsilon_{t+1}$, $\varepsilon_{t+1}\sim\mathcal N(0,1)$, with deterministic drift $g_t = g_0 + g_1 t$ and a calendar-time target path $x^\ast_t = a + b t$.  Set $T_{\max} = 50$, $\alpha = 0.95$, $g_0 = 0.02$, $g_1 = 0.001$, $r = 0.1$, $\sigma = 0.05$, $\lambda_T = 5$, $a = 0$, $b = 0.04$.  (i)~Derive the closed-form LQ-Riccati policy and state your classical baseline before reaching for the DEQN.  (ii)~Train a small neural network $u_t = \mathcal N_\rho(x_t, \tau_t)$ with $\tau_t = 1 - \exp(-\vartheta\,t)$, sampling initial states from a uniform prior on $[a - 1, a + 1]$, stratifying the mini-batch over ten calendar-time bins of $[0, T_{\max}]$, and adding the terminal penalty $\lambda_T (x_{T_{\max}} - x^\ast_{T_{\max}})^2$ to the loss.  (iii)~Verify that the trained network reproduces the LQ-Riccati baseline within 1\% in the mean-squared-action metric.  (iv)~Ablate each of the three modifications in turn (drop $\tau_t$ from the input; remove stratification; remove the terminal penalty) and report which ablation hurts most as a function of $T_{\max}$.
 \end{enumerate}
@@ -9208,7 +9337,7 @@ GP $+$ BAL                 & $\hat V(K)$ on Brock--Mirman ergodic set           
 SMM $+$ surrogate          & Policy $s(K,z,\varrho)$ pseudo-state on $\varrho$   & SMM moment objective in $\varrho$                       & $\hat\varrho$ within MCSE of truth                & \tpath{lecture_15_03_Structural_Estimation_BM.ipynb} \\
 \bottomrule
 \end{tabular}
-\caption[Canonical benchmarks treated through each course method.]{Canonical benchmarks treated through each course method.  The economic content differs by row, three rows are Brock--Mirman and the PINN row is cake-eating, but the table exposes the invariant computational pattern: choose an object to approximate, encode the model restrictions in the objective or training design, and validate with an economically interpretable diagnostic.  Notebook filenames in the last column omit the standard \texttt{lecture\_NN\_} prefix; on disk the four notebooks live in \texttt{lectures/lecture\_03\_*/code/}, \texttt{lectures/lecture\_11\_*/code/}, \texttt{lectures/lecture\_14\_*/code/}, and \texttt{lectures/lecture\_15\_*/code/} respectively, in the order of the rows.}
+\caption[Canonical benchmarks treated through each course method.]{Canonical benchmarks treated through each course method.  The economic content differs by row, three rows are Brock--Mirman and the PINN row is cake-eating, but the table exposes the invariant computational pattern: choose an object to approximate, encode the model restrictions in the objective or training design, and validate with an economically interpretable diagnostic.  Notebook filenames in the last column omit the standard \texttt{lecture\_NN\_} prefix; the four notebooks live, in row order, in the \texttt{code/} subdirectories of lectures~03, 11, 14, and~15.}
 \label{tab:bm_running_case}
 \end{table}
 
@@ -9226,7 +9355,7 @@ The four method families do not sit in isolated boxes.  Figure~\ref{fig:unified_
     core/.style={rectangle, draw=uzhblue, very thick, fill=uzhblue!15, rounded corners=8pt,
                  minimum width=4cm, minimum height=1.2cm, align=center, font=\small\bfseries},
     arr/.style={-{Stealth[length=2.5mm]}, thick, #1},
-    linklabel/.style={fill=white, draw=gray!65, rounded corners=2pt,
+    linklabel/.style={fill=white, draw=black!70, rounded corners=2pt,
                       inner sep=3pt, align=center, font=\small\bfseries, text=black}
 ]
     % Core principle
@@ -9244,12 +9373,12 @@ The four method families do not sit in isolated boxes.  Figure~\ref{fig:unified_
     \draw[arr=darkgreen] (core.south east) -- (gp.north);
 
     % Cross-connections
-    \draw[{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}, dashed, gray!75, very thick]
+    \draw[{Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}, dashed, black!70, ultra thick]
         ([xshift=6pt,yshift=10pt]deqn.north east)
         to[out=18,in=162]
         node[above=2pt, linklabel] {Discrete vs.\\continuous time}
         ([xshift=-6pt,yshift=10pt]pinn.north west);
-    \draw[{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}, dashed, gray!75, very thick]
+    \draw[{Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}, dashed, black!70, ultra thick]
         ([xshift=6pt,yshift=10pt]surr.north east)
         to[out=18,in=162]
         node[above=2pt, linklabel] {Deep surrogate +\\uncertainty layer}
