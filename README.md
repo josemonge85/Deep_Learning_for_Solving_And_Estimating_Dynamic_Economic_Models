@@ -276,7 +276,25 @@ the full bibliography is in
 Course author: **[Simon Scheidegger](https://sischei.github.io/)** (University of Lausanne).
 Code is MIT-licensed; text, slides, script, and figures are CC0
 (see [`LICENSE`](LICENSE) for both).
-To cite: [`CITATION.cff`](CITATION.cff).
+
+## Citation
+
+Please cite *Deep Learning for Solving and Estimating Dynamic Models
+in Economics and Finance*, S. Scheidegger, 2026 in your publications
+if these materials help your research:
+
+```bibtex
+@article{scheidegger_2026,
+  title   = {Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance},
+  author  = {Scheidegger, Simon},
+  year    = {2026},
+  url     = {https://ssrn.com/abstract=6758340},
+  journal = {Available at SSRN 6758340}
+}
+```
+
+A machine-readable [`CITATION.cff`](CITATION.cff) is also provided so
+GitHub's "Cite this repository" button picks the entry up automatically.
 
 ## Errata, contributions, and contact
 
